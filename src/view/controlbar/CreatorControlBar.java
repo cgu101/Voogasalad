@@ -56,7 +56,7 @@ public class CreatorControlBar extends ControlBar {
 		Menu file = addToMenu(new Menu("File"), load, save);
 
 		MenuItem addLevel = makeMenuItem("Add New Level", e -> workspace.addLevel());
-		MenuItem addActor = makeMenuItem("Add New Actor", e -> addActor());
+		MenuItem addActor = makeMenuItem("Add New Actor", e -> findActorBrowser().addNewActor());
 		Menu edit = addToMenu(new Menu("Edit"), addLevel, addActor);
 
 		CheckMenuItem toolbar = new CheckMenuItem("Toolbar");
@@ -66,16 +66,10 @@ public class CreatorControlBar extends ControlBar {
 		makeComponentCheckMenus(hideAndShow);
 		CheckMenuItem fullscreen = new CheckMenuItem("Full Screen");
 		fullscreen.selectedProperty().bindBidirectional(screen.getFullscreenProperty());
-		Menu window = addToMenu(new Menu("Window"), fullscreen, hideAndShow);
+		CheckMenuItem doubleLists = new CheckMenuItem("Dual Actor Browsing");
+		doubleLists.selectedProperty().bindBidirectional(findActorBrowser().getDoubleListsProperty());
+		Menu window = addToMenu(new Menu("Window"), fullscreen, hideAndShow, doubleLists);
 		makeMenuBar(mainMenu, file, edit, window);
-	}
-
-	private void addActor() {
-		for (AbstractDockElement c : screen.getComponents()) {
-			if (c instanceof ActorBrowser) {
-				((ActorBrowser) c).addNewActor();
-			}
-		}
 	}
 
 	private void toggleToolbar(Boolean value) {
@@ -92,5 +86,14 @@ public class CreatorControlBar extends ControlBar {
 			item.selectedProperty().bindBidirectional(c.isShowing());
 			addToMenu(window, item);
 		}
+	}
+
+	private ActorBrowser findActorBrowser() {
+		for (AbstractDockElement c : screen.getComponents()) {
+			if (c instanceof ActorBrowser) {
+				return (ActorBrowser) c;
+			}
+		}
+		return null;
 	}
 }

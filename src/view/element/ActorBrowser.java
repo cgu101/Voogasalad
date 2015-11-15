@@ -2,6 +2,8 @@ package view.element;
 
 import java.util.ArrayList;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -19,9 +21,12 @@ public class ActorBrowser extends AbstractDockElement {
 	private ListView<ActorFactory> leftlist;
 	private ArrayList<ListView<ActorFactory>> lists;
 	private ObservableList<ActorFactory> actors;
+	private BooleanProperty doubleLists;
 
 	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen) {
 		super(pane, home, title, screen);
+		doubleLists = new SimpleBooleanProperty(true);
+		doubleLists.addListener(e -> toggleDoubleLists(doubleLists.getValue()));
 		makePane();
 	}
 
@@ -60,4 +65,18 @@ public class ActorBrowser extends AbstractDockElement {
 	public void addNewActor() {
 		actors.add(new ActorFactory(actors.size()));
 	}
+
+	public BooleanProperty getDoubleListsProperty() {
+		return doubleLists;
+	}
+
+	private void toggleDoubleLists(Boolean value) {
+		if (value) {
+			pane.add(rightlist, 1, 1);
+		} else {
+			rightlist.getSelectionModel().clearSelection();
+			pane.getChildren().remove(rightlist);
+		}
+	}
+
 }

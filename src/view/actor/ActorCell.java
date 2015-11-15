@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
