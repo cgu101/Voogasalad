@@ -27,9 +27,8 @@ public abstract class ATriggerEvent implements ITriggerEvent {
 		Iterator<IAction> iterator = actions.iterator();
 		while(iterator.hasNext()) {
 			IAction currentAction = iterator.next();
-			
 			for(Actor actor : actors){
-				iterator.next().run(new ActorGroups(), actor);
+				currentAction.run(new ActorGroups(), actor);
 			}
 		}
 		return true;
