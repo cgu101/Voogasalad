@@ -1,4 +1,4 @@
-package view.element;
+package view.controlbar;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;

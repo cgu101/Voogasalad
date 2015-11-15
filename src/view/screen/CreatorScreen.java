@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import view.controlbar.CreatorControlBar;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
-import view.element.CreatorControlBar;
 import view.element.Workspace;
 
 public class CreatorScreen extends AbstractScreen {

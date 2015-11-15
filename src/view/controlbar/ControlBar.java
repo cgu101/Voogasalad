@@ -1,4 +1,4 @@
-package view.element;
+package view.controlbar;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +10,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import view.element.AbstractElement;
 
 public abstract class ControlBar extends AbstractElement {
 

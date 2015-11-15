@@ -1,15 +1,24 @@
 package view.element;
 
+import java.util.ArrayList;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
-import view.actor.ActorView;
+import javafx.util.Callback;
+import view.actor.ActorCell;
+import view.actor.ActorFactory;
 import view.screen.AbstractScreenInterface;
 
 public class ActorBrowser extends AbstractDockElement {
 
-	TreeView<ActorView> rightlist;
-	TreeView<ActorView> leftlist;
+	private ListView<ActorFactory> rightlist;
+	private ListView<ActorFactory> leftlist;
+	private ArrayList<ListView<ActorFactory>> lists;
+	private ObservableList<ActorFactory> actors;
 
 	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen) {
 		super(pane, home, title, screen);
@@ -18,8 +27,9 @@ public class ActorBrowser extends AbstractDockElement {
 
 	@Override
 	protected void makePane() {
-		rightlist = new TreeView<ActorView>();
-		leftlist = new TreeView<ActorView>();
+		actors = FXCollections.observableArrayList(new ArrayList<ActorFactory>());
+		rightlist = new ListView<ActorFactory>(actors);
+		leftlist = new ListView<ActorFactory>(actors);
 		GridPane labelPane = makeLabelPane();
 		pane.add(labelPane, 0, 0);
 		GridPane.setColumnSpan(labelPane, 2);
@@ -30,6 +40,24 @@ public class ActorBrowser extends AbstractDockElement {
 		rightlist.prefHeightProperty().bind(screen.getScene().heightProperty());
 		leftlist.setFocusTraversable(false);
 		rightlist.setFocusTraversable(false);
+		configure(leftlist);
+		configure(rightlist);
+		lists = new ArrayList<ListView<ActorFactory>>();
+		lists.add(leftlist);
+		lists.add(rightlist);
 	}
 
+	private void configure(ListView<ActorFactory> list) {
+		list.setCellFactory(new Callback<ListView<ActorFactory>, ListCell<ActorFactory>>() {
+			@Override
+			public ListCell<ActorFactory> call(ListView<ActorFactory> list) {
+				ActorCell output = new ActorCell(lists);
+				return output;
+			}
+		});
+	}
+
+	public void addNewActor() {
+		actors.add(new ActorFactory(actors.size()));
+	}
 }

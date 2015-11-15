@@ -1,4 +1,4 @@
-package view.element;
+package view.controlbar;
 
 import java.util.List;
 
@@ -10,6 +10,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import view.element.AbstractDockElement;
+import view.element.ActorBrowser;
+import view.element.Workspace;
 import view.screen.AbstractScreen;
 import view.screen.StartScreen;
 
@@ -53,7 +56,8 @@ public class CreatorControlBar extends ControlBar {
 		Menu file = addToMenu(new Menu("File"), load, save);
 
 		MenuItem addLevel = makeMenuItem("Add New Level", e -> workspace.addLevel());
-		Menu edit = addToMenu(new Menu("Edit"), addLevel);
+		MenuItem addActor = makeMenuItem("Add New Actor", e -> addActor());
+		Menu edit = addToMenu(new Menu("Edit"), addLevel, addActor);
 
 		CheckMenuItem toolbar = new CheckMenuItem("Toolbar");
 		toolbar.selectedProperty().setValue(true);
@@ -64,6 +68,14 @@ public class CreatorControlBar extends ControlBar {
 		fullscreen.selectedProperty().bindBidirectional(screen.getFullscreenProperty());
 		Menu window = addToMenu(new Menu("Window"), fullscreen, hideAndShow);
 		makeMenuBar(mainMenu, file, edit, window);
+	}
+
+	private void addActor() {
+		for (AbstractDockElement c : screen.getComponents()) {
+			if (c instanceof ActorBrowser) {
+				((ActorBrowser) c).addNewActor();
+			}
+		}
 	}
 
 	private void toggleToolbar(Boolean value) {
