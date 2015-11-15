@@ -1,9 +1,5 @@
 package engine;
 
-import java.util.List;
-
-import authoring.ALevel;
-import authoring.ILevel;
 import data.model.GameData;
 import engine.runnable.RunnableGame;
 import exceptions.EngineException;
@@ -17,12 +13,12 @@ public class GameEngine implements IEngine {
 	}
 	
 	public GameEngine (GameData game) {
-		this.runnableGame = new RunnableGame(game);
+		init(game);
 	}
-	
+
 	@Override
-	public boolean init(List<ALevel> levelList) {
-		return false;
+	public void init(GameData gameData) {
+		runnableGame = new RunnableGame(gameData);
 	}
 
 	@Override

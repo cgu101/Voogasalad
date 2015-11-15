@@ -13,7 +13,7 @@ public class RunnableGame implements IRunnable {
 	
 	@Override
 	public void run () {
-
+		
 	}
 	
 	public void reset () {

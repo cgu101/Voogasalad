@@ -19,7 +19,9 @@ public abstract class AbstractScreen extends AbstractVisual implements AbstractS
 	protected String title = "";
 	protected AbstractScreen nextScreen = null;
 	protected ArrayList<GridPane> myPanes;
-
+	protected boolean resizable = false;
+	protected boolean fullscreen = false;
+	
 	abstract public void run();
 
 	abstract protected void makeScene();
@@ -44,6 +46,13 @@ public abstract class AbstractScreen extends AbstractVisual implements AbstractS
 		return title;
 	}
 
+	protected void showError(String title, String message) {
+		Alert uhoh = new Alert(AlertType.ERROR);
+		uhoh.setTitle(title);
+		uhoh.setContentText(message);
+		uhoh.show();
+	}
+
 	protected void center(GridPane r) {
 		r.setAlignment(Pos.CENTER);
 		for (Node n : r.getChildren()) {
@@ -51,13 +60,6 @@ public abstract class AbstractScreen extends AbstractVisual implements AbstractS
 				center((GridPane) n);
 			}
 		}
-	}
-
-	protected void showError(String title, String message) {
-		Alert uhoh = new Alert(AlertType.ERROR);
-		uhoh.setTitle(title);
-		uhoh.setContentText(message);
-		uhoh.show();
 	}
 
 	protected void stackVertical(GridPane r) {
@@ -78,4 +80,11 @@ public abstract class AbstractScreen extends AbstractVisual implements AbstractS
 		this.nextScreen = screen;
 	}
 
+	public boolean isResizable() {
+		return resizable;
+	}
+
+	public boolean isMaximized() {
+		return fullscreen;
+	}
 }

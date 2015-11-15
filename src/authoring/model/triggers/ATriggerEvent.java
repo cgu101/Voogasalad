@@ -26,6 +26,8 @@ public abstract class ATriggerEvent implements ITriggerEvent {
 	protected boolean performActions() {
 		Iterator<IAction> iterator = actions.iterator();
 		while(iterator.hasNext()) {
+			IAction currentAction = iterator.next();
+			
 			for(Actor actor : actors){
 				iterator.next().run(new ActorGroups(), actor);
 			}

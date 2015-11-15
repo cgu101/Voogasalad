@@ -24,7 +24,8 @@ public class RootManager implements Observer {
 		currentController = new MenuController(stage, startScreen);
 		stage.setScene(startScreen.getScene());
 		stage.show();
-		stage.setResizable(false);
+		stage.setResizable(startScreen.isResizable());
+		stage.setMaximized(startScreen.isMaximized());
 	}
 
 	public void run() {
