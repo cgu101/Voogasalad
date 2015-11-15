@@ -38,6 +38,11 @@ public class Workspace extends AbstractElement {
 	}
 
 	public Tab addLevel() {
+		if (levels.size() == 0) {
+			for (AbstractDockElement c : screen.getComponents()) {
+				c.isShowing().setValue(true);
+			}
+		}
 		LevelMap newLevel = new LevelMap(new GridPane(), levels.size(), screen);
 		levels.add(newLevel);
 		Tab newLevelTab = newLevel.getTab();

@@ -2,7 +2,7 @@ package view.screen;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import view.element.ControlBarGeneral;
+import view.controlbar.ControlBarGeneral;
 
 /**
  * This class sets up the Settings Screen 
