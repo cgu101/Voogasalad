@@ -1,5 +1,9 @@
 package authoring.model.actions;
 
+/**
+ * @author Inan
+ *
+ */
 public class ActorGroups {
 
 	public ActorGroups() {

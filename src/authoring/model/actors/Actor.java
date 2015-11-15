@@ -23,14 +23,4 @@ public class Actor implements Identifiable, IActor {
 	public String getUniqueID() {
 		return this.getClass().getName();
 	}
-
-	@Override
-	public void addProperty(Property<?> property) {
-		myPropertyBundle.add(property);
-	}
-
-	@Override
-	public void removeProperty(String propertyName) {
-		myPropertyBundle.remove(propertyName);
-	}
 }
