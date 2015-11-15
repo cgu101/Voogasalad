@@ -1,10 +1,11 @@
 package authoring.model.actions;
 
 import authoring.model.actors.Actor;
+import authoring.model.bundles.Group;
 import authoring.model.bundles.Identifiable;
 
 public interface IAction extends Identifiable {
-	public void run(ActorGroups actorGroup, Actor... a);
+	public void run(Group actorGroup, Actor... a);
 }
 
 
