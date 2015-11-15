@@ -9,8 +9,8 @@ import authoring.model.bundles.Bundle;
 
 public abstract class ATriggerEvent implements ITriggerEvent {
 
-	private Bundle<IAction> actions;
-	private List<Actor> actors;
+	protected Bundle<IAction> actions;
+	protected List<Actor> actors;
 
 	protected ATriggerEvent(Bundle<IAction> actions, List<Actor> actors) {
 		this.actions = actions;
