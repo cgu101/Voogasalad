@@ -35,9 +35,8 @@ public class PlayerController extends AController implements IPlayer {
 		return myXMLManager.loadGame(fileName);
 	}
 	
-	private void initializeGame (GameData game) {
-		List<ALevel> levelList = game.getLevelData().getLevels();
-		myEngine.init(levelList);
+	private void initializeGame (GameData game) throws EngineException {
+		myEngine.init(game);
 	}
 
 

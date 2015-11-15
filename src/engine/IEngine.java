@@ -1,9 +1,5 @@
 package engine;
 
-import java.util.List;
-
-import authoring.ALevel;
-import authoring.ILevel;
 import data.model.GameData;
 import exceptions.EngineException;
 
@@ -19,7 +15,7 @@ import exceptions.EngineException;
 
 public interface IEngine {
 
-	public boolean init(List<ALevel> levelList);
+	public void init(GameData gameData) throws EngineException;
 	
 	public void reset ();
 	public void load(GameData game);
