@@ -3,7 +3,7 @@ package authoring.model.actions;
 import authoring.model.actors.Actor;
 import authoring.model.properties.Property;
 
-public class MoveAction implements IAction{
+public class MoveAction extends IAction{
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -13,10 +13,5 @@ public class MoveAction implements IAction{
 		Integer h = health.getValue();
 		health.setValue(++h);
 		System.out.println("Health: "+health.getValue());
-	}
-
-	@Override
-	public String getUniqueID() {
-		return getClass().getName();
 	}
 }
