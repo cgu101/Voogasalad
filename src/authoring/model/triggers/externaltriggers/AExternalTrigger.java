@@ -1,4 +1,4 @@
-package authoring.model.triggers.selftriggers;
+package authoring.model.triggers.externaltriggers;
 
 import java.util.List;
 
@@ -7,9 +7,9 @@ import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.triggers.ATriggerEvent;
 
-public abstract class ASelfTrigger extends ATriggerEvent {
+public abstract class AExternalTrigger extends ATriggerEvent {
 
-	protected ASelfTrigger(Bundle<IAction> actions, List<Actor> actors) {
+	protected AExternalTrigger(Bundle<IAction> actions, List<Actor> actors) {
 		super(actions, actors);
 	}
 

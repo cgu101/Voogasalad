@@ -56,7 +56,7 @@ public class CreatorControlBar extends ControlBar {
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save);
 
 		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> workspace.addLevel());
-		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> addActor());
+		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor());
 		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addLevel, addActor);
 
 		CheckMenuItem toolbar = new CheckMenuItem(myResources.getString("toolbar"));
@@ -66,16 +66,11 @@ public class CreatorControlBar extends ControlBar {
 		makeComponentCheckMenus(hideAndShow);
 		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
 		fullscreen.selectedProperty().bindBidirectional(screen.getFullscreenProperty());
-		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow);
-		makeMenuBar(mainMenu, file, edit, window);
-	}
 
-	private void addActor() {
-		for (AbstractDockElement c : screen.getComponents()) {
-			if (c instanceof ActorBrowser) {
-				((ActorBrowser) c).addNewActor();
-			}
-		}
+		CheckMenuItem doubleLists = new CheckMenuItem(myResources.getString("dualactors"));
+		doubleLists.selectedProperty().bindBidirectional(findActorBrowser().getDoubleListsProperty());
+		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow, doubleLists);
+		makeMenuBar(mainMenu, file, edit, window);
 	}
 
 	private void toggleToolbar(Boolean value) {
@@ -92,5 +87,14 @@ public class CreatorControlBar extends ControlBar {
 			item.selectedProperty().bindBidirectional(c.isShowing());
 			addToMenu(window, item);
 		}
+	}
+
+	private ActorBrowser findActorBrowser() {
+		for (AbstractDockElement c : screen.getComponents()) {
+			if (c instanceof ActorBrowser) {
+				return (ActorBrowser) c;
+			}
+		}
+		return null;
 	}
 }

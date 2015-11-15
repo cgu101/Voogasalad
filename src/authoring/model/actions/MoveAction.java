@@ -1,19 +1,14 @@
 package authoring.model.actions;
 
-import authoring.model.actors.IActor;
+import authoring.model.actors.Actor;
 import authoring.model.properties.Property;
 
-public class MoveAction implements IAction{
+public class MoveAction extends AActionOneActor{
 
-	IActor myActor;
-	public MoveAction (IActor a){
-		this.myActor = a;
-	}
-	
+	@SuppressWarnings("unchecked")
 	@Override
-	public void run() {
-		@SuppressWarnings("unchecked")
-		Property<Integer> health = (Property<Integer>) myActor.getProperties().getComponents().get("health");
+	public void run(ActorGroups actorGroup, Actor actor) {
+		Property<Integer> health = (Property<Integer>) actor.getProperties().getComponents().get("health");
 		Integer h = health.getValue();
 		health.setValue(++h);
 		System.out.println("Health: "+health.getValue());
@@ -21,7 +16,6 @@ public class MoveAction implements IAction{
 
 	@Override
 	public String getUniqueID() {
-		return getClass().getName();
+		return this.getClass().getName();
 	}
-
 }
