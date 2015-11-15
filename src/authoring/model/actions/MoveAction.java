@@ -3,15 +3,19 @@ package authoring.model.actions;
 import authoring.model.actors.Actor;
 import authoring.model.properties.Property;
 
-public class MoveAction extends IAction{
+public class MoveAction extends AActionOneActor{
 
-	@Override
 	@SuppressWarnings("unchecked")
-	public void run(Actor... actors) {
-		Actor actor = actors[0];
+	@Override
+	public void run(ActorGroups actorGroup, Actor actor) {
 		Property<Integer> health = (Property<Integer>) actor.getProperties().getComponents().get("health");
 		Integer h = health.getValue();
 		health.setValue(++h);
 		System.out.println("Health: "+health.getValue());
+	}
+
+	@Override
+	public String getUniqueID() {
+		return this.getClass().getName();
 	}
 }
