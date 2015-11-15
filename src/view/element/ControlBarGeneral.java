@@ -25,12 +25,11 @@ public class ControlBarGeneral extends ControlBar {
 		ToolBar toolBar = new ToolBar();
 		makeTools(toolBar);
 		box.getChildren().add(toolBar);
-		pane.add(box, 0, 0);		
+		pane.add(box, 0, 0);
 	}
-	
+
 	private void makeTools(ToolBar toolBar) {
-		Button backButton = makeButton("back");
-		backButton.setOnAction(e -> currentScreen.setNextScreen(new StartScreen()));
+		Button backButton = makeButton("back", e -> currentScreen.setNextScreen(new StartScreen()));
 		toolBar.getItems().addAll(backButton);
 	}
 }

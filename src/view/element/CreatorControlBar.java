@@ -36,10 +36,8 @@ public class CreatorControlBar extends ControlBar {
 	}
 
 	private void makeTools(ToolBar toolBar) {
-		Button backButton = makeButton("back");
-		backButton.setOnAction(e -> currentScreen.setNextScreen(new StartScreen()));
-		Button addButton = makeButton("add");
-		addButton.setOnAction(e -> workspace.addLevel());
+		Button backButton = makeButton("back", e -> currentScreen.setNextScreen(new StartScreen()));
+		Button addButton = makeButton("add", e -> workspace.addLevel());
 		toolBar.getItems().addAll(backButton, addButton);
 	}
 
@@ -48,8 +46,8 @@ public class CreatorControlBar extends ControlBar {
 		MenuItem save = makeMenuItem("Save Game", null);
 		Menu file = makeMenu("File", load, save);
 
-		MenuItem properties = makeMenuItem("Properties", null);
-		Menu edit = makeMenu("Edit", properties);
+		MenuItem addLevel = makeMenuItem("Add New Level", e -> workspace.addLevel());
+		Menu edit = makeMenu("Edit", addLevel);
 
 		MenuItem toolbar = new MenuItem("Toolbar");
 		// https://docs.oracle.com/javafx/2/api/javafx/scene/control/CheckMenuItem.html

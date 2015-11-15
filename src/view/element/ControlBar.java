@@ -20,7 +20,7 @@ public abstract class ControlBar extends AbstractElement {
 	@Override
 	protected abstract void makePane();
 
-	protected Button makeButton(String s) {
+	protected Button makeButton(String s, EventHandler<ActionEvent> handler) {
 		Button button = new Button();
 		Image img = new Image(getClass().getClassLoader().getResourceAsStream(myResources.getString(s)));
 		ImageView image = new ImageView(img);
@@ -33,20 +33,21 @@ public abstract class ControlBar extends AbstractElement {
 		tooltip.setText(myResources.getString(s + ".message"));
 		button.setTooltip(tooltip);
 		button.setFocusTraversable(false);
+		button.setOnAction(handler);
 		return button;
 	}
-	
+
 	protected MenuItem makeMenuItem(String s, EventHandler<ActionEvent> handler) {
 		MenuItem m = new MenuItem(s);
 		m.setOnAction(handler);
 		return m;
 	}
-	
+
 	protected Menu makeMenu(String title, MenuItem... ms) {
 		Menu menu = new Menu(title);
 		for (MenuItem m : ms) {
 			menu.getItems().add(m);
-		}		
-		return menu;	
+		}
+		return menu;
 	}
 }

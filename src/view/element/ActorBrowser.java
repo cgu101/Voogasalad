@@ -3,13 +3,13 @@ package view.element;
 import javafx.geometry.Pos;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.GridPane;
-import view.actor.Actor;
+import view.actor.ActorView;
 import view.screen.CreatorScreen;
 
 public class ActorBrowser extends AbstractDockElement {
 
-	TreeView<Actor> rightlist;
-	TreeView<Actor> leftlist;
+	TreeView<ActorView> rightlist;
+	TreeView<ActorView> leftlist;
 
 	public ActorBrowser(GridPane pane, GridPane home, String title, CreatorScreen screen) {
 		super(pane, home, title, screen);
@@ -18,8 +18,8 @@ public class ActorBrowser extends AbstractDockElement {
 
 	@Override
 	protected void makePane() {
-		rightlist = new TreeView<Actor>();
-		leftlist = new TreeView<Actor>();
+		rightlist = new TreeView<ActorView>();
+		leftlist = new TreeView<ActorView>();
 		GridPane labelPane = makeLabelPane();
 		pane.add(labelPane, 0, 0);
 		GridPane.setColumnSpan(labelPane, 2);
