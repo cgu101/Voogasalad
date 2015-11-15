@@ -15,10 +15,11 @@ public class AuthoringConfigManager {
 	private Map<String, ResourceBundle> actorMap;
 	private Map<String, ResourceBundle> propertyMap;
 	
-	private static final String CONFIGURATION_DIR = "authoring/files";
+	private static final String CONFIGURATION_DIR = "authoring/files/%s";
 	private static final String ACTORS = "actors";
 	private static final String PROPERTIES= "properties";
-	private static final String CONFIGURATION_FILE = "configuration";
+	private static final String CONFIGURATION = "configuration";
+	private static final String DIRECTORY_FORMAT = "%s/%s";
 	
 	private static final String REG_EX = ",";
 	private static final String SELF_TRIGGER = "selfTrigger";
@@ -30,19 +31,22 @@ public class AuthoringConfigManager {
 		load();
 	}
 	
-	
-	// TO DO 
 	private void load() {
-		ResourceBundle myConfiguration = ResourceBundle.getBundle(CONFIGURATION_FILE);
-		
+		ResourceBundle myConfiguration = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, CONFIGURATION));
+		loadMap(actorMap, myConfiguration.getString(ACTORS).split(REG_EX), ACTORS);
+		loadMap(propertyMap, myConfiguration.getString(PROPERTIES).split(REG_EX), PROPERTIES);
+
 	}
 	
-	private void loadMap(Map<String, ResourceBundle> map, List<String> names) {
+	private void loadMap(Map<String, ResourceBundle> map, String[] names, String type) {
 		
 		for(String s: names) {
-			
-		}
-		
+			ResourceBundle toAdd = ResourceBundle.getBundle(
+					String.format(CONFIGURATION_DIR, 
+					String.format(DIRECTORY_FORMAT, type, s))
+					);
+			map.put(s, toAdd);
+		}	
 	}
 	
 	public List<String> getActorList() {
@@ -66,7 +70,7 @@ public class AuthoringConfigManager {
 	}
 	
 	private List<String> getTriggerList(String actor, String type) {
-		List<String> triggerList = Arrays.asList(actorMap.get(actor).getString(SELF_TRIGGER).split(REG_EX));
+		List<String> triggerList = Arrays.asList(actorMap.get(actor).getString(type).split(REG_EX));
 		String[] propertyList = actorMap.get(actor).getString(type).split(REG_EX);
 		for(String s: propertyList) {
 			String[] toAdd = propertyMap.get(s).getString(type).split(REG_EX);
@@ -75,5 +79,4 @@ public class AuthoringConfigManager {
 		
 		return triggerList;
 	}
-
 }
