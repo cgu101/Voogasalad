@@ -11,6 +11,7 @@ import authoring.model.level.ILevel;
 import authoring.model.tree.InteractionTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 import player.InputManager;
+import player.IPlayer;
 
 // runs the interaction tree
 public class InteractionExecutor {
@@ -35,9 +36,10 @@ public class InteractionExecutor {
 		this.triggerMap = triggerMap;
 		this.actionMap = actionMap;
 	}
-	public void run () {
+	public EngineHeartbeat run () {
 		runSelfTriggers();
 		runExternalTriggers();
+		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
 	}
 	
 	private void runSelfTriggers () {
