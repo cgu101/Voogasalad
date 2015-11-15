@@ -9,7 +9,7 @@ public interface IAction extends Identifiable {
 
 
 /*
- * 	Need to make the IAction class a funtional interface with
+ * 	Need to make the IAction class a functional interface with
  * 	Only ONE UNIMPLEMENTED method.
  */
 
