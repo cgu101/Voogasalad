@@ -1,5 +1,6 @@
 package view.screen;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.scene.Scene;
 
 public interface AbstractScreenInterface {
@@ -11,5 +12,7 @@ public interface AbstractScreenInterface {
 	public AbstractScreen getNextScreen();
 
 	public String getTitle();
-	
+
+	public BooleanProperty getFullscreenProperty();
+
 }

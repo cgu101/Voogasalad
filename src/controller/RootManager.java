@@ -3,6 +3,7 @@ package controller;
 import java.util.Observable;
 import java.util.Observer;
 
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.screen.AbstractScreen;
 import view.screen.StartScreen;

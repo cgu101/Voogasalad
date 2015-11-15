@@ -4,14 +4,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.GridPane;
 import view.actor.ActorView;
-import view.screen.CreatorScreen;
+import view.screen.AbstractScreenInterface;
 
 public class ActorBrowser extends AbstractDockElement {
 
 	TreeView<ActorView> rightlist;
 	TreeView<ActorView> leftlist;
 
-	public ActorBrowser(GridPane pane, GridPane home, String title, CreatorScreen screen) {
+	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen) {
 		super(pane, home, title, screen);
 		makePane();
 	}

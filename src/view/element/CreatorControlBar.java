@@ -1,6 +1,9 @@
 package view.element;
 
+import java.util.List;
+
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -12,23 +15,26 @@ import view.screen.StartScreen;
 
 public class CreatorControlBar extends ControlBar {
 
-	private AbstractScreen currentScreen;
+	private AbstractScreen screen;
 	private Workspace workspace;
+	private MenuBar mainMenu;
+	private ToolBar toolBar;
+	private VBox box;
 
 	public CreatorControlBar(GridPane pane, AbstractScreen screen, Workspace workspace) {
 		super(pane);
-		this.currentScreen = screen;
+		this.screen = screen;
 		this.workspace = workspace;
 		makePane();
 	}
 
 	@Override
 	protected void makePane() {
-		VBox box = new VBox();
-		box.minWidthProperty().bind(currentScreen.getScene().widthProperty());
-		MenuBar mainMenu = new MenuBar();
-		makeMenuBar(mainMenu);
-		ToolBar toolBar = new ToolBar();
+		box = new VBox();
+		box.minWidthProperty().bind(screen.getScene().widthProperty());
+		mainMenu = new MenuBar();
+		createMenuBar(mainMenu);
+		toolBar = new ToolBar();
 		makeTools(toolBar);
 		box.getChildren().add(mainMenu);
 		box.getChildren().add(toolBar);
@@ -36,27 +42,43 @@ public class CreatorControlBar extends ControlBar {
 	}
 
 	private void makeTools(ToolBar toolBar) {
-		Button backButton = makeButton("back", e -> currentScreen.setNextScreen(new StartScreen()));
+		Button backButton = makeButton("back", e -> screen.setNextScreen(new StartScreen()));
 		Button addButton = makeButton("add", e -> workspace.addLevel());
 		toolBar.getItems().addAll(backButton, addButton);
 	}
 
-	private void makeMenuBar(MenuBar mainMenu) {
+	private void createMenuBar(MenuBar mainMenu) {
 		MenuItem load = makeMenuItem("Load Game", null);
 		MenuItem save = makeMenuItem("Save Game", null);
-		Menu file = makeMenu("File", load, save);
+		Menu file = addToMenu(new Menu("File"), load, save);
 
 		MenuItem addLevel = makeMenuItem("Add New Level", e -> workspace.addLevel());
-		Menu edit = makeMenu("Edit", addLevel);
+		Menu edit = addToMenu(new Menu("Edit"), addLevel);
 
-		MenuItem toolbar = new MenuItem("Toolbar");
-		// https://docs.oracle.com/javafx/2/api/javafx/scene/control/CheckMenuItem.html
-		Menu window = makeMenu("Windows", toolbar);
-
-		MenuItem doc = new MenuItem("Documentation");
-		Menu help = makeMenu("Help", doc);
-
-		mainMenu.getMenus().addAll(file, edit, window, help);
+		CheckMenuItem toolbar = new CheckMenuItem("Toolbar");
+		toolbar.selectedProperty().setValue(true);
+		toolbar.selectedProperty().addListener(e -> toggleToolbar(toolbar.selectedProperty().getValue()));
+		Menu hideAndShow = addToMenu(new Menu("Hide/Show"), toolbar);
+		makeComponentCheckMenus(hideAndShow);
+		CheckMenuItem fullscreen = new CheckMenuItem("Full Screen");
+		fullscreen.selectedProperty().bindBidirectional(screen.getFullscreenProperty());
+		Menu window = addToMenu(new Menu("Window"), fullscreen, hideAndShow);
+		makeMenuBar(mainMenu, file, edit, window);
 	}
 
+	private void toggleToolbar(Boolean value) {
+		if (value) {
+			box.getChildren().add(toolBar);
+		} else {
+			box.getChildren().remove(toolBar);
+		}
+	}
+
+	private void makeComponentCheckMenus(Menu window) {
+		for (AbstractDockElement c : screen.getComponents()) {
+			CheckMenuItem item = new CheckMenuItem(myResources.getString(c.getClass().getSimpleName()));
+			item.selectedProperty().bindBidirectional(c.isShowing());
+			addToMenu(window, item);
+		}
+	}
 }

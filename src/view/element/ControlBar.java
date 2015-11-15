@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -43,11 +44,16 @@ public abstract class ControlBar extends AbstractElement {
 		return m;
 	}
 
-	protected Menu makeMenu(String title, MenuItem... ms) {
-		Menu menu = new Menu(title);
+	protected Menu addToMenu(Menu menu, MenuItem... ms) {
 		for (MenuItem m : ms) {
 			menu.getItems().add(m);
 		}
 		return menu;
+	}
+
+	protected void makeMenuBar(MenuBar init, Menu... ms) {
+		for (Menu m : ms) {
+			init.getMenus().add(m);
+		}
 	}
 }

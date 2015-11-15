@@ -29,6 +29,15 @@ public abstract class InteractionTreeNode {
 	public List<InteractionTreeNode> children () {
 		return Collections.unmodifiableList(children);
 	}
+	
+	public InteractionTreeNode getChildWithValue (String value) {
+		for (InteractionTreeNode child : children) {
+			if (child.getValue().equals(value)) {
+				return child;
+			}
+		}
+		return null;
+	}
 
 	public void addChild (InteractionTreeNode n) {
 		children.add(n);

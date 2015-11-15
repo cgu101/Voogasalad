@@ -2,6 +2,8 @@ package view.screen;
 
 import java.util.ArrayList;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -9,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import view.element.AbstractDockElement;
 import view.visual.AbstractVisual;
 
 public abstract class AbstractScreen extends AbstractVisual implements AbstractScreenInterface {
@@ -20,6 +23,8 @@ public abstract class AbstractScreen extends AbstractVisual implements AbstractS
 	protected AbstractScreen nextScreen = null;
 	protected ArrayList<GridPane> myPanes;
 	protected boolean resizable = false;
+	protected BooleanProperty fullscreen = new SimpleBooleanProperty(false);
+	protected ArrayList<AbstractDockElement> components;
 
 	abstract public void run();
 
@@ -83,4 +88,11 @@ public abstract class AbstractScreen extends AbstractVisual implements AbstractS
 		return resizable;
 	}
 
+	public ArrayList<AbstractDockElement> getComponents() {
+		return components;
+	}
+
+	public BooleanProperty getFullscreenProperty() {
+		return fullscreen;
+	}
 }

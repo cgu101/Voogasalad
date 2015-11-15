@@ -1,5 +1,7 @@
 package view.element;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -9,17 +11,19 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
-import view.screen.CreatorScreen;
+import view.screen.AbstractScreenInterface;
 
 public abstract class AbstractDockElement extends AbstractElement {
 
 	protected Stage stage;
 	protected Label title;
-	protected CreatorScreen screen;
+	protected AbstractScreenInterface screen;
 	protected GridPane home;
+	protected BooleanProperty isShowing;
 
-	public AbstractDockElement(GridPane pane, GridPane home, String title, CreatorScreen screen) {
+	public AbstractDockElement(GridPane pane, GridPane home, String title, AbstractScreenInterface screen) {
 		super(pane);
 		this.screen = screen;
 		this.home = home;
@@ -28,15 +32,24 @@ public abstract class AbstractDockElement extends AbstractElement {
 		this.title.setOnMouseDragged(me -> {
 			screen.getScene().setCursor(Cursor.CLOSED_HAND);
 		});
-		dock();
+		isShowing = new SimpleBooleanProperty(false);
+		isShowing.addListener(e -> toggleShowing(isShowing.getValue()));
 	}
 
-	private void handleDrag(MouseEvent me, boolean docked) {
+	private void toggleShowing(boolean input) {
+		if (input) {
+			dock();
+		} else {
+			hide();
+		}
+	}
+
+	private void reposition(MouseEvent me, boolean docked) {
 		screen.getScene().setCursor(Cursor.DEFAULT);
 		Point2D mouseLoc = new Point2D(me.getScreenX(), me.getScreenY());
 		Window window = screen.getScene().getWindow();
 		Rectangle2D windowBounds = new Rectangle2D(window.getX(), window.getY(), window.getWidth(), window.getHeight());
-		if (docked && !windowBounds.contains(mouseLoc)) {
+		if (docked && !screen.getFullscreenProperty().getValue() && !windowBounds.contains(mouseLoc)) {
 			launch(me.getScreenX() - pane.widthProperty().doubleValue() / 2,
 					me.getScreenY() - title.heightProperty().doubleValue());
 		}
@@ -59,9 +72,9 @@ public abstract class AbstractDockElement extends AbstractElement {
 		stage.setY(y);
 		stage.show();
 		stage.setResizable(false);
-		stage.setOnCloseRequest(e -> dock());
+		stage.setOnCloseRequest(e -> isShowing.setValue(false));
 		stage.setAlwaysOnTop(true);
-		this.title.setOnMouseReleased(me -> handleDrag(me, false));
+		this.title.setOnMouseReleased(me -> reposition(me, false));
 	}
 
 	public void dock() {
@@ -69,7 +82,14 @@ public abstract class AbstractDockElement extends AbstractElement {
 			stage.close();
 		}
 		home.add(pane, 0, 0);
-		this.title.setOnMouseReleased(me -> handleDrag(me, true));
+		this.title.setOnMouseReleased(me -> reposition(me, true));
+	}
+
+	private void hide() {
+		if (stage != null) {
+			stage.close();
+		}
+		home.getChildren().clear();
 	}
 
 	public GridPane makeLabelPane() {
@@ -78,4 +98,9 @@ public abstract class AbstractDockElement extends AbstractElement {
 		labelPane.setAlignment(Pos.CENTER);
 		return labelPane;
 	}
+
+	public BooleanProperty isShowing() {
+		return isShowing;
+	}
+
 }
