@@ -29,6 +29,7 @@ public class GameAuthoringBackend {
 		
 		moveTrigger.condition();
 		moveTrigger.condition();
+		
 	}
 	
 	public void createGraphLink (Actor a, List<Actor> b, ATriggerEvent e, List<IAction> act, List<Property> prop, List<Objects> vals){

@@ -6,8 +6,9 @@ import authoring.model.properties.Property;
 public class MoveAction implements IAction{
 
 	@Override
-	public void run(Actor actor) {
-		@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
+	public void run(Actor... actors) {
+		Actor actor = actors[0];
 		Property<Integer> health = (Property<Integer>) actor.getProperties().getComponents().get("health");
 		Integer h = health.getValue();
 		health.setValue(++h);
