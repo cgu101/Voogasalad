@@ -3,6 +3,7 @@ package authoring.model.triggers;
 import java.util.Iterator;
 import java.util.List;
 
+import authoring.model.actions.ActorGroups;
 import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
@@ -25,8 +26,9 @@ public abstract class ATriggerEvent implements ITriggerEvent {
 	protected boolean performActions() {
 		Iterator<IAction> iterator = actions.iterator();
 		while(iterator.hasNext()) {
+			IAction currentAction = iterator.next();
 			for(Actor actor : actors){
-				iterator.next().run(actor);
+				currentAction.run(new ActorGroups(), actor);
 			}
 		}
 		return true;
