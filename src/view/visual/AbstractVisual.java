@@ -2,6 +2,9 @@ package view.visual;
 
 import java.util.ResourceBundle;
 
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
 public class AbstractVisual {
@@ -16,7 +19,6 @@ public class AbstractVisual {
 			Double.parseDouble(visualResources.getString("header")));
 	protected Font textFont = Font.loadFont(getClass().getClassLoader().getResourceAsStream("Ubuntu.ttf"),
 			Double.parseDouble(visualResources.getString("text")));
-	
 
 	protected void findResources() {
 		myResources = ResourceBundle
