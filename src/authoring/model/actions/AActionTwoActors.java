@@ -2,6 +2,10 @@ package authoring.model.actions;
 
 import authoring.model.actors.Actor;
 
+/**
+ * @author Inan
+ *
+ */
 public abstract class AActionTwoActors implements IAction {
 
 	@Override

@@ -2,6 +2,10 @@ package authoring.model.actions;
 
 import authoring.model.actors.Actor;
 
+/**
+ * @author Inan
+ *
+ */
 public abstract class AActionOneActor implements IAction{
 
 	public abstract void run(ActorGroups actorMap, Actor a);
