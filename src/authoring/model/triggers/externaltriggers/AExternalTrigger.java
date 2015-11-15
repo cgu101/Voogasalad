@@ -9,8 +9,4 @@ import authoring.model.triggers.ATriggerEvent;
 
 public abstract class AExternalTrigger extends ATriggerEvent {
 
-	protected AExternalTrigger(Bundle<IAction> actions, List<Actor> actors) {
-		super(actions, actors);
-	}
-
 }
