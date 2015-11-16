@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Map.Entry;
 
 /**
  * Bundle Class
@@ -13,17 +14,24 @@ import java.util.Observable;
  * @param <V>
  */
 
-public class Bundle<V extends Identifiable> extends Observable implements Collectable<V> {
+public class Bundle<V extends Identifiable> extends Observable implements Iterable<V> {
 	private Map<String, V> components;
 
 	public Bundle() {
 		components = new HashMap<String, V>();
 	}
-	@Override
+	
+	@SuppressWarnings("unchecked")
+	public Bundle (Bundle<V> b) {
+		this.components = new HashMap<String, V>();
+		for (Entry<String, V> k : b.getComponents().entrySet()) {
+			this.components.put(k.getKey(), (V) k.getValue().getCopy());
+		}
+	}
+	
 	public int getSize() {
 		return components.size();
 	}
-	@Override
 	public void add(V value) {
 		components.put(value.getUniqueID(), value);
 		update(components);

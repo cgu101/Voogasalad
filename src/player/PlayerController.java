@@ -2,12 +2,12 @@ package player;
 
 import java.util.List;
 
+import authoring.model.game.Game;
 import authoring.model.level.ALevel;
 import authoring.model.level.ILevel;
 import controller.AController;
 import data.IFileManager;
 import data.XMLManager;
-import data.model.GameData;
 import engine.GameEngine;
 import engine.IEngine;
 import exceptions.EngineException;
@@ -33,11 +33,11 @@ public class PlayerController extends AController implements IPlayer {
 		myXMLManager = new XMLManager();
 	}
 
-	private GameData selectGame(String fileName) throws GameFileException {
+	private Game selectGame(String fileName) throws GameFileException {
 		return myXMLManager.loadGame(fileName);
 	}
 
-	private void initializeGame(GameData game) throws EngineException {
+	private void initializeGame(Game game) throws EngineException {
 		myEngine.init(game);
 	}
 

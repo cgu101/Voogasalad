@@ -12,4 +12,8 @@ public abstract class AbstractElement extends AbstractVisual {
 
 	protected abstract void makePane();
 
+	public GridPane getPane() {
+		return pane;
+	}
+
 }

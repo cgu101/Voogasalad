@@ -1,22 +1,5 @@
 package authoring;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import authoring.model.actions.IAction;
-import authoring.model.actions.MoveAction;
-import authoring.model.actors.Actor;
-import authoring.model.actors.Asteroid;
-import authoring.model.bundles.Bundle;
-import authoring.model.properties.Property;
-import authoring.model.triggers.ATriggerEvent;
-import authoring.model.triggers.externaltriggers.AExternalTrigger;
-import authoring.model.triggers.externaltriggers.TrueExternalTrigger;
-import authoring.model.triggers.selftriggers.ASelfTrigger;
-import authoring.model.triggers.selftriggers.TrueTrigger;
-import exceptions.data.GameFileException;
-
 public class GameAuthoringBackend {
 
 //	public static void main (String args[]) throws GameFileException{
