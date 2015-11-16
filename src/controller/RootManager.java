@@ -23,6 +23,7 @@ public class RootManager implements Observer {
 		stage = s;
 		AbstractScreen startScreen = new StartScreen();
 		currentController = new MenuController(stage, startScreen);
+		currentController.addObserver(this);
 		stage.setScene(startScreen.getScene());
 		stage.show();
 		stage.setResizable(startScreen.isResizable());
@@ -41,6 +42,7 @@ public class RootManager implements Observer {
 	public void update(Observable arg0, Object controller) {
 		// TODO Auto-generated method stub
 		currentController = (AController) controller;
+		currentController.addObserver(this);
 	}
 
 }
