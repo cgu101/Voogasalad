@@ -39,11 +39,4 @@ public class Shoot extends AActionOneActor{
 		Actor bullet = new Actor(propBundle, "bullet");
 		return bullet;
 	}
-
-
-
-	@Override
-	public String getUniqueID() {
-		return this.getClass().getName();
-	}
 }

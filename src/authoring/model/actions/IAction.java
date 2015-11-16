@@ -8,7 +8,7 @@ import authoring.model.bundles.Identifiable;
  * @author Inan
  *
  */
-public interface IAction extends Identifiable {
+public interface IAction {
 	public void run(ActorGroups actorGroup, Actor... a);
 
 
