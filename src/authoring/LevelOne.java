@@ -28,10 +28,4 @@ public class LevelOne extends ALevel {
 		return false;
 	}
 
-	@Override
-	public String getUniqueID() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
