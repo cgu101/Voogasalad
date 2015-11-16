@@ -1,8 +1,7 @@
 package data;
 
-import data.model.GameData;
-import data.model.LevelData;
-import data.model.StateData;
+import authoring.model.game.Game;
+import authoring.model.level.Level;
 import exceptions.data.GameFileException;
 
 /*
@@ -12,15 +11,15 @@ import exceptions.data.GameFileException;
  */
 
 public interface IFileManager {
-	public void saveGame(GameData game, String fileName) throws GameFileException;
-	public GameData loadGame(String fileName) throws GameFileException;
+	public void saveGame(Game game, String fileName) throws GameFileException;
+	public Game loadGame(String fileName) throws GameFileException;
 
-	public void saveLevel(LevelData level, String fileName) throws GameFileException;
-	public LevelData loadLevel(String fileName) throws GameFileException;
-	
-	public void saveState(StateData state, String fileName) throws GameFileException;
-	public StateData loadState(String fileName) throws GameFileException;
-	
+	public void saveLevel(Level level, String fileName) throws GameFileException;
+	public Level loadLevel(String fileName) throws GameFileException;
+//	
+//	public void saveState(StateData state, String fileName) throws GameFileException;
+//	public StateData loadState(String fileName) throws GameFileException;
+//	
 	
 	
 }

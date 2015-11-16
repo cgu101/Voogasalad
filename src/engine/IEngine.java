@@ -1,6 +1,6 @@
 package engine;
 
-import data.model.GameData;
+import authoring.model.game.Game;
 import exceptions.EngineException;
 
 /**
@@ -15,9 +15,9 @@ import exceptions.EngineException;
 
 public interface IEngine {
 
-	public void init(GameData gameData) throws EngineException;
+	public void init(Game gameData) throws EngineException;
 	
 	public void reset ();
-	public void load(GameData game);
+	public void load(Game game);
 	public void play() throws EngineException;
 }
