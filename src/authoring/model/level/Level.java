@@ -1,6 +1,5 @@
 package authoring.model.level;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import authoring.controller.constructor.ActorGroupsConstructor;
@@ -10,9 +9,7 @@ import authoring.model.actors.ActorGroups;
 import authoring.model.tree.InteractionTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 
-public class Level implements Serializable {
-	
-	private static final long serialVersionUID = -8759344764077293249L;
+public class Level {
 	
 	private InteractionTreeNode interactionTree;
 	private InteractionTreeNode selfTriggerTree;

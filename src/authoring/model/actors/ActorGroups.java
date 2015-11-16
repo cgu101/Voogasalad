@@ -3,15 +3,15 @@ package authoring.model.actors;
 import java.util.HashMap;
 import java.util.Map;
 
-import authoring.model.bundles.Group;
+import authoring.model.bundles.Bundle;
 
 public class ActorGroups {
-	private Map<String,Group<Actor>> actorMap;
+	private Map<String,Bundle<Actor>> actorMap;
 
 	public ActorGroups () {
-		actorMap = new HashMap<String,Group<Actor>>();
+		actorMap = new HashMap<String,Bundle<Actor>>();
 	}
-	public Group<Actor> getGroup (String groupName) {
+	public Bundle<Actor> getGroup (String groupName) {
 		return actorMap.get(groupName);
 	}
 
@@ -24,11 +24,11 @@ public class ActorGroups {
 	}
 
 	public void removeFromGroup (String groupName, Actor actor) {
-		getGroup(groupName).remove(actor);
+		getGroup(groupName).remove(actor.getUniqueID());
 	}
 
-	public Group<Actor> addGroup (String groupName) {
-		actorMap.put(groupName, new Group<Actor>());
+	public Bundle<Actor> addGroup (String groupName) {
+		actorMap.put(groupName, new Bundle<Actor>());
 		return actorMap.get(groupName);
 	}
 

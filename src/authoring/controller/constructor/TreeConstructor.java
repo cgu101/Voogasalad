@@ -21,16 +21,21 @@ public class TreeConstructor {
 		eventTriggerTree = new InteractionTreeNode();
 		triggerMap = new HashMap<String, ITriggerEvent>();
 		actionMap = new HashMap<String, IAction>();
+		
+		// Load the initial configuration from the default values
+		// Need to add methods to remove triggers and the likes
 	}
 	
 	public void addSelfTrigger(String actor, String trigger, List<String> actions) {
 		addSelfTrigger(trigger);
 		// Build the tree
+		
 	}
 	
 	public void addEventTrigger(String aActor, String bActor, String trigger, List<String> actions) {
 		addEventTrigger(trigger);
 		// Build the tree	
+		
 	}
 	
 	private void addSelfTrigger(String trigger) {
@@ -55,6 +60,5 @@ public class TreeConstructor {
 
 	public Map<String, IAction> getActionMap() {
 		return actionMap;
-	}
-	
+	}	
 }
