@@ -6,12 +6,12 @@ import authoring.model.properties.Property;
 
 public class Actor implements Identifiable, IActor {
 
-	private Bundle<Property<?>> myPropertyBundle = new Bundle<Property<?>>();
+	private Bundle<Property<?>> myPropertyBundle;
+	private String identifier;
 
-	public Actor() {
-		// load properties from config
-		Property<Integer> toAdd1 = new Property<Integer>("health", 10);
-		myPropertyBundle.add(toAdd1);
+	public Actor(Bundle<Property<?>> myPropertyBundle, String identifier) {
+		this.myPropertyBundle = myPropertyBundle;
+		this.identifier = identifier;
 	}
 
 	@Override
@@ -21,16 +21,6 @@ public class Actor implements Identifiable, IActor {
 
 	@Override
 	public String getUniqueID() {
-		return this.getClass().getName();
-	}
-
-	@Override
-	public void addProperty(Property<?> property) {
-		myPropertyBundle.add(property);
-	}
-
-	@Override
-	public void removeProperty(String propertyName) {
-		myPropertyBundle.remove(propertyName);
+		return identifier;
 	}
 }

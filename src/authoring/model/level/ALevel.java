@@ -1,4 +1,4 @@
-package authoring;
+package authoring.model.level;
 
 import authoring.model.bundles.Identifiable;
 import engine.runnable.IRunnable;
