@@ -52,7 +52,34 @@ public class Workspace extends AbstractElement {
 		manager.getSelectionModel().select(newID);
 		return newLevelTab;
 	}
-
+	
+	public void moveLevelLeft(Boolean left) {
+		if (levels.size() == 0) return;
+		int currID = Integer.parseInt(currentLevel.getTab().getId());
+		
+		int switchID;
+		if (left) {
+			switchID = currID - 1;
+		} else {
+			switchID = currID + 1;
+		}
+		
+		if (switchID >= levels.size() || switchID < 0) return;
+		
+		LevelMap switchLevel = levels.get(switchID);
+		
+		currentLevel.getTab().setId(Integer.toString(switchID));
+		switchLevel.getTab().setId(Integer.toString(currID));
+				
+		manager.getTabs().remove(switchLevel.getTab());
+		manager.getTabs().add(currID, switchLevel.getTab());
+		
+		levels.remove(switchLevel);		
+		levels.add(currID, switchLevel);
+		
+		manager.getSelectionModel().select(switchID);
+	}
+		
 	private void removeLevel(Tab tab) {
 		int Id = Integer.parseInt(tab.getId());
 		levels.remove(Id);
