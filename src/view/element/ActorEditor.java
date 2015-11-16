@@ -55,17 +55,18 @@ public class ActorEditor extends AbstractDockElement {
 		File selectedFile = fileChooser.showOpenDialog(new Stage());
 		if (selectedFile != null) {
 			item.setImage(new Image(selectedFile.toURI().toString()));
-			refreshLists();
+			refresh();
 		}
 		System.out.println(item.getName().getValue());
 	}
 
-	public void refreshLists() {
+	public void refresh() {
 		if (browser.getLists() != null) {
 			for (ListView<ActorFactory> list : browser.getLists()) {
 				list.refresh();
 			}
 		}
+		load();
 	}
 
 	private void load() {
@@ -113,7 +114,7 @@ public class ActorEditor extends AbstractDockElement {
 		});
 		name.setOnAction(e -> {
 			item.getName().setValue(name.getText());
-			refreshLists();
+			refresh();
 		});
 		return name;
 	}
