@@ -16,7 +16,7 @@ import player.InputManager;
 public class InteractionExecutor {
 	private InteractionTreeNode externalTriggerTree;
 	private InteractionTreeNode selfTriggerTree;
-	private ActorGroups actorMap;
+	private ActorGroups currentActorMap;
 	private ActorGroups nextActorMap;
 	private InputManager inputMap;
 	private Map<String,ITriggerEvent> triggerMap;
@@ -31,7 +31,7 @@ public class InteractionExecutor {
 			Map<String,ITriggerEvent> triggerMap, Map<String,IAction> actionMap) {
 		this.selfTriggerTree = selfTriggerTree;
 		this.externalTriggerTree = externalTriggerTree;
-		this.actorMap = actorMap;
+		this.currentActorMap = actorMap;
 		this.inputMap = inputMap;
 		this.triggerMap = triggerMap;
 		this.actionMap = actionMap;
@@ -39,18 +39,20 @@ public class InteractionExecutor {
 		this.nextActorMap = new ActorGroups(actorMap);
 	}
 	public void run () {
+		nextActorMap = new ActorGroups(currentActorMap);
 		runSelfTriggers();
 		runExternalTriggers();
+		currentActorMap = nextActorMap;
 	}
 	
 	private void runSelfTriggers () {
 		for (InteractionTreeNode actorA : selfTriggerTree.children()) {
 			List<InteractionTreeNode> triggerNodes = actorA.children();
-			for (Actor uniqueA : actorMap.getGroup(actorA.getValue())){
+			for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
 				for (InteractionTreeNode trigger : triggerNodes) {
 					List<InteractionTreeNode> actionNodes = trigger.children();
 					ITriggerEvent selfTriggerEvent = triggerMap.get(trigger.getValue());
-					selfTriggerEvent.condition(parseActions(actionNodes), actorMap, inputMap, uniqueA);
+					selfTriggerEvent.condition(parseActions(actionNodes), nextActorMap, inputMap, uniqueA);
 				}
 			}
 		}	
@@ -60,12 +62,12 @@ public class InteractionExecutor {
 			List<InteractionTreeNode> actorBNodes = actorA.children();
 			for (InteractionTreeNode actorB : actorBNodes) {
 				List<InteractionTreeNode> triggerNodes = actorB.children();
-				for (Actor uniqueA : actorMap.getGroup(actorA.getValue())){
-					for (Actor uniqueB : actorMap.getGroup(actorB.getValue())) {
+				for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
+					for (Actor uniqueB : currentActorMap.getGroup(actorB.getValue())) {
 						for (InteractionTreeNode trigger : triggerNodes) {
 							List<InteractionTreeNode> actionNodes = trigger.children();
 							ITriggerEvent triggerEvent = triggerMap.get(trigger.getValue());
-							triggerEvent.condition(parseActions(actionNodes), actorMap, inputMap, uniqueA, uniqueB);
+							triggerEvent.condition(parseActions(actionNodes), nextActorMap, inputMap, uniqueA, uniqueB);
 						}
 					}
 				}

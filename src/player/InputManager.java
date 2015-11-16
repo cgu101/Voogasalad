@@ -1,4 +1,4 @@
-package player.IO;
+package player;
 
 import java.util.Arrays;
 import java.util.HashMap;
