@@ -19,6 +19,10 @@ public class Bundle<V extends Identifiable> extends Observable implements Collec
 	public Bundle() {
 		components = new HashMap<String, V>();
 	}
+	public Bundle(Map<String, V> components) {
+		this.components = components;
+	}
+	
 	@Override
 	public int getSize() {
 		return components.size();

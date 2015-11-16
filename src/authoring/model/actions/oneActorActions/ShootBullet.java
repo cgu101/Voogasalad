@@ -1,7 +1,6 @@
 package authoring.model.actions.oneActorActions;
 
 import authoring.model.actions.AActionOneActor;
-import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
@@ -11,7 +10,7 @@ import authoring.model.properties.Property;
  * @author Inan
  *
  */
-public class Shoot extends AActionOneActor{
+public class ShootBullet extends AActionOneActor{
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -39,8 +38,6 @@ public class Shoot extends AActionOneActor{
 		Actor bullet = new Actor(propBundle, "bullet");
 		return bullet;
 	}
-
-
 
 	@Override
 	public String getUniqueID() {

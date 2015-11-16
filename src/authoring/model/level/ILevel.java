@@ -2,7 +2,6 @@ package authoring.model.level;
 
 import authoring.model.actors.IActor;
 import authoring.model.triggers.ITriggerEvent;
-import data.UpdateObject;
 
 public interface ILevel {
 	
