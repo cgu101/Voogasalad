@@ -13,17 +13,17 @@ import java.util.Observable;
  * @param <V>
  */
 
-public class Bundle<V extends Identifiable> extends Observable implements Iterable<V> {
+public class Bundle<V extends Identifiable> extends Observable implements Collectable<V> {
 	private Map<String, V> components;
 
 	public Bundle() {
 		components = new HashMap<String, V>();
 	}
-
+	@Override
 	public int getSize() {
 		return components.size();
 	}
-
+	@Override
 	public void add(V value) {
 		components.put(value.getUniqueID(), value);
 		update(components);
@@ -33,7 +33,7 @@ public class Bundle<V extends Identifiable> extends Observable implements Iterab
 		components.putAll(otherComponents);
 		update(components);
 	}
-
+	
 	public void remove(String componentID) {
 		components.remove(componentID);
 		update(components);
