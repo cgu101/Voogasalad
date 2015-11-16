@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -16,10 +17,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 
 public class ActorCell extends ListCell<ActorFactory> {
 
-	private List<ListView<ActorFactory>> lists;
-
-	public ActorCell(List<ListView<ActorFactory>> lists) {
-		this.lists = lists;
+	public ActorCell() {
 	}
 
 	@Override
@@ -32,20 +30,9 @@ public class ActorCell extends ListCell<ActorFactory> {
 		} else if (item != null) {
 			box.setAlignment(Pos.CENTER_LEFT);
 			box.getChildren().add(makeImage(item));
-			box.getChildren().add(makeName(item));
+			box.getChildren().add(new Label(item.getName().getValue()));
 			setGraphic(box);
 		}
-	}
-
-	private TextField makeName(ActorFactory item) {
-		TextField name = new TextField(item.getName().getValue());
-		item.getName().addListener(e -> {
-			name.setText(item.getName().getValue());
-		});
-		name.setOnAction(e -> {
-			item.getName().setValue(name.getText());
-		});
-		return name;
 	}
 
 	private ImageView makeImage(ActorFactory item) {
@@ -54,24 +41,6 @@ public class ActorCell extends ListCell<ActorFactory> {
 		output.setPreserveRatio(true);
 		output.setSmooth(true);
 		output.setCache(true);
-		output.setOnMouseClicked(e -> showSelector(item));
 		return output;
-	}
-
-	private void showSelector(ActorFactory item) {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Upload Image:");
-		fileChooser.getExtensionFilters()
-				.addAll(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
-		File selectedFile = fileChooser.showOpenDialog(new Stage());
-		if (selectedFile != null) {
-			item.setImage(new Image(selectedFile.toURI().toString()));
-			if (lists != null) {
-				for (ListView<ActorFactory> list : lists) {
-					list.refresh();
-				}
-			}
-		}
-		System.out.println(item.getName().getValue());
 	}
 }

@@ -5,6 +5,7 @@ import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -17,7 +18,7 @@ import view.element.Workspace;
 import view.screen.AbstractScreen;
 import view.screen.StartScreen;
 
-public class CreatorControlBar extends ControlBar {
+public class ControlBarCreator extends ControlBar {
 
 	private AbstractScreen screen;
 	private Workspace workspace;
@@ -25,7 +26,7 @@ public class CreatorControlBar extends ControlBar {
 	private ToolBar toolBar;
 	private VBox box;
 
-	public CreatorControlBar(GridPane pane, AbstractScreen screen, Workspace workspace) {
+	public ControlBarCreator(GridPane pane, AbstractScreen screen, Workspace workspace) {
 		super(pane);
 		this.screen = screen;
 		this.workspace = workspace;
@@ -50,7 +51,9 @@ public class CreatorControlBar extends ControlBar {
 		Button addButton = makeButton("add", e -> workspace.addLevel());
 		Button leftButton = makeButton("left", e -> workspace.moveLevelLeft(true));
 		Button rightButton = makeButton("right", e -> workspace.moveLevelLeft(false));
-		toolBar.getItems().addAll(backButton, leftButton, rightButton, addButton);
+		Button newActor = makeButton("new", e -> addActor());
+		toolBar.getItems().addAll(backButton, new Separator(), leftButton, rightButton, addButton, new Separator(),
+				newActor);
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
@@ -77,6 +80,13 @@ public class CreatorControlBar extends ControlBar {
 		makeMenuBar(mainMenu, file, edit, window);
 	}
 
+	private void addActor() {
+		findActorBrowser().addNewActor();
+		if (!findActorBrowser().getShowingProperty().getValue()){
+			findActorBrowser().getShowingProperty().setValue(true);
+		}
+	}
+
 	private void toggleToolbar(Boolean value) {
 		if (value) {
 			box.getChildren().add(toolBar);
@@ -88,7 +98,7 @@ public class CreatorControlBar extends ControlBar {
 	private void makeComponentCheckMenus(Menu window) {
 		for (AbstractDockElement c : screen.getComponents()) {
 			CheckMenuItem item = new CheckMenuItem(myResources.getString(c.getClass().getSimpleName()));
-			item.selectedProperty().bindBidirectional(c.isShowing());
+			item.selectedProperty().bindBidirectional(c.getShowingProperty());
 			addToMenu(window, item);
 		}
 	}

@@ -19,10 +19,5 @@ public abstract class ATriggerEvent implements ITriggerEvent {
 		}
 		return true;
 	}
-	
-	@Override
-	public String getUniqueID() {
-		return getClass().getName();
-	}
 
 }
