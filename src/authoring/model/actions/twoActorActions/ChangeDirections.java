@@ -1,8 +1,8 @@
 package authoring.model.actions.twoActorActions;
 
 import authoring.model.actions.AActionTwoActors;
-import authoring.model.actions.ActorGroups;
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
 
 public class ChangeDirections extends AActionTwoActors{
