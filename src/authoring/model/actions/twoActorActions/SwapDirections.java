@@ -21,10 +21,5 @@ public class SwapDirections extends AActionTwoActors{
 		a_angleP.setValue(b_angleP.getValue());
 		b_angleP.setValue(temp);
 	}
-	
-	@Override
-	public String getUniqueID() {
-		return this.getClass().getName();
-	}
 
 }

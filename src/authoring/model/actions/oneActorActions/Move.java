@@ -30,9 +30,4 @@ public class Move extends AActionOneActor{
 
 		System.out.println(this.getClass().getName()+ " Moved Actor!");
 	}
-
-	@Override
-	public String getUniqueID() {
-		return this.getClass().getName();
-	}
 }
