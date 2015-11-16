@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import authoring.model.bundles.Bundle;
-import authoring.model.properties.Property;
-
 public class AuthoringConfigManager {
 
 	private Map<String, ResourceBundle> actorMap;
@@ -24,22 +21,23 @@ public class AuthoringConfigManager {
 	private static final String REG_EX = ",";
 	private static final String SELF_TRIGGER = "selfTrigger";
 	private static final String EVENT_TRIGGER = "eventTrigger";
+	private static final String TYPE = "type";
 	
-	public AuthoringConfigManager() {
-		actorMap = new HashMap<String, ResourceBundle>();
-		propertyMap = new HashMap<String, ResourceBundle>();
+	private static final AuthoringConfigManager myManager = new AuthoringConfigManager();
+	
+	private AuthoringConfigManager() {
 		load();
 	}
 	
 	private void load() {
+		actorMap = new HashMap<String, ResourceBundle>();
+		propertyMap = new HashMap<String, ResourceBundle>();
 		ResourceBundle myConfiguration = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, CONFIGURATION));
 		loadMap(actorMap, myConfiguration.getString(ACTORS).split(REG_EX), ACTORS);
 		loadMap(propertyMap, myConfiguration.getString(PROPERTIES).split(REG_EX), PROPERTIES);
-
 	}
 	
-	private void loadMap(Map<String, ResourceBundle> map, String[] names, String type) {
-		
+	private void loadMap(Map<String, ResourceBundle> map, String[] names, String type) {		
 		for(String s: names) {
 			ResourceBundle toAdd = ResourceBundle.getBundle(
 					String.format(CONFIGURATION_DIR, 
@@ -47,6 +45,14 @@ public class AuthoringConfigManager {
 					);
 			map.put(s, toAdd);
 		}	
+	}
+	
+	public static AuthoringConfigManager getInstance() {
+		return myManager;
+	}
+	
+	public void refresh() {
+		load();
 	}
 	
 	public List<String> getActorList() {
@@ -67,6 +73,10 @@ public class AuthoringConfigManager {
 	
 	public List<String> getEventTriggerList(String actor) {
 		return getTriggerList(actor, EVENT_TRIGGER);
+	}
+	
+	public String getPropertyType(String property) {
+		return propertyMap.get(property).getString(TYPE);
 	}
 	
 	private List<String> getTriggerList(String actor, String type) {

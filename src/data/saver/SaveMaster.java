@@ -29,7 +29,7 @@ public class SaveMaster implements IFileManager{
 		ILevel level = new LevelOne();
 		level.addActor(s);
 //		List<LevelOne> levelList = new ArrayList<LevelOne>();
-		Bundle<ALevel> levelBundle = null;
+//		Bundle<ALevel> levelBundle = null;
 //		levelList.add(level);
 //		GameData game = new GameData(new StateData(), new LevelData(levelList));
 		GameData game = new GameData(new StateData(), new LevelData(null));

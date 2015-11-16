@@ -3,18 +3,25 @@ package player;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
+
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class InputManager {
 	private Map<KeyCode,Boolean> inputMap;
 	
-	public InputManager () {
+	public InputManager (String fileName) {
 		inputMap = new HashMap<KeyCode,Boolean>();
-		populateMap(inputMap);
+		populateMap(inputMap, fileName);
 	}
-	private void populateMap(Map<KeyCode,Boolean> map) {
-		Arrays.asList(KeyCode.values()).forEach(k -> {map.put(k, false);});
+	private void populateMap(Map<KeyCode,Boolean> map, String fileName) {
+		try {
+			ResourceBundle resources = ResourceBundle.getBundle(fileName);
+			resources.keySet().forEach(k -> {map.put(KeyCode.getKeyCode(k), false);});
+		} catch (Exception e) {
+			Arrays.asList(KeyCode.values()).forEach(k -> {map.put(k, false);});
+		}	
 	}
 	public void keyPressed(KeyEvent ke) {
 		KeyCode code = ke.getCode();

@@ -8,7 +8,7 @@ import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Identifiable;
 import player.InputManager;
 
-public interface ITriggerEvent extends Identifiable {
+public interface ITriggerEvent {
 
 	public abstract boolean condition(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager, Actor... actors);
 
