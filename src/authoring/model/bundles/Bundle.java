@@ -14,7 +14,7 @@ import java.util.Map.Entry;
  * @param <V>
  */
 
-public class Bundle<V extends Identifiable> extends Observable implements Collectable<V> {
+public class Bundle<V extends Identifiable> extends Observable implements Iterable<V> {
 	private Map<String, V> components;
 
 	public Bundle() {
@@ -29,11 +29,9 @@ public class Bundle<V extends Identifiable> extends Observable implements Collec
 		}
 	}
 	
-	@Override
 	public int getSize() {
 		return components.size();
 	}
-	@Override
 	public void add(V value) {
 		components.put(value.getUniqueID(), value);
 		update(components);
