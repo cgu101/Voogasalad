@@ -53,48 +53,33 @@ public class Workspace extends AbstractElement {
 		return newLevelTab;
 	}
 	
-	public void moveLevelRight() {
+	public void moveLevelLeft(Boolean left) {
 		if (levels.size() == 0) return;
 		int currID = Integer.parseInt(currentLevel.getTab().getId());
-		int switchID = currID + 1;
-		if (switchID >= levels.size()) return;
 		
-//		LevelMap switchLevel = levels.get(switchID);
-//		
-//		manager.getTabs().remove(switchID); // move higher one first
-//		manager.getTabs().remove(currID);
-//		levels.remove(switchID);
-//		levels.remove(currID);
-//		
-//		manager.getTabs().add(currID, switchLevel.getTab());
-//		levels.add(currID, switchLevel);
-//		manager.getTabs().add(switchID, currentLevel.getTab());
-//		levels.add(switchID, currentLevel);
-//		
-//		manager.getSelectionModel().select(switchID);
-	}
-	
-	public void moveLevelLeft() {
-		if (levels.size() == 0) return;
-		int currID = Integer.parseInt(currentLevel.getTab().getId());
-		int switchID = currID - 1;
-		if (switchID <= 0) return;
+		int switchID;
+		if (left) {
+			switchID = currID - 1;
+		} else {
+			switchID = currID + 1;
+		}
+		
+		if (switchID >= levels.size() || switchID < 0) return;
 		
 		LevelMap switchLevel = levels.get(switchID);
 		
-		manager.getTabs().remove(currID);
-		manager.getTabs().remove(switchID); 
-		levels.remove(currID);
-		levels.remove(switchID);
-		
-		manager.getTabs().add(switchID, currentLevel.getTab());
-		levels.add(switchID, currentLevel);
+		currentLevel.getTab().setId(Integer.toString(switchID));
+		switchLevel.getTab().setId(Integer.toString(currID));
+				
+		manager.getTabs().remove(switchLevel.getTab());
 		manager.getTabs().add(currID, switchLevel.getTab());
+		
+		levels.remove(switchLevel);		
 		levels.add(currID, switchLevel);
 		
 		manager.getSelectionModel().select(switchID);
 	}
-	
+		
 	private void removeLevel(Tab tab) {
 		int Id = Integer.parseInt(tab.getId());
 		levels.remove(Id);

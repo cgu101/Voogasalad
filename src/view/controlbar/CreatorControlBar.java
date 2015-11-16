@@ -45,8 +45,8 @@ public class CreatorControlBar extends ControlBar {
 	private void makeTools(ToolBar toolBar) {
 		Button backButton = makeButton("back", e -> screen.setNextScreen(new StartScreen()));
 		Button addButton = makeButton("add", e -> workspace.addLevel());
-		Button leftButton = makeButton("left", e -> workspace.moveLevelLeft());
-		Button rightButton = makeButton("right", e -> workspace.moveLevelRight());
+		Button leftButton = makeButton("left", e -> workspace.moveLevelLeft(true));
+		Button rightButton = makeButton("right", e -> workspace.moveLevelLeft(false));
 		toolBar.getItems().addAll(backButton, leftButton, rightButton, addButton);
 	}
 
