@@ -6,6 +6,9 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToolBar;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import view.element.AbstractDockElement;
@@ -55,8 +58,8 @@ public class CreatorControlBar extends ControlBar {
 		MenuItem save = makeMenuItem(myResources.getString("save"), null);
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save);
 
-		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> workspace.addLevel());
-		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor());
+		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> workspace.addLevel(), KeyCode.T, KeyCombination.CONTROL_DOWN);
+		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(), KeyCode.N, KeyCombination.CONTROL_DOWN);
 		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addLevel, addActor);
 
 		CheckMenuItem toolbar = new CheckMenuItem(myResources.getString("toolbar"));
@@ -65,6 +68,7 @@ public class CreatorControlBar extends ControlBar {
 		Menu hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar);
 		makeComponentCheckMenus(hideAndShow);
 		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
+		fullscreen.setAccelerator(new KeyCodeCombination(KeyCode.F6));
 		fullscreen.selectedProperty().bindBidirectional(screen.getFullscreenProperty());
 
 		CheckMenuItem doubleLists = new CheckMenuItem(myResources.getString("dualactors"));
