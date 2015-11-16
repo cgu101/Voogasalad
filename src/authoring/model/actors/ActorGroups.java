@@ -14,11 +14,22 @@ public class ActorGroups {
 	public Group<Actor> getGroup (String groupName) {
 		return actorMap.get(groupName);
 	}
+
 	public void addToGroup (String groupName, Actor actor) {
-		getGroup(groupName).add(actor);
+		if(actorMap.containsKey(groupName)){
+			getGroup(groupName).add(actor);
+		}else{
+			addGroup(groupName).add(actor);
+		}
 	}
+
 	public void removeFromGroup (String groupName, Actor actor) {
 		getGroup(groupName).remove(actor);
 	}
-	
+
+	public Group<Actor> addGroup (String groupName) {
+		actorMap.put(groupName, new Group<Actor>());
+		return actorMap.get(groupName);
+	}
+
 }
