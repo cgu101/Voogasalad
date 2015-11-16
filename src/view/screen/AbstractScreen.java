@@ -50,13 +50,6 @@ public abstract class AbstractScreen extends AbstractVisual implements AbstractS
 		return title;
 	}
 
-	protected void showError(String title, String message) {
-		Alert uhoh = new Alert(AlertType.ERROR);
-		uhoh.setTitle(title);
-		uhoh.setContentText(message);
-		uhoh.show();
-	}
-
 	protected void center(GridPane r) {
 		r.setAlignment(Pos.CENTER);
 		for (Node n : r.getChildren()) {
