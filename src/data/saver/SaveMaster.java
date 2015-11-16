@@ -3,10 +3,10 @@ package data.saver;
 import java.util.ArrayList;
 import java.util.List;
 
-import authoring.ALevel;
-import authoring.ILevel;
 import authoring.LevelOne;
 import authoring.model.bundles.Bundle;
+import authoring.model.level.ALevel;
+import authoring.model.level.ILevel;
 import data.IFileManager;
 import data.examples.Spaceship;
 import data.model.GameData;
