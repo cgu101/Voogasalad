@@ -2,8 +2,8 @@ package player;
 
 import java.util.List;
 
-import authoring.ALevel;
-import authoring.ILevel;
+import authoring.model.level.ALevel;
+import authoring.model.level.ILevel;
 import controller.AController;
 import data.IFileManager;
 import data.XMLManager;

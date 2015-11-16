@@ -1,10 +1,10 @@
-package authoring.model;
+package authoring.model.tree;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class InteractionTreeNode {
+public class InteractionTreeNode {
 	
 	private List<InteractionTreeNode> children;
 	private String value;
