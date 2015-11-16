@@ -2,17 +2,19 @@ package view.screen;
 
 import java.util.ArrayList;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import view.controlbar.CreatorControlBar;
+import view.controlbar.ControlBarCreator;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
+import view.element.ActorEditor;
 import view.element.Workspace;
 
 public class CreatorScreen extends AbstractScreen {
 
-	private CreatorControlBar t;
+	private ControlBarCreator t;
 	private Workspace w;
 	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
@@ -50,14 +52,19 @@ public class CreatorScreen extends AbstractScreen {
 		}
 		GridPane rightPane = new GridPane();
 		rightPane.add(homePanes.get(0), 0, 0);
+		rightPane.add(homePanes.get(1), 0, 1);
+		rightPane.setAlignment(Pos.CENTER);
 		r.setRight(rightPane);
 		GridPane bottomPane = new GridPane();
-		bottomPane.add(homePanes.get(1), 0, 0);
-		bottomPane.add(homePanes.get(2), 1, 0);
+		bottomPane.add(homePanes.get(2), 0, 0);
 		r.setBottom(bottomPane);
 		components = new ArrayList<AbstractDockElement>();
-		components
-				.add(new ActorBrowser(dockPanes.get(0), homePanes.get(0), myResources.getString("browsername"), this));
-		t = new CreatorControlBar(myPanes.get(0), this, w);
+		ActorBrowser browser = new ActorBrowser(dockPanes.get(0), homePanes.get(0),
+				myResources.getString("browsername"), this);
+		components.add(browser);
+		ActorEditor editor = new ActorEditor(dockPanes.get(1), homePanes.get(1), myResources.getString("editorname"),
+				this, browser);
+		components.add(editor);
+		t = new ControlBarCreator(myPanes.get(0), this, w);
 	}
 }

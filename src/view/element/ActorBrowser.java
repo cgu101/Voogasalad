@@ -32,12 +32,12 @@ public class ActorBrowser extends AbstractDockElement {
 
 	@Override
 	protected void makePane() {
-		actors = FXCollections.observableArrayList(new ArrayList<ActorFactory>());
-		rightlist = new ListView<ActorFactory>(actors);
-		leftlist = new ListView<ActorFactory>(actors);
 		GridPane labelPane = makeLabelPane();
 		pane.add(labelPane, 0, 0);
 		GridPane.setColumnSpan(labelPane, 2);
+		actors = FXCollections.observableArrayList(new ArrayList<ActorFactory>());
+		rightlist = new ListView<ActorFactory>(actors);
+		leftlist = new ListView<ActorFactory>(actors);
 		pane.add(leftlist, 0, 1);
 		pane.add(rightlist, 1, 1);
 		pane.setAlignment(Pos.TOP_CENTER);
@@ -56,8 +56,7 @@ public class ActorBrowser extends AbstractDockElement {
 		list.setCellFactory(new Callback<ListView<ActorFactory>, ListCell<ActorFactory>>() {
 			@Override
 			public ListCell<ActorFactory> call(ListView<ActorFactory> list) {
-				ActorCell output = new ActorCell(lists);
-				return output;
+				return new ActorCell();
 			}
 		});
 	}
@@ -77,6 +76,10 @@ public class ActorBrowser extends AbstractDockElement {
 			rightlist.getSelectionModel().clearSelection();
 			pane.getChildren().remove(rightlist);
 		}
+	}
+
+	public ArrayList<ListView<ActorFactory>> getLists() {
+		return lists;
 	}
 
 }
