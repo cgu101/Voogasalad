@@ -9,6 +9,7 @@ import player.InputManager;
 public class GameEngine implements IEngine {
 
 	public RunnableGame runnableGame;
+	public Game game;
 	
 	public GameEngine () {
 		this(null);
@@ -41,5 +42,11 @@ public class GameEngine implements IEngine {
 	@Override
 	public void play () throws EngineException {
 		runnableGame.run();
+	}
+
+	@Override
+	public void getActors() {
+		
+		
 	}
 }

@@ -68,7 +68,7 @@ public class PlayerController extends AController implements IPlayer {
 	public void run(){
 		try {
 			myEngine.play();
-			myEngine.getActorMap();
+			myEngine.getActors();
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

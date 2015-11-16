@@ -20,4 +20,5 @@ public interface IEngine {
 	public void reset ();
 	public void load(Game game);
 	public void play() throws EngineException;
+	public void getActors();
 }
