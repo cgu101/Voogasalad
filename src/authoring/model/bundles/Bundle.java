@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Map.Entry;
 
 /**
  * Bundle Class
@@ -19,8 +20,13 @@ public class Bundle<V extends Identifiable> extends Observable implements Collec
 	public Bundle() {
 		components = new HashMap<String, V>();
 	}
-	public Bundle(Map<String, V> components) {
-		this.components = components;
+	
+	@SuppressWarnings("unchecked")
+	public Bundle (Bundle<V> b) {
+		this.components = new HashMap<String, V>();
+		for (Entry<String, V> k : b.getComponents().entrySet()) {
+			this.components.put(k.getKey(), (V) k.getValue().getCopy());
+		}
 	}
 	
 	@Override

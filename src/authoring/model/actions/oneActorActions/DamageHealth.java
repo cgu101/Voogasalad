@@ -18,9 +18,4 @@ public class DamageHealth extends AActionOneActor{
 		Integer h = health.getValue();
 		health.setValue(--h);
 	}
-
-	@Override
-	public String getUniqueID() {
-		return this.getClass().getName();
-	}
 }

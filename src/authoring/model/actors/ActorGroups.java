@@ -2,6 +2,7 @@ package authoring.model.actors;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import authoring.model.bundles.Bundle;
 
@@ -11,6 +12,14 @@ public class ActorGroups {
 	public ActorGroups () {
 		actorMap = new HashMap<String,Bundle<Actor>>();
 	}
+	
+	public ActorGroups (ActorGroups oldActorMap) {
+		this.actorMap = new HashMap<String, Bundle<Actor>>();
+		for (Entry<String, Bundle<Actor>> k : oldActorMap.getMap().entrySet()) {
+			this.actorMap.put(k.getKey(), new Bundle<Actor>(k.getValue()));
+		}
+	}
+	
 	public Bundle<Actor> getGroup (String groupName) {
 		return actorMap.get(groupName);
 	}
@@ -25,6 +34,10 @@ public class ActorGroups {
 
 	public void removeFromGroup (String groupName, Actor actor) {
 		getGroup(groupName).remove(actor.getUniqueID());
+	}
+	
+	private Map<String,Bundle<Actor>> getMap () {
+		return actorMap;
 	}
 
 	public Bundle<Actor> addGroup (String groupName) {

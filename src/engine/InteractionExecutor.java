@@ -17,6 +17,7 @@ public class InteractionExecutor {
 	private InteractionTreeNode externalTriggerTree;
 	private InteractionTreeNode selfTriggerTree;
 	private ActorGroups actorMap;
+	private ActorGroups nextActorMap;
 	private InputManager inputMap;
 	private Map<String,ITriggerEvent> triggerMap;
 	private Map<String,IAction> actionMap;
@@ -34,6 +35,8 @@ public class InteractionExecutor {
 		this.inputMap = inputMap;
 		this.triggerMap = triggerMap;
 		this.actionMap = actionMap;
+		
+		this.nextActorMap = new ActorGroups(actorMap);
 	}
 	public void run () {
 		runSelfTriggers();
