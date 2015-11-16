@@ -23,6 +23,13 @@ public class InputManager {
 	public void keyReleased(KeyEvent ke) {
 		KeyCode code = ke.getCode();
 		inputMap.put(code, false);
-		
 	}
+	
+	public boolean getValue (String keyName) {
+		return inputMap.get(KeyCode.getKeyCode(keyName));
+	}
+	public boolean getValue (KeyCode keyCode) {
+		return inputMap.get(keyCode);
+	}
+	
 }
