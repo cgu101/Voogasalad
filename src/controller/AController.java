@@ -52,8 +52,8 @@ public abstract class AController extends Observable {
 		mainStage.setFullScreen(value);
 		if (value) {
 			for (AbstractDockElement c : currentScreen.getComponents()) {
-				c.isShowing().setValue(false);
-				c.isShowing().setValue(true);
+				c.getShowingProperty().setValue(false);
+				c.getShowingProperty().setValue(true);
 			}
 		}
 	}
