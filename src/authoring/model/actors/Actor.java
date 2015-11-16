@@ -13,6 +13,11 @@ public class Actor implements Identifiable, IActor {
 		this.myPropertyBundle = myPropertyBundle;
 		this.identifier = identifier;
 	}
+	
+	public Actor (Actor a) {
+		this.myPropertyBundle = new Bundle<Property<?>>(a.getProperties());
+		this.identifier = a.getUniqueID();
+	}
 
 	@Override
 	public Bundle<Property<?>> getProperties() {
@@ -22,5 +27,10 @@ public class Actor implements Identifiable, IActor {
 	@Override
 	public String getUniqueID() {
 		return identifier;
+	}
+
+	@Override
+	public Identifiable getCopy() {
+		return null;
 	}
 }
