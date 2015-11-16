@@ -1,6 +1,7 @@
 package authoring;
 
 import authoring.model.actors.IActor;
+import authoring.model.level.ALevel;
 import authoring.model.triggers.ITriggerEvent;
 
 public class LevelOne extends ALevel {

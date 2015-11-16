@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import authoring.model.InteractionTreeNode;
 import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
+import authoring.model.tree.InteractionTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 import player.InputManager;
 

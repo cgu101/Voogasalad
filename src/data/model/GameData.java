@@ -2,8 +2,8 @@ package data.model;
 
 import java.util.List;
 
-import authoring.ALevel;
 import authoring.model.bundles.Bundle;
+import authoring.model.level.ALevel;
 
 public class GameData {
 	private StateData stateData;
