@@ -11,6 +11,12 @@ public class ActorGroups {
 	public ActorGroups () {
 		actorMap = new HashMap<String,Group<Actor>>();
 	}
+	
+	public ActorGroups (ActorGroups actorMap) {
+		this.actorMap = new HashMap<String, Group<Actor>>();
+		
+	}
+	
 	public Group<Actor> getGroup (String groupName) {
 		return actorMap.get(groupName);
 	}
@@ -21,4 +27,7 @@ public class ActorGroups {
 		getGroup(groupName).remove(actor);
 	}
 	
+	private Map<String,Group<Actor>> getMap () {
+		return actorMap;
+	}
 }
