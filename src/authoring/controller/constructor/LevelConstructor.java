@@ -7,7 +7,7 @@ public class LevelConstructor {
 	private ActorGroupsConstructor actorConstructor;
 	private TreeConstructor treeConstructor;
 	
-	public LevelConstructor() {
+	LevelConstructor() {
 		actorConstructor = new ActorGroupsConstructor();
 		treeConstructor = new TreeConstructor();
 	}
@@ -20,8 +20,8 @@ public class LevelConstructor {
 		return treeConstructor;
 	}
 	
-	public Level buildLevel() {
-		Level ret = new Level();
+	public Level buildLevel(String level) {
+		Level ret = new Level(level);
 		ret.setActorGroupsValues(actorConstructor);
 		ret.setTreeConstructorValues(treeConstructor);
 		return ret;
