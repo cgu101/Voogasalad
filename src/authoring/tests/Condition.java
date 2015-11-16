@@ -10,15 +10,15 @@ public class Condition<S, T> implements ICondition {
 	/**
 	 * Need a functional interface that is a supplier of boolean-valued results.
 	 */
-	private BooleanSupplier booleanSupplier;
+	private BooleanSupplier bS;
 	
 	public Condition (BiPredicate<S,T> conditions, S tests, T parameters) {
-		booleanSupplier = () -> conditions.test(tests, parameters);
+		bS = () -> conditions.test(tests, parameters);
 	}
 	
 	@Override
 	public boolean testCondition() {
-		return booleanSupplier.getAsBoolean();
+		return bS.getAsBoolean();
 	}
 
 }
