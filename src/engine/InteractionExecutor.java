@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
-import authoring.model.level.ILevel;
+import authoring.model.level.Level;
 import authoring.model.tree.InteractionTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 import player.InputManager;
@@ -23,8 +23,17 @@ public class InteractionExecutor {
 	private Map<String,IAction> actionMap;
 	
 	// TODO: take in a single object and extract all of the needed information
-	public InteractionExecutor (ILevel level) {
+	public InteractionExecutor (Level level, InputManager inputMap) {
+		this.selfTriggerTree = level.getSelfTriggerTree();
+		this.externalTriggerTree = level.getInteractionTree();
+		this.currentActorMap = level.getActorGroups();
+		// TODO: input map
+		this.inputMap = inputMap;
 		
+		this.triggerMap = level.getTriggerMap();
+		this.actionMap = level.getActionMap();
+		
+		this.nextActorMap = new ActorGroups(currentActorMap);
 	}
 	public InteractionExecutor (InteractionTreeNode selfTriggerTree, InteractionTreeNode externalTriggerTree,
 			ActorGroups actorMap, InputManager inputMap, 
