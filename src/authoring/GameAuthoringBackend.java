@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import authoring.model.actions.IAction;
-import authoring.model.actions.oneActorActions.MoveAction;
+import authoring.model.actions.oneActorActions.Move;
 import authoring.model.actors.Actor;
 import authoring.model.actors.Asteroid;
 import authoring.model.bundles.Bundle;

@@ -1,7 +1,6 @@
 package authoring.model.actions.oneActorActions;
 
 import authoring.model.actions.AActionOneActor;
-import authoring.model.actions.ActorGroups;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;

@@ -1,15 +1,15 @@
 package authoring.model.actions.oneActorActions;
 
 import authoring.model.actions.AActionOneActor;
-import authoring.model.actions.ActorGroups;
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
 
 /**
  * @author Inan
  *
  */
-public class MoveAction extends AActionOneActor{
+public class Move extends AActionOneActor{
 
 	@SuppressWarnings("unchecked")
 	@Override
