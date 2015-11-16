@@ -11,6 +11,7 @@ import player.InputManager;
 
 public class CircleCollision extends ASelfTrigger {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean condition(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager,
 			Actor... actors) {
@@ -30,6 +31,7 @@ public class CircleCollision extends ASelfTrigger {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public double distance(Actor actorA, Actor actorB) {
 		Double xA = ((Property<Double>) actorA.getProperties().getComponents().get("x-coordinate")).getValue();
 		Double yA = ((Property<Double>) actorA.getProperties().getComponents().get("y-coordinate")).getValue();

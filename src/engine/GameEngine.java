@@ -1,7 +1,7 @@
 package engine;
 
+import authoring.model.game.Game;
 import authoring.model.level.Level;
-import data.model.GameData;
 import engine.runnable.RunnableGame;
 import exceptions.EngineException;
 import player.InputManager;
@@ -14,12 +14,12 @@ public class GameEngine implements IEngine {
 		this(null);
 	}
 	
-	public GameEngine (GameData game) {
+	public GameEngine (Game game) {
 		init(game);
 	}
 
 	@Override
-	public void init(GameData gameData) {
+	public void init(Game gameData) {
 		runnableGame = new RunnableGame(gameData);
 	}
 	
@@ -34,7 +34,7 @@ public class GameEngine implements IEngine {
 	}
 
 	@Override
-	public void load(GameData game) {
+	public void load(Game game) {
 		 runnableGame.load(game);
 	}
 
