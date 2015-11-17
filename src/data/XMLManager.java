@@ -29,6 +29,7 @@ public class XMLManager implements IFileManager{
 			byte[] bytes = xml.getBytes("UTF-8");
 			fos.write(bytes);
 		}catch (Exception e){
+			e.printStackTrace();
 			System.err.println("Error in XML Write: " + e.getMessage());
 		}
 		finally{
@@ -39,8 +40,8 @@ public class XMLManager implements IFileManager{
 					e.printStackTrace();
 				}
 			}
+			System.out.println("DEBUG");
 		}
-		throw new GameFileException();
 	}
 	
 	private Object loadFile (String filePath) throws GameFileException {

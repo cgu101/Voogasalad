@@ -1,4 +1,11 @@
+import authoring.controller.constructor.ActorGroupsConstructor;
+import authoring.controller.constructor.TreeConstructor;
+import authoring.model.actors.ActorPropertyMap;
+import authoring.model.game.Game;
+import authoring.model.level.Level;
 import controller.RootManager;
+import data.XMLManager;
+import exceptions.data.GameFileException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -25,6 +32,30 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
+		Game testGame = new Game();
+		Level testLevel = new Level("0");
+		TreeConstructor tc = new TreeConstructor();
+		
+		//tc.addSelfTrigger("testActor", "DownArrowKey");
+		
+		testLevel.setTreeConstructorValues(tc);
+		ActorGroupsConstructor ac = new ActorGroupsConstructor();
+		ActorPropertyMap apm = new ActorPropertyMap();
+		apm.addProperty("xLocation", "150");
+		apm.addProperty("yLocation", "150");
+		apm.addProperty("image", "rcd.jpg");
+		apm.addProperty("groupID", "onlyone");
+		ac.updateActor("testActor", "123", apm);
+		testLevel.setActorGroupsValues(ac);
+		testGame.addLevel(testLevel);
+		XMLManager out = new XMLManager();
+		try {
+			out.saveGame(testGame, "testgame.game");
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		launch(args);
 	}
 }
