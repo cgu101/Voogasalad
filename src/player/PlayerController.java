@@ -1,10 +1,12 @@
 package player;
 
-import java.util.List;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Map;
 
+import authoring.model.actors.Actor;
+import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
-import authoring.model.level.ALevel;
-import authoring.model.level.ILevel;
 import controller.AController;
 import data.IFileManager;
 import data.XMLManager;
@@ -14,30 +16,43 @@ import exceptions.EngineException;
 import exceptions.data.GameFileException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import view.screen.PlayerScreen;
 
-public class PlayerController extends AController implements IPlayer {
+public class PlayerController extends AController {
 
+	Stage myStage;
 	IEngine myEngine;
 	IFileManager myXMLManager;
 	Timeline myGameLoop;
+	SpriteManager mySpriteManager;
 	int fps = 10;
+	
 
-	public PlayerController(Stage stage) {
-		super(stage, new PlayerScreen());
+	public PlayerController() {
 		myEngine = new GameEngine();
 		myXMLManager = new XMLManager();
+		mySpriteManager = new SpriteManager();
 	}
-
-	private void loadGame(String fileName) throws GameFileException {
+	
+	// should be called by front end
+	public void loadGame(String fileName) throws GameFileException {
 		try {
-			myEngine.init(myXMLManager.loadGame(fileName));
+			Game game = myXMLManager.loadGame(fileName);
+			myEngine = new GameEngine();
+			myEngine.init(game);
+			start();
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public void loadGame (File file) {
+		try {
+			myXMLManager.testLoadGame(file);
+		} catch (GameFileException e) {
+			System.out.println("Test has failed");
 		}
 	}
 	
@@ -46,8 +61,11 @@ public class PlayerController extends AController implements IPlayer {
 		myEngine.init(game);
 	}*/
 
-	@Override
-	public void play() {
+	public Stage getStage () {
+		return myStage;
+	}
+	
+	public void start() {
 		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.run());
 		Timeline myGameLoop = new Timeline();
 		myGameLoop.setCycleCount(Timeline.INDEFINITE);
@@ -55,24 +73,34 @@ public class PlayerController extends AController implements IPlayer {
 		myGameLoop.play();
 	}
 
-	@Override
 	public void pause() {		
 		myGameLoop.pause();
+	}
+	
+	public void resume() {
+		myGameLoop.play();
 	}
 	
 	public void save() {
 		// serialize and save Engine or InteractionExectutor?
 	}
 
-	@Override
 	public void run(){
 		try {
 			myEngine.play();
-			myEngine.getActorMap();
+			this.render(myEngine.getActors());
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void render(Map<String, Bundle<Actor>> actorMap){
+		ArrayList<Actor> actors = new ArrayList<Actor>();
+		for(Bundle<Actor> b : actorMap.values()){
+			actors.addAll(b.getComponents().values());
+		}
+		mySpriteManager.updateSprites(actors);
 	}
 
 }

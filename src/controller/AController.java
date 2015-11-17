@@ -16,6 +16,10 @@ import view.screen.AbstractScreen;
 public abstract class AController extends Observable {
 	protected AbstractScreen currentScreen;
 	protected Stage mainStage;
+	
+	public AController() {
+		
+	}
 
 	public AController(Stage stage) {
 		// TODO: change this

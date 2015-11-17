@@ -2,7 +2,6 @@ package authoring.controller.constructor;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import authoring.controller.AuthoringConfigManager;
 import authoring.model.actors.Actor;
@@ -28,18 +27,27 @@ public class ActorGroupsConstructor {
 		updateActor(className, Arrays.asList(new String[] {id}), propertyMap);
 	}
 	
-	public void updateActor(String className, List<String> ids, ActorPropertyMap propertyMap) {
-		Map<String, Actor> actors = actorGroups.getGroup(className).getComponents();
-		Bundle<Property<?>> properties = getPropertyBundle(propertyMap);
+	public void updateActor(String className, List<String> ids, ActorPropertyMap propertyMap) {		
+		Bundle<Actor> actorBundle = actorGroups.addGroup(className);		
+		Bundle<Property<?>> properties = getPropertyBundle(propertyMap);	
 		
 		for(String id: ids) {
-			if(actors.containsKey(id)) {
+			if(actorBundle.getComponents().containsKey(id)) {
 				for(Property<?> p: properties) {
-					actors.get(id).getProperties().add(p);
+					actorBundle.getComponents().get(id).getProperties().add(p);
 				}
 			} else {
 				actorGroups.addActor(new Actor(properties, id));
 			} 
+		}
+	}
+	
+	public void deleteActor(String className, List<String> ids) {
+		Bundle<Actor> actorBundle = actorGroups.addGroup(className);
+		if(actorBundle != null) {
+			for(String id: ids) {
+				actorBundle.remove(id);
+			}
 		}
 	}
 	

@@ -22,6 +22,7 @@ public class AuthoringConfigManager {
 	private static final String SELF_TRIGGER = "selfTrigger";
 	private static final String EVENT_TRIGGER = "eventTrigger";
 	private static final String TYPE = "type";
+	private static final String ACTIONS = "actions";
 	
 	private static final AuthoringConfigManager myManager = new AuthoringConfigManager();
 	
@@ -58,6 +59,10 @@ public class AuthoringConfigManager {
 	public List<String> getActorList() {
 		return new ArrayList<String>(actorMap.keySet());
 	}
+	
+	public List<String> getPropertyList() {
+		return new ArrayList<String>(propertyMap.keySet());
+	}
 
 	public List<String> getPropertyList(String actor) {
 		return  Arrays.asList(actorMap.get(actor).getString(PROPERTIES).split(REG_EX));
@@ -75,6 +80,10 @@ public class AuthoringConfigManager {
 		return getTriggerList(actor, EVENT_TRIGGER);
 	}
 	
+	public List<String> getActionList(String actor) {
+		return getTriggerList(actor, ACTIONS);
+	}
+	
 	public String getPropertyType(String property) {
 		return propertyMap.get(property).getString(TYPE);
 	}
@@ -83,8 +92,10 @@ public class AuthoringConfigManager {
 		List<String> triggerList = Arrays.asList(actorMap.get(actor).getString(type).split(REG_EX));
 		String[] propertyList = actorMap.get(actor).getString(type).split(REG_EX);
 		for(String s: propertyList) {
-			String[] toAdd = propertyMap.get(s).getString(type).split(REG_EX);
-			triggerList.addAll(Arrays.asList(toAdd));
+			if(propertyMap.containsKey(s)) {
+				String[] toAdd = propertyMap.get(s).getString(type).split(REG_EX);
+				triggerList.addAll(Arrays.asList(toAdd));
+			}
 		}
 		
 		return triggerList;

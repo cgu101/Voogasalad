@@ -7,23 +7,27 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.Workspace;
 import view.screen.AbstractScreen;
+import view.screen.CreatorScreen;
 import view.screen.StartScreen;
 
 public class ControlBarCreator extends ControlBar {
 
-	private AbstractScreen screen;
+	private CreatorScreen screen;
 	private Workspace workspace;
 	private MenuBar mainMenu;
 	private ToolBar toolBar;
 	private VBox box;
 
-	public ControlBarCreator(GridPane pane, AbstractScreen screen, Workspace workspace) {
+	public ControlBarCreator(GridPane pane, CreatorScreen screen, Workspace workspace) {
 		super(pane);
 		this.screen = screen;
 		this.workspace = workspace;
@@ -54,12 +58,13 @@ public class ControlBarCreator extends ControlBar {
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
-		MenuItem load = makeMenuItem(myResources.getString("load"), null);
-		MenuItem save = makeMenuItem(myResources.getString("save"), null);
+		// TODO:
+		MenuItem load = makeMenuItem(myResources.getString("load"), e -> screen.loadGame());
+		MenuItem save = makeMenuItem(myResources.getString("save"), e -> screen.saveGame());
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save);
 
-		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> workspace.addLevel());
-		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> addActor());
+		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> workspace.addLevel(), KeyCode.T, KeyCombination.CONTROL_DOWN);
+		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(), KeyCode.N, KeyCombination.CONTROL_DOWN);
 		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addLevel, addActor);
 
 		CheckMenuItem toolbar = new CheckMenuItem(myResources.getString("toolbar"));
@@ -68,6 +73,7 @@ public class ControlBarCreator extends ControlBar {
 		Menu hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar);
 		makeComponentCheckMenus(hideAndShow);
 		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
+		fullscreen.setAccelerator(new KeyCodeCombination(KeyCode.F6));
 		fullscreen.selectedProperty().bindBidirectional(screen.getFullscreenProperty());
 
 		CheckMenuItem doubleLists = new CheckMenuItem(myResources.getString("dualactors"));
