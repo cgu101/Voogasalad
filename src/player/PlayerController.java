@@ -98,9 +98,7 @@ public class PlayerController extends AController {
 	public void render(Map<String, Bundle<Actor>> actorMap){
 		ArrayList<Actor> actors = new ArrayList<Actor>();
 		for(Bundle<Actor> b : actorMap.values()){
-			for(Actor a : b){
-				actors.add(a);
-			}
+			actors.addAll(b.getComponents().values());
 		}
 		mySpriteManager.updateSprites(actors);
 	}
