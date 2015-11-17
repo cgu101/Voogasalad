@@ -20,7 +20,7 @@ import javafx.animation.Timeline;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class PlayerController extends AController {
+public class PlayerController extends AController implements IPlayer {
 
 	Stage myStage;
 	IEngine myEngine;
@@ -74,29 +74,22 @@ public class PlayerController extends AController {
 		myGameLoop.play();
 	}
 
-	public void pause() throws GameFileException{		
-		try {			
-			myGameLoop.pause();
-		} catch (NullPointerException e){
-			throw new GameFileException();
-		}
+	public void pause() {		
+		myGameLoop.pause();
 	}
 	
-	public void resume() throws GameFileException{
-		try {			
-			myGameLoop.play();
-		} catch (NullPointerException e){
-			throw new GameFileException();
-		}
+	public void resume() {
+		myGameLoop.play();	
 	}
 	
 	public void save() {
 		// serialize and save Engine or InteractionExectutor?
 	}
 
+	@Override
 	public void run(){
 		try {
-			myEngine.play();
+			myEngine.play().call(this);
 			this.render(myEngine.getActors());
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
