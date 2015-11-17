@@ -102,6 +102,7 @@ public class ActorEditor extends AbstractDockElement {
 			editActor(leftItem);
 		} else {
 			// right list selected
+			editActor(rightItem);
 		}
 	}
 

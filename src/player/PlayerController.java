@@ -81,10 +81,6 @@ public class PlayerController extends AController implements IPlayer {
 	public void resume() {
 		myGameLoop.play();	
 	}
-	
-	public void save() {
-		// serialize and save Engine or InteractionExectutor?
-	}
 
 	@Override
 	public void run(){
