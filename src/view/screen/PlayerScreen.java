@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import player.PlayerController;
+import util.FileChooserUtility;
 import view.controlbar.ControlBarPlayer;
 import view.element.Workspace;
 
@@ -60,13 +61,7 @@ public class PlayerScreen extends AbstractScreen {
 	// TODO: David: need a stage eventually for the line: fileChooser.showOpenDialog(null);
 	// You want to force the user to choose
 	public void loadGame() {
-		System.out.println("Testing");
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Game File Loader");
-		fileChooser.setInitialDirectory(new File("."));
-		System.out.println(playerController);
-		File file = fileChooser.showOpenDialog(null);
-		
+		File file = FileChooserUtility.load(scene.getWindow());
 		playerController.loadGame(file);
 	}
 

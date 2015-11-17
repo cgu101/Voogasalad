@@ -84,7 +84,7 @@ public class CreatorScreen extends AbstractScreen {
 		
         BufferedWriter output = null;
         try {
-        	File saveFile = FileChooserUtility.save(null);
+        	File saveFile = FileChooserUtility.save(scene.getWindow());
             output = new BufferedWriter(new FileWriter(saveFile));
             output.write(test);
         } catch ( IOException e ) {
@@ -98,6 +98,12 @@ public class CreatorScreen extends AbstractScreen {
 				}
         }
 	}
+	
+	private void writeToFile (File file, String text) {
+		
+//		File file = FileChooserUtility.save(null);
+	}
+	
 	//TODO
 	public void loadGame(){
 		System.out.println("Testing loading game ");
