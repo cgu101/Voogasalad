@@ -1,14 +1,11 @@
 package authoring.model.game;
 
-import java.util.Observable;
-
 import authoring.model.bundles.Bundle;
 import authoring.model.level.Level;
 import authoring.model.properties.Property;
 
-public class Game extends Observable {
+public class Game {
 	private Bundle<Level> myLevelBundle;
-	private Level currentLevel;
 	private Bundle<Property<?>> myPropertyBundle;
 	
 	public Game () {
@@ -19,19 +16,15 @@ public class Game extends Observable {
 		myLevelBundle.add(level);
 	}
 	
-	public void setCurrentLevel (String uniqueID) {
-		Level newLevel = myLevelBundle.get(uniqueID);
-		if (newLevel != null) {
-			currentLevel = newLevel;
-			update();
-		}
+	public Level getLevel (String levelName) {
+		return myLevelBundle.get(levelName);
+	}
+
+	public void addProperty (Property<?> property) {
+		myPropertyBundle.add(property);
 	}
 	
-	public void run () {
-	}
-	
-	public void update () {
-		setChanged();
-		notifyObservers(currentLevel);
+	public Property<?> getProperty (String propertyName) {
+		return myPropertyBundle.get(propertyName);
 	}
 }
