@@ -21,7 +21,6 @@ public class GameEngine implements IEngine {
 	}
 	
 	public GameEngine (Game game) {
-		this.game = game;
 		init(game);
 	}
 
