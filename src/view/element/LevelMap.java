@@ -1,6 +1,7 @@
 package view.element;
 
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,12 +35,23 @@ public class LevelMap extends AbstractElement {
 
 	@Override
 	protected void makePane() {
-//		Test Narnia map image
+		//Test Narnia map image
 		backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
 		
 		map.addMapElements(new ImageView(backgroundImage));
 		map.createGroups();
 		map.createScrollPane();
+		
+		Slider s = new Slider();
+		s.setMin(0);
+		s.setMax(100);
+		s.setValue(50);
+		s.setShowTickLabels(true);
+		s.setShowTickMarks(true);
+		s.setMajorTickUnit(50);
+		s.setMinorTickCount(4);
+		s.setBlockIncrement(10);
+		s.setSnapToTicks(true);
 				
 		//Tests to figure out ScrollPane issue		
 //		sp = new ScrollPane();
@@ -56,6 +68,7 @@ public class LevelMap extends AbstractElement {
 //		sp.setContent(layout);
 		
 		pane.add(map.getTheMap(), 0, 0);
+		pane.add(s, 0, 1);
 	}
 
 	public ScrollPane getMap() {

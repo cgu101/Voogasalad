@@ -27,7 +27,7 @@ public class Map {
 	}
 	
 	public void addMapElements(Node... elements) {
-		layout.getChildren().setAll(elements);
+		layout.getChildren().addAll(elements);
 	}
 	
 	public void createScrollPane() {
