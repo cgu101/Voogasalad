@@ -12,6 +12,7 @@ import data.IFileManager;
 import data.XMLManager;
 import engine.GameEngine;
 import engine.IEngine;
+import engine.State;
 import exceptions.EngineException;
 import exceptions.data.GameFileException;
 import javafx.animation.KeyFrame;
@@ -73,16 +74,20 @@ public class PlayerController extends AController {
 		myGameLoop.play();
 	}
 
-	public void pause() {		
-		myGameLoop.pause();
+	public void pause() throws GameFileException{		
+		try {			
+			myGameLoop.pause();
+		} catch (NullPointerException e){
+			throw new GameFileException();
+		}
 	}
 	
-	public void resume() {
-		myGameLoop.play();
-	}
-	
-	public void save() {
-		// serialize and save Engine or InteractionExectutor?
+	public void resume() throws GameFileException{
+		try {			
+			myGameLoop.play();
+		} catch (NullPointerException e){
+			throw new GameFileException();
+		}
 	}
 
 	public void run(){
@@ -103,4 +108,16 @@ public class PlayerController extends AController {
 		mySpriteManager.updateSprites(actors);
 	}
 
+	public void saveState (String fileName) throws GameFileException {
+		pause();
+		State saveState = myEngine.ejectState();
+		myXMLManager.saveState(saveState, fileName);
+		resume();
+	}
+	public void loadState (String fileName) throws GameFileException {
+		pause();
+		State saveState = myXMLManager.loadState(fileName);
+		myEngine.injectState(saveState);
+		resume();
+	}
 }

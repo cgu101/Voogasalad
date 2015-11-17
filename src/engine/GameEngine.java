@@ -7,11 +7,13 @@ import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
+import authoring.model.properties.Property;
 import exceptions.EngineException;
 import player.InputManager;
 
 public class GameEngine implements IEngine {
 	private static final String DEFAULT_INPUTS_FILENAME = "resources/gameplayer/Inputs";
+	private static final String LEVEL_ID_KEY = "level";
 
 	private Game game;
 	private InteractionExecutor levelExecutor;
@@ -46,12 +48,6 @@ public class GameEngine implements IEngine {
 	}
 
 	@Override
-	public void load(Game game) {
-		//TODO:
-		// what is this supposed to do?
-	}
-
-	@Override
 	public void play () throws EngineException {
 		EngineHeartbeat heartbeat = levelExecutor.run();
 		// do something with the heartbeat
@@ -59,18 +55,18 @@ public class GameEngine implements IEngine {
 
 	@Override
 	public Map<String, Bundle<Actor>> getActors() {
-		//TODO
-		return new HashMap<String, Bundle<Actor>>();
-		
+		return levelExecutor.getActors().getMap();
 	}
-//	public State ejectState () {
-//	Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
-//	propertyBundle.add(new Property<String>(CURRENT_LEVEL, currentLevel.getUniqueID()));
-//	return new State(propertyBundle, executor.getActors());
-//}
-//public void injectState (State state) {
-//	Level level = levelBundle.getProperty((String) state.getProperty(CURRENT_LEVEL).getValue());
-//	init(level);
-//	executor.setActors(state.getActorMap());
-//}
+	@Override
+	public State ejectState () {
+		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
+		propertyBundle.add(new Property<String>(LEVEL_ID_KEY, levelExecutor.getLevelID()));
+		return new State(propertyBundle, levelExecutor.getActors());
+	}
+	@Override
+	public void injectState (State state) {
+		Level level = game.getLevel((String) state.getProperty(LEVEL_ID_KEY).getValue());
+		init(level);
+		levelExecutor.setActors(state.getActorMap());
+	}
 }
