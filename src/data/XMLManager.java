@@ -9,11 +9,8 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import authoring.model.game.Game;
 import authoring.model.level.Level;
+import engine.State;
 import exceptions.data.GameFileException;
-
-/*
- *  EXAMPLE CODE FOR SAVING AND LOADING 
- */
 
 
 public class XMLManager implements IFileManager{
@@ -103,19 +100,19 @@ public class XMLManager implements IFileManager{
 		}
 	}
 
-//	@Override
-//	public void saveState(StateData state, String fileName) throws GameFileException {
-//		// TODO Auto-generated method stub
-//		saveFile(state, DEFAULT_SAVESTATE_FOLDER + fileName);
-//	}
-//
-//	@Override
-//	public StateData loadState(String fileName) throws GameFileException {
-//		try {
-//			return (StateData) loadFile(DEFAULT_SAVESTATE_FOLDER + fileName);
-//		} catch (Exception e) {
-//			throw new GameFileException();
-//		}
-//	}
+	@Override
+	public void saveState(State state, String fileName) throws GameFileException {
+		// TODO Auto-generated method stub
+		saveFile(state, DEFAULT_SAVESTATE_FOLDER + fileName);
+	}
+
+	@Override
+	public State loadState(String fileName) throws GameFileException {
+		try {
+			return (State) loadFile(DEFAULT_SAVESTATE_FOLDER + fileName);
+		} catch (Exception e) {
+			throw new GameFileException();
+		}
+	}
 
 }

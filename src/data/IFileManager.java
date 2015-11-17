@@ -2,6 +2,7 @@ package data;
 
 import authoring.model.game.Game;
 import authoring.model.level.Level;
+import engine.State;
 import exceptions.data.GameFileException;
 
 /*
@@ -16,10 +17,10 @@ public interface IFileManager {
 
 	public void saveLevel(Level level, String fileName) throws GameFileException;
 	public Level loadLevel(String fileName) throws GameFileException;
-//	
-//	public void saveState(StateData state, String fileName) throws GameFileException;
-//	public StateData loadState(String fileName) throws GameFileException;
-//	
+	
+	public void saveState(State state, String fileName) throws GameFileException;
+	public State loadState(String fileName) throws GameFileException;
+	
 	
 	
 }

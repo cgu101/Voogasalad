@@ -10,6 +10,7 @@ public class Game {
 	
 	public Game () {
 		myLevelBundle = new Bundle<Level>();
+		myPropertyBundle = new Bundle<Property<?>>();
 	}
 	
 	public void addLevel (Level level) {
