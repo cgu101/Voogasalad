@@ -13,9 +13,12 @@ public class DamageHealth extends AActionOneActor{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run(ActorGroups actorGroup, Actor actor) {
-		Property<Integer> health = (Property<Integer>) actor.getProperties().getComponents().get("health");
-		Integer h = health.getValue();
-		health.setValue(--h);
+	public void run(ActorGroups actorGroup, Actor actor) {		
+		Property<Double> health = (Property<Double>) actor.getProperty("health");
+		Double h = health.getValue();
+		
+		Actor futureActor = (Actor) actor.getCopy();
+		((Property<Double>) futureActor.getProperty("health")).setValue(--h);
+		actorGroup.addActor(futureActor);
 	}
 }

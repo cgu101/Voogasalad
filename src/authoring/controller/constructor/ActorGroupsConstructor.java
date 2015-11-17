@@ -38,7 +38,7 @@ public class ActorGroupsConstructor {
 					actors.get(id).getProperties().add(p);
 				}
 			} else {
-				actorGroups.addToGroup(className, new Actor(properties, id));
+				actorGroups.addActor(new Actor(properties, id));
 			} 
 		}
 	}
