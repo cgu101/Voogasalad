@@ -11,6 +11,7 @@ public class AuthoringConfigManager {
 
 	private Map<String, ResourceBundle> actorMap;
 	private Map<String, ResourceBundle> propertyMap;
+	private ResourceBundle myConfiguration;
 	
 	private static final String CONFIGURATION_DIR = "authoring/files/%s";
 	private static final String ACTORS = "actors";
@@ -21,8 +22,8 @@ public class AuthoringConfigManager {
 	private static final String REG_EX = ",";
 	private static final String SELF_TRIGGER = "selfTrigger";
 	private static final String EVENT_TRIGGER = "eventTrigger";
-	private static final String TYPE = "type";
 	private static final String ACTIONS = "actions";
+	private static final String TYPE = "type";
 	
 	private static final AuthoringConfigManager myManager = new AuthoringConfigManager();
 	
@@ -33,7 +34,7 @@ public class AuthoringConfigManager {
 	private void load() {
 		actorMap = new HashMap<String, ResourceBundle>();
 		propertyMap = new HashMap<String, ResourceBundle>();
-		ResourceBundle myConfiguration = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, CONFIGURATION));
+		myConfiguration = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, CONFIGURATION));
 		loadMap(actorMap, myConfiguration.getString(ACTORS).split(REG_EX), ACTORS);
 		loadMap(propertyMap, myConfiguration.getString(PROPERTIES).split(REG_EX), PROPERTIES);
 	}
@@ -94,10 +95,23 @@ public class AuthoringConfigManager {
 		for(String s: propertyList) {
 			if(propertyMap.containsKey(s)) {
 				String[] toAdd = propertyMap.get(s).getString(type).split(REG_EX);
-				triggerList.addAll(Arrays.asList(toAdd));
+				triggerList.addAll(checkIfAdditionIsPossible(propertyList, toAdd, actor));
+			}
+		}	
+		return triggerList;
+	}
+	
+	private List<String> checkIfAdditionIsPossible(String[] propertyList, String[] toAdd, String actor) {
+		List<String> actorProperties = Arrays.asList(propertyList);
+		List<String> ret = new ArrayList<String>();
+		for(String add: toAdd) {
+			List<String> requiredProperties = Arrays.asList(myConfiguration.getString(String.format("%s.%s", add, PROPERTIES)).split(REG_EX));
+			if(actorProperties.containsAll(requiredProperties)) {
+				if(!ret.contains(add)) {
+					ret.add(add);
+				}
 			}
 		}
-		
-		return triggerList;
+		return ret;
 	}
 }
