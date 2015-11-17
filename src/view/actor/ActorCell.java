@@ -6,11 +6,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 
 public class ActorCell extends ListCell<String> {
 
 	private AuthoringController controller;
+	private boolean deselect;
 
 	public ActorCell(AuthoringController controller) {
 		this.controller = controller;
@@ -39,5 +43,20 @@ public class ActorCell extends ListCell<String> {
 		output.setSmooth(true);
 		output.setCache(true);
 		return output;
+	}
+
+	public boolean deselect() {
+		boolean output = deselect;
+		deselect = false;
+		return output;
+	}
+
+	public void markForDeselection() {
+		this.deselect = true;
+	}
+
+	public void drag(MouseEvent me) {
+		this.deselect = false;
+		Dragboard db = this.startDragAndDrop(TransferMode.COPY);
 	}
 }

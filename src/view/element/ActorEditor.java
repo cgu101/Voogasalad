@@ -29,6 +29,7 @@ public class ActorEditor extends AbstractDockElement {
 
 	private ActorBrowser browser;
 	private AuthoringController controller;
+	private ImageView image;
 
 	public ActorEditor(GridPane pane, GridPane home, String title, AbstractScreenInterface screen, ActorBrowser browser,
 			AuthoringController controller) {
@@ -141,15 +142,15 @@ public class ActorEditor extends AbstractDockElement {
 	}
 
 	private ImageView makeImage(String item) {
-		ImageView output = new ImageView(new Image(getClass().getClassLoader()
+		image = new ImageView(new Image(getClass().getClassLoader()
 				.getResourceAsStream(controller.getAuthoringConfigManager().getDefaultPropertyValue(item, "image"))));
-		output.setFitHeight(150);
-		output.setPreserveRatio(true);
-		output.setSmooth(true);
-		output.setCache(true);
-		output.setOnMouseClicked(e -> showSelector(item));
-		GridPane.setRowSpan(output, 2);
-		return output;
+		image.setFitHeight(Double.parseDouble(myResources.getString("imagesize")));
+		image.setPreserveRatio(true);
+		image.setSmooth(true);
+		image.setCache(true);
+		image.setOnMouseClicked(e -> showSelector(item));
+		GridPane.setRowSpan(image, 2);
+		return image;
 	}
 
 	private TextField makeName(String item) {
