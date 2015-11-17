@@ -12,6 +12,7 @@ import data.IFileManager;
 import data.XMLManager;
 import engine.GameEngine;
 import engine.IEngine;
+import engine.State;
 import exceptions.EngineException;
 import exceptions.data.GameFileException;
 import javafx.animation.KeyFrame;
@@ -111,4 +112,16 @@ public class PlayerController extends AController {
 		mySpriteManager.updateSprites(actors);
 	}
 
+	public void saveState (String fileName) throws GameFileException {
+		pause();
+		State saveState = myEngine.ejectState();
+		myXMLManager.saveState(saveState, fileName);
+		resume();
+	}
+	public void loadState (String fileName) throws GameFileException {
+		pause();
+		State saveState = myXMLManager.loadState(fileName);
+		myEngine.injectState(saveState);
+		resume();
+	}
 }

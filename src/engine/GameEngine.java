@@ -65,11 +65,13 @@ public class GameEngine implements IEngine {
 		return new HashMap<String, Bundle<Actor>>();
 		
 	}
+	@Override
 	public State ejectState () {
 		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
 		propertyBundle.add(new Property<String>(LEVEL_ID_KEY, levelExecutor.getLevelID()));
 		return new State(propertyBundle, levelExecutor.getActors());
 	}
+	@Override
 	public void injectState (State state) {
 		Level level = game.getLevel((String) state.getProperty(LEVEL_ID_KEY).getValue());
 		init(level);

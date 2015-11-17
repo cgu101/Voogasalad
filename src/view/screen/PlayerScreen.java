@@ -70,10 +70,24 @@ public class PlayerScreen extends AbstractScreen {
 		playerController.loadGame(file);
 	}
 	public void saveState () {
-		
+		//TODO: do gui stuff
+		String fileName = "";
+		try {
+			playerController.saveState(fileName);
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void loadState () {
-		
+		//TODO: do gui stuff
+		String fileName = "";
+		try {
+			playerController.loadState(fileName);
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	//TODO: Implement, check the controller to see
