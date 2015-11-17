@@ -22,7 +22,8 @@ public interface IEngine {
 	public void init(Game gameData) throws EngineException;
 	
 	public void reset ();
-	public void load(Game game);
 	public void play() throws EngineException;
 	public Map<String, Bundle<Actor>> getActors();
+	public State ejectState();
+	public void injectState(State state);
 }

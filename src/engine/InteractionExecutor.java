@@ -16,6 +16,7 @@ import player.IPlayer;
 
 // runs the interaction tree
 public class InteractionExecutor {
+	private String currentLevelIdentifier;
 	private InteractionTreeNode externalTriggerTree;
 	private InteractionTreeNode selfTriggerTree;
 	private ActorGroups currentActorMap;
@@ -25,6 +26,7 @@ public class InteractionExecutor {
 	private Map<String,IAction> actionMap;
 	
 	public InteractionExecutor () {
+		this.currentLevelIdentifier = null;
 		this.selfTriggerTree = new InteractionTreeNode();
 		this.externalTriggerTree = new InteractionTreeNode();
 		this.currentActorMap = new ActorGroups();
@@ -36,6 +38,7 @@ public class InteractionExecutor {
 	
 	// TODO: take in a single object and extract all of the needed information
 	public InteractionExecutor (Level level, InputManager inputMap) {
+		this.currentLevelIdentifier = level.getUniqueID();
 		this.selfTriggerTree = level.getSelfTriggerTree();
 		this.externalTriggerTree = level.getInteractionTree();
 		this.currentActorMap = level.getActorGroups();
@@ -92,10 +95,14 @@ public class InteractionExecutor {
 						  .collect(Collectors.toList());
 	}
 	public ActorGroups getActors () {
-		return new ActorGroups(currentActorMap);
+		return currentActorMap;
 	}
 	// TODO
 	public void setActors (ActorGroups actors) {
 		this.currentActorMap = actors;
+	}
+	
+	public String getLevelID () {
+		return currentLevelIdentifier;
 	}
 }

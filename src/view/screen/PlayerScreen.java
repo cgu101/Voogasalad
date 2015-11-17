@@ -7,7 +7,6 @@ import exceptions.engine.NullGameException;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import player.PlayerController;
 import view.controlbar.ControlBarPlayer;
 import view.element.Workspace;
@@ -69,6 +68,28 @@ public class PlayerScreen extends AbstractScreen {
 		File file = fileChooser.showOpenDialog(null);
 		
 		playerController.loadGame(file);
+	}
+
+	public void saveState () {
+		//TODO: do gui stuff
+		String fileName = "";
+		try {
+			playerController.saveState(fileName);
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void loadState () {
+		//TODO: do gui stuff
+		String fileName = "";
+		try {
+			playerController.loadState(fileName);
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	//TODO: Implement, check the controller to see

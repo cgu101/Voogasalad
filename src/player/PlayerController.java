@@ -12,6 +12,7 @@ import data.IFileManager;
 import data.XMLManager;
 import engine.GameEngine;
 import engine.IEngine;
+import engine.State;
 import exceptions.EngineException;
 import exceptions.data.GameFileException;
 import javafx.animation.KeyFrame;
@@ -25,12 +26,14 @@ public class PlayerController extends AController {
 	IEngine myEngine;
 	IFileManager myXMLManager;
 	Timeline myGameLoop;
+	SpriteManager mySpriteManager;
 	int fps = 10;
 	
 
 	public PlayerController() {
 		myEngine = new GameEngine();
 		myXMLManager = new XMLManager();
+		mySpriteManager = new SpriteManager();
 	}
 	
 	// should be called by front end
@@ -86,10 +89,6 @@ public class PlayerController extends AController {
 			throw new GameFileException();
 		}
 	}
-	
-	public void save() {
-		// serialize and save Engine or InteractionExectutor?
-	}
 
 	public void run(){
 		try {
@@ -104,12 +103,21 @@ public class PlayerController extends AController {
 	public void render(Map<String, Bundle<Actor>> actorMap){
 		ArrayList<Actor> actors = new ArrayList<Actor>();
 		for(Bundle<Actor> b : actorMap.values()){
-			for(Actor a : b){
-				actors.add(a);
-			}
+			actors.addAll(b.getComponents().values());
 		}
-		
-		
+		mySpriteManager.updateSprites(actors);
 	}
 
+	public void saveState (String fileName) throws GameFileException {
+		pause();
+		State saveState = myEngine.ejectState();
+		myXMLManager.saveState(saveState, fileName);
+		resume();
+	}
+	public void loadState (String fileName) throws GameFileException {
+		pause();
+		State saveState = myXMLManager.loadState(fileName);
+		myEngine.injectState(saveState);
+		resume();
+	}
 }
