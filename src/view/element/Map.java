@@ -30,7 +30,12 @@ public class Map {
 		layout.getChildren().addAll(elements);
 	}
 	
-	public void createScrollPane() {
+	public void createTheMap() {
+		createGroups();
+		createScrollPane();
+	}
+	
+	private void createScrollPane() {
 		theMap = new ScrollPane();
 		
 		//Hide the vertical and horizontal scrollbars, make the pane pannable
@@ -42,11 +47,10 @@ public class Map {
 		theMap.prefWidthProperty().bind(screen.getScene().widthProperty());
 		theMap.prefHeightProperty().bind(screen.getScene().heightProperty());
 
-		
-		theMap.setContent(layout);
+		theMap.setContent(contentGroup);
 	}
 	
-	public void createGroups() {
+	private void createGroups() {
 		//Groups all the nodes that will appear on the map and allows them to be 
 		//collectively rescaled using a Scale.
 		zoomGroup = new Group();
@@ -67,8 +71,8 @@ public class Map {
 		return theMap;
 	}
 	
-	public StackPane getLayout() {
-		return layout;
+	public Group getZoomGroup() {
+		return zoomGroup;
 	}
 
 }
