@@ -5,25 +5,22 @@ import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import view.screen.AbstractScreen;
 
-public class LevelMap extends AbstractElement {
+public class LevelMap extends Map {
 	private Tab myTab;
-	private Map map;
-	private MapZoomSlider slider;
 	private AbstractScreen screen;
 	private Image backgroundImage;
 	private ScrollPane sp;
 
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
-		super(pane);
+		super(pane, screen);
 		findResources();
 		myTab = new Tab("Level " + (i + 1));
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));
-		this.screen = screen;
-		map = new Map(screen);
-		slider = new MapZoomSlider(map, Double.valueOf(myResources.getString("sliderwidth")));
 		makePane();
 	}
 
@@ -36,27 +33,15 @@ public class LevelMap extends AbstractElement {
 		//Test Narnia map image
 		backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
 		
+		//Test white rectangle
+		Rectangle test = new Rectangle(640, 480);
+		test.setFill(Color.WHITE);
+		
 		//Add any elements you want to appear on the map using this method
-		map.addMapElements(new ImageView(backgroundImage));
+		addMapElements(test);
 		
 		//Create the map after adding elements you want
-		map.createTheMap();
-		
-		//Create the slider for the map after the map has been defined
-		slider.createTheSlider();
-		
-		//Add everything to the column in the parent GridPane
-		pane.add(map.getTheMap(), 0, 0);
-		pane.add(slider.getTheSlider(), 0, 1);
+		createTheMap();
 	}
-
-	public ScrollPane getMap() {
-		//There is a problem with this method. Nothing shows up on screen
-		//When it returns something. Suspect it has to do with the bound
-		//Width and Height.
-		
-		return null;
-		//return map.getTheMap();
-	}
-
+	
 }

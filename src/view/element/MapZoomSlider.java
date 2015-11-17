@@ -3,6 +3,7 @@ package view.element;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
@@ -14,14 +15,14 @@ public class MapZoomSlider {
 	private Slider theSlider;
 	private Label scaleValue;
 	private Label scaleCaption;
-	private Map theMap;
+	private Group mapZoomGroup;
 	
 	
-	public MapZoomSlider(Map map, double sliderSize) {
+	public MapZoomSlider(Group zoomGroup, double sliderSize) {
 		sliderElements = new GridPane();
 		theSlider = new Slider();
 		theSlider.setPrefWidth(sliderSize); //The size of the slider is set inside the resource file
-		theMap = map;
+		mapZoomGroup = zoomGroup;
 	}
 	
 	public void createTheSlider() {
@@ -59,8 +60,8 @@ public class MapZoomSlider {
 				Scale scaleTransform = new Scale(convertedScaleValue, convertedScaleValue, 0, 0);
 				
 				//Transform everything inside the zoomGroup according to the scale
-				theMap.getZoomGroup().getTransforms().clear();
-				theMap.getZoomGroup().getTransforms().add(scaleTransform);
+				mapZoomGroup.getTransforms().clear();
+				mapZoomGroup.getTransforms().add(scaleTransform);
 				
 				//Update the text of the label accordingly
 				scaleValue.setText(String.format("%.2f", new_val));
