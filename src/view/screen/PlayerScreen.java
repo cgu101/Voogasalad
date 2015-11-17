@@ -28,24 +28,22 @@ public class PlayerScreen extends AbstractScreen {
 	}
 
 	//TODO: Throw NullGameException when Game hasn't been loaded yet
-	public void resume() {
-		try {
+ 	public void resume() {
+		try{
 			playerController.resume();
-		} catch (GameFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (GameFileException e){
+			showWarning("Resume Game Error", "No game has been loaded yet!");
 		}
-	}
-
-	//TODO: Throw NullGameException when Game hasn't been loaded yet
-	public void pause() {
-		try {
+ 	}
+ 
+ 	//TODO: Throw NullGameException when Game hasn't been loaded yet
+ 	public void pause() {
+		try{
 			playerController.pause();
-		} catch (GameFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (GameFileException e){
+			showWarning("Pause Game Error", "No game has been loaded yet!");
 		}
-	}
+ 	}
 	
 	@Override
 	protected void makeScene() {
