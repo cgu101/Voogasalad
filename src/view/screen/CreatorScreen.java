@@ -67,4 +67,12 @@ public class CreatorScreen extends AbstractScreen {
 		components.add(editor);
 		t = new ControlBarCreator(myPanes.get(0), this, w);
 	}
+	//TODO
+	public void saveGame(){
+		
+	}
+	//TODO
+	public void loadGame(){
+		
+	}
 }
