@@ -12,8 +12,6 @@ import view.screen.AbstractScreen;
 
 public class LevelMap extends Map {
 	private Tab myTab;
-	private AbstractScreen screen;
-	private Image backgroundImage;
 	private ScrollPane sp;
 	private LevelConstructor constructor;
 
@@ -29,22 +27,6 @@ public class LevelMap extends Map {
 
 	public Tab getTab() {
 		return myTab;
-	}
-
-	@Override
-	protected void makePane() {
-		//Test Narnia map image
-		backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
-		
-		//Test white rectangle
-		Rectangle test = new Rectangle(640, 480);
-		test.setFill(Color.WHITE);
-		
-		//Add any elements you want to appear on the map using this method
-		addMapElements(test);
-		
-		//Create the map after adding elements you want
-		createTheMap();
 	}
 	
 }

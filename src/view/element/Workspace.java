@@ -33,7 +33,6 @@ public class Workspace extends AbstractElement {
 			manager.maxWidthProperty().unbind();
 			try {
 				currentLevel = levels.get(Integer.parseInt(newTab.getId()));
-				manager.maxWidthProperty().bind(currentLevel.getMap().widthProperty());
 			} catch (NullPointerException e) {
 				currentLevel = null;
 			}
