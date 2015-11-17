@@ -1,8 +1,8 @@
 package engine.example;
 
 import authoring.GameAuthoringBackend;
+import authoring.model.game.Game;
 import data.XMLManager;
-import data.model.GameData;
 import engine.GameEngine;
 import engine.IEngine;
 import exceptions.EngineException;
@@ -17,7 +17,7 @@ public class PlayerBackend {
 		
 		XMLManager xml = new XMLManager();
 		
-		GameData game = xml.loadGame("authoredLevels");
+		Game game = xml.loadGame("authoredLevels");
 		
 		IEngine engine = new GameEngine(null);
 		engine.load(game);

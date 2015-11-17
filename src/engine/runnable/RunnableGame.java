@@ -1,13 +1,13 @@
 package engine.runnable;
 
 import authoring.model.bundles.Bundle;
-import data.model.GameData;
+import authoring.model.game.Game;
 
 public class RunnableGame implements IRunnable {
 
 	private Bundle levelBundle;
 	
-	public RunnableGame (GameData gameData) {
+	public RunnableGame (Game gameData) {
 		load(gameData);
 	}
 	
@@ -20,7 +20,7 @@ public class RunnableGame implements IRunnable {
 		
 	}
 	
-	public void load (GameData data) {
+	public void load (Game data) {
 	}
 
 }
