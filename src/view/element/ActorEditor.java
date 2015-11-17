@@ -1,9 +1,12 @@
 package view.element;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import authoring.controller.AuthoringController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
@@ -19,6 +22,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
 import view.actor.ActorCell;
 import view.actor.PropertyCell;
+import view.actor.SelfTriggerCell;
 import view.screen.AbstractScreenInterface;
 
 public class ActorEditor extends AbstractDockElement {
@@ -105,23 +109,40 @@ public class ActorEditor extends AbstractDockElement {
 		pane.add(makeImage(item), 0, 1);
 		pane.add(makeName(item), 1, 1);
 		pane.add(makePropertyEditor(item), 1, 2);
+		pane.add(makeSelfTriggerEditor(item), 0, 3);
 	}
 
 	private ListView<String> makePropertyEditor(String item) {
-		ListView<String> list = new ListView<String>();
+		ObservableList<String> properties = FXCollections.observableArrayList(new ArrayList<String>());
+		properties.addAll(controller.getAuthoringConfigManager().getPropertyList(item));
+		ListView<String> list = new ListView<String>(properties);
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {
-				return new PropertyCell(controller);
+				return new PropertyCell(controller, item, list);
 			}
 		});
+		return list;
+	}
+
+	private ListView<String> makeSelfTriggerEditor(String item) {
+		ObservableList<String> triggers = FXCollections.observableArrayList(new ArrayList<String>());
+		triggers.addAll(controller.getAuthoringConfigManager().getSelfTriggerList(item));
+		ListView<String> list = new ListView<String>(triggers);
+		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+			@Override
+			public ListCell<String> call(ListView<String> list) {
+				return new SelfTriggerCell(controller, item, list);
+			}
+		});
+		GridPane.setColumnSpan(list, 2);
 		return list;
 	}
 
 	private ImageView makeImage(String item) {
 		ImageView output = new ImageView(new Image(getClass().getClassLoader()
 				.getResourceAsStream(controller.getAuthoringConfigManager().getDefaultPropertyValue(item, "image"))));
-		output.setFitHeight(100);
+		output.setFitHeight(150);
 		output.setPreserveRatio(true);
 		output.setSmooth(true);
 		output.setCache(true);
@@ -136,6 +157,7 @@ public class ActorEditor extends AbstractDockElement {
 		// item.getName().setValue(name.getText());
 		// refresh();
 		// });
+		name.prefWidthProperty().bind(pane.widthProperty());
 		return name;
 	}
 }
