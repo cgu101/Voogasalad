@@ -8,14 +8,15 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class PropertyCell extends ListCell<String> {
+public class SelfTriggerCell extends ListCell<String> {
 	private AuthoringController controller;
 	private ListView<String> list;
 	private String actor;
 
-	public PropertyCell(AuthoringController controller, String actor, ListView<String> list) {
+	public SelfTriggerCell(AuthoringController controller, String actor, ListView<String> list) {
 		this.controller = controller;
 		this.actor = actor;
 		this.list = list;
@@ -24,30 +25,24 @@ public class PropertyCell extends ListCell<String> {
 	@Override
 	public void updateItem(String item, boolean empty) {
 		super.updateItem(item, empty);
-		HBox box = new HBox(5);
+		VBox box = new VBox(5);
 		if (empty) {
 			setText(null);
 			setGraphic(null);
 		} else if (item != null) {
 			box.setAlignment(Pos.CENTER_LEFT);
-			box.getChildren().add(makeTextField(item, null));
-			box.getChildren().add(new Text("="));
-			box.getChildren()
-					.add(makeTextField(controller.getAuthoringConfigManager().getDefaultPropertyValue(actor, item),
-							e -> editProperty(item)));
+			box.getChildren().add(makeNameField(item, null));
 			setGraphic(box);
 		}
 	}
 
-	private void editProperty(String item) {
-		// TO DO: edit actors;
-		list.refresh();
-	}
-
-	private TextField makeTextField(String item, EventHandler<ActionEvent> e) {
+	private HBox makeNameField(String item, EventHandler<ActionEvent> e) {
 		TextField field = new TextField(item);
 		field.setOnAction(e);
-		return field;
+		HBox box = new HBox(5);
+		box.getChildren().add(field);
+		box.getChildren().add(new Text("->"));
+		return box;
 	}
 
 }

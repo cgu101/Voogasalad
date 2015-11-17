@@ -1,5 +1,6 @@
 package engine;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,6 +23,16 @@ public class InteractionExecutor {
 	private InputManager inputMap;
 	private Map<String,ITriggerEvent> triggerMap;
 	private Map<String,IAction> actionMap;
+	
+	public InteractionExecutor () {
+		this.selfTriggerTree = new InteractionTreeNode();
+		this.externalTriggerTree = new InteractionTreeNode();
+		this.currentActorMap = new ActorGroups();
+		this.inputMap = new InputManager();
+		this.triggerMap = new HashMap<>();
+		this.actionMap = new HashMap<>();
+		this.nextActorMap = new ActorGroups();
+	}
 	
 	// TODO: take in a single object and extract all of the needed information
 	public InteractionExecutor (Level level, InputManager inputMap) {

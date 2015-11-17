@@ -88,8 +88,10 @@ public class AuthoringConfigManager {
 		List<String> triggerList = Arrays.asList(actorMap.get(actor).getString(type).split(REG_EX));
 		String[] propertyList = actorMap.get(actor).getString(type).split(REG_EX);
 		for(String s: propertyList) {
-			String[] toAdd = propertyMap.get(s).getString(type).split(REG_EX);
-			triggerList.addAll(Arrays.asList(toAdd));
+			if(propertyMap.containsKey(s)) {
+				String[] toAdd = propertyMap.get(s).getString(type).split(REG_EX);
+				triggerList.addAll(Arrays.asList(toAdd));
+			}
 		}
 		
 		return triggerList;

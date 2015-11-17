@@ -1,14 +1,12 @@
 package player;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
-import authoring.model.level.ALevel;
-import authoring.model.level.ILevel;
 import controller.AController;
 import data.IFileManager;
 import data.XMLManager;
@@ -18,13 +16,12 @@ import exceptions.EngineException;
 import exceptions.data.GameFileException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import view.screen.PlayerScreen;
 
-public class PlayerController {
+public class PlayerController extends AController {
 
+	Stage myStage;
 	IEngine myEngine;
 	IFileManager myXMLManager;
 	Timeline myGameLoop;
@@ -37,9 +34,10 @@ public class PlayerController {
 	}
 	
 	// should be called by front end
-	private void loadGame(String fileName) throws GameFileException {
+	public void loadGame(String fileName) throws GameFileException {
 		try {
 			Game game = myXMLManager.loadGame(fileName);
+			myEngine = new GameEngine();
 			myEngine.init(game);
 			start();
 		} catch (EngineException e) {
@@ -48,11 +46,23 @@ public class PlayerController {
 		}
 	}
 	
+	public void loadGame (File file) {
+		try {
+			myXMLManager.testLoadGame(file);
+		} catch (GameFileException e) {
+			System.out.println("Test has failed");
+		}
+	}
+	
 	/*
 	private void initializeGame(Game game) throws EngineException {
 		myEngine.init(game);
 	}*/
 
+	public Stage getStage () {
+		return myStage;
+	}
+	
 	public void start() {
 		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.run());
 		Timeline myGameLoop = new Timeline();

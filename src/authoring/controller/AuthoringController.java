@@ -1,13 +1,11 @@
 package authoring.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import authoring.controller.constructor.AuthoringActorConstructor;
 import authoring.controller.constructor.ConstructorFactory;
 import authoring.controller.constructor.LevelConstructor;
 import authoring.model.game.Game;
-import authoring.model.level.Level;
-import authoring.model.properties.Property;
 import controller.AController;
 import javafx.stage.Stage;
 import view.screen.AbstractScreen;
@@ -15,7 +13,8 @@ import view.screen.CreatorScreen;
 
 public class AuthoringController extends AController {
 
-	public AuthoringController() {}
+	public AuthoringController() {
+	}
 	
 	public AuthoringController (Stage stage) {
 		this(stage, new CreatorScreen());
@@ -27,6 +26,10 @@ public class AuthoringController extends AController {
 	
 	public LevelConstructor getLevelConstructor() {
 		return ConstructorFactory.getLevelConstructor();
+	}
+	
+	public AuthoringActorConstructor getAuthoringActorConstructor() {
+		return ConstructorFactory.getAuthoringActorConstructor();
 	}
 	
 	public AuthoringConfigManager getAuthoringConfigManager() {

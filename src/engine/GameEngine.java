@@ -7,17 +7,17 @@ import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
-import engine.runnable.RunnableGame;
 import exceptions.EngineException;
 import player.InputManager;
 
 public class GameEngine implements IEngine {
+	private static final String DEFAULT_INPUTS_FILENAME = "resources/gameplayer/Inputs";
 
-	public RunnableGame runnableGame;
-	public Game game;
+	private Game game;
+	private InteractionExecutor levelExecutor;
 	
 	public GameEngine () {
-		this(null);
+		this(new Game());
 	}
 	
 	public GameEngine (Game game) {
@@ -26,27 +26,35 @@ public class GameEngine implements IEngine {
 
 	@Override
 	public void init(Game gameData) {
-		runnableGame = new RunnableGame(gameData);
+		this.game = gameData;
+		init(gameData.getLevel("0"));
 	}
 	
 	// TODO:
 	public void init(Level level) {
-		InteractionExecutor executor = new InteractionExecutor(level, new InputManager("resources/gameplayer/Inputs"));
+		if (level == null) {
+			level = new Level("testLevel");
+			levelExecutor = new InteractionExecutor();
+		} else {
+			levelExecutor = new InteractionExecutor(level, new InputManager(DEFAULT_INPUTS_FILENAME));
+		}
 	}
 	
 	@Override
 	public void reset() {
-		runnableGame.reset();
+		init(game.getLevel("0"));
 	}
 
 	@Override
 	public void load(Game game) {
-		 runnableGame.load(game);
+		//TODO:
+		// what is this supposed to do?
 	}
 
 	@Override
 	public void play () throws EngineException {
-		runnableGame.run();
+		EngineHeartbeat heartbeat = levelExecutor.run();
+		// do something with the heartbeat
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package data;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -71,7 +72,44 @@ public class XMLManager implements IFileManager{
 		
 		
 	}
+	
+	public void testSaveGame (Game obj, File file) throws GameFileException {
+		String filePath = file.getAbsolutePath();
+		
+		XStream mySerializer = new XStream(new DomDriver());
+		FileOutputStream fos = null;
+		try{            
+			String xml = mySerializer.toXML(obj);
+			fos = new FileOutputStream(filePath);
+			fos.write("<?xml version=\"1.0\"?>".getBytes("UTF-8"));
+			byte[] bytes = xml.getBytes("UTF-8");
+			fos.write(bytes);
+		}catch (Exception e){
+			System.err.println("Error in XML Write: " + e.getMessage());
+		}
+		finally{
+			if(fos != null){
+				try{
+					fos.close();
+				}catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		throw new GameFileException();
+	}
 
+	public Game testLoadGame (File file) throws GameFileException {
+		String fileName = file.getName();
+		
+		try {
+			System.out.println(DEFAULT_GAME_LIBRARY_FOLDER + fileName);
+			return null;
+		} catch (Exception e) {
+			throw new GameFileException();
+		}
+	}
+	
 	@Override
 	public Game loadGame(String fileName) throws GameFileException {
 
@@ -113,6 +151,21 @@ public class XMLManager implements IFileManager{
 		} catch (Exception e) {
 			throw new GameFileException();
 		}
+	}
+
+	@Override
+	public Game loadGame(File file) throws GameFileException {
+		return loadGame(file.getName());
+	}
+
+	@Override
+	public Level loadLevel(File file) throws GameFileException {
+		return loadLevel(file.getName());
+	}
+
+	@Override
+	public State loadState(File file) throws GameFileException {
+		return loadState(file.getName());
 	}
 
 }

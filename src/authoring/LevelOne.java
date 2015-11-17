@@ -6,7 +6,6 @@ import authoring.model.triggers.ITriggerEvent;
 
 public class LevelOne extends ALevel {
 
-	@Override
 	public void run() {
 	}
 
