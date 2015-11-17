@@ -36,10 +36,12 @@ public class PlayerController extends AController implements IPlayer {
 		myEngine = new GameEngine();
 		myXMLManager = new XMLManager();
 	}
-
+	
+	// should be called by front end
 	private void loadGame(String fileName) throws GameFileException {
 		try {
-			myEngine.init(myXMLManager.loadGame(fileName));
+			Game game = myXMLManager.loadGame(fileName);
+			myEngine.init(game);
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
