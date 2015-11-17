@@ -52,7 +52,20 @@ public class ControlBarPlayer extends ControlBar {
 		CheckMenuItem toolbar = new CheckMenuItem(myResources.getString("toolbar"));
 		toolbar.selectedProperty().setValue(true);
 		toolbar.selectedProperty().addListener(e -> toggleToolbar(toolbar.selectedProperty().getValue()));
-		Menu hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar);
+		
+		CheckMenuItem highScore = new CheckMenuItem(myResources.getString("highscore"));
+		highScore.selectedProperty().setValue(false);
+		highScore.selectedProperty().addListener(e -> System.out.println("High Score not implemented yet"));
+		
+		CheckMenuItem headsUpDisplay = new CheckMenuItem(myResources.getString("hud"));
+		headsUpDisplay.selectedProperty().setValue(false);
+		headsUpDisplay.selectedProperty().addListener(e -> System.out.println("HeadsUpDisplay not implemented yet"));
+		
+		CheckMenuItem preferences = new CheckMenuItem(myResources.getString("preferences"));
+		preferences.selectedProperty().setValue(false);
+		preferences.selectedProperty().addListener(e -> System.out.println("Game Preferences not implemented yet"));
+		
+		Menu hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar, highScore, headsUpDisplay, preferences);
 
 		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow);
 		makeMenuBar(mainMenu, file, window);
