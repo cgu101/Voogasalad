@@ -25,8 +25,8 @@ public class SpriteManager {
 		for(Actor a : actors){
 			if(sprites.containsKey(a.getUniqueID())){
 				Sprite s = sprites.get(a.getUniqueID());
-				s.setX((double)a.getProperties().getComponents().get("_x").getValue());
-				s.setY((double)a.getProperties().getComponents().get("_y").getValue());
+				s.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
+				s.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
 			}else if((Boolean)a.getProperties().getComponents().get("_visible").getValue()){
 				sprites.put(a.getUniqueID(), createSprite(a));
 			}
@@ -47,7 +47,7 @@ public class SpriteManager {
 	}
 	
 	public Sprite createSprite(Actor a){
-		String img = (String)a.getProperties().getComponents().get("_image").getValue();
+		String img = (String)a.getProperties().getComponents().get("image").getValue();
 		String[] dimensions = myResources.getString(img).split(",");
 		return new Sprite(img,
 						  Integer.parseInt(dimensions[0]),
