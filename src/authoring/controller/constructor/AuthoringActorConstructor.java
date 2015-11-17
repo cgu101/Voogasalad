@@ -22,9 +22,10 @@ public class AuthoringActorConstructor {
 			actorMap.put(s, new ActorObject(s, AuthoringConfigManager.getInstance().getPropertyList(s)));
 			actorMap.put(s, new ActorObject(s, 
 					AuthoringConfigManager.getInstance().getPropertyList(s),
-					AuthoringConfigManager.getInstance().getSelfTriggerList(s),
-					AuthoringConfigManager.getInstance().getEventTriggerList(s),
-					AuthoringConfigManager.getInstance().getActionList(s)));
+					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.SELF_TRIGGER),
+					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.EVENT_TRIGGER),
+					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.ONE_ACTOR_ACTIONS),
+					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.TWO_ACTOR_ACTIONS)));
 		}
 	}
 	
@@ -52,12 +53,14 @@ public class AuthoringActorConstructor {
 		return actorMap.get(actor).selfTriggerList;
 	}
 	
-	public List<String> getEventTriggerList(String actor) {
-		return actorMap.get(actor).eventTriggerList;
+	public List<String> getTriggerList(String aActor, String...otherActors) {		
+		// Need to compare bActor's properties against
+		return null;
 	}
 
-	public List<String> getActionList(String actor) {
-		return actorMap.get(actor).actionList;
+	public List<String> getActionList(String actor, String...otherActors) {
+		// Need to add the action, then do the same thing from before
+		return null;
 	}	
 	
 	private class ActorObject {
@@ -65,7 +68,8 @@ public class AuthoringActorConstructor {
 		private ActorPropertyMap propertyMap;
 		private List<String> selfTriggerList;
 		private List<String> eventTriggerList;
-		private List<String> actionList;
+		private List<String> oneActorActionList;
+		private List<String> twoActorActionList;
 		
 		private ActorObject(String actor, List<String> propertyList) {
 			this.actor = actor;
@@ -76,12 +80,14 @@ public class AuthoringActorConstructor {
 				List<String> propertyList,
 				List<String> selfTriggerList,
 				List<String> eventTriggerList, 
-				List<String> actionList) {
+				List<String> oneActorActionList, 
+				List<String> twoActorActionList) {
 			propertyMap = new ActorPropertyMap();
 			this.actor = actor;
 			this.selfTriggerList = selfTriggerList;
 			this.eventTriggerList = eventTriggerList;
-			this.actionList = actionList;
+			this.oneActorActionList = oneActorActionList;
+			this.twoActorActionList = twoActorActionList;
 			load(propertyList);
 		}
 		
