@@ -20,6 +20,7 @@ public class PlayerScreen extends AbstractScreen {
 		WIDTH = Integer.parseInt(myResources.getString("width"));
 		HEIGHT = Integer.parseInt(myResources.getString("height"));
 		this.title = myResources.getString("title");
+		this.playerController = new PlayerController();
 		
 		makeScene();
 		scene = new Scene(root, WIDTH, HEIGHT);
@@ -54,7 +55,7 @@ public class PlayerScreen extends AbstractScreen {
 		System.out.println(playerController);
 		File file = fileChooser.showOpenDialog(null);
 		
-		System.out.println(file.getPath());
+		playerController.loadGame(file);
 	}
 
 	//TODO: Implement, check the controller to see

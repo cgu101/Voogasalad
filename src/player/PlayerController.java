@@ -1,5 +1,6 @@
 package player;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -27,8 +28,7 @@ public class PlayerController extends AController {
 	int fps = 10;
 	
 
-	public PlayerController(Stage stage) {
-		myStage = stage;
+	public PlayerController() {
 		myEngine = new GameEngine();
 		myXMLManager = new XMLManager();
 	}
@@ -43,6 +43,14 @@ public class PlayerController extends AController {
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	public void loadGame (File file) {
+		try {
+			myXMLManager.testLoadGame(file);
+		} catch (GameFileException e) {
+			System.out.println("Test has failed");
 		}
 	}
 	

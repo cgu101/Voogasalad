@@ -11,6 +11,10 @@ import javafx.scene.input.KeyEvent;
 public class InputManager {
 	private Map<KeyCode,Boolean> inputMap;
 	
+	public InputManager () {
+		inputMap = new HashMap<KeyCode, Boolean>();
+	}
+	
 	public InputManager (String fileName) {
 		inputMap = new HashMap<KeyCode,Boolean>();
 		populateMap(inputMap, fileName);

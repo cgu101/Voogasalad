@@ -17,7 +17,7 @@ public class GameEngine implements IEngine {
 	private InteractionExecutor levelExecutor;
 	
 	public GameEngine () {
-		this(null);
+		this(new Game());
 	}
 	
 	public GameEngine (Game game) {
@@ -32,7 +32,12 @@ public class GameEngine implements IEngine {
 	
 	// TODO:
 	public void init(Level level) {
-		levelExecutor = new InteractionExecutor(level, new InputManager(DEFAULT_INPUTS_FILENAME));
+		if (level == null) {
+			level = new Level("testLevel");
+			levelExecutor = new InteractionExecutor();
+		} else {
+			levelExecutor = new InteractionExecutor(level, new InputManager(DEFAULT_INPUTS_FILENAME));
+		}
 	}
 	
 	@Override
