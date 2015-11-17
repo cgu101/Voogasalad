@@ -69,6 +69,7 @@ public class PlayerScreen extends AbstractScreen {
 		
 		playerController.loadGame(file);
 	}
+
 	public void saveState () {
 		//TODO: do gui stuff
 		String fileName = "";
@@ -79,6 +80,7 @@ public class PlayerScreen extends AbstractScreen {
 			e.printStackTrace();
 		}
 	}
+
 	public void loadState () {
 		//TODO: do gui stuff
 		String fileName = "";

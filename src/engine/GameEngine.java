@@ -48,12 +48,6 @@ public class GameEngine implements IEngine {
 	}
 
 	@Override
-	public void load(Game game) {
-		//TODO:
-		// what is this supposed to do?
-	}
-
-	@Override
 	public void play () throws EngineException {
 		EngineHeartbeat heartbeat = levelExecutor.run();
 		// do something with the heartbeat
@@ -61,9 +55,7 @@ public class GameEngine implements IEngine {
 
 	@Override
 	public Map<String, Bundle<Actor>> getActors() {
-		//TODO
-		return new HashMap<String, Bundle<Actor>>();
-		
+		return levelExecutor.getActors().getMap();
 	}
 	@Override
 	public State ejectState () {
