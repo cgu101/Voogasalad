@@ -39,7 +39,7 @@ public class ControlBarPlayer extends ControlBar {
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
-		MenuItem load = makeMenuItem(myResources.getString("load"), e -> currentScreen.loadGame());
+		MenuItem load = makeMenuItem(myResources.getString("loadGame"), e -> currentScreen.loadGame());
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load);
 
 		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
@@ -50,9 +50,10 @@ public class ControlBarPlayer extends ControlBar {
 	
 	private void makeTools(ToolBar toolBar) {
 		Button backButton = makeButton("back", e -> currentScreen.setNextScreen(new StartScreen()));
-		Button playButton = makeButton("play", e -> currentScreen.resume()); //TODO
-		Button pauseButton = makeButton("pause", e -> currentScreen.pause()); //TODO
-		Button saveButton = makeButton("save", e -> {}); //TODO
-		toolBar.getItems().addAll(backButton, playButton, pauseButton, saveButton);
+		Button playButton = makeButton("play", e -> currentScreen.resume());
+		Button pauseButton = makeButton("pause", e -> currentScreen.pause());
+		Button saveButton = makeButton("save", e -> currentScreen.saveState()); //TODO
+		Button loadButton = makeButton("load", e -> currentScreen.loadState()); // TODO
+		toolBar.getItems().addAll(backButton, playButton, pauseButton, saveButton, loadButton);
 	}
 }

@@ -41,7 +41,7 @@ public class ActorGroups {
 		getGroup(groupName).remove(actor.getUniqueID());
 	}
 	
-	private Map<String,Bundle<Actor>> getMap () {
+	public Map<String,Bundle<Actor>> getMap () {
 		return actorMap;
 	}
 
