@@ -20,7 +20,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 	protected Label title;
 	protected AbstractScreenInterface screen;
 	protected GridPane home;
-	protected BooleanProperty isShowing;
+	protected BooleanProperty showing;
 
 	public AbstractDockElement(GridPane pane, GridPane home, String title, AbstractScreenInterface screen) {
 		super(pane);
@@ -31,8 +31,8 @@ public abstract class AbstractDockElement extends AbstractElement {
 		this.title.setOnMouseDragged(me -> {
 			screen.getScene().setCursor(Cursor.CLOSED_HAND);
 		});
-		isShowing = new SimpleBooleanProperty(false);
-		isShowing.addListener(e -> toggleShowing(isShowing.getValue()));
+		showing = new SimpleBooleanProperty(false);
+		showing.addListener(e -> toggleShowing(showing.getValue()));
 	}
 
 	private void toggleShowing(boolean input) {
@@ -71,7 +71,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 		stage.setY(y);
 		stage.show();
 		stage.setResizable(false);
-		stage.setOnCloseRequest(e -> isShowing.setValue(false));
+		stage.setOnCloseRequest(e -> showing.setValue(false));
 		stage.setAlwaysOnTop(true);
 		this.title.setOnMouseReleased(me -> reposition(me, false));
 	}
@@ -98,8 +98,8 @@ public abstract class AbstractDockElement extends AbstractElement {
 		return labelPane;
 	}
 
-	public BooleanProperty isShowing() {
-		return isShowing;
+	public BooleanProperty getShowingProperty() {
+		return showing;
 	}
 
 }

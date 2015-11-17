@@ -1,84 +1,106 @@
 package player;
 
-import java.util.List;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Map;
 
-import authoring.ALevel;
-import authoring.ILevel;
+import authoring.model.actors.Actor;
+import authoring.model.bundles.Bundle;
+import authoring.model.game.Game;
 import controller.AController;
 import data.IFileManager;
 import data.XMLManager;
-import data.model.GameData;
 import engine.GameEngine;
 import engine.IEngine;
 import exceptions.EngineException;
 import exceptions.data.GameFileException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import view.screen.PlayerScreen;
 
-public class PlayerController extends AController implements IPlayer {
+public class PlayerController extends AController {
 
-	// TODO: contains gui
+	Stage myStage;
 	IEngine myEngine;
 	IFileManager myXMLManager;
 	Timeline myGameLoop;
+	SpriteManager mySpriteManager;
 	int fps = 10;
+	
 
-	public PlayerController(Stage stage) {
-		super(stage, new PlayerScreen());
+	public PlayerController() {
 		myEngine = new GameEngine();
 		myXMLManager = new XMLManager();
-	}
-
-	private GameData selectGame(String fileName) throws GameFileException {
-		return myXMLManager.loadGame(fileName);
-	}
-
-	private void initializeGame(GameData game) throws EngineException {
-		myEngine.init(game);
-	}
-
-	@Override
-	public void play() {
-		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.update());
-		Timeline myGameLoop = new Timeline();
-		myGameLoop.setCycleCount(Timeline.INDEFINITE);
-		myGameLoop.getKeyFrames().add(frame);
-		myGameLoop.play();
-
-	}
-
-	@Override
-	public void pause() {
-		
-		// should not pause the loop, changes engine to do nothing
-		myGameLoop.pause();
+		mySpriteManager = new SpriteManager();
 	}
 	
-	public void update(){
+	// should be called by front end
+	public void loadGame(String fileName) throws GameFileException {
 		try {
-			myEngine.play();
+			Game game = myXMLManager.loadGame(fileName);
+			myEngine = new GameEngine();
+			myEngine.init(game);
+			start();
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	public void loadGame (File file) {
+		try {
+			myXMLManager.testLoadGame(file);
+		} catch (GameFileException e) {
+			System.out.println("Test has failed");
+		}
+	}
+	
+	/*
+	private void initializeGame(Game game) throws EngineException {
+		myEngine.init(game);
+	}*/
 
-	@Override
-	public void renderGui(Scene s) {
-		// TODO Auto-generated method stub
-
-		// TODO player GUI classes
+	public Stage getStage () {
+		return myStage;
+	}
+	
+	public void start() {
+		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.run());
+		Timeline myGameLoop = new Timeline();
+		myGameLoop.setCycleCount(Timeline.INDEFINITE);
+		myGameLoop.getKeyFrames().add(frame);
+		myGameLoop.play();
 	}
 
-	@Override
-	public void run() throws EngineException {
-		// TODO Auto-generated method stub
-		myEngine.play();
-		currentScreen.run();
+	public void pause() {		
+		myGameLoop.pause();
+	}
+	
+	public void resume() {
+		myGameLoop.play();
+	}
+	
+	public void save() {
+		// serialize and save Engine or InteractionExectutor?
+	}
+
+	public void run(){
+		try {
+			myEngine.play();
+			this.render(myEngine.getActors());
+		} catch (EngineException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void render(Map<String, Bundle<Actor>> actorMap){
+		ArrayList<Actor> actors = new ArrayList<Actor>();
+		for(Bundle<Actor> b : actorMap.values()){
+			actors.addAll(b.getComponents().values());
+		}
+		mySpriteManager.updateSprites(actors);
 	}
 
 }

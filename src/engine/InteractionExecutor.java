@@ -1,74 +1,101 @@
 package engine;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import authoring.model.InteractionTreeNode;
+import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
-import voogasalad.util.reflection.Reflection;
+import authoring.model.actors.ActorGroups;
+import authoring.model.level.Level;
+import authoring.model.tree.InteractionTreeNode;
+import authoring.model.triggers.ITriggerEvent;
+import player.InputManager;
+import player.IPlayer;
 
 // runs the interaction tree
 public class InteractionExecutor {
-	private InteractionTreeNode interactionTree;
+	private InteractionTreeNode externalTriggerTree;
 	private InteractionTreeNode selfTriggerTree;
+	private ActorGroups currentActorMap;
+	private ActorGroups nextActorMap;
+	private InputManager inputMap;
+	private Map<String,ITriggerEvent> triggerMap;
+	private Map<String,IAction> actionMap;
 	
-	// selfTriggers and interactions should be kept in different trees
-	public InteractionExecutor (InteractionTreeNode selfTriggerTree, InteractionTreeNode interactionTree) {
-		this.selfTriggerTree = selfTriggerTree;
-		this.interactionTree = interactionTree;
-	}
-	public void run (Map<String,List<Actor>> actorMap) {
-		runSelfTriggers(actorMap);
-		runInteractions(actorMap);
+	public InteractionExecutor () {
+		this.selfTriggerTree = new InteractionTreeNode();
+		this.externalTriggerTree = new InteractionTreeNode();
+		this.currentActorMap = new ActorGroups();
+		this.inputMap = new InputManager();
+		this.triggerMap = new HashMap<>();
+		this.actionMap = new HashMap<>();
+		this.nextActorMap = new ActorGroups();
 	}
 	
-	// actors will be found in a map of lists (maybe)
-	private void runSelfTriggers (Map<String,List<Actor>> actorMap) {
+	// TODO: take in a single object and extract all of the needed information
+	public InteractionExecutor (Level level, InputManager inputMap) {
+		this.selfTriggerTree = level.getSelfTriggerTree();
+		this.externalTriggerTree = level.getInteractionTree();
+		this.currentActorMap = level.getActorGroups();
+		// TODO: input map
+		this.inputMap = inputMap;
+		
+		this.triggerMap = level.getTriggerMap();
+		this.actionMap = level.getActionMap();
+		
+		this.nextActorMap = new ActorGroups(currentActorMap);
+	}
+	
+	public EngineHeartbeat run () {
+		nextActorMap = new ActorGroups(currentActorMap);
+		runSelfTriggers();
+		runExternalTriggers();
+		currentActorMap = nextActorMap;
+		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
+	}
+	
+	private void runSelfTriggers () {
 		for (InteractionTreeNode actorA : selfTriggerTree.children()) {
 			List<InteractionTreeNode> triggerNodes = actorA.children();
-			for (Actor uniqueA : actorMap.get(actorA.getValue())){
+			for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
 				for (InteractionTreeNode trigger : triggerNodes) {
 					List<InteractionTreeNode> actionNodes = trigger.children();
-					if (findAndApply(trigger.getValue(), uniqueA)) {
-						for (InteractionTreeNode action : actionNodes) {
-							//TODO:
-							// findAndApply(action.getValue(), uniqueA, uniqueB);
-						}
-					}
+					ITriggerEvent selfTriggerEvent = triggerMap.get(trigger.getValue());
+					selfTriggerEvent.condition(parseActions(actionNodes), nextActorMap, inputMap, uniqueA);
 				}
 			}
 		}	
 	}
-	private void runInteractions (Map<String, List<Actor>> actorMap) {
-		for (InteractionTreeNode actorA : interactionTree.children()) {
+	private void runExternalTriggers () {
+		for (InteractionTreeNode actorA : externalTriggerTree.children()) {
 			List<InteractionTreeNode> actorBNodes = actorA.children();
 			for (InteractionTreeNode actorB : actorBNodes) {
 				List<InteractionTreeNode> triggerNodes = actorB.children();
-				for (Actor uniqueA : actorMap.get(actorA.getValue())){
-					for (Actor uniqueB : actorMap.get(actorB.getValue())) {
+				for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
+					for (Actor uniqueB : currentActorMap.getGroup(actorB.getValue())) {
 						for (InteractionTreeNode trigger : triggerNodes) {
 							List<InteractionTreeNode> actionNodes = trigger.children();
-							if (findAndApply(trigger.getValue(), uniqueA, uniqueB)) {
-								for (InteractionTreeNode action : actionNodes) {
-									//TODO:
-									// findAndApply(action.getValue(), uniqueA, uniqueB);
-								}
-							}
+							ITriggerEvent triggerEvent = triggerMap.get(trigger.getValue());
+							triggerEvent.condition(parseActions(actionNodes), nextActorMap, inputMap, uniqueA, uniqueB);
 						}
 					}
-				}	
+				}
 			}
 		}
 	}
 
-	private boolean findAndApply (String key, Object... args) {
-		// TODO: figure out how triggers and actions run
-		// note: currently the trigger and action classes are undefined, let alone an 'evaluate' method
-		try {
-			return (Boolean) Reflection.callMethod(key, "evaluate", args);
-		} catch (Exception e) {
-			return false;
-		}
+	private List<IAction> parseActions(List<InteractionTreeNode> actionNodes) {
+		return actionNodes.stream()
+						  .map(k -> { return actionMap.get(k);})
+						  .collect(Collectors.toList());
 	}
-
+	public ActorGroups getActors () {
+		return new ActorGroups(currentActorMap);
+	}
+	// TODO
+	public void setActors (ActorGroups actors) {
+		this.currentActorMap = actors;
+	}
 }

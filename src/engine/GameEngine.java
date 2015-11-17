@@ -1,38 +1,76 @@
 package engine;
 
-import data.model.GameData;
-import engine.runnable.RunnableGame;
+import java.util.HashMap;
+import java.util.Map;
+
+import authoring.model.actors.Actor;
+import authoring.model.bundles.Bundle;
+import authoring.model.game.Game;
+import authoring.model.level.Level;
 import exceptions.EngineException;
+import player.InputManager;
 
 public class GameEngine implements IEngine {
+	private static final String DEFAULT_INPUTS_FILENAME = "resources/gameplayer/Inputs";
 
-	public RunnableGame runnableGame;
+	private Game game;
+	private InteractionExecutor levelExecutor;
 	
 	public GameEngine () {
-		this(null);
+		this(new Game());
 	}
 	
-	public GameEngine (GameData game) {
+	public GameEngine (Game game) {
 		init(game);
 	}
 
 	@Override
-	public void init(GameData gameData) {
-		runnableGame = new RunnableGame(gameData);
+	public void init(Game gameData) {
+		this.game = gameData;
+		init(gameData.getLevel("0"));
 	}
-
+	
+	// TODO:
+	public void init(Level level) {
+		if (level == null) {
+			level = new Level("testLevel");
+			levelExecutor = new InteractionExecutor();
+		} else {
+			levelExecutor = new InteractionExecutor(level, new InputManager(DEFAULT_INPUTS_FILENAME));
+		}
+	}
+	
 	@Override
 	public void reset() {
-		runnableGame.reset();
+		init(game.getLevel("0"));
 	}
 
 	@Override
-	public void load(GameData game) {
-		 runnableGame.load(game);
+	public void load(Game game) {
+		//TODO:
+		// what is this supposed to do?
 	}
 
 	@Override
 	public void play () throws EngineException {
-		runnableGame.run();
+		EngineHeartbeat heartbeat = levelExecutor.run();
+		// do something with the heartbeat
 	}
+
+	@Override
+	public Map<String, Bundle<Actor>> getActors() {
+		//TODO
+		return new HashMap<String, Bundle<Actor>>();
+		
+	}
+//	public State ejectState () {
+//	Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
+//	propertyBundle.add(new Property<String>(CURRENT_LEVEL, currentLevel.getUniqueID()));
+//	return new State(propertyBundle, executor.getActors());
+//}
+//public void injectState (State state) {
+//	Level level = levelBundle.getProperty((String) state.getProperty(CURRENT_LEVEL).getValue());
+//	init(level);
+//	executor.setActors(state.getActorMap());
+//}
 }

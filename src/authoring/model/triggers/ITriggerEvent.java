@@ -1,9 +1,14 @@
 package authoring.model.triggers;
 
-import authoring.model.bundles.Identifiable;
+import java.util.List;
 
-public interface ITriggerEvent extends Identifiable {
-	    
-	public abstract boolean condition();
-	
+import authoring.model.actions.IAction;
+import authoring.model.actors.Actor;
+import authoring.model.actors.ActorGroups;
+import player.InputManager;
+
+public interface ITriggerEvent {
+
+	public abstract boolean condition(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager, Actor... actors);
+
 }

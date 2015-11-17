@@ -5,23 +5,32 @@ import authoring.model.bundles.Identifiable;
 import authoring.model.properties.Property;
 
 public class Actor implements Identifiable, IActor {
+
+	private Bundle<Property<?>> myPropertyBundle;
+	private String identifier;
+
+	public Actor(Bundle<Property<?>> myPropertyBundle, String identifier) {
+		this.myPropertyBundle = myPropertyBundle;
+		this.identifier = identifier;
+	}
 	
-	private Bundle<Property<?>> myPropertyBundle = new Bundle<Property<?>>();
-	
-	public Actor() {
-		// load properties from config
-		Property<Integer> toAdd1 = new Property<Integer>("health", 10);
-		myPropertyBundle.add(toAdd1);
+	public Actor (Actor a) {
+		this.myPropertyBundle = new Bundle<Property<?>>(a.getProperties());
+		this.identifier = a.getUniqueID();
 	}
 
 	@Override
 	public Bundle<Property<?>> getProperties() {
-		// TODO Auto-generated method stub
 		return myPropertyBundle;
 	}
 
 	@Override
 	public String getUniqueID() {
-		return this.getClass().getName();
+		return identifier;
+	}
+
+	@Override
+	public Identifiable getCopy() {
+		return null;
 	}
 }
