@@ -6,8 +6,8 @@ import view.controlbar.ControlBarPlayer;
 
 public class PlayerScreen extends AbstractScreen {
 
-private ControlBarPlayer t;
-	
+	private ControlBarPlayer t;
+
 	public PlayerScreen() {
 		findResources();
 		WIDTH = Integer.parseInt(myResources.getString("width"));
@@ -17,10 +17,10 @@ private ControlBarPlayer t;
 		makeScene();
 		scene = new Scene(root, WIDTH, HEIGHT);
 	}
-	
+
 	@Override
 	public void run() {
-		
+
 	}
 
 	@Override
@@ -29,8 +29,13 @@ private ControlBarPlayer t;
 		makePanes(2);
 		t = new ControlBarPlayer(myPanes.get(0), this, WIDTH);
 		r.setTop(myPanes.get(0));
-		
+
 		root = r;
+	}
+	
+	// TODO: find a file
+	public void loadGame() {
+		
 	}
 
 }
