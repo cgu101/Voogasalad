@@ -7,49 +7,42 @@ import authoring.model.tree.InteractionTreeNode;
 public class TreeNodeAdder {
 	
 	public static void addSelfTrigger(InteractionTreeNode node, String actor, String trigger) {
-		//addSelfTriggerNode(actor, trigger);
+		addActor(node, actor);
+		addTreeNode(node.getChildWithValue(actor), trigger);
 	}
 	
 	public static void addSelfTriggerActions(InteractionTreeNode node, String actor, String trigger, List<String> actions) {
-		//addSelfTriggerActionsNode(actor, trigger, actions);
+		addActor(node, actor);
+		addTreeNode(node.getChildWithValue(actor), trigger);
+		for(String s: actions) {
+			addTreeNode(node.getChildWithValue(actor).getChildWithValue(trigger), s);
+		}
 	}
 	
 	public static void addEventTrigger(InteractionTreeNode node, String aActor, String bActor, String trigger) {
-		//addEventTriggerNode(aActor, bActor, trigger);
+		addActor(node, aActor, bActor);
+		addTreeNode(node.getChildWithValue(aActor).getChildWithValue(bActor), trigger);	
 	}
 	
 	public static void addEventTriggerActions(InteractionTreeNode node, String aActor, String bActor, String trigger, List<String> actions) {
-		//addEventTriggerActionsNode(aActor, bActor, trigger, actions);
+		addActor(node, aActor, bActor);
+		addTreeNode(node.getChildWithValue(aActor).getChildWithValue(bActor), trigger);
+		for(String s: actions) {
+			addTreeNode(node.getChildWithValue(aActor).getChildWithValue(bActor).getChildWithValue(trigger), s);
+		}	
+	}
+
+	private static InteractionTreeNode addTreeNode(InteractionTreeNode node, String value) {
+		if(node.getChildWithValue(value) == null) {
+			node.addChild(new InteractionTreeNode(value));
+		}
+		return node.getChildWithValue(value);
 	}
 	
-	private void addSelfTriggerNode(String a, String trigger, List<String> actions) {
-//		InteractionTreeNode ret = getTreeNode(selfTriggerTree, a);
-//		addTriggerNode(ret, trigger, actions);
-	}
-	
-	private void addEventTriggerNode(String a, String b, String trigger, List<String> actions) {
-//		InteractionTreeNode ret = getTreeNode(eventTriggerTree, a);
-//		ret = getTreeNode(ret, b);			
-//		addTriggerNode(ret, trigger, actions);
-	}
-		
-	private void addTriggerNode(InteractionTreeNode node, String trigger, List<String> actions) {
-//		InteractionTreeNode ret = getTreeNode(node, trigger);		
-//		for(String s: actions) {
-//			if(ret.getChildWithValue(s) == null) {
-//				ret.addChild(new InteractionTreeNode(s));
-//			}
-//		}
-	}
-	
-	private InteractionTreeNode getTreeNode(InteractionTreeNode node, String value) {
-//		InteractionTreeNode ret;
-//		if((ret = node.getChildWithValue(value)) == null) {
-//			ret = new InteractionTreeNode(value);
-//			node.addChild(ret);
-//		}		
-//		return ret;
-		return null;
+	private static void addActor(InteractionTreeNode node, String...actors) {
+		for(String s: actors) {
+			node = addTreeNode(node, s);
+		}
 	}
 
 }
