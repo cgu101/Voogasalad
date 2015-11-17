@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 import util.Sprite;
 
 import authoring.model.actors.Actor;
-import javafx.scene.text.Font;
 
 //  Probably shouldn't be in player package... class to update, delete, keep track of sprites
 public class SpriteManager {
@@ -18,7 +17,7 @@ public class SpriteManager {
 	
 	public SpriteManager(){
 		sprites = new HashMap<String, Sprite>();
-		ResourceBundle myResources = ResourceBundle.getBundle("resources/SpriteManager");
+		myResources = ResourceBundle.getBundle("resources/SpriteManager");
 	}
 	
 	public void updateSprites(ArrayList<Actor> actors){
