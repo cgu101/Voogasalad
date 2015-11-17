@@ -1,5 +1,9 @@
 package engine;
 
+import java.util.Map;
+
+import authoring.model.actors.Actor;
+import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import exceptions.EngineException;
 
@@ -20,5 +24,5 @@ public interface IEngine {
 	public void reset ();
 	public void load(Game game);
 	public void play() throws EngineException;
-	public void getActors();
+	public Map<String, Bundle<Actor>> getActors();
 }
