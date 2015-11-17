@@ -25,12 +25,14 @@ public class PlayerController extends AController {
 	IEngine myEngine;
 	IFileManager myXMLManager;
 	Timeline myGameLoop;
+	SpriteManager mySpriteManager;
 	int fps = 10;
 	
 
 	public PlayerController() {
 		myEngine = new GameEngine();
 		myXMLManager = new XMLManager();
+		mySpriteManager = new SpriteManager();
 	}
 	
 	// should be called by front end
@@ -100,14 +102,7 @@ public class PlayerController extends AController {
 				actors.add(a);
 			}
 		}
-		
-		
-	}
-
-	@Override
-	public void run() throws Exception {
-		// TODO Auto-generated method stub
-		// idk?
+		mySpriteManager.updateSprites(actors);
 	}
 
 }
