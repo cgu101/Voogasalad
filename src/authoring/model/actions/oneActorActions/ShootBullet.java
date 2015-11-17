@@ -16,8 +16,8 @@ public class ShootBullet extends AActionOneActor{
 	@Override
 	public void run(ActorGroups actorGroup, Actor actor) {
 		Property<Double> angle = (Property<Double>) actor.getProperties().getComponents().get("angle");
-		Property<Double> x = (Property<Double>) actor.getProperties().getComponents().get("xlocation");
-		Property<Double> y = (Property<Double>) actor.getProperties().getComponents().get("ylocation");
+		Property<Double> x = (Property<Double>) actor.getProperties().getComponents().get("xLocation");
+		Property<Double> y = (Property<Double>) actor.getProperties().getComponents().get("yLocation");
 
 		Actor bullet = createBullet(angle, x, y);
 		actorGroup.addToGroup("bullet", bullet);

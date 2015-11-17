@@ -17,8 +17,8 @@ public class Move extends AActionOneActor{
 		Double angle = ((Property<Double>) actor.getProperties().getComponents().get("angle")).getValue();
 		Double speed = ((Property<Double>) actor.getProperties().getComponents().get("angle")).getValue();
 
-		Property<Double> xP = (Property<Double>) actor.getProperties().getComponents().get("xlocation");
-		Property<Double> yP = (Property<Double>) actor.getProperties().getComponents().get("ylocation");
+		Property<Double> xP = (Property<Double>) actor.getProperties().getComponents().get("xLocation");
+		Property<Double> yP = (Property<Double>) actor.getProperties().getComponents().get("yLocation");
 		Double x = xP.getValue();
 		Double y = yP.getValue();
 		
