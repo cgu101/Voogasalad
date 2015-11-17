@@ -50,7 +50,7 @@ public class CreatorScreen extends AbstractScreen {
 		root = r;
 		scene = new Scene(root, WIDTH, HEIGHT);
 		makePanes(2);
-		w = new Workspace(myPanes.get(1), this);
+		w = new Workspace(myPanes.get(1), this, controller);
 		r.setTop(myPanes.get(0));
 		r.setCenter(myPanes.get(1));
 		dockPanes = new ArrayList<GridPane>();
