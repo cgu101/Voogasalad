@@ -84,6 +84,10 @@ public class Workspace extends AbstractElement {
 		manager.getSelectionModel().select(switchID);
 	}
 
+	public ArrayList<LevelMap> getLevels(){
+		return levels;
+	}
+	
 	private void removeLevel(Tab tab) {
 		int Id = Integer.parseInt(tab.getId());
 		levels.remove(Id);
@@ -92,4 +96,5 @@ public class Workspace extends AbstractElement {
 			levels.get(i).getTab().setText("Level " + (i + 1));
 		}
 	}
+	
 }

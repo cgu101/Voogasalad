@@ -1,6 +1,8 @@
 package view.screen;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.util.ArrayList;
 
 import exceptions.data.GameFileException;
 import exceptions.engine.NullGameException;
@@ -9,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import player.PlayerController;
 import view.controlbar.ControlBarPlayer;
+import view.element.AbstractDockElement;
 import view.element.Workspace;
 
 public class PlayerScreen extends AbstractScreen {
@@ -55,6 +58,7 @@ public class PlayerScreen extends AbstractScreen {
 		w = new Workspace(myPanes.get(1), this);
 		r.setCenter(myPanes.get(1));
 		root = r;
+		components = new ArrayList<AbstractDockElement>(); //No components yet! 
 	}
 	
 	// TODO: David: need a stage eventually for the line: fileChooser.showOpenDialog(null);
@@ -70,6 +74,23 @@ public class PlayerScreen extends AbstractScreen {
 		playerController.loadGame(file);
 	}
 	public void saveState () {
+		System.out.println("Testing saving game state ");
+//		String test = "test child";
+//		
+//        BufferedWriter output = null;
+//        try {
+//        	File saveFile = FileChooserUtility.save(null);
+//            output = new BufferedWriter(new FileWriter(saveFile));
+//            output.write(test);
+//        } catch ( IOException e ) {
+//            e.printStackTrace();
+//        } finally {
+//            if ( output != null )
+//				try {
+//					output.close();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
 		
 	}
 	public void loadState () {
