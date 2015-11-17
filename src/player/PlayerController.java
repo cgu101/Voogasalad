@@ -89,10 +89,6 @@ public class PlayerController extends AController {
 			throw new GameFileException();
 		}
 	}
-	
-	public void save() {
-		// serialize and save Engine or InteractionExectutor?
-	}
 
 	public void run(){
 		try {
