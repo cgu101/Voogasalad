@@ -1,7 +1,11 @@
 package player;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import authoring.model.actors.Actor;
+import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.level.ALevel;
 import authoring.model.level.ILevel;
@@ -25,6 +29,7 @@ public class PlayerController extends AController implements IPlayer {
 	IFileManager myXMLManager;
 	Timeline myGameLoop;
 	int fps = 10;
+	
 
 	public PlayerController(Stage stage) {
 		super(stage, new PlayerScreen());
@@ -68,11 +73,22 @@ public class PlayerController extends AController implements IPlayer {
 	public void run(){
 		try {
 			myEngine.play();
-			myEngine.getActors();
+			this.render(myEngine.getActors());
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void render(Map<String, Bundle<Actor>> actorMap){
+		ArrayList<Actor> actors = new ArrayList<Actor>();
+		for(Bundle<Actor> b : actorMap.values()){
+			for(Actor a : b){
+				actors.add(a);
+			}
+		}
+		
+		
 	}
 
 }
