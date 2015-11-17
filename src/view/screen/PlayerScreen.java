@@ -29,12 +29,22 @@ public class PlayerScreen extends AbstractScreen {
 
 	//TODO: Throw NullGameException when Game hasn't been loaded yet
 	public void resume() {
-		playerController.resume();
+		try {
+			playerController.resume();
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	//TODO: Throw NullGameException when Game hasn't been loaded yet
 	public void pause() {
-		playerController.pause();
+		try {
+			playerController.pause();
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
