@@ -2,6 +2,7 @@ package view.element;
 
 import java.util.ArrayList;
 
+import authoring.controller.AuthoringController;
 import javafx.geometry.Side;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -13,10 +14,12 @@ public class Workspace extends AbstractElement {
 	private ArrayList<LevelMap> levels;
 	private LevelMap currentLevel;
 	private AbstractScreen screen;
+	private AuthoringController controller;
 
-	public Workspace(GridPane pane, AbstractScreen screen) {
+	public Workspace(GridPane pane, AbstractScreen screen, AuthoringController ac) {
 		super(pane);
 		this.screen = screen;
+		controller = ac;
 		makePane();
 	}
 
@@ -43,7 +46,7 @@ public class Workspace extends AbstractElement {
 				c.getShowingProperty().setValue(true);
 			}
 		}
-		LevelMap newLevel = new LevelMap(new GridPane(), levels.size(), screen);
+		LevelMap newLevel = new LevelMap(new GridPane(), levels.size(), screen, controller.getLevelConstructor());
 		levels.add(newLevel);
 		Tab newLevelTab = newLevel.getTab();
 		int newID = Integer.parseInt(newLevelTab.getId());
@@ -84,6 +87,10 @@ public class Workspace extends AbstractElement {
 		manager.getSelectionModel().select(switchID);
 	}
 
+	public ArrayList<LevelMap> getLevels(){
+		return levels;
+	}
+	
 	private void removeLevel(Tab tab) {
 		int Id = Integer.parseInt(tab.getId());
 		levels.remove(Id);
@@ -92,4 +99,5 @@ public class Workspace extends AbstractElement {
 			levels.get(i).getTab().setText("Level " + (i + 1));
 		}
 	}
+	
 }

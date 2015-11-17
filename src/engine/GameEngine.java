@@ -48,9 +48,8 @@ public class GameEngine implements IEngine {
 	}
 
 	@Override
-	public void play () throws EngineException {
-		EngineHeartbeat heartbeat = levelExecutor.run();
-		// do something with the heartbeat
+	public EngineHeartbeat play () throws EngineException {
+		return levelExecutor.run();
 	}
 
 	@Override

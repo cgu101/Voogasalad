@@ -37,7 +37,7 @@ public class ActorGroupsConstructor {
 					actorBundle.getComponents().get(id).getProperties().add(p);
 				}
 			} else {
-				actorBundle.add(new Actor(properties, id));
+				actorGroups.addActor(new Actor(properties, id));
 			} 
 		}
 	}
