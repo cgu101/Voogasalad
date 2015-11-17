@@ -50,8 +50,8 @@ public class ControlBarPlayer extends ControlBar {
 	
 	private void makeTools(ToolBar toolBar) {
 		Button backButton = makeButton("back", e -> currentScreen.setNextScreen(new StartScreen()));
-		Button playButton = makeButton("play", e -> {}); //TODO
-		Button pauseButton = makeButton("pause", e -> {}); //TODO
+		Button playButton = makeButton("play", e -> currentScreen.resume()); //TODO
+		Button pauseButton = makeButton("pause", e -> currentScreen.pause()); //TODO
 		Button saveButton = makeButton("save", e -> {}); //TODO
 		toolBar.getItems().addAll(backButton, playButton, pauseButton, saveButton);
 	}

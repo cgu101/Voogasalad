@@ -59,8 +59,8 @@ public class ControlBarCreator extends ControlBar {
 
 	private void createMenuBar(MenuBar mainMenu) {
 		// TODO:
-		MenuItem load = makeMenuItem(myResources.getString("load"), null);	// e -> screen.loadGame());
-		MenuItem save = makeMenuItem(myResources.getString("save"), null);	// e -> screen.saveGame());
+		MenuItem load = makeMenuItem(myResources.getString("load"), e -> screen.loadGame());
+		MenuItem save = makeMenuItem(myResources.getString("save"), e -> screen.saveGame());
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save);
 
 		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> workspace.addLevel(), KeyCode.T, KeyCombination.CONTROL_DOWN);
