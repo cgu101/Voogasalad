@@ -1,5 +1,9 @@
 package view.screen;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import authoring.controller.AuthoringController;
@@ -8,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import util.FileChooserUtility;
 import view.controlbar.ControlBarCreator;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
@@ -45,7 +50,7 @@ public class CreatorScreen extends AbstractScreen {
 		root = r;
 		scene = new Scene(root, WIDTH, HEIGHT);
 		makePanes(2);
-		w = new Workspace(myPanes.get(1), this);
+		w = new Workspace(myPanes.get(1), this, controller);
 		r.setTop(myPanes.get(0));
 		r.setCenter(myPanes.get(1));
 		dockPanes = new ArrayList<GridPane>();
@@ -72,11 +77,35 @@ public class CreatorScreen extends AbstractScreen {
 		t = new ControlBarCreator(myPanes.get(0), this, w);
 	}
 	//TODO
-	public void saveGame(){
+	public void saveGame() {
+		System.out.println("Testing saving game ");
 		
+		String test = "test child";
+		
+        BufferedWriter output = null;
+        try {
+        	File saveFile = FileChooserUtility.save(scene.getWindow());
+            output = new BufferedWriter(new FileWriter(saveFile));
+            output.write(test);
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        } finally {
+            if ( output != null )
+				try {
+					output.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+        }
 	}
+	
+	private void writeToFile (File file, String text) {
+		
+//		File file = FileChooserUtility.save(null);
+	}
+	
 	//TODO
 	public void loadGame(){
-		
+		System.out.println("Testing loading game ");
 	}
 }

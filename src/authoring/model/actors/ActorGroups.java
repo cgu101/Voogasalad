@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import authoring.model.bundles.Bundle;
+import authoring.model.properties.Property;
 
 public class ActorGroups {
 	private Map<String,Bundle<Actor>> actorMap;
@@ -24,19 +25,23 @@ public class ActorGroups {
 		return actorMap.get(groupName);
 	}
 
-	public void addToGroup (String groupName, Actor actor) {
+	@SuppressWarnings("unchecked")
+	public void addActor (Actor actor) {
+		String groupName = ((Property<String>) actor.getProperties().getComponents().get("groupID")).getValue();
 		if(actorMap.containsKey(groupName)){
 			getGroup(groupName).add(actor);
 		}else{
 			addGroup(groupName).add(actor);
 		}
 	}
-
-	public void removeFromGroup (String groupName, Actor actor) {
+	
+	@SuppressWarnings("unchecked")
+	public void removeActor (Actor actor) {
+		String groupName = ((Property<String>) actor.getProperties().getComponents().get("groupID")).getValue();
 		getGroup(groupName).remove(actor.getUniqueID());
 	}
 	
-	private Map<String,Bundle<Actor>> getMap () {
+	public Map<String,Bundle<Actor>> getMap () {
 		return actorMap;
 	}
 

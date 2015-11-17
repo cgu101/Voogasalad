@@ -31,6 +31,24 @@ public class Actor implements Identifiable, IActor {
 
 	@Override
 	public Identifiable getCopy() {
-		return null;
+		return new Actor(this);
+	}
+
+	@Override
+	public Property<?> getProperty(String identifier) {
+		return (Property<?>) myPropertyBundle.getComponents().get(identifier);
+	}
+
+	@Override
+	public <T> void setProperty(Property<T> property) {
+		myPropertyBundle.getComponents().put(property.getUniqueID(), property);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> void setProperty(Property<T>... properties) {
+		for(Property<T> prop: properties){
+			setProperty(prop);
+		}
 	}
 }
