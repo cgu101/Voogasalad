@@ -59,6 +59,10 @@ public class AuthoringConfigManager {
 	public List<String> getActorList() {
 		return new ArrayList<String>(actorMap.keySet());
 	}
+	
+	public List<String> getPropertyList() {
+		return new ArrayList<String>(propertyMap.keySet());
+	}
 
 	public List<String> getPropertyList(String actor) {
 		return  Arrays.asList(actorMap.get(actor).getString(PROPERTIES).split(REG_EX));

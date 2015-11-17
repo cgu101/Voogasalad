@@ -1,5 +1,6 @@
 package view.element;
 
+import authoring.controller.constructor.LevelConstructor;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
@@ -14,13 +15,15 @@ public class LevelMap extends Map {
 	private AbstractScreen screen;
 	private Image backgroundImage;
 	private ScrollPane sp;
+	private LevelConstructor constructor;
 
-	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
+
+	public LevelMap(GridPane pane, int i, AbstractScreen screen, LevelConstructor lc) {
 		super(pane, screen);
-		findResources();
 		myTab = new Tab("Level " + (i + 1));
 		myTab.setContent(pane);
-		myTab.setId(Integer.toString(i));
+		myTab.setId(Integer.toString(i));	
+		constructor = lc;
 		makePane();
 	}
 
