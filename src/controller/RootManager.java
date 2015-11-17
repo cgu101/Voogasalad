@@ -3,6 +3,7 @@ package controller;
 import java.util.Observable;
 import java.util.Observer;
 
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.screen.AbstractScreen;
 import view.screen.StartScreen;
@@ -22,6 +23,7 @@ public class RootManager implements Observer {
 		stage = s;
 		AbstractScreen startScreen = new StartScreen();
 		currentController = new MenuController(stage, startScreen);
+		currentController.addObserver(this);
 		stage.setScene(startScreen.getScene());
 		stage.show();
 		stage.setResizable(startScreen.isResizable());
@@ -40,6 +42,7 @@ public class RootManager implements Observer {
 	public void update(Observable arg0, Object controller) {
 		// TODO Auto-generated method stub
 		currentController = (AController) controller;
+		currentController.addObserver(this);
 	}
 
 }

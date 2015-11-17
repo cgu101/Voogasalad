@@ -2,7 +2,9 @@ package controller;
 
 import java.util.Observable;
 
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
+import view.element.AbstractDockElement;
 import view.screen.AbstractScreen;
 
 /**
@@ -14,6 +16,10 @@ import view.screen.AbstractScreen;
 public abstract class AController extends Observable {
 	protected AbstractScreen currentScreen;
 	protected Stage mainStage;
+	
+	public AController() {
+		
+	}
 
 	public AController(Stage stage) {
 		// TODO: change this
@@ -39,7 +45,20 @@ public abstract class AController extends Observable {
 			mainStage.setScene(currentScreen.getScene());
 			mainStage.setTitle(currentScreen.getTitle());
 			mainStage.setResizable(currentScreen.isResizable());
+			currentScreen.getFullscreenProperty()
+					.addListener(e -> toggleScreen(currentScreen.getFullscreenProperty().getValue()));
+			mainStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 			mainStage.show();
+		}
+	}
+
+	private void toggleScreen(Boolean value) {
+		mainStage.setFullScreen(value);
+		if (value) {
+			for (AbstractDockElement c : currentScreen.getComponents()) {
+				c.getShowingProperty().setValue(false);
+				c.getShowingProperty().setValue(true);
+			}
 		}
 	}
 

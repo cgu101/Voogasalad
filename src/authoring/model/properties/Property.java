@@ -4,8 +4,8 @@ import authoring.model.bundles.Identifiable;
 
 public class Property<T> implements Identifiable {
 
-	T myValue;
-	String identifier;
+	private T myValue;
+	private String identifier;
 	
 	public Property(String identifier, T value) {
 		this.identifier = identifier;
@@ -21,5 +21,11 @@ public class Property<T> implements Identifiable {
 	@Override
 	public String getUniqueID() {
 		return identifier;
+	}
+	
+	@Override
+	public Identifiable getCopy() {
+		Property<T> copy = new Property<T>(identifier, myValue);
+		return copy;
 	}
 }

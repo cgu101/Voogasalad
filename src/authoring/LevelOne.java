@@ -1,6 +1,7 @@
 package authoring;
 
 import authoring.model.actors.IActor;
+import authoring.model.level.ALevel;
 import authoring.model.triggers.ITriggerEvent;
 
 public class LevelOne extends ALevel {
@@ -25,12 +26,6 @@ public class LevelOne extends ALevel {
 	public boolean linkActorsWithTriggers(ITriggerEvent myEvent, IActor... actors) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public String getUniqueID() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

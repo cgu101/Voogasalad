@@ -7,14 +7,10 @@ import java.io.IOException;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import data.model.GameData;
-import data.model.LevelData;
-import data.model.StateData;
+import authoring.model.game.Game;
+import authoring.model.level.Level;
+import engine.State;
 import exceptions.data.GameFileException;
-
-/*
- *  EXAMPLE CODE FOR SAVING AND LOADING 
- */
 
 
 public class XMLManager implements IFileManager{
@@ -67,7 +63,7 @@ public class XMLManager implements IFileManager{
 	}
 
 	@Override
-	public void saveGame(GameData game, String fileName) throws GameFileException {
+	public void saveGame(Game game, String fileName) throws GameFileException {
 		
 		// save to game.xml file
 		// filepath = "src/DESIGN/datafiles/game.xml";
@@ -77,11 +73,11 @@ public class XMLManager implements IFileManager{
 	}
 
 	@Override
-	public GameData loadGame(String fileName) throws GameFileException {
+	public Game loadGame(String fileName) throws GameFileException {
 
 		// load from game.xml
 		try {
-			return (GameData) loadFile(DEFAULT_GAME_LIBRARY_FOLDER + fileName);
+			return (Game) loadFile(DEFAULT_GAME_LIBRARY_FOLDER + fileName);
 		} catch (Exception e) {
 			throw new GameFileException();
 		}
@@ -89,31 +85,31 @@ public class XMLManager implements IFileManager{
 	}
 
 	@Override
-	public void saveLevel(LevelData level, String fileName) throws GameFileException {
+	public void saveLevel(Level level, String fileName) throws GameFileException {
 		// TODO Auto-generated method stub
 		saveFile(level, DEFAULT_GAME_LIBRARY_FOLDER + fileName);
 	}
 
 	@Override
-	public LevelData loadLevel(String fileName) throws GameFileException {
+	public Level loadLevel(String fileName) throws GameFileException {
 		// TODO Auto-generated method stub
 		try {
-			return (LevelData) loadFile(DEFAULT_GAME_LIBRARY_FOLDER + fileName);
+			return (Level) loadFile(DEFAULT_GAME_LIBRARY_FOLDER + fileName);
 		} catch (Exception e) {
 			throw new GameFileException();
 		}
 	}
 
 	@Override
-	public void saveState(StateData state, String fileName) throws GameFileException {
+	public void saveState(State state, String fileName) throws GameFileException {
 		// TODO Auto-generated method stub
 		saveFile(state, DEFAULT_SAVESTATE_FOLDER + fileName);
 	}
 
 	@Override
-	public StateData loadState(String fileName) throws GameFileException {
+	public State loadState(String fileName) throws GameFileException {
 		try {
-			return (StateData) loadFile(DEFAULT_SAVESTATE_FOLDER + fileName);
+			return (State) loadFile(DEFAULT_SAVESTATE_FOLDER + fileName);
 		} catch (Exception e) {
 			throw new GameFileException();
 		}

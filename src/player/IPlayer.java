@@ -1,7 +1,5 @@
 package player;
 
-import javafx.scene.Scene;
-
 public interface IPlayer {
 
 	// Resumes gameplay
@@ -10,6 +8,4 @@ public interface IPlayer {
 	// Pauses gameplay
 	public void pause();
 	
-	// Draws the player's gui elements
-	public void renderGui(Scene s);
 }
