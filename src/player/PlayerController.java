@@ -1,14 +1,11 @@
 package player;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
-import authoring.model.level.ALevel;
-import authoring.model.level.ILevel;
 import controller.AController;
 import data.IFileManager;
 import data.XMLManager;
@@ -18,20 +15,20 @@ import exceptions.EngineException;
 import exceptions.data.GameFileException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import view.screen.PlayerScreen;
 
-public class PlayerController {
+public class PlayerController extends AController {
 
+	Stage myStage;
 	IEngine myEngine;
 	IFileManager myXMLManager;
 	Timeline myGameLoop;
 	int fps = 10;
 	
 
-	public PlayerController() {
+	public PlayerController(Stage stage) {
+		myStage = stage;
 		myEngine = new GameEngine();
 		myXMLManager = new XMLManager();
 	}
@@ -54,6 +51,10 @@ public class PlayerController {
 		myEngine.init(game);
 	}*/
 
+	public Stage getStage () {
+		return myStage;
+	}
+	
 	public void start() {
 		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.run());
 		Timeline myGameLoop = new Timeline();

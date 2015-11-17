@@ -13,7 +13,8 @@ import view.screen.CreatorScreen;
 
 public class AuthoringController extends AController {
 
-	public AuthoringController() {}
+	public AuthoringController() {
+	}
 	
 	public AuthoringController (Stage stage) {
 		this(stage, new CreatorScreen());
