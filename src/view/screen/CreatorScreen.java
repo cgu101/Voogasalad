@@ -2,10 +2,12 @@ package view.screen;
 
 import java.util.ArrayList;
 
+import authoring.controller.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import view.controlbar.ControlBarCreator;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
@@ -19,11 +21,13 @@ public class CreatorScreen extends AbstractScreen {
 	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
 
+	private AuthoringController controller;
+
 	public CreatorScreen() {
 		findResources();
 		WIDTH = Integer.parseInt(myResources.getString("width"));
 		HEIGHT = Integer.parseInt(myResources.getString("height"));
-
+		this.controller = new AuthoringController();
 		makeScene();
 		root.prefHeightProperty().bind(scene.heightProperty());
 		root.prefWidthProperty().bind(scene.widthProperty());
@@ -60,11 +64,19 @@ public class CreatorScreen extends AbstractScreen {
 		r.setBottom(bottomPane);
 		components = new ArrayList<AbstractDockElement>();
 		ActorBrowser browser = new ActorBrowser(dockPanes.get(0), homePanes.get(0),
-				myResources.getString("browsername"), this);
+				myResources.getString("browsername"), this, controller);
 		components.add(browser);
 		ActorEditor editor = new ActorEditor(dockPanes.get(1), homePanes.get(1), myResources.getString("editorname"),
-				this, browser);
+				this, browser, controller);
 		components.add(editor);
 		t = new ControlBarCreator(myPanes.get(0), this, w);
+	}
+	//TODO
+	public void saveGame(){
+		
+	}
+	//TODO
+	public void loadGame(){
+		
 	}
 }

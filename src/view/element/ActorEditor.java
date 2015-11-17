@@ -1,9 +1,15 @@
 package view.element;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import authoring.controller.AuthoringController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -13,19 +19,24 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-import view.actor.ActorFactory;
+import javafx.util.Callback;
+import view.actor.ActorCell;
+import view.actor.PropertyCell;
+import view.actor.SelfTriggerCell;
 import view.screen.AbstractScreenInterface;
 
 public class ActorEditor extends AbstractDockElement {
 
 	private ActorBrowser browser;
+	private AuthoringController controller;
 
-	public ActorEditor(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,
-			ActorBrowser browser) {
+	public ActorEditor(GridPane pane, GridPane home, String title, AbstractScreenInterface screen, ActorBrowser browser,
+			AuthoringController controller) {
 		super(pane, home, title, screen);
 		findResources();
+		this.controller = controller;
 		this.browser = browser;
-		for (ListView<ActorFactory> list : browser.getLists()) {
+		for (ListView<String> list : browser.getLists()) {
 			list.getSelectionModel().selectedItemProperty().addListener(e -> load());
 		}
 		makePane();
@@ -47,22 +58,24 @@ public class ActorEditor extends AbstractDockElement {
 		GridPane.setColumnSpan(labelPane, 2);
 	}
 
-	private void showSelector(ActorFactory item) {
+	private void showSelector(String item) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Upload Image:");
 		fileChooser.getExtensionFilters()
 				.addAll(new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
 		File selectedFile = fileChooser.showOpenDialog(new Stage());
 		if (selectedFile != null) {
-			item.setImage(new Image(selectedFile.toURI().toString()));
+			String file = selectedFile.toURI().toString();
+			String imageName = file.substring(file.lastIndexOf('/'));
+			// add copy method
 			refresh();
 		}
-		System.out.println(item.getName().getValue());
+
 	}
 
 	public void refresh() {
 		if (browser.getLists() != null) {
-			for (ListView<ActorFactory> list : browser.getLists()) {
+			for (ListView<String> list : browser.getLists()) {
 				list.refresh();
 			}
 		}
@@ -75,8 +88,8 @@ public class ActorEditor extends AbstractDockElement {
 		if (!showing.getValue()) {
 			showing.setValue(true);
 		}
-		ActorFactory leftItem = browser.getLists().get(0).getSelectionModel().getSelectedItem();
-		ActorFactory rightItem = browser.getLists().get(1).getSelectionModel().getSelectedItem();
+		String leftItem = browser.getLists().get(0).getSelectionModel().getSelectedItem();
+		String rightItem = browser.getLists().get(1).getSelectionModel().getSelectedItem();
 		if (leftItem == null && rightItem == null) {
 			Text none = new Text(myResources.getString("none"));
 			none.setFont(textFont);
@@ -92,30 +105,59 @@ public class ActorEditor extends AbstractDockElement {
 		}
 	}
 
-	private void editActor(ActorFactory item) {
+	private void editActor(String item) {
 		pane.add(makeImage(item), 0, 1);
 		pane.add(makeName(item), 1, 1);
+		pane.add(makePropertyEditor(item), 1, 2);
+		pane.add(makeSelfTriggerEditor(item), 0, 3);
 	}
 
-	private ImageView makeImage(ActorFactory item) {
-		ImageView output = new ImageView(item.getImage());
-		output.setFitHeight(100);
+	private ListView<String> makePropertyEditor(String item) {
+		ObservableList<String> properties = FXCollections.observableArrayList(new ArrayList<String>());
+		properties.addAll(controller.getAuthoringConfigManager().getPropertyList(item));
+		ListView<String> list = new ListView<String>(properties);
+		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+			@Override
+			public ListCell<String> call(ListView<String> list) {
+				return new PropertyCell(controller, item, list);
+			}
+		});
+		return list;
+	}
+
+	private ListView<String> makeSelfTriggerEditor(String item) {
+		ObservableList<String> triggers = FXCollections.observableArrayList(new ArrayList<String>());
+		triggers.addAll(controller.getAuthoringConfigManager().getSelfTriggerList(item));
+		ListView<String> list = new ListView<String>(triggers);
+		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+			@Override
+			public ListCell<String> call(ListView<String> list) {
+				return new SelfTriggerCell(controller, item, list);
+			}
+		});
+		GridPane.setColumnSpan(list, 2);
+		return list;
+	}
+
+	private ImageView makeImage(String item) {
+		ImageView output = new ImageView(new Image(getClass().getClassLoader()
+				.getResourceAsStream(controller.getAuthoringConfigManager().getDefaultPropertyValue(item, "image"))));
+		output.setFitHeight(150);
 		output.setPreserveRatio(true);
 		output.setSmooth(true);
 		output.setCache(true);
 		output.setOnMouseClicked(e -> showSelector(item));
+		GridPane.setRowSpan(output, 2);
 		return output;
 	}
 
-	private TextField makeName(ActorFactory item) {
-		TextField name = new TextField(item.getName().getValue());
-		item.getName().addListener(e -> {
-			name.setText(item.getName().getValue());
-		});
-		name.setOnAction(e -> {
-			item.getName().setValue(name.getText());
-			refresh();
-		});
+	private TextField makeName(String item) {
+		TextField name = new TextField(item);
+		// name.setOnAction(e -> {
+		// item.getName().setValue(name.getText());
+		// refresh();
+		// });
+		name.prefWidthProperty().bind(pane.widthProperty());
 		return name;
 	}
 }
