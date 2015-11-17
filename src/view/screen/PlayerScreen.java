@@ -2,11 +2,9 @@ package view.screen;
 
 import java.io.File;
 
-import exceptions.engine.NullGameException;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import player.PlayerController;
 import view.controlbar.ControlBarPlayer;
 
@@ -56,6 +54,12 @@ public class PlayerScreen extends AbstractScreen {
 		File file = fileChooser.showOpenDialog(null);
 		
 		playerController.loadGame(file);
+	}
+	public void saveState () {
+		
+	}
+	public void loadState () {
+		
 	}
 
 	//TODO: Implement, check the controller to see
