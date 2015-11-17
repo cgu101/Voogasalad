@@ -14,7 +14,7 @@ public class PlayerScreen extends AbstractScreen {
 
 	private ControlBarPlayer t;
 	private PlayerController playerController;
-	private Workspace w;
+//	private Workspace w;
 
 	public PlayerScreen() {
 		findResources();
@@ -43,7 +43,7 @@ public class PlayerScreen extends AbstractScreen {
 		makePanes(2);
 		t = new ControlBarPlayer(myPanes.get(0), this, WIDTH);
 		r.setTop(myPanes.get(0));
-		w = new Workspace(myPanes.get(1), this);
+//		w = new Workspace(myPanes.get(1), this);
 		r.setCenter(myPanes.get(1));
 		root = r;
 	}

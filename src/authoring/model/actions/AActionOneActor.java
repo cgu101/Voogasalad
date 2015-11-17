@@ -2,6 +2,8 @@ package authoring.model.actions;
 
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
+import authoring.model.bundles.Bundle;
+import authoring.model.properties.Property;
 
 /**
  * @author Inan
@@ -20,6 +22,4 @@ public abstract class AActionOneActor implements IAction {
 			System.out.println(this.getClass().getName()+": More than 1 actor as argument!!. Running Action on all Actors");
 		}
 	}
-	
-	
 }
