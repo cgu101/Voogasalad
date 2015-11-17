@@ -70,10 +70,11 @@ public class PlayerScreen extends AbstractScreen {
 		playerController.loadGame(file);
 	}
 	public void saveState () {
-		
+		playerController.save();
 	}
 	public void loadState () {
-		
+		// where does the current game's name come from?
+		//playerController.loadGame(fileName);
 	}
 
 	//TODO: Implement, check the controller to see
