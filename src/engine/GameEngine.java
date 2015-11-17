@@ -7,11 +7,13 @@ import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
+import authoring.model.properties.Property;
 import exceptions.EngineException;
 import player.InputManager;
 
 public class GameEngine implements IEngine {
 	private static final String DEFAULT_INPUTS_FILENAME = "resources/gameplayer/Inputs";
+	private static final String LEVEL_ID_KEY = "level";
 
 	private Game game;
 	private InteractionExecutor levelExecutor;
@@ -63,14 +65,14 @@ public class GameEngine implements IEngine {
 		return new HashMap<String, Bundle<Actor>>();
 		
 	}
-//	public State ejectState () {
-//	Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
-//	propertyBundle.add(new Property<String>(CURRENT_LEVEL, currentLevel.getUniqueID()));
-//	return new State(propertyBundle, executor.getActors());
-//}
-//public void injectState (State state) {
-//	Level level = levelBundle.getProperty((String) state.getProperty(CURRENT_LEVEL).getValue());
-//	init(level);
-//	executor.setActors(state.getActorMap());
-//}
+	public State ejectState () {
+		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
+		propertyBundle.add(new Property<String>(LEVEL_ID_KEY, levelExecutor.getLevelID()));
+		return new State(propertyBundle, levelExecutor.getActors());
+	}
+	public void injectState (State state) {
+		Level level = game.getLevel((String) state.getProperty(LEVEL_ID_KEY).getValue());
+		init(level);
+		levelExecutor.setActors(state.getActorMap());
+	}
 }
