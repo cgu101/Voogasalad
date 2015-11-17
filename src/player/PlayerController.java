@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import view.screen.PlayerScreen;
 
-public class PlayerController extends AController implements IPlayer {
+public class PlayerController {
 
 	IEngine myEngine;
 	IFileManager myXMLManager;
@@ -31,8 +31,7 @@ public class PlayerController extends AController implements IPlayer {
 	int fps = 10;
 	
 
-	public PlayerController(Stage stage) {
-		super(stage, new PlayerScreen());
+	public PlayerController() {
 		myEngine = new GameEngine();
 		myXMLManager = new XMLManager();
 	}
@@ -42,6 +41,7 @@ public class PlayerController extends AController implements IPlayer {
 		try {
 			Game game = myXMLManager.loadGame(fileName);
 			myEngine.init(game);
+			start();
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,8 +53,7 @@ public class PlayerController extends AController implements IPlayer {
 		myEngine.init(game);
 	}*/
 
-	@Override
-	public void play() {
+	public void start() {
 		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.run());
 		Timeline myGameLoop = new Timeline();
 		myGameLoop.setCycleCount(Timeline.INDEFINITE);
@@ -62,16 +61,18 @@ public class PlayerController extends AController implements IPlayer {
 		myGameLoop.play();
 	}
 
-	@Override
 	public void pause() {		
 		myGameLoop.pause();
+	}
+	
+	public void resume() {
+		myGameLoop.play();
 	}
 	
 	public void save() {
 		// serialize and save Engine or InteractionExectutor?
 	}
 
-	@Override
 	public void run(){
 		try {
 			myEngine.play();
