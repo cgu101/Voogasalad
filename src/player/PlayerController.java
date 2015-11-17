@@ -61,12 +61,20 @@ public class PlayerController {
 		myGameLoop.play();
 	}
 
-	public void pause() {		
-		myGameLoop.pause();
+	public void pause() throws GameFileException{		
+		try {			
+			myGameLoop.pause();
+		} catch (NullPointerException e){
+			throw new GameFileException();
+		}
 	}
 	
-	public void resume() {
-		myGameLoop.play();
+	public void resume() throws GameFileException{
+		try {			
+			myGameLoop.play();
+		} catch (NullPointerException e){
+			throw new GameFileException();
+		}
 	}
 	
 	public void save() {
