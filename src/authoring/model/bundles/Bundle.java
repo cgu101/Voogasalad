@@ -42,6 +42,10 @@ public class Bundle<V extends Identifiable> extends Observable implements Iterab
 		update(components);
 	}
 	
+	public V get (String uniqueID) {
+		return components.get(uniqueID);
+	}
+	
 	public void remove(String componentID) {
 		components.remove(componentID);
 		update(components);
