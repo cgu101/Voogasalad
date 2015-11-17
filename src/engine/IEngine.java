@@ -24,4 +24,6 @@ public interface IEngine {
 	public void reset ();
 	public void play() throws EngineException;
 	public Map<String, Bundle<Actor>> getActors();
+	public State ejectState();
+	public void injectState(State state);
 }
