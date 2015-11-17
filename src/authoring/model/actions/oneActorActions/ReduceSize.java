@@ -14,8 +14,11 @@ public class ReduceSize extends AActionOneActor{
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run(ActorGroups actorGroup, Actor actor) {
-		Property<Double> sizeP = (Property<Double>) actor.getProperties().getComponents().get("size");
+		Property<Double> sizeP = (Property<Double>) actor.getProperty("size");
 		Double size = sizeP.getValue();
-		sizeP.setValue(--size);
+		
+		Actor futureActor = (Actor) actor.getCopy();
+		((Property<Double>)futureActor.getProperty("size")).setValue(--size);
+		actorGroup.addActor(futureActor);
 	}
 }
