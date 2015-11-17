@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import authoring.controller.constructor.tree.TreeNodeAdder;
+import authoring.controller.constructor.tree.TreeNodeDeleter;
+import authoring.controller.constructor.tree.TreeNodeRetriever;
 import authoring.model.actions.IAction;
 import authoring.model.tree.InteractionTreeNode;
 import authoring.model.triggers.ITriggerEvent;
@@ -15,6 +18,7 @@ public class TreeConstructor {
 	private InteractionTreeNode eventTriggerTree;
 	private Map<String, ITriggerEvent> triggerMap;
 	private Map<String,IAction> actionMap;
+
 	
 	TreeConstructor() {
 		selfTriggerTree = new InteractionTreeNode();
@@ -23,67 +27,81 @@ public class TreeConstructor {
 		actionMap = new HashMap<String, IAction>();
 	}
 	
-	public void addSelfTrigger(String actor, String trigger, List<String> actions) {
+	public void addSelfTrigger(String actor, String trigger) {
+		addTriggerToMap(trigger);
+		TreeNodeAdder.addSelfTrigger(selfTriggerTree, actor, trigger);
+	}
+	
+	public void addSelfTriggerActions(String actor, String trigger, List<String> actions) {
 		addTriggerToMap(trigger);
 		addActionsToMap(actions);
-		addSelfTriggerNode(actor, trigger, actions);
+		TreeNodeAdder.addSelfTriggerActions(selfTriggerTree, actor, trigger, actions);
 	}
 	
-	public void addEventTrigger(String aActor, String bActor, String trigger, List<String> actions) {
+	public void addEventTrigger(String aActor, String bActor, String trigger) {
+		addTriggerToMap(trigger);
+		TreeNodeAdder.addEventTrigger(eventTriggerTree, aActor, bActor, trigger);
+	}
+	
+	public void addEventTriggerActions(String aActor, String bActor, String trigger, List<String> actions) {
 		addTriggerToMap(trigger);
 		addActionsToMap(actions);
-		addEventTriggerNode(aActor, bActor, trigger, actions);
+		TreeNodeAdder.addEventTriggerActions(eventTriggerTree, aActor, bActor, trigger, actions);
 	}
 	
-	public void removeSelfTrigger(String actor, String trigger, List<String> actions) {
+	public void removeSelfTrigger(String actor, String trigger) {
+		removeTriggerFromMap(trigger);
+		TreeNodeDeleter.removeSelfTrigger(selfTriggerTree, actor, trigger);
+	}
+	
+	public void removeSelfTriggerActions(String actor, String trigger, List<String> actions) {
 		removeTriggerFromMap(trigger);
 		removeActionsFromMap(actions);
-		removeSelfTriggerNode(actor, trigger, actions);
+		TreeNodeDeleter.removeSelfTriggerActions(selfTriggerTree, actor, trigger, actions);
 	}
 	
-	public void removeEventTrigger(String aActor, String bActor, String trigger, List<String> actions) {
+	public void removeEventTrigger(String aActor, String bActor, String trigger) {
+		removeTriggerFromMap(trigger);
+		TreeNodeDeleter.removeEventTrigger(eventTriggerTree, aActor, bActor, trigger);
+	}
+	
+	public void removeEventTriggerActions(String aActor, String bActor, String trigger, List<String> actions) {
 		removeTriggerFromMap(trigger);
 		removeActionsFromMap(actions);
-		removeEventTriggerNode(aActor, bActor, trigger, actions);
+		TreeNodeDeleter.removeEventTriggerActions(eventTriggerTree, aActor, bActor, trigger, actions);
 	}
 	
-	private void addSelfTriggerNode(String a, String trigger, List<String> actions) {
-		InteractionTreeNode ret = getTreeNode(selfTriggerTree, a);
-		addTriggerNode(ret, trigger, actions);
-	}
-	
-	private void addEventTriggerNode(String a, String b, String trigger, List<String> actions) {
-		InteractionTreeNode ret = getTreeNode(eventTriggerTree, a);
-		ret = getTreeNode(ret, b);			
-		addTriggerNode(ret, trigger, actions);
-	}
-		
-	private void addTriggerNode(InteractionTreeNode node, String trigger, List<String> actions) {
-		InteractionTreeNode ret = getTreeNode(node, trigger);		
-		for(String s: actions) {
-			if(ret.getChildWithValue(s) == null) {
-				ret.addChild(new InteractionTreeNode(s));
-			}
+	public List<String> getSelfTriggerList(String actor) {
+		return TreeNodeRetriever.getSelfTriggerList(selfTriggerTree, actor);
 		}
+	
+	public List<String> getSelfTriggerActions(String actor, String trigger) {
+		return TreeNodeRetriever.getSelfTriggerActions(selfTriggerTree, actor, trigger);
 	}
 	
-	private InteractionTreeNode getTreeNode(InteractionTreeNode node, String value) {
-		InteractionTreeNode ret;
-		if((ret = node.getChildWithValue(value)) == null) {
-			ret = new InteractionTreeNode(value);
-			node.addChild(ret);
-		}		
-		return ret;
+	public List<String> getEventTrigger(String aActor, String bActor) {
+		return TreeNodeRetriever.getEventTrigger(eventTriggerTree, aActor, bActor);
 	}
 	
-	private void removeSelfTriggerNode(String a, String trigger, List<String> actions) {
-		// Remove the node
+	public List<String> getEventTriggerActions(InteractionTreeNode node, String aActor, String bActor, String trigger) {
+		return TreeNodeRetriever.getEventTriggerActions(eventTriggerTree, aActor, bActor, trigger);
 	}
 	
-	private void removeEventTriggerNode(String a, String b, String trigger, List<String> actions) {
-		// Remove the node
+	public InteractionTreeNode getInteractionTree() {
+		return eventTriggerTree;
 	}
 	
+	public InteractionTreeNode getSelfTriggerTree() {
+		return selfTriggerTree;
+	}
+	
+	public Map<String, ITriggerEvent> getTriggerMap() {
+		return triggerMap;
+	}
+
+	public Map<String, IAction> getActionMap() {
+		return actionMap;
+	}
 	
 	private void addTriggerToMap(String trigger) {
 		if(!triggerMap.containsKey(trigger)) {
@@ -108,20 +126,4 @@ public class TreeConstructor {
 			triggerMap.remove(s);
 		}
 	}
-	
-	public InteractionTreeNode getInteractionTree() {
-		return eventTriggerTree;
-	}
-	
-	public InteractionTreeNode getSelfTriggerTree() {
-		return selfTriggerTree;
-	}
-	
-	public Map<String, ITriggerEvent> getTriggerMap() {
-		return triggerMap;
-	}
-
-	public Map<String, IAction> getActionMap() {
-		return actionMap;
-	}	
 }

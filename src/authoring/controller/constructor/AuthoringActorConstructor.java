@@ -41,6 +41,10 @@ public class AuthoringActorConstructor {
 		return actorMap.get(actor).propertyMap.getPropertyValue(property);
 	}
 	
+	public ActorPropertyMap getActorPropertyMap(String actor) {
+		return actorMap.get(actor).propertyMap;
+	}
+	
 	public void setPropertyValue(String actor, String property, String value) {
 		actorMap.get(actor).propertyMap.addProperty(property, value);
 	}
