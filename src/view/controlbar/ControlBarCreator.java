@@ -16,17 +16,18 @@ import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.Workspace;
 import view.screen.AbstractScreen;
+import view.screen.CreatorScreen;
 import view.screen.StartScreen;
 
 public class ControlBarCreator extends ControlBar {
 
-	private AbstractScreen screen;
+	private CreatorScreen screen;
 	private Workspace workspace;
 	private MenuBar mainMenu;
 	private ToolBar toolBar;
 	private VBox box;
 
-	public ControlBarCreator(GridPane pane, AbstractScreen screen, Workspace workspace) {
+	public ControlBarCreator(GridPane pane, CreatorScreen screen, Workspace workspace) {
 		super(pane);
 		this.screen = screen;
 		this.workspace = workspace;
@@ -57,8 +58,9 @@ public class ControlBarCreator extends ControlBar {
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
-		MenuItem load = makeMenuItem(myResources.getString("load"), null);
-		MenuItem save = makeMenuItem(myResources.getString("save"), null);
+		// TODO:
+		MenuItem load = makeMenuItem(myResources.getString("load"), null);	// e -> screen.loadGame());
+		MenuItem save = makeMenuItem(myResources.getString("save"), null);	// e -> screen.saveGame());
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save);
 
 		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> workspace.addLevel(), KeyCode.T, KeyCombination.CONTROL_DOWN);
