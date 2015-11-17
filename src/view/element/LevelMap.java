@@ -1,5 +1,6 @@
 package view.element;
 
+import authoring.controller.constructor.LevelConstructor;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
@@ -14,8 +15,9 @@ public class LevelMap extends AbstractElement {
 	private AbstractScreen screen;
 	private Image backgroundImage;
 	private ScrollPane sp;
+	private LevelConstructor constructor;
 
-	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
+	public LevelMap(GridPane pane, int i, AbstractScreen screen, LevelConstructor lc) {
 		super(pane);
 		findResources();
 		myTab = new Tab("Level " + (i + 1));
@@ -24,6 +26,7 @@ public class LevelMap extends AbstractElement {
 		this.screen = screen;
 		map = new Map(screen);
 		slider = new MapZoomSlider(map, Double.valueOf(myResources.getString("sliderwidth")));
+		constructor = lc;
 		makePane();
 	}
 
