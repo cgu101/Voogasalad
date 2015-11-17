@@ -95,7 +95,7 @@ public class InteractionExecutor {
 						  .collect(Collectors.toList());
 	}
 	public ActorGroups getActors () {
-		return new ActorGroups(currentActorMap);
+		return currentActorMap;
 	}
 	// TODO
 	public void setActors (ActorGroups actors) {

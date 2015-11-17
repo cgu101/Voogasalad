@@ -1,5 +1,6 @@
 package view.controlbar;
 
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
@@ -15,7 +16,6 @@ import javafx.scene.layout.VBox;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.Workspace;
-import view.screen.AbstractScreen;
 import view.screen.CreatorScreen;
 import view.screen.StartScreen;
 
@@ -61,7 +61,8 @@ public class ControlBarCreator extends ControlBar {
 		// TODO:
 		MenuItem load = makeMenuItem(myResources.getString("load"), e -> screen.loadGame());
 		MenuItem save = makeMenuItem(myResources.getString("save"), e -> screen.saveGame());
-		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save);
+		MenuItem exit = makeMenuItem(myResources.getString("exit"), e -> Platform.exit(), KeyCode.E, KeyCombination.CONTROL_DOWN);
+		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save, exit);
 
 		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> workspace.addLevel(), KeyCode.T, KeyCombination.CONTROL_DOWN);
 		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(), KeyCode.N, KeyCombination.CONTROL_DOWN);

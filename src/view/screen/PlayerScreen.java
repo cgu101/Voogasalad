@@ -5,7 +5,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import exceptions.data.GameFileException;
-import exceptions.engine.NullGameException;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -18,7 +17,7 @@ public class PlayerScreen extends AbstractScreen {
 
 	private ControlBarPlayer t;
 	private PlayerController playerController;
-	private Workspace w;
+//	private Workspace w;
 
 	public PlayerScreen() {
 		findResources();
@@ -32,22 +31,22 @@ public class PlayerScreen extends AbstractScreen {
 	}
 
 	//TODO: Throw NullGameException when Game hasn't been loaded yet
-	public void resume() {
+ 	public void resume() {
 		try{
 			playerController.resume();
 		} catch (GameFileException e){
 			showWarning("Resume Game Error", "No game has been loaded yet!");
 		}
-	}
-
-	//TODO: Throw NullGameException when Game hasn't been loaded yet
-	public void pause() {
+ 	}
+ 
+ 	//TODO: Throw NullGameException when Game hasn't been loaded yet
+ 	public void pause() {
 		try{
 			playerController.pause();
 		} catch (GameFileException e){
 			showWarning("Pause Game Error", "No game has been loaded yet!");
 		}
-	}
+ 	}
 	
 	@Override
 	protected void makeScene() {
@@ -55,7 +54,7 @@ public class PlayerScreen extends AbstractScreen {
 		makePanes(2);
 		t = new ControlBarPlayer(myPanes.get(0), this, WIDTH);
 		r.setTop(myPanes.get(0));
-		w = new Workspace(myPanes.get(1), this);
+//		w = new Workspace(myPanes.get(1), this);
 		r.setCenter(myPanes.get(1));
 		root = r;
 		components = new ArrayList<AbstractDockElement>(); //No components yet! 
@@ -73,28 +72,29 @@ public class PlayerScreen extends AbstractScreen {
 		
 		playerController.loadGame(file);
 	}
+
 	public void saveState () {
 		System.out.println("Testing saving game state ");
-//		String test = "test child";
-//		
-//        BufferedWriter output = null;
-//        try {
-//        	File saveFile = FileChooserUtility.save(null);
-//            output = new BufferedWriter(new FileWriter(saveFile));
-//            output.write(test);
-//        } catch ( IOException e ) {
-//            e.printStackTrace();
-//        } finally {
-//            if ( output != null )
-//				try {
-//					output.close();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-		
+
+		//TODO: do gui stuff
+		String fileName = "";
+		try {
+			playerController.saveState(fileName);
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+
 	public void loadState () {
-		
+		//TODO: do gui stuff
+		String fileName = "";
+		try {
+			playerController.loadState(fileName);
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	//TODO: Implement, check the controller to see

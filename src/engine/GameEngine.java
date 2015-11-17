@@ -48,28 +48,21 @@ public class GameEngine implements IEngine {
 	}
 
 	@Override
-	public void load(Game game) {
-		//TODO:
-		// what is this supposed to do?
-	}
-
-	@Override
-	public void play () throws EngineException {
-		EngineHeartbeat heartbeat = levelExecutor.run();
-		// do something with the heartbeat
+	public EngineHeartbeat play () throws EngineException {
+		return levelExecutor.run();
 	}
 
 	@Override
 	public Map<String, Bundle<Actor>> getActors() {
-		//TODO
-		return new HashMap<String, Bundle<Actor>>();
-		
+		return levelExecutor.getActors().getMap();
 	}
+	@Override
 	public State ejectState () {
 		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
 		propertyBundle.add(new Property<String>(LEVEL_ID_KEY, levelExecutor.getLevelID()));
 		return new State(propertyBundle, levelExecutor.getActors());
 	}
+	@Override
 	public void injectState (State state) {
 		Level level = game.getLevel((String) state.getProperty(LEVEL_ID_KEY).getValue());
 		init(level);
