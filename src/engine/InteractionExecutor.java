@@ -1,5 +1,6 @@
 package engine;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,6 +24,16 @@ public class InteractionExecutor {
 	private Map<String,ITriggerEvent> triggerMap;
 	private Map<String,IAction> actionMap;
 	
+	public InteractionExecutor () {
+		this.selfTriggerTree = new InteractionTreeNode();
+		this.externalTriggerTree = new InteractionTreeNode();
+		this.currentActorMap = new ActorGroups();
+		this.inputMap = new InputManager();
+		this.triggerMap = new HashMap<>();
+		this.actionMap = new HashMap<>();
+		this.nextActorMap = new ActorGroups();
+	}
+	
 	// TODO: take in a single object and extract all of the needed information
 	public InteractionExecutor (Level level, InputManager inputMap) {
 		this.selfTriggerTree = level.getSelfTriggerTree();
@@ -36,18 +47,7 @@ public class InteractionExecutor {
 		
 		this.nextActorMap = new ActorGroups(currentActorMap);
 	}
-	public InteractionExecutor (InteractionTreeNode selfTriggerTree, InteractionTreeNode externalTriggerTree,
-			ActorGroups actorMap, InputManager inputMap, 
-			Map<String,ITriggerEvent> triggerMap, Map<String,IAction> actionMap) {
-		this.selfTriggerTree = selfTriggerTree;
-		this.externalTriggerTree = externalTriggerTree;
-		this.currentActorMap = actorMap;
-		this.inputMap = inputMap;
-		this.triggerMap = triggerMap;
-		this.actionMap = actionMap;
-		
-		this.nextActorMap = new ActorGroups(actorMap);
-	}
+	
 	public EngineHeartbeat run () {
 		nextActorMap = new ActorGroups(currentActorMap);
 		runSelfTriggers();
@@ -90,5 +90,12 @@ public class InteractionExecutor {
 		return actionNodes.stream()
 						  .map(k -> { return actionMap.get(k);})
 						  .collect(Collectors.toList());
+	}
+	public ActorGroups getActors () {
+		return new ActorGroups(currentActorMap);
+	}
+	// TODO
+	public void setActors (ActorGroups actors) {
+		this.currentActorMap = actors;
 	}
 }

@@ -2,6 +2,7 @@ package view.element;
 
 import java.util.ArrayList;
 
+import authoring.controller.AuthoringController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -12,21 +13,23 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import view.actor.ActorCell;
-import view.actor.ActorFactory;
 import view.screen.AbstractScreenInterface;
 
 public class ActorBrowser extends AbstractDockElement {
 
-	private ListView<ActorFactory> rightlist;
-	private ListView<ActorFactory> leftlist;
-	private ArrayList<ListView<ActorFactory>> lists;
-	private ObservableList<ActorFactory> actors;
+	private ListView<String> rightlist;
+	private ListView<String> leftlist;
+	private ArrayList<ListView<String>> lists;
+	private ObservableList<String> actors;
 	private BooleanProperty doubleLists;
+	private AuthoringController controller;
 
-	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen) {
+	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,
+			AuthoringController controller) {
 		super(pane, home, title, screen);
 		doubleLists = new SimpleBooleanProperty(true);
 		doubleLists.addListener(e -> toggleDoubleLists(doubleLists.getValue()));
+		this.controller = controller;
 		makePane();
 	}
 
@@ -35,9 +38,10 @@ public class ActorBrowser extends AbstractDockElement {
 		GridPane labelPane = makeLabelPane();
 		pane.add(labelPane, 0, 0);
 		GridPane.setColumnSpan(labelPane, 2);
-		actors = FXCollections.observableArrayList(new ArrayList<ActorFactory>());
-		rightlist = new ListView<ActorFactory>(actors);
-		leftlist = new ListView<ActorFactory>(actors);
+		actors = FXCollections.observableArrayList(new ArrayList<String>());
+		actors.addAll(controller.getAuthoringConfigManager().getActorList());
+		rightlist = new ListView<String>(actors);
+		leftlist = new ListView<String>(actors);
 		pane.add(leftlist, 0, 1);
 		pane.add(rightlist, 1, 1);
 		pane.setAlignment(Pos.TOP_CENTER);
@@ -47,22 +51,23 @@ public class ActorBrowser extends AbstractDockElement {
 		rightlist.setFocusTraversable(false);
 		configure(leftlist);
 		configure(rightlist);
-		lists = new ArrayList<ListView<ActorFactory>>();
+		lists = new ArrayList<ListView<String>>();
 		lists.add(leftlist);
 		lists.add(rightlist);
 	}
 
-	private void configure(ListView<ActorFactory> list) {
-		list.setCellFactory(new Callback<ListView<ActorFactory>, ListCell<ActorFactory>>() {
+	private void configure(ListView<String> list) {
+		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
-			public ListCell<ActorFactory> call(ListView<ActorFactory> list) {
-				return new ActorCell();
+			public ListCell<String> call(ListView<String> list) {
+				return new ActorCell(controller);
 			}
 		});
 	}
 
 	public void addNewActor() {
-		actors.add(new ActorFactory(actors.size()));
+		//actors.add("Actor " + actors.size());
+		//TODO: add backend implementation
 	}
 
 	public BooleanProperty getDoubleListsProperty() {
@@ -78,7 +83,7 @@ public class ActorBrowser extends AbstractDockElement {
 		}
 	}
 
-	public ArrayList<ListView<ActorFactory>> getLists() {
+	public ArrayList<ListView<String>> getLists() {
 		return lists;
 	}
 
