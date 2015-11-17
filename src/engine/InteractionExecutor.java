@@ -7,10 +7,11 @@ import java.util.stream.Collectors;
 import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
-import authoring.model.level.ILevel;
+import authoring.model.level.Level;
 import authoring.model.tree.InteractionTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 import player.InputManager;
+import player.IPlayer;
 
 // runs the interaction tree
 public class InteractionExecutor {
@@ -23,8 +24,17 @@ public class InteractionExecutor {
 	private Map<String,IAction> actionMap;
 	
 	// TODO: take in a single object and extract all of the needed information
-	public InteractionExecutor (ILevel level) {
+	public InteractionExecutor (Level level, InputManager inputMap) {
+		this.selfTriggerTree = level.getSelfTriggerTree();
+		this.externalTriggerTree = level.getInteractionTree();
+		this.currentActorMap = level.getActorGroups();
+		// TODO: input map
+		this.inputMap = inputMap;
 		
+		this.triggerMap = level.getTriggerMap();
+		this.actionMap = level.getActionMap();
+		
+		this.nextActorMap = new ActorGroups(currentActorMap);
 	}
 	public InteractionExecutor (InteractionTreeNode selfTriggerTree, InteractionTreeNode externalTriggerTree,
 			ActorGroups actorMap, InputManager inputMap, 
@@ -38,11 +48,12 @@ public class InteractionExecutor {
 		
 		this.nextActorMap = new ActorGroups(actorMap);
 	}
-	public void run () {
+	public EngineHeartbeat run () {
 		nextActorMap = new ActorGroups(currentActorMap);
 		runSelfTriggers();
 		runExternalTriggers();
 		currentActorMap = nextActorMap;
+		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
 	}
 	
 	private void runSelfTriggers () {

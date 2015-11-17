@@ -1,13 +1,17 @@
 package player;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import authoring.model.actors.Actor;
+import authoring.model.bundles.Bundle;
+import authoring.model.game.Game;
 import authoring.model.level.ALevel;
 import authoring.model.level.ILevel;
 import controller.AController;
 import data.IFileManager;
 import data.XMLManager;
-import data.model.GameData;
 import engine.GameEngine;
 import engine.IEngine;
 import exceptions.EngineException;
@@ -21,11 +25,11 @@ import view.screen.PlayerScreen;
 
 public class PlayerController extends AController implements IPlayer {
 
-	// TODO: contains gui
 	IEngine myEngine;
 	IFileManager myXMLManager;
 	Timeline myGameLoop;
 	int fps = 10;
+	
 
 	public PlayerController(Stage stage) {
 		super(stage, new PlayerScreen());
@@ -33,52 +37,58 @@ public class PlayerController extends AController implements IPlayer {
 		myXMLManager = new XMLManager();
 	}
 
-	private GameData selectGame(String fileName) throws GameFileException {
-		return myXMLManager.loadGame(fileName);
-	}
-
-	private void initializeGame(GameData game) throws EngineException {
-		myEngine.init(game);
-	}
-
-	@Override
-	public void play() {
-		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.update());
-		Timeline myGameLoop = new Timeline();
-		myGameLoop.setCycleCount(Timeline.INDEFINITE);
-		myGameLoop.getKeyFrames().add(frame);
-		myGameLoop.play();
-
-	}
-
-	@Override
-	public void pause() {
-		
-		// should not pause the loop, changes engine to do nothing
-		myGameLoop.pause();
-	}
-	
-	public void update(){
+	private void loadGame(String fileName) throws GameFileException {
 		try {
-			myEngine.play();
+			myEngine.init(myXMLManager.loadGame(fileName));
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	/*
+	private void initializeGame(Game game) throws EngineException {
+		myEngine.init(game);
+	}*/
 
 	@Override
-	public void renderGui(Scene s) {
-		// TODO Auto-generated method stub
-
-		// TODO player GUI classes
+	public void play() {
+		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.run());
+		Timeline myGameLoop = new Timeline();
+		myGameLoop.setCycleCount(Timeline.INDEFINITE);
+		myGameLoop.getKeyFrames().add(frame);
+		myGameLoop.play();
 	}
 
 	@Override
-	public void run() throws EngineException {
-		// TODO Auto-generated method stub
-		myEngine.play();
-		currentScreen.run();
+	public void pause() {		
+		myGameLoop.pause();
+	}
+	
+	public void save() {
+		// serialize and save Engine or InteractionExectutor?
+	}
+
+	@Override
+	public void run(){
+		try {
+			myEngine.play();
+			this.render(myEngine.getActors());
+		} catch (EngineException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void render(Map<String, Bundle<Actor>> actorMap){
+		ArrayList<Actor> actors = new ArrayList<Actor>();
+		for(Bundle<Actor> b : actorMap.values()){
+			for(Actor a : b){
+				actors.add(a);
+			}
+		}
+		
+		
 	}
 
 }

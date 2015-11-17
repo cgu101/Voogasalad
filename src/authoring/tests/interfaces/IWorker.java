@@ -7,7 +7,7 @@ import java.util.Map;
 
 import util.ReflectionHelper;
 
-public interface IActor {
+public interface IWorker {
 	public IAction getAction (String actionName);
 	
 	default Map<String, IAction> getActionMap () 
