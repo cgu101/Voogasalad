@@ -8,6 +8,14 @@ import authoring.model.tree.InteractionTreeNode;
 
 public class TreeNodeDeleter {
 	
+	public static void removeActor(InteractionTreeNode node, String actor) {
+		deleteNodes(node, Arrays.asList(new String[] {actor}));
+	}
+	
+	public static void removeActor(InteractionTreeNode node, String aActor, String bActor) {
+		deleteNodes(node.getChildWithValue(aActor), Arrays.asList(new String[] {bActor}));
+	}
+	
 	public static void removeSelfTrigger(InteractionTreeNode node, String actor, String trigger) {
 		deleteNodes(node.getChildWithValue(actor), Arrays.asList(new String[] {trigger}));
 	}

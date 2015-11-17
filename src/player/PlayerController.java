@@ -25,12 +25,14 @@ public class PlayerController extends AController {
 	IEngine myEngine;
 	IFileManager myXMLManager;
 	Timeline myGameLoop;
+	SpriteManager mySpriteManager;
 	int fps = 10;
 	
 
 	public PlayerController() {
 		myEngine = new GameEngine();
 		myXMLManager = new XMLManager();
+		mySpriteManager = new SpriteManager();
 	}
 	
 	// should be called by front end
@@ -96,12 +98,9 @@ public class PlayerController extends AController {
 	public void render(Map<String, Bundle<Actor>> actorMap){
 		ArrayList<Actor> actors = new ArrayList<Actor>();
 		for(Bundle<Actor> b : actorMap.values()){
-			for(Actor a : b){
-				actors.add(a);
-			}
+			actors.addAll(b.getComponents().values());
 		}
-		
-		
+		mySpriteManager.updateSprites(actors);
 	}
 
 }

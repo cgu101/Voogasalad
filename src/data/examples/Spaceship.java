@@ -31,6 +31,21 @@ public class Spaceship implements IActor {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public Property<?> getProperty(String identifier) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public <T> void setProperty(Property<T> property) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public <T> void setProperty(Property<T>... property) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 //	@Override
 //	public IProperties getProperties() {
