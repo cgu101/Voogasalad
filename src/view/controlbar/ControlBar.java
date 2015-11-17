@@ -9,6 +9,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination.Modifier;
 import javafx.scene.layout.GridPane;
 import view.element.AbstractElement;
 
@@ -39,6 +42,16 @@ public abstract class ControlBar extends AbstractElement {
 		return button;
 	}
 
+	protected MenuItem makeMenuItem(String s, EventHandler<ActionEvent> handler, KeyCode key, Modifier mod) {
+		MenuItem menu = makeMenuItem(s, handler);
+		if (mod == null) {
+			menu.setAccelerator(new KeyCodeCombination(key));
+		} else {
+			menu.setAccelerator(new KeyCodeCombination(key, mod));
+		}
+		return menu;
+	}
+	
 	protected MenuItem makeMenuItem(String s, EventHandler<ActionEvent> handler) {
 		MenuItem m = new MenuItem(s);
 		m.setOnAction(handler);
