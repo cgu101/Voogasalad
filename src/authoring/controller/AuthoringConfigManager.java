@@ -22,6 +22,7 @@ public class AuthoringConfigManager {
 	private static final String SELF_TRIGGER = "selfTrigger";
 	private static final String EVENT_TRIGGER = "eventTrigger";
 	private static final String TYPE = "type";
+	private static final String ACTIONS = "actions";
 	
 	private static final AuthoringConfigManager myManager = new AuthoringConfigManager();
 	
@@ -73,6 +74,10 @@ public class AuthoringConfigManager {
 	
 	public List<String> getEventTriggerList(String actor) {
 		return getTriggerList(actor, EVENT_TRIGGER);
+	}
+	
+	public List<String> getActionList(String actor) {
+		return getTriggerList(actor, ACTIONS);
 	}
 	
 	public String getPropertyType(String property) {

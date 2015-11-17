@@ -41,8 +41,9 @@ public class ActorGroups {
 	}
 
 	public Bundle<Actor> addGroup (String groupName) {
-		actorMap.put(groupName, new Bundle<Actor>());
+		if(!actorMap.containsKey(groupName)) {
+			actorMap.put(groupName, new Bundle<Actor>());
+		}
 		return actorMap.get(groupName);
 	}
-
 }
