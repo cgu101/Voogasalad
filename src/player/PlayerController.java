@@ -53,7 +53,7 @@ public class PlayerController extends AController implements IPlayer {
 
 	@Override
 	public void play() {
-		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.run());
+		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.tick());
 		Timeline myGameLoop = new Timeline();
 		myGameLoop.setCycleCount(Timeline.INDEFINITE);
 		myGameLoop.getKeyFrames().add(frame);
@@ -69,8 +69,8 @@ public class PlayerController extends AController implements IPlayer {
 		// serialize and save Engine or InteractionExectutor?
 	}
 
-	@Override
-	public void run(){
+	
+	public void tick(){
 		try {
 			myEngine.play();
 			this.render(myEngine.getActors());
@@ -89,6 +89,12 @@ public class PlayerController extends AController implements IPlayer {
 		}
 		
 		
+	}
+
+	@Override
+	public void run() throws Exception {
+		// TODO Auto-generated method stub
+		// idk?
 	}
 
 }
