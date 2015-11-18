@@ -6,22 +6,10 @@ import authoring.controller.constructor.AuthoringActorConstructor;
 import authoring.controller.constructor.ConstructorFactory;
 import authoring.controller.constructor.LevelConstructor;
 import authoring.model.game.Game;
-import controller.AController;
-import javafx.stage.Stage;
-import view.screen.AbstractScreen;
-import view.screen.CreatorScreen;
 
-public class AuthoringController extends AController {
+public class AuthoringController {
 
 	public AuthoringController() {
-	}
-	
-	public AuthoringController (Stage stage) {
-		this(stage, new CreatorScreen());
-	}
-	
-	public AuthoringController(Stage stage, AbstractScreen screen) {
-		super(stage, screen);
 	}
 	
 	public LevelConstructor getLevelConstructor() {
@@ -30,11 +18,6 @@ public class AuthoringController extends AController {
 	
 	public AuthoringActorConstructor getAuthoringActorConstructor() {
 		return ConstructorFactory.getAuthoringActorConstructor();
-	}
-	
-	@Override
-	public void run() throws Exception {
-		currentScreen.run();
 	}
 
 	public Game getGameWithLevels (List<LevelConstructor> levelBuilderList) {
