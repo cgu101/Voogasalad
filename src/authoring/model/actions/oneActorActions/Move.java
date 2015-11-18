@@ -21,7 +21,7 @@ public class Move extends AActionOneActor{
 		Double y = ((Property<Double>) actor.getProperty("yLocation")).getValue();
 		
 		x = x + Math.cos(Math.toRadians(angle)) * speed; 
-		y = y + Math.cos(Math.toRadians(angle)) * speed;
+		y = y + Math.sin(Math.toRadians(angle)) * speed;
 
 		
 		Actor futureActor = (Actor) actor.getCopy();
