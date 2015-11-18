@@ -5,6 +5,8 @@ import java.util.List;
 
 import authoring.controller.AuthoringController;
 import authoring.controller.constructor.LevelConstructor;
+import javafx.beans.value.ChangeListener;
+import javafx.event.EventHandler;
 import javafx.geometry.Side;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -29,7 +31,7 @@ public class Workspace extends AbstractElement {
 		levels = new ArrayList<LevelMap>();
 		manager.setSide(Side.TOP);
 		pane.add(manager, 0, 0);
-		manager.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
+		addListener((ov, oldTab, newTab) -> {
 			manager.maxWidthProperty().unbind();
 			try {
 				currentLevel = levels.get(Integer.parseInt(newTab.getId()));
@@ -37,6 +39,10 @@ public class Workspace extends AbstractElement {
 				currentLevel = null;
 			}
 		});
+	}
+
+	public void addListener(ChangeListener<? super Tab> e) {
+		manager.getSelectionModel().selectedItemProperty().addListener(e);
 	}
 
 	public Tab addLevel() {
@@ -86,14 +92,14 @@ public class Workspace extends AbstractElement {
 		manager.getSelectionModel().select(switchID);
 	}
 
-	public List<LevelConstructor> getLevels(){
+	public List<LevelConstructor> getLevels() {
 		List<LevelConstructor> levelConstructorList = new ArrayList<LevelConstructor>();
-		for (LevelMap levelMap : levels) { 
+		for (LevelMap levelMap : levels) {
 			levelConstructorList.add(levelMap.getController().getLevelConstructor());
 		}
 		return levelConstructorList;
 	}
-	
+
 	private void removeLevel(Tab tab) {
 		int Id = Integer.parseInt(tab.getId());
 		levels.remove(Id);
@@ -102,5 +108,9 @@ public class Workspace extends AbstractElement {
 			levels.get(i).getTab().setText("Level " + (i + 1));
 		}
 	}
-	
+
+	public LevelMap getCurrentLevel() {
+		return currentLevel;
+	}
+
 }
