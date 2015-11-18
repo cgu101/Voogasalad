@@ -18,8 +18,12 @@ public class MapActorManager {
 		mapLayout.getChildren().add(actor);
 	}
 	
-	public void deleteActor() {
-		//Unimplemented - Need a method to remove actors from the map
-		
+	public void removeActor(Node actor) {
+		mapLayout.getChildren().remove(actor);
+	}
+	
+	public void updateBackground(Node background) {
+		mapLayout.getChildren().remove(background);
+		mapLayout.getChildren().add(0, background);
 	}
 }

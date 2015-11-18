@@ -50,6 +50,14 @@ public class Map extends AbstractElement {
 		// Use this method to add an actor to the StackPane.
 		actorManager.addActor(element, x, y);
 	}
+	
+	public void removeActor(Node element) {
+		actorManager.removeActor(element);
+	}
+	
+	public void updateBackground(Node background) {
+		actorManager.updateBackground(background);
+	}
 
 	public Group getGroup() {
 		return layout;
@@ -123,12 +131,13 @@ public class Map extends AbstractElement {
 		background.setPreserveRatio(true);
 
 		// Test white rectangle
-		Rectangle test = new Rectangle(backgroundImage.getWidth(), backgroundImage.getHeight());
+		Rectangle test = new Rectangle(100, 100);
 		test.setFill(Color.GRAY);
 
 		// Add any elements you want to appear on the map using this method
+		
 		addActor(test, 0, 0);
-		addActor(background, 0, 0);
+		updateBackground(background);
 
 		// Create the map after adding elements you want
 		createTheMap();
