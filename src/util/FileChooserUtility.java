@@ -11,6 +11,8 @@ public class FileChooserUtility {
 	private static final String LOAD_MESSAGE = "File Loader Window";
 	private static final String SAVE_MESSAGE = "File Saver Window";
 	private static final String DEFAULT_DIRECTORY = ".";
+	private static final String DEFAULT_FILE_PROMPT  = "XML files (*.xml)";
+	private static final String DEFAULT_FILE_FORMAT = "*xml";
 	
 	public static File load (Window stage) {
 		FileChooser fileChooser = initializeFileChooser(LOAD_MESSAGE, DEFAULT_DIRECTORY);
@@ -21,12 +23,11 @@ public class FileChooserUtility {
 	public static File save (Window stage) {
 		FileChooser fileChooser = initializeFileChooser(SAVE_MESSAGE, DEFAULT_DIRECTORY);
 		
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+		FileChooser.ExtensionFilter extFilter = 
+				new FileChooser.ExtensionFilter(DEFAULT_FILE_PROMPT, DEFAULT_FILE_FORMAT);
 		fileChooser.getExtensionFilters().add(extFilter);
 		
 		File saveFile = fileChooser.showSaveDialog(stage);
-		System.out.println(saveFile.getAbsolutePath()); //TODO Remove this test
-		
 		return saveFile;
 	}
 	
