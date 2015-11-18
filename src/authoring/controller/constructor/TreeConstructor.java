@@ -27,21 +27,23 @@ public class TreeConstructor {
 		actionMap = new HashMap<String, IAction>();
 	}
 	
-	public void addSelfTrigger(String actor, String trigger) {
-		addTriggerToMap(trigger);
-		TreeNodeAdder.addSelfTrigger(selfTriggerTree, actor, trigger);
-	}
+//	public void addSelfTrigger(String actor, String trigger) {
+//		addTriggerToMap(trigger);
+//		TreeNodeAdder.addSelfTrigger(selfTriggerTree, actor, trigger);
+//	}
 	
 	public void addSelfTriggerActions(String actor, String trigger, List<String> actions) {
 		addTriggerToMap(trigger);
 		addActionsToMap(actions);
 		TreeNodeAdder.addSelfTriggerActions(selfTriggerTree, actor, trigger, actions);
+		selfTriggerTree.printGraph();
+		System.out.println();
 	}
 	
-	public void addEventTrigger(String aActor, String bActor, String trigger) {
-		addTriggerToMap(trigger);
-		TreeNodeAdder.addEventTrigger(eventTriggerTree, aActor, bActor, trigger);
-	}
+//	public void addEventTrigger(String aActor, String bActor, String trigger) {
+//		addTriggerToMap(trigger);
+//		TreeNodeAdder.addEventTrigger(eventTriggerTree, aActor, bActor, trigger);
+//	}
 	
 	public void addEventTriggerActions(String aActor, String bActor, String trigger, List<String> actions) {
 		addTriggerToMap(trigger);
@@ -50,38 +52,34 @@ public class TreeConstructor {
 	}
 		
 	public void removeSelfTrigger(String actor, String trigger) {
-		removeTriggerFromMap(trigger);
 		TreeNodeDeleter.removeSelfTrigger(selfTriggerTree, actor, trigger);
+		selfTriggerTree.printGraph();
+		System.out.println();
 	}
 	
-	public void removeSelfTriggerActions(String actor, String trigger, List<String> actions) {
-		removeTriggerFromMap(trigger);
-		removeActionsFromMap(actions);
-		TreeNodeDeleter.removeSelfTriggerActions(selfTriggerTree, actor, trigger, actions);
-	}
+//	public void removeSelfTriggerActions(String actor, String trigger, List<String> actions) {
+//		TreeNodeDeleter.removeSelfTriggerActions(selfTriggerTree, actor, trigger, actions);
+//	}
 	
 	public void removeEventTrigger(String aActor, String bActor, String trigger) {
-		removeTriggerFromMap(trigger);
 		TreeNodeDeleter.removeEventTrigger(eventTriggerTree, aActor, bActor, trigger);
 	}
 	
-	public void removeEventTriggerActions(String aActor, String bActor, String trigger, List<String> actions) {
-		removeTriggerFromMap(trigger);
-		removeActionsFromMap(actions);
-		TreeNodeDeleter.removeEventTriggerActions(eventTriggerTree, aActor, bActor, trigger, actions);
-	}
+//	public void removeEventTriggerActions(String aActor, String bActor, String trigger, List<String> actions) {
+//		TreeNodeDeleter.removeEventTriggerActions(eventTriggerTree, aActor, bActor, trigger, actions);
+//	}
 	
-	public List<String> getSelfTriggerList(String actor) {
-		return TreeNodeRetriever.getSelfTriggerList(selfTriggerTree, actor);
-		}
+//	public List<String> getSelfTriggerList(String actor) {
+//		return TreeNodeRetriever.getSelfTriggerList(selfTriggerTree, actor);
+//	}
 	
 	public List<String> getSelfTriggerActions(String actor, String trigger) {
 		return TreeNodeRetriever.getSelfTriggerActions(selfTriggerTree, actor, trigger);
 	}
 	
-	public List<String> getEventTrigger(String aActor, String bActor) {
-		return TreeNodeRetriever.getEventTrigger(eventTriggerTree, aActor, bActor);
-	}
+//	public List<String> getEventTrigger(String aActor, String bActor) {
+//		return TreeNodeRetriever.getEventTrigger(eventTriggerTree, aActor, bActor);
+//	}
 	
 	public List<String> getEventTriggerActions(InteractionTreeNode node, String aActor, String bActor, String trigger) {
 		return TreeNodeRetriever.getEventTriggerActions(eventTriggerTree, aActor, bActor, trigger);
@@ -108,22 +106,12 @@ public class TreeConstructor {
 			triggerMap.put(trigger, (ITriggerEvent) Reflection.createInstance(trigger));
 		}
 	}
-	
+
 	private void addActionsToMap(List<String> actions) {
 		for(String s: actions) {
 			if(!actionMap.containsKey(s)) {
 					actionMap.put(s, (IAction) Reflection.createInstance(s));
 			}
-		}
-	}
-	
-	private void removeTriggerFromMap(String trigger) {
-		triggerMap.remove(trigger);
-	}
-	
-	private void removeActionsFromMap(List<String> actions) {
-		for(String s: actions) {
-			triggerMap.remove(s);
 		}
 	}
 }
