@@ -25,7 +25,6 @@ public class PlayerController implements IPlayer {
 
 	private Scene myScene;
 	private IEngine myEngine;
-	private IFileManager myXMLManager;
 	private Timeline myGameLoop;
 	private SpriteManager mySpriteManager;
 	private InputManager myInputManager;
@@ -33,7 +32,6 @@ public class PlayerController implements IPlayer {
 
 
 	public PlayerController(Scene s) {
-		myXMLManager = new XMLManager();
 		mySpriteManager = new SpriteManager(s);
 		myScene = s;
 		myInputManager = new InputManager(DEFAULT_INPUTS_FILENAME);
@@ -49,7 +47,7 @@ public class PlayerController implements IPlayer {
 	// should be called by front end
 	public void loadGame(String fileName) throws GameFileException, EngineException {
 		System.out.println("PlayController.loadGame(" + fileName + ")");
-		Game game = myXMLManager.loadGame(fileName);
+		Game game = XMLManager.loadGame(fileName);
 		myEngine.init(game);
 		start();
 	}
@@ -123,7 +121,7 @@ public class PlayerController implements IPlayer {
 		State saveState;
 		try {
 			saveState = myEngine.ejectState();
-			myXMLManager.saveState(saveState, fileName);
+			XMLManager.saveState(saveState, fileName);
 		} catch (EngineStateException e) {
 			throw new GameFileException(e.getMessage());
 		}
@@ -131,7 +129,7 @@ public class PlayerController implements IPlayer {
 	}
 	public void loadState (String fileName) throws GameFileException {
 		pause();
-		State saveState = myXMLManager.loadState(fileName);
+		State saveState = XMLManager.loadState(fileName);
 		try {
 			myEngine.injectState(saveState);
 		} catch (EngineException e) {
