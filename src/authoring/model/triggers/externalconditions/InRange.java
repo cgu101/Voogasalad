@@ -25,7 +25,7 @@ public class InRange extends ASelfTrigger {
 		double distanceToActorB = distance(actorA, actorB) - sizeB;
 		
 		if (Double.compare(distanceToActorB, rangeA) <= 0) {
-			return performActions(actions, actorGroup, actors);
+			return true;
 		}
 		return false;
 	}

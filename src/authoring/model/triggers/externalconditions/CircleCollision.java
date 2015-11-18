@@ -26,7 +26,7 @@ public class CircleCollision extends ASelfTrigger {
 		double distance = distance(actorA, actorB);
 		
 		if (Double.compare(distance, radiusSum) <= 0) {
-			return performActions(actions, actorGroup, actors);
+			return true;
 		}
 		return false;
 	}

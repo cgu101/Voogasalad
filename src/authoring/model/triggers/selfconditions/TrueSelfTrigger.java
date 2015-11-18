@@ -9,12 +9,14 @@ import authoring.model.triggers.selftriggers.ASelfTrigger;
 import player.InputManager;
 
 public class TrueSelfTrigger extends ASelfTrigger {
-		
+
 	public TrueSelfTrigger() {
 	}
-		
+
 	@Override
-	public boolean condition(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager, Actor... actors) {
-		return performActions(actions, actorGroup, actors);
+	public boolean condition(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager,
+			Actor... actors) {
+
+		return true;
 	}
 }

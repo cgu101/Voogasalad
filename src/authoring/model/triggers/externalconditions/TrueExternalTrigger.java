@@ -15,6 +15,6 @@ public class TrueExternalTrigger extends AExternalTrigger {
 
 	@Override
 	public boolean condition(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager, Actor... actors) {
-		return performActions(actions, actorGroup, actors);
+		return true;
 	}
 }
