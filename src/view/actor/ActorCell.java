@@ -6,29 +6,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 
-public class ActorCell extends ListCell<String> {
+public class ActorCell extends AbstractListCell {
 
 	private AuthoringController controller;
+	private boolean deselect;
 
 	public ActorCell(AuthoringController controller) {
 		this.controller = controller;
-	}
-
-	@Override
-	public void updateItem(String item, boolean empty) {
-		super.updateItem(item, empty);
-		HBox box = new HBox(5);
-		if (empty) {
-			setText(null);
-			setGraphic(null);
-		} else if (item != null) {
-			box.setAlignment(Pos.CENTER_LEFT);
-			box.getChildren().add(makeImage(item));
-			box.getChildren().add(new Label(item));
-			setGraphic(box);
-		}
 	}
 
 	private ImageView makeImage(String item) {
@@ -39,5 +28,29 @@ public class ActorCell extends ListCell<String> {
 		output.setSmooth(true);
 		output.setCache(true);
 		return output;
+	}
+
+	public boolean deselect() {
+		boolean output = deselect;
+		deselect = false;
+		return output;
+	}
+
+	public void markForDeselection() {
+		this.deselect = true;
+	}
+
+	public void drag(MouseEvent me) {
+		this.deselect = false;
+		Dragboard db = this.startDragAndDrop(TransferMode.COPY);
+	}
+
+	@Override
+	protected void makeCell(String item) {
+		HBox box = new HBox(5);
+		box.setAlignment(Pos.CENTER_LEFT);
+		box.getChildren().add(makeImage(item));
+		box.getChildren().add(new Label(item));
+		setGraphic(box);
 	}
 }
