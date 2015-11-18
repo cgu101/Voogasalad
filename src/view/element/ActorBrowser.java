@@ -26,16 +26,16 @@ public class ActorBrowser extends AbstractDockElement {
 	private AuthoringController controller;
 	private GridPane listPane;
 
-	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen, Workspace workspace,
-			AuthoringController controller) {
+	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,
+			Workspace workspace) {
 		super(pane, home, title, screen);
 		findResources();
 		doubleLists = new SimpleBooleanProperty(true);
 		doubleLists.addListener(e -> toggleDoubleLists(doubleLists.getValue()));
-		this.controller = controller;
+		this.controller = null;
 		workspace.addListener((ov, oldTab, newTab) -> {
 			if (workspace.getCurrentLevel() != null) {
-				load();
+				load(workspace.getCurrentLevel().getController());
 			}
 		});
 		makePane();
@@ -54,7 +54,9 @@ public class ActorBrowser extends AbstractDockElement {
 		this.controller = controller;
 		listPane.getChildren().clear();
 		actors = FXCollections.observableArrayList(new ArrayList<String>());
-		actors.addAll(controller.getAuthoringActorConstructor().getActorList());
+		if (controller != null) {
+			actors.addAll(controller.getAuthoringActorConstructor().getActorList());
+		}
 		rightlist = new ListView<String>(actors);
 		leftlist = new ListView<String>(actors);
 		listPane.add(leftlist, 0, 1);

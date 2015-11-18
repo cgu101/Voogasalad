@@ -29,13 +29,10 @@ public class CreatorScreen extends AbstractScreen {
 	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
 
-	private AuthoringController controller;
-
 	public CreatorScreen() {
 		findResources();
 		WIDTH = Integer.parseInt(myResources.getString("width"));
 		HEIGHT = Integer.parseInt(myResources.getString("height"));
-		this.controller = new AuthoringController();
 		makeScene();
 		root.prefHeightProperty().bind(scene.heightProperty());
 		root.prefWidthProperty().bind(scene.widthProperty());
@@ -53,7 +50,7 @@ public class CreatorScreen extends AbstractScreen {
 		root = r;
 		scene = new Scene(root, WIDTH, HEIGHT);
 		makePanes(2);
-		w = new Workspace(myPanes.get(1), this, controller);
+		w = new Workspace(myPanes.get(1), this);
 		r.setTop(myPanes.get(0));
 		r.setCenter(myPanes.get(1));
 		dockPanes = new ArrayList<GridPane>();
@@ -72,10 +69,10 @@ public class CreatorScreen extends AbstractScreen {
 		r.setBottom(bottomPane);
 		components = new ArrayList<AbstractDockElement>();
 		ActorBrowser browser = new ActorBrowser(dockPanes.get(0), homePanes.get(0),
-				myResources.getString("browsername"), this, w, controller);
+				myResources.getString("browsername"), this, w);
 		components.add(browser);
 		ActorEditor editor = new ActorEditor(dockPanes.get(1), homePanes.get(1), myResources.getString("editorname"),
-				this, browser, controller);
+				this, browser, w);
 		components.add(editor);
 		t = new ControlBarCreator(myPanes.get(0), this, w);
 	}
@@ -87,16 +84,16 @@ public class CreatorScreen extends AbstractScreen {
 
 		List<LevelConstructor> levelConstructors = w.getLevels();
 
-		Game game = controller.getGameWithLevels(levelConstructors);
+		//Game game = controller.getGameWithLevels(levelConstructors);
 		File saveFile = FileChooserUtility.save(scene.getWindow());
 		String fileLocation = saveFile.getAbsolutePath();
 		System.out.println(saveFile.getName());
 
-		try {
-			controller.saveGame(game, fileLocation);
-		} catch (GameFileException e) {
-			System.err.println(e.getMessage());
-		}
+//		try {
+//			controller.saveGame(game, fileLocation);
+//		} catch (GameFileException e) {
+//			System.err.println(e.getMessage());
+//		}
 
 		// try {
 		// writeToFile(saveFile, test);

@@ -18,12 +18,10 @@ public class Workspace extends AbstractElement {
 	private ArrayList<LevelMap> levels;
 	private LevelMap currentLevel;
 	private AbstractScreen screen;
-	private AuthoringController controller;
 
-	public Workspace(GridPane pane, AbstractScreen screen, AuthoringController ac) {
+	public Workspace(GridPane pane, AbstractScreen screen) {
 		super(pane);
 		this.screen = screen;
-		controller = ac;
 		makePane();
 	}
 
@@ -53,7 +51,7 @@ public class Workspace extends AbstractElement {
 				c.getShowingProperty().setValue(true);
 			}
 		}
-		LevelMap newLevel = new LevelMap(new GridPane(), levels.size(), screen, controller.getLevelConstructor());
+		LevelMap newLevel = new LevelMap(new GridPane(), levels.size(), screen);
 		levels.add(newLevel);
 		Tab newLevelTab = newLevel.getTab();
 		int newID = Integer.parseInt(newLevelTab.getId());
@@ -97,7 +95,7 @@ public class Workspace extends AbstractElement {
 	public List<LevelConstructor> getLevels() {
 		List<LevelConstructor> levelConstructorList = new ArrayList<LevelConstructor>();
 		for (LevelMap levelMap : levels) {
-			levelConstructorList.add(levelMap.getLevelConstructor());
+			levelConstructorList.add(levelMap.getController().getLevelConstructor());
 		}
 		return levelConstructorList;
 	}
