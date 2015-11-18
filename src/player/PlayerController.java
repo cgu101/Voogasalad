@@ -2,6 +2,7 @@ package player;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
@@ -94,21 +95,25 @@ public class PlayerController extends AController implements IPlayer {
 	public void run(){
 		try {
 			myEngine.play().call(this);
-			this.render(myEngine.getActors());
+			mySpriteManager.updateSprites(getActorList());
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void render(Map<String, Bundle<Actor>> actorMap){
+	public ArrayList<Actor> getActorList(){
 		ArrayList<Actor> actors = new ArrayList<Actor>();
-		for(Bundle<Actor> b : actorMap.values()){
+		for(Bundle<Actor> b : myEngine.getActors().values()){
 			actors.addAll(b.getComponents().values());
 		}
-		mySpriteManager.updateSprites(actors);
+		return actors;
 	}
-
+	
+	public Map<String,Bundle<Actor>> getActorMap(){
+		return myEngine.getActors();
+	}
+	
 	public void saveState (String fileName) throws GameFileException {
 		pause();
 		State saveState = myEngine.ejectState();

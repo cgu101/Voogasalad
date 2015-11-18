@@ -11,6 +11,7 @@ import javafx.stage.FileChooser;
 import player.PlayerController;
 import view.controlbar.ControlBarPlayer;
 import view.element.AbstractDockElement;
+import view.element.ActorMonitor;
 import view.element.Workspace;
 
 public class PlayerScreen extends AbstractScreen {
