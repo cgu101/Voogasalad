@@ -107,15 +107,8 @@ public class PlayerController implements IPlayer {
 			e.printStackTrace();
 		}
 	}
-<<<<<<< HEAD
-
-	public void render(Map<String, Bundle<Actor>> actorMap){
-		//System.out.println(actorMap);
-=======
-	
 
 	public ArrayList<Actor> getActorList(){
->>>>>>> master
 		ArrayList<Actor> actors = new ArrayList<Actor>();
 		for(Bundle<Actor> b : myEngine.getActors().values()){
 			actors.addAll(b.getComponents().values());
