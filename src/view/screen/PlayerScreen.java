@@ -24,10 +24,11 @@ public class PlayerScreen extends AbstractScreen {
 		WIDTH = Integer.parseInt(myResources.getString("width"));
 		HEIGHT = Integer.parseInt(myResources.getString("height"));
 		this.title = myResources.getString("title");
-		this.playerController = new PlayerController();
 		
 		makeScene();
 		scene = new Scene(root, WIDTH, HEIGHT);
+		this.playerController = new PlayerController(scene);
+
 	}
 
 	//TODO: Throw NullGameException when Game hasn't been loaded yet
@@ -70,7 +71,13 @@ public class PlayerScreen extends AbstractScreen {
 		System.out.println(playerController);
 		File file = fileChooser.showOpenDialog(null);
 		
-		playerController.loadGame(file);
+		
+		try {
+			playerController.loadGame(file.getName());
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void saveState () {

@@ -25,6 +25,7 @@ public class Sprite extends ImageView{
 	private HashMap<Integer, Integer> rowLengths;
 	private int fps = 8;
 	private SpriteAnimation currentAnimation;
+	private int lastRowPlayed = 0;
 	
 	/**
 	 * Initializes a sprite from a javafx Image. This is not the recommended
@@ -79,6 +80,7 @@ public class Sprite extends ImageView{
 	 * @param  row the row to play
 	 */
 	public void play(int row){
+		this.lastRowPlayed = row;
 		this.currentAnimation = new SpriteAnimation(new Duration(10000/this.fps), row, this.rowLengths.get(row));
 		this.currentAnimation.play();
 	}
@@ -86,7 +88,7 @@ public class Sprite extends ImageView{
 	/**
 	 * Animates a series of cells from the first row of the sprite sheet.
 	 */
-	public void play(){ this.play(0); }
+	public void play(){ this.play(lastRowPlayed); }
 	
 	public void playTimes(int row, int count){
 		this.currentAnimation = new SpriteAnimation(new Duration(10000/this.fps), row, this.rowLengths.get(row), count);

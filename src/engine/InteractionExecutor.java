@@ -41,6 +41,7 @@ public class InteractionExecutor {
 		this.currentLevelIdentifier = level.getUniqueID();
 		this.selfTriggerTree = level.getSelfTriggerTree();
 		this.externalTriggerTree = level.getInteractionTree();
+		System.out.println(level.getActorGroups().getMap() + " InteractionExecutor 44");
 		this.currentActorMap = level.getActorGroups();
 		// TODO: input map
 		this.inputMap = inputMap;
@@ -95,6 +96,7 @@ public class InteractionExecutor {
 						  .collect(Collectors.toList());
 	}
 	public ActorGroups getActors () {
+		//System.out.println(currentActorMap.getMap() + " InteractionExecutor");
 		return currentActorMap;
 	}
 	// TODO

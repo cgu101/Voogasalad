@@ -20,7 +20,7 @@ public class TreeConstructor {
 	private Map<String,IAction> actionMap;
 
 	
-	TreeConstructor() {
+	public TreeConstructor() {
 		selfTriggerTree = new InteractionTreeNode();
 		eventTriggerTree = new InteractionTreeNode();
 		triggerMap = new HashMap<String, ITriggerEvent>();
