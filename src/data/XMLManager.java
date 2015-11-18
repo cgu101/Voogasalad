@@ -61,7 +61,12 @@ public class XMLManager {
 		}
 		throw new GameFileException();
 	}
-
+	/**
+	 * Saves a game to the given file location.
+	 * @param game A {@link Game} containing a bundle of metadata properties and a bundle of levels.
+	 * @param fileLocation
+	 * @throws GameFileException
+	 */
 	public static void saveGame(Game game, String fileLocation) throws GameFileException {
 		
 		// save to game.xml file
@@ -107,7 +112,12 @@ public class XMLManager {
 			throw new GameFileException();
 		}
 	}
-	
+	/**
+	 * Loads a game from an absolute file path.
+	 * @param fileLocation
+	 * @return A {@link Game} to be loaded into the engine.
+	 * @throws GameFileException
+	 */
 	public static Game loadGame(String fileLocation) throws GameFileException {
 
 		// load from game.xml
@@ -118,12 +128,23 @@ public class XMLManager {
 		}
 		
 	}
-
+	/**
+	 * Saves a single level to the given file location. 
+	 * @param level
+	 * @param fileLocation
+	 * @throws GameFileException
+	 */
 	public static void saveLevel(Level level, String fileLocation) throws GameFileException {
 		// TODO Auto-generated method stub
 		saveFile(level, fileLocation);
 	}
-
+	
+	/**
+	 * Loads a single level from an absolute file path.
+	 * @param fileLocation
+	 * @return
+	 * @throws GameFileException
+	 */
 	public static Level loadLevel(String fileLocation) throws GameFileException {
 		// TODO Auto-generated method stub
 		try {
@@ -132,13 +153,23 @@ public class XMLManager {
 			throw new GameFileException();
 		}
 	}
-
+	/**
+	 * Saves a save state.
+	 * @param state
+	 * @param filePath
+	 * @throws GameFileException
+	 */
 	public static void saveState(State state, String filePath) throws GameFileException {
 		// TODO Auto-generated method stub
 		saveFile(state, filePath);
 //		saveFile(state, DEFAULT_SAVESTATE_FOLDER + filePath);
 	}
-
+	/**
+	 * Loads a save state from an absolute file path.
+	 * @param filePath
+	 * @return
+	 * @throws GameFileException
+	 */
 	public static State loadState(String filePath) throws GameFileException {
 		try {
 			return (State) loadFile(filePath);
@@ -147,15 +178,30 @@ public class XMLManager {
 			throw new GameFileException();
 		}
 	}
-
+	/**
+	 * Loads a game from a file.
+	 * @param file
+	 * @return
+	 * @throws GameFileException
+	 */
 	public static Game loadGame(File file) throws GameFileException {
 		return loadGame(file.getName());
 	}
-
+	/**
+	 * Loads a single level from a file.
+	 * @param file
+	 * @return
+	 * @throws GameFileException
+	 */
 	public static Level loadLevel(File file) throws GameFileException {
 		return loadLevel(file.getName());
 	}
-
+	/**
+	 * Loads a savestate from a file.
+	 * @param file
+	 * @return
+	 * @throws GameFileException
+	 */
 	public static State loadState(File file) throws GameFileException {
 		return loadState(file.getName());
 	}

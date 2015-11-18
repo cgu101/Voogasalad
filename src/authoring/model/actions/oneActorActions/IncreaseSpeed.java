@@ -11,10 +11,11 @@ public class IncreaseSpeed extends AActionOneActor {
 	@Override
 	public void run(ActorGroups actorGroup, Actor actor) {
 
-		Double speed = ((Property<Double>) actor.getProperty("speed")).getValue();
+		Double increment = 1.0;
 
-		Actor futureActor = (Actor) actor.getCopy();
-		((Property<Double>) futureActor.getProperty("speed")).setValue((speed + 1));
-		actorGroup.addActor(futureActor);
+		Property<Double> speed = (Property<Double>) actor.getProperty("speed");
+		speed.setValue(speed.getValue() + increment);
+
+		actorGroup.addActor(actor);
 	}
 }
