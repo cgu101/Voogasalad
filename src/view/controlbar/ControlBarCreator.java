@@ -71,8 +71,10 @@ public class ControlBarCreator extends ControlBar {
 		CheckMenuItem toolbar = new CheckMenuItem(myResources.getString("toolbar"));
 		toolbar.selectedProperty().setValue(true);
 		toolbar.selectedProperty().addListener(e -> toggleToolbar(toolbar.selectedProperty().getValue()));
+		
 		Menu hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar);
 		makeComponentCheckMenus(hideAndShow);
+	
 		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
 		fullscreen.setAccelerator(new KeyCodeCombination(KeyCode.F6));
 		fullscreen.selectedProperty().bindBidirectional(screen.getFullscreenProperty());

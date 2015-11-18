@@ -18,6 +18,7 @@ public class ControlBarPlayer extends ControlBar {
 	private double width;
 	private VBox box;
 	private ToolBar toolBar;
+	Menu hideAndShow;
 
 	public ControlBarPlayer(GridPane pane, PlayerScreen screen, double width) {
 		super(pane);
@@ -43,7 +44,8 @@ public class ControlBarPlayer extends ControlBar {
 
 	private void createMenuBar(MenuBar mainMenu) {
 		MenuItem load = makeMenuItem(myResources.getString("loadGame"), e -> currentScreen.loadGame());
-		Menu file = addToMenu(new Menu(myResources.getString("file")), load);
+		MenuItem save = makeMenuItem(myResources.getString("saveGame"), e -> currentScreen.saveState());
+		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save);
 
 		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
 		fullscreen.selectedProperty().bindBidirectional(currentScreen.getFullscreenProperty());
@@ -64,8 +66,8 @@ public class ControlBarPlayer extends ControlBar {
 		preferences.selectedProperty().setValue(false);
 		preferences.selectedProperty().addListener(e -> System.out.println("Game Preferences not implemented yet"));
 		
-		Menu hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar, highScore, headsUpDisplay, preferences);
-
+		hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar, highScore, headsUpDisplay, preferences);
+		
 		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow);
 		makeMenuBar(mainMenu, file, window);
 	}
@@ -85,5 +87,16 @@ public class ControlBarPlayer extends ControlBar {
 		} else {
 			box.getChildren().remove(toolBar);
 		}
+	}
+
+	public void initializeComponents() {
+		if(currentScreen.getComponents() != null){
+			for (AbstractDockElement c : currentScreen.getComponents()) {
+				CheckMenuItem item = new CheckMenuItem(myResources.getString(c.getClass().getSimpleName()));
+				item.selectedProperty().bindBidirectional(c.getShowingProperty());
+				addToMenu(hideAndShow, item);
+			}
+		}
+		
 	}
 }
