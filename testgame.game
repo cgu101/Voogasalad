@@ -54,7 +54,7 @@
                         <value>authoring.model.actions.oneActorActions.Move</value>
                       </authoring.model.tree.InteractionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.TrueSelfTrigger</value>
+                    <value>authoring.model.triggers.selfconditions.RightArrowKey</value>
                   </authoring.model.tree.InteractionTreeNode>
                 </children>
                 <value>asteroid</value>
@@ -211,12 +211,12 @@
               <authoring.model.triggers.selfconditions.SpaceBarKey/>
             </entry>
             <entry>
-              <string>authoring.model.triggers.selfconditions.TrueSelfTrigger</string>
-              <authoring.model.triggers.selfconditions.TrueSelfTrigger/>
-            </entry>
-            <entry>
               <string>authoring.model.triggers.externalconditions.CircleCollision</string>
               <authoring.model.triggers.externalconditions.CircleCollision/>
+            </entry>
+            <entry>
+              <string>authoring.model.triggers.selfconditions.RightArrowKey</string>
+              <authoring.model.triggers.selfconditions.RightArrowKey/>
             </entry>
           </triggerMap>
           <actionMap>

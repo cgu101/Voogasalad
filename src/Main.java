@@ -42,7 +42,7 @@ public class Main extends Application {
 		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.SpaceBarKey", 
 				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
 		
-		tc.addSelfTriggerActions("asteroid", "authoring.model.triggers.selfconditions.TrueSelfTrigger",
+		tc.addSelfTriggerActions("asteroid", "authoring.model.triggers.selfconditions.RightArrowKey",
 				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
 		
 		tc.addEventTriggerActions("player", "asteroid", "authoring.model.triggers.externalconditions.CircleCollision", 

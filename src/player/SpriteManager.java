@@ -41,6 +41,7 @@ public class SpriteManager {
 				s.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
 				s.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
 				System.out.println(s.getX() + ", " + s.getY() + " - " + s.getImage());
+				System.out.println(a.getProperties().getComponents().get("angle").getValue() + " ----$$$");
 			//}else if((Boolean)a.getProperties().getComponents().get("_visible").getValue()){
 			}else{
 				Sprite newsp = createSprite(a);
