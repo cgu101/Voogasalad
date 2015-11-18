@@ -33,10 +33,10 @@ public class CircleCollision extends ASelfTrigger {
 
 	@SuppressWarnings("unchecked")
 	public double distance(Actor actorA, Actor actorB) {
-		Double xA = ((Property<Double>) actorA.getProperties().getComponents().get("x-coordinate")).getValue();
-		Double yA = ((Property<Double>) actorA.getProperties().getComponents().get("y-coordinate")).getValue();
-		Double xB = ((Property<Double>) actorB.getProperties().getComponents().get("x-coordinate")).getValue();
-		Double yB = ((Property<Double>) actorB.getProperties().getComponents().get("y-coordinate")).getValue();
+		Double xA = ((Property<Double>) actorA.getProperties().getComponents().get("xLocation")).getValue();
+		Double yA = ((Property<Double>) actorA.getProperties().getComponents().get("yLocation")).getValue();
+		Double xB = ((Property<Double>) actorB.getProperties().getComponents().get("xLocation")).getValue();
+		Double yB = ((Property<Double>) actorB.getProperties().getComponents().get("yLocation")).getValue();
 		return Math.sqrt(Math.pow(xB - xA, 2) + Math.pow(yB - yA, 2));
 	}
 

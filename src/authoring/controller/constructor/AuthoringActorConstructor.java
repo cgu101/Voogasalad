@@ -20,6 +20,12 @@ public class AuthoringActorConstructor {
 	private void load() {
 		for(String s: AuthoringConfigManager.getInstance().getActorList()) {
 			actorMap.put(s, new ActorObject(s, AuthoringConfigManager.getInstance().getPropertyList(s)));
+			actorMap.put(s, new ActorObject(s, 
+					AuthoringConfigManager.getInstance().getPropertyList(s),
+					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.SELF_TRIGGER),
+					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.EVENT_TRIGGER),
+					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.ONE_ACTOR_ACTIONS),
+					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.TWO_ACTOR_ACTIONS)));
 		}
 	}
 	
@@ -44,26 +50,51 @@ public class AuthoringActorConstructor {
 	}
 	
 	public List<String> getSelfTriggerList(String actor) {
-		return AuthoringConfigManager.getInstance().getSelfTriggerList(actor);
+		return actorMap.get(actor).selfTriggerList;
 	}
 	
-	public List<String> getEventTriggerList(String actor) {
-		return AuthoringConfigManager.getInstance().getEventTriggerList(actor);
+	public List<String> getEventTriggerList(String aActor, String...otherActors) {		
+		// Need to compare bActor's properties against eventTriggers before adding
+		return actorMap.get(aActor).eventTriggerList;
 	}
 
-	public List<String> getActionList(String actor) {
-		return AuthoringConfigManager.getInstance().getActionList(actor);
+	public List<String> getActionList(String actor, String...otherActors) {
+		List<String> ret = new ArrayList<String>();
+		ret.addAll(actorMap.get(actor).oneActorActionList);
+		// Need to compare bActors properties against actions before adding
+		ret.addAll(actorMap.get(actor).twoActorActionList);
+		return ret;
 	}	
+	
 	
 	private class ActorObject {
 		private String actor;
 		private ActorPropertyMap propertyMap;
+		private List<String> selfTriggerList;
+		private List<String> eventTriggerList;
+		private List<String> oneActorActionList;
+		private List<String> twoActorActionList;
 		
 		private ActorObject(String actor, List<String> propertyList) {
 			this.actor = actor;
 			load(propertyList);
 		}
-			
+		
+		private ActorObject(String actor,
+				List<String> propertyList,
+				List<String> selfTriggerList,
+				List<String> eventTriggerList, 
+				List<String> oneActorActionList, 
+				List<String> twoActorActionList) {
+			propertyMap = new ActorPropertyMap();
+			this.actor = actor;
+			this.selfTriggerList = selfTriggerList;
+			this.eventTriggerList = eventTriggerList;
+			this.oneActorActionList = oneActorActionList;
+			this.twoActorActionList = twoActorActionList;
+			load(propertyList);
+		}
+		
 		private void load(List<String> propertyList) {
 			for(String s: propertyList) {
 				propertyMap.addProperty(s, AuthoringConfigManager.getInstance().getDefaultPropertyValue(actor, s));

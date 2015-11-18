@@ -32,10 +32,6 @@ public class AuthoringController extends AController {
 		return ConstructorFactory.getAuthoringActorConstructor();
 	}
 	
-	public AuthoringConfigManager getAuthoringConfigManager() {
-		return AuthoringConfigManager.getInstance();
-	}
-	
 	@Override
 	public void run() throws Exception {
 		currentScreen.run();

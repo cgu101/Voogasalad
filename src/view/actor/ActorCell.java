@@ -21,8 +21,8 @@ public class ActorCell extends AbstractListCell {
 	}
 
 	private ImageView makeImage(String item) {
-		ImageView output = new ImageView(new Image(getClass().getClassLoader()
-				.getResourceAsStream(controller.getAuthoringConfigManager().getDefaultPropertyValue(item, "image"))));
+		ImageView output = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(
+				controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image"))));
 		output.setFitHeight(25);
 		output.setPreserveRatio(true);
 		output.setSmooth(true);

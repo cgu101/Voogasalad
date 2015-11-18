@@ -14,6 +14,8 @@ import voogasalad.util.reflection.Reflection;
 public class ActorGroupsConstructor {
 	
 	private ActorGroups actorGroups;
+	
+	private static final String GROUP_ID = "groupID";
 		
 	public ActorGroupsConstructor() {
 		actorGroups = new ActorGroups();
@@ -23,12 +25,12 @@ public class ActorGroupsConstructor {
 		return actorGroups;
 	}
 	
-	public void updateActor(String className, String id, ActorPropertyMap propertyMap) {
-		updateActor(className, Arrays.asList(new String[] {id}), propertyMap);
+	public void updateActor(String id, ActorPropertyMap propertyMap) {
+		updateActor(Arrays.asList(new String[] {id}), propertyMap);
 	}
 	
-	public void updateActor(String className, List<String> ids, ActorPropertyMap propertyMap) {		
-		Bundle<Actor> actorBundle = actorGroups.addGroup(className);		
+	public void updateActor(List<String> ids, ActorPropertyMap propertyMap) {		
+		Bundle<Actor> actorBundle = actorGroups.addGroup(propertyMap.getPropertyValue(GROUP_ID));		
 		Bundle<Property<?>> properties = getPropertyBundle(propertyMap);	
 		
 		for(String id: ids) {
