@@ -20,23 +20,18 @@ public class Map extends AbstractElement {
 	private StackPane layout;
 	private ScrollPane mapArea;
 	private MapZoomSlider slider;
-	private Image backgroundImage;
-	private Rectangle map;
 
 	public Map(GridPane pane, AbstractScreen screen) {
 		super(pane);
 		findResources();
 		this.screen = screen;
 
-		// Use a StackPane so we can layer things on top of one another, like an
-		// actor
-		// over a background tile. Note that you can probably use something else
-		// if a
-		// StackPane is not appropriate, such as a Canvas.
+
+		//Use a StackPane so we can layer things on top of one another, like an actor
+		//over a background tile. Note that you can probably use something else if a
+		//StackPane is not appropriate, such as a Canvas.
 		layout = new StackPane();
 		mapArea = new ScrollPane();
-		makePane();
-
 	}
 
 	public void addMapElements(Node... elements) {
@@ -59,12 +54,12 @@ public class Map extends AbstractElement {
 	private void createScrollPane() {
 		mapArea = new ScrollPane();
 
-		// Hide the vertical and horizontal scrollbars, make the pane pannable
+		//Hide the vertical and horizontal scrollbars, make the pane pannable
 		mapArea.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		mapArea.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		mapArea.setPannable(true);
 
-		// Bind the preferred size of the scroll area to the size of the scene
+		//Bind the preferred size of the scroll area to the size of the scene
 		mapArea.prefWidthProperty().bind(screen.getScene().widthProperty());
 		mapArea.prefHeightProperty().bind(screen.getScene().heightProperty());
 
@@ -77,7 +72,7 @@ public class Map extends AbstractElement {
 		// collectively rescaled using a Scale.
 		zoomGroup = new Group();
 
-		// Contains the zoomGroup that will then be displayed on the map
+		//Contains the zoomGroup that will then be displayed on the map
 		contentGroup = new Group();
 
 		contentGroup.getChildren().add(zoomGroup);
@@ -91,20 +86,20 @@ public class Map extends AbstractElement {
 
 	@Override
 	protected void makePane() {
-		// Test Narnia map image
-		backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
+		//Test Narnia map image
+		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
 		ImageView background = new ImageView(backgroundImage);
 
-		// Test white rectangle
-		map = new Rectangle();
-		map.widthProperty().bind(screen.getScene().widthProperty());
-		map.heightProperty().bind(screen.getScene().heightProperty());
-		map.setFill(Color.WHITE);
+		//Test white rectangle
+		Rectangle test = new Rectangle(640, 480);
+		test.widthProperty().bind(screen.getScene().widthProperty());
+		test.heightProperty().bind(screen.getScene().heightProperty());
+		test.setFill(Color.WHITE);
 
-		// Add any elements you want to appear on the map using this method
-		addMapElements(map);
+		//Add any elements you want to appear on the map using this method
+		addMapElements(test);
 
-		// Create the map after adding elements you want
+		//Create the map after adding elements you want
 		createTheMap();
 	}
 }
