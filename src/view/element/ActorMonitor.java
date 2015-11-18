@@ -34,7 +34,6 @@ public class ActorMonitor extends AbstractDockElement {
 		super(pane, home, title, screen);
 		findResources();
 		this.controller = controller;
-		//makePane();
 	}
 
 	@Override
@@ -50,6 +49,11 @@ public class ActorMonitor extends AbstractDockElement {
 		pane.setMaxWidth(Double.parseDouble(myResources.getString("width")));
 	}
 	
+	//Initializes Pane once a game has been loaded
+	public void initializePane(){
+			makePane();
+	}
+		
 	//Creates the Hbox of Properties for a single actor
 	private ListView<String> makeProperties(Actor a) {
 		ObservableList<String> properties = FXCollections.observableArrayList(new ArrayList<String>());

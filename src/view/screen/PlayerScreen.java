@@ -25,6 +25,7 @@ public class PlayerScreen extends AbstractScreen {
 	private PlayerController playerController;
 	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
+	private ActorMonitor monitor;
 //	private Workspace w;
 
 	public PlayerScreen() {
@@ -34,9 +35,6 @@ public class PlayerScreen extends AbstractScreen {
 		this.title = myResources.getString("title");
 		
 		makeScene();
-		scene = new Scene(root, WIDTH, HEIGHT);
-		this.playerController = new PlayerController(scene);
-
 	}
 
 	//TODO: Throw NullGameException when Game hasn't been loaded yet
@@ -68,6 +66,9 @@ public class PlayerScreen extends AbstractScreen {
 		root = r;
 		r.setTop(myPanes.get(0));
 		r.setCenter(myPanes.get(1));
+		scene = new Scene(root, WIDTH, HEIGHT);
+		this.playerController = new PlayerController(scene);
+		
 		dockPanes = new ArrayList<GridPane>();
 		homePanes = new ArrayList<GridPane>();
 		for (int i = 0; i < 3; i++) {
@@ -83,8 +84,9 @@ public class PlayerScreen extends AbstractScreen {
 		bottomPane.add(homePanes.get(2), 0, 0);
 		r.setBottom(bottomPane);
 		components = new ArrayList<AbstractDockElement>(); //No components yet! 
-		ActorMonitor monitor = new ActorMonitor(dockPanes.get(0), homePanes.get(0),
+		monitor = new ActorMonitor(dockPanes.get(0), homePanes.get(0),
 				myResources.getString("monitorname"), this, playerController);
+		components.add(monitor);
 	}
 	
 	// TODO: David: need a stage eventually for the line: fileChooser.showOpenDialog(null);
@@ -106,6 +108,8 @@ public class PlayerScreen extends AbstractScreen {
 			// TODO Auto-generated catch block
 			ee.printStackTrace();
 		}
+		monitor.initializePane();
+		t.initializeComponents();
 	}
 
 	public void saveState () {
