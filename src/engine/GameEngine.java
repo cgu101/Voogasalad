@@ -1,6 +1,5 @@
 package engine;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
@@ -13,40 +12,37 @@ import exceptions.engine.EngineStateException;
 import player.InputManager;
 
 public class GameEngine implements IEngine {
-	private static final String DEFAULT_INPUTS_FILENAME = "resources/gameplayer/Inputs";
 	private static final String LEVEL_ID_KEY = "level";
 	private static final String GAME_ID_KEY = "name";
 
 	private Game game;
 	private InteractionExecutor levelExecutor;
+	private InputManager inputManager;
 	
-	public GameEngine () {
-		this(new Game());
+	public GameEngine (InputManager inputManager) {
+		this.inputManager = inputManager;
 	}
-	
-	public GameEngine (Game game) {
-		init(game);
-	}
-
 	@Override
-	public void init(Game gameData) {
-		this.game = gameData;
-		init(gameData.getLevel("0"));
+	public void init(Game game) {
+		this.game = game;
+		init(game.getLevel("0"), inputManager);
 	}
 	
 	// TODO:
-	public void init(Level level) {
+	private void init(Level level, InputManager inputManager) {
+		this.inputManager = inputManager;
+		// TODO
 		if (level == null) {
 			level = new Level("testLevel");
 			levelExecutor = new InteractionExecutor();
 		} else {
-			levelExecutor = new InteractionExecutor(level, new InputManager(DEFAULT_INPUTS_FILENAME));
+			levelExecutor = new InteractionExecutor(level, inputManager);
 		}
 	}
 	
 	@Override
 	public void reset() {
-		init(game.getLevel("0"));
+		init(game.getLevel("0"), inputManager);
 	}
 
 	@Override
@@ -69,7 +65,7 @@ public class GameEngine implements IEngine {
 	public void injectState (State state) throws EngineException {
 		if (state.getProperty(GAME_ID_KEY).getValue().equals(game.getProperty(GAME_ID_KEY).getValue())) {
 			Level level = game.getLevel((String) state.getProperty(LEVEL_ID_KEY).getValue());
-			init(level);
+			init(level, inputManager);
 			levelExecutor.setActors(state.getActorMap());
 		} else {
 			throw new EngineStateException("Wrong game", null);

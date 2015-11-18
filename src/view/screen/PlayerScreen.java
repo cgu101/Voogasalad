@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.util.ArrayList;
 
+import exceptions.EngineException;
 import exceptions.data.GameFileException;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -103,6 +104,9 @@ public class PlayerScreen extends AbstractScreen {
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (EngineException ee) {
+			// TODO Auto-generated catch block
+			ee.printStackTrace();
 		}
 		monitor.initializePane();
 		t.initializeComponents();

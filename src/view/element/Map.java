@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -16,15 +17,16 @@ public class Map extends AbstractElement {
 	private Group contentGroup;
 	private Group zoomGroup;
 	private Group layout;
+	private AbstractScreen screen;
 
 	private ScrollPane mapArea;
 	private MapZoomSlider slider;
 	private MapActorManager actorManager;
 
-	public Map(GridPane pane) {
+	public Map(GridPane pane, AbstractScreen screen) {
 		super(pane);
 		findResources();
-
+		this.screen = screen;
 		//Use a StackPane so we can layer things on top of one another, like an actor
 		//over a background tile. Note that you can probably use something else if a
 		//StackPane is not appropriate, such as a Canvas.
@@ -56,8 +58,8 @@ public class Map extends AbstractElement {
 	}
 	
 	public void addMapToPane(GridPane pane) {
-		pane.add(mapArea, 0, 0);
-		pane.add(slider.getTheSlider(), 0, 1);
+		pane.add(mapArea, 1, 0);
+		pane.add(slider.getTheSlider(), 1, 1);
 	}
 
 	private void createMapArea() {
@@ -73,8 +75,8 @@ public class Map extends AbstractElement {
 		mapArea.setPannable(true);
 
 		//Bind the preferred size of the scroll area to the size of the scene
-		mapArea.prefWidthProperty().bind(pane.widthProperty());
-		mapArea.prefHeightProperty().bind(pane.heightProperty());
+		mapArea.prefWidthProperty().bind(screen.getScene().widthProperty());
+		mapArea.prefHeightProperty().bind(screen.getScene().heightProperty());
 
 		mapArea.setContent(contentGroup);
 	}
@@ -96,6 +98,11 @@ public class Map extends AbstractElement {
 		zoomGroup.getTransforms().add(scaleTransform);
 	}
 
+	private void addEventFilters () {
+		mapArea.addEventFilter(KeyEvent.ANY, e -> {e.consume();});
+		slider.getTheSlider().addEventFilter(KeyEvent.ANY, e -> {e.consume();});
+	}
+	
 	@Override
 	protected void makePane() {
 		//Test Narnia map image
@@ -105,18 +112,21 @@ public class Map extends AbstractElement {
 		background.setPreserveRatio(true);
 		
 		//Test white rectangle
-		Rectangle test = new Rectangle(20, 20);
+		Rectangle test = new Rectangle(200, 200);
 		test.setFill(Color.WHITE);
-		System.out.println((int) background.getBoundsInParent().getWidth());
 
 		//Add any elements you want to appear on the map using this method
 		addActor(background, 0, 0);
-		addActor(test, 200, 200);
-
+		addActor(test, 0, 0);
+		
 		//Create the map after adding elements you want
 		createTheMap();
 		
+		// remove pesky key event handlers
+		addEventFilters();
+		
 		//Add the map to the GridPane
 		addMapToPane(pane);
+		
 	}
 }

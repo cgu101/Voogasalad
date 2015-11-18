@@ -15,12 +15,9 @@ public class AuthoringController {
 	private LevelConstructor levelConstructor;
 	private AuthoringActorConstructor authActorConstructor;
 
-	IFileManager myXMLManager;
-	
 	public AuthoringController() {
 		levelConstructor = ConstructorFactory.getLevelConstructor();
 		authActorConstructor = ConstructorFactory.getAuthoringActorConstructor();
-		myXMLManager = new XMLManager();
 	}
 	
 	public LevelConstructor getLevelConstructor() {
@@ -32,10 +29,10 @@ public class AuthoringController {
 	}
 	
 	public void saveGame (Game game, String fileLocation) throws GameFileException {
-		myXMLManager.saveGame(game, fileLocation);
+		XMLManager.saveGame(game, fileLocation);
 	}
 
-	public Game getGameWithLevels (List<LevelConstructor> levelBuilderList) {
+	public static Game getGameWithLevels (List<LevelConstructor> levelBuilderList) {
 		Game game = new Game();
 		for (int i = 0 ; i < levelBuilderList.size(); i++) {
 			game.addLevel(levelBuilderList.get(i).buildLevel(Integer.toString(i)));

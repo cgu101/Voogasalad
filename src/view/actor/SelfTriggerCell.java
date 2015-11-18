@@ -8,16 +8,10 @@ import authoring.controller.AuthoringController;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.util.StringConverter;
 
 public class SelfTriggerCell extends AbstractListCell {
 	private AuthoringController controller;
@@ -25,6 +19,7 @@ public class SelfTriggerCell extends AbstractListCell {
 	private String actor;
 
 	public SelfTriggerCell(AuthoringController controller, String actor, ListView<String> list) {
+		findResources();
 		this.controller = controller;
 		this.actor = actor;
 		this.list = list;
@@ -57,6 +52,7 @@ public class SelfTriggerCell extends AbstractListCell {
 				controller.getLevelConstructor().getTreeConstructor().addSelfTriggerActions(actor, item, actions);
 			}
 		});
+		selector.setMaxWidth(Double.parseDouble(myResources.getString("checkwidth")));
 		return selector;
 	}
 
