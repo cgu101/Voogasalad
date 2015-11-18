@@ -18,6 +18,7 @@ public class PropertyCell extends AbstractListCell {
 		this.controller = controller;
 		this.actor = actor;
 		this.list = list;
+		findResources();
 	}
 
 	private void editProperty(String item) {
@@ -28,6 +29,8 @@ public class PropertyCell extends AbstractListCell {
 	private TextField makeTextField(String item, EventHandler<ActionEvent> e) {
 		TextField field = new TextField(item);
 		field.setOnAction(e);
+		field.setMaxWidth(Double.parseDouble(myResources.getString("width")));
+		field.setFont(textFont);
 		return field;
 	}
 
