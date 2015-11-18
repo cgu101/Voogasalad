@@ -21,7 +21,7 @@ public class Map extends AbstractElement {
 	private ScrollPane mapArea;
 	private MapZoomSlider slider;
 
-	public Map(GridPane pane, AbstractScreen screen) {
+	public Map(GridPane pane) {
 		super(pane);
 		findResources();
 		this.screen = screen;
@@ -32,9 +32,12 @@ public class Map extends AbstractElement {
 		//StackPane is not appropriate, such as a Canvas.
 		layout = new StackPane();
 		mapArea = new ScrollPane();
+		
+		this.createTheMap();
 	}
+	
 
-	public void addMapElements(Node... elements) {
+	public void addAll(Node... elements) {
 		layout.getChildren().addAll(elements);
 	}
 
@@ -60,8 +63,8 @@ public class Map extends AbstractElement {
 		mapArea.setPannable(true);
 
 		//Bind the preferred size of the scroll area to the size of the scene
-		mapArea.prefWidthProperty().bind(screen.getScene().widthProperty());
-		mapArea.prefHeightProperty().bind(screen.getScene().heightProperty());
+		mapArea.prefWidthProperty().bind(pane.widthProperty());
+		mapArea.prefHeightProperty().bind(pane.heightProperty());
 
 		mapArea.setContent(contentGroup);
 	}
@@ -92,12 +95,12 @@ public class Map extends AbstractElement {
 
 		//Test white rectangle
 		Rectangle test = new Rectangle(640, 480);
-		test.widthProperty().bind(screen.getScene().widthProperty());
-		test.heightProperty().bind(screen.getScene().heightProperty());
+		test.widthProperty().bind(pane.widthProperty());
+		test.heightProperty().bind(pane.heightProperty());
 		test.setFill(Color.WHITE);
 
 		//Add any elements you want to appear on the map using this method
-		addMapElements(test);
+		addAll(test);
 
 		//Create the map after adding elements you want
 		createTheMap();

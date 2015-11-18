@@ -11,21 +11,27 @@ import authoring.model.actors.Actor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 
 //  Probably shouldn't be in player package... class to update, delete, keep track of sprites
 public class SpriteManager {
 	private Map<String, Sprite> sprites;
 	private ResourceBundle myResources;
 	private Map<String, Boolean> stillAlive;
-	private Group group;
+	//private Group group;
+	private view.element.Map myCamera;
 	
 	public SpriteManager(Scene s){
 		sprites = new HashMap<String, Sprite>();
 		myResources = ResourceBundle.getBundle("resources/SpriteManager");
 		stillAlive = new HashMap<String, Boolean>();
 		BorderPane bp = (BorderPane)s.getRoot();
-		group = new Group();
-		bp.setCenter(group);
+		//group = new Group();
+		//bp.setCenter(group);
+		GridPane gp = new GridPane();
+		myCamera = new view.element.Map(gp);
+		//myCamera.createTheMap();
+		bp.setCenter(gp);
 	}
 	
 	public void updateSprites(ArrayList<Actor> actors, Scene scene){
@@ -39,7 +45,7 @@ public class SpriteManager {
 			}else{
 				Sprite newsp = createSprite(a);
 				sprites.put(a.getUniqueID(), newsp);
-				group.getChildren().add(newsp);
+				myCamera.addAll(newsp);
 				newsp.play(4);
 			}
 			stillAlive.put(a.getUniqueID(), true);
