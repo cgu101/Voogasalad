@@ -34,7 +34,7 @@ public class PlayerController implements IPlayer {
 	public PlayerController(Scene s) {
 		mySpriteManager = new SpriteManager(s);
 		myScene = s;
-		myInputManager = new InputManager(DEFAULT_INPUTS_FILENAME);
+		myInputManager = new InputManager();
 		myEngine = new GameEngine(myInputManager);
 		attachInputs(s);
 	}
