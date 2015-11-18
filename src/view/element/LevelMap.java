@@ -12,16 +12,20 @@ public class LevelMap extends Map {
 	private AuthoringController controller;
 
 
-	public LevelMap(GridPane pane, int i, AbstractScreen screen, AuthoringController ac) {
-		super(pane, screen);
+	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
+		super(pane);
 		myTab = new Tab("Level " + (i + 1));
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));	
-		controller = ac;
+		controller = new AuthoringController();
 	}
 
 	public Tab getTab() {
 		return myTab;
+	}
+	
+	public AuthoringController getController() {
+		return controller;
 	}
 	
 //	public LevelConstructor getLevelConstructor () {
