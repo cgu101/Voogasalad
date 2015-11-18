@@ -51,23 +51,23 @@ public class Main extends Application {
 		testLevel.setTreeConstructorValues(tc);
 		ActorGroupsConstructor ac = new ActorGroupsConstructor();
 		ActorPropertyMap apm = new ActorPropertyMap();
-		apm.addProperty("xLocation", "50");
-		apm.addProperty("yLocation", "50");
-		apm.addProperty("angle", "5");
+		apm.addProperty("xLocation", "0");
+		apm.addProperty("yLocation", "0");
+		apm.addProperty("angle", "45");
 		apm.addProperty("speed", "15");
 		apm.addProperty("image", "megaman.png");
 		apm.addProperty("groupID", "player");
-		apm.addProperty("size", "50");
+		apm.addProperty("size", "5");
 		ac.updateActor("testActor", apm);
 		
 		ActorPropertyMap apm2 = new ActorPropertyMap();
-		apm2.addProperty("xLocation", "350");
-		apm2.addProperty("yLocation", "350");
-		apm2.addProperty("angle", "185");
-		apm2.addProperty("speed", "0.5");
+		apm2.addProperty("xLocation", "250");
+		apm2.addProperty("yLocation", "250");
+		apm2.addProperty("angle", "225");
+		apm2.addProperty("speed", "10");
 		apm2.addProperty("image", "asteroids.png");
 		apm2.addProperty("groupID", "asteroid");
-		apm2.addProperty("size", "120");
+		apm2.addProperty("size", "25");
 		ac.updateActor("testActor2", apm2);
 		
 		testLevel.setActorGroupsValues(ac);
