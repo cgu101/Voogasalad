@@ -53,15 +53,19 @@ public class AuthoringActorConstructor {
 		return actorMap.get(actor).selfTriggerList;
 	}
 	
-	public List<String> getTriggerList(String aActor, String...otherActors) {		
-		// Need to compare bActor's properties against
-		return null;
+	public List<String> getEventTriggerList(String aActor, String...otherActors) {		
+		// Need to compare bActor's properties against eventTriggers before adding
+		return actorMap.get(aActor).eventTriggerList;
 	}
 
 	public List<String> getActionList(String actor, String...otherActors) {
-		// Need to add the action, then do the same thing from before
-		return null;
+		List<String> ret = new ArrayList<String>();
+		ret.addAll(actorMap.get(actor).oneActorActionList);
+		// Need to compare bActors properties against actions before adding
+		ret.addAll(actorMap.get(actor).twoActorActionList);
+		return ret;
 	}	
+	
 	
 	private class ActorObject {
 		private String actor;
