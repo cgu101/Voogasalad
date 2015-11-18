@@ -39,7 +39,7 @@ public class Main extends Application {
 		Level testLevel = new Level("0");
 		TreeConstructor tc = new TreeConstructor();
 		
-		tc.addSelfTriggerActions("onlyone", "authoring.model.triggers.selfconditions.DownArrowKey", 
+		tc.addSelfTriggerActions("onlyone", "authoring.model.triggers.selfconditions.SpaceBarKey", 
 				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
 		
 		testLevel.setTreeConstructorValues(tc);
@@ -48,7 +48,7 @@ public class Main extends Application {
 		apm.addProperty("xLocation", "50");
 		apm.addProperty("yLocation", "50");
 		apm.addProperty("angle", "5");
-		apm.addProperty("speed", "0.5");
+		apm.addProperty("speed", "15");
 		apm.addProperty("image", "megaman.png");
 		apm.addProperty("groupID", "onlyone");
 		ac.updateActor("testActor", apm);
@@ -61,6 +61,7 @@ public class Main extends Application {
 		apm2.addProperty("image", "asteroids.png");
 		apm2.addProperty("groupID", "onlyone");
 		ac.updateActor("testActor2", apm2);
+		
 		testLevel.setActorGroupsValues(ac);
 		
 		testLevel.setActorGroupsValues(ac);

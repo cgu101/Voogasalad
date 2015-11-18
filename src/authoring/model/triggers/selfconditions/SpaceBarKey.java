@@ -13,8 +13,9 @@ public class SpaceBarKey extends ASelfTrigger {
 	@Override
 	public boolean condition(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager,
 			Actor... actors) {
-
+		System.out.println("CONDITION");
 		if (inputManager.getValue("SPACE")) {
+			System.out.println("Condition met...");
 			return performActions(actions, actorGroup, actors);
 		}
 		return false;

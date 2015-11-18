@@ -20,7 +20,7 @@
                         <value>authoring.model.actions.oneActorActions.Move</value>
                       </authoring.model.tree.InteractionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.TrueSelfTrigger</value>
+                    <value>authoring.model.triggers.selfconditions.SpaceBarKey</value>
                   </authoring.model.tree.InteractionTreeNode>
                 </children>
                 <value>onlyone</value>
@@ -45,7 +45,7 @@
                             <entry>
                               <string>image</string>
                               <authoring.model.properties.Property>
-                                <myValue class="string">asteroids.png</myValue>
+                                <myValue class="string">megaman.png</myValue>
                                 <identifier>image</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -80,7 +80,7 @@
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">0.5</myValue>
+                                <myValue class="double">15.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -150,8 +150,8 @@
           </actorGroups>
           <triggerMap>
             <entry>
-              <string>authoring.model.triggers.selfconditions.TrueSelfTrigger</string>
-              <authoring.model.triggers.selfconditions.TrueSelfTrigger/>
+              <string>authoring.model.triggers.selfconditions.SpaceBarKey</string>
+              <authoring.model.triggers.selfconditions.SpaceBarKey/>
             </entry>
           </triggerMap>
           <actionMap>
