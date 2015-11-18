@@ -43,6 +43,7 @@ public class ActorBrowser extends AbstractDockElement {
 
 	@Override
 	protected void makePane() {
+<<<<<<< HEAD
 		GridPane labelPane = makeLabelPane();
 		pane.add(labelPane, 0, 0);
 		listPane = new GridPane();
@@ -53,15 +54,24 @@ public class ActorBrowser extends AbstractDockElement {
 	public void load(AuthoringController controller) {
 		this.controller = controller;
 		listPane.getChildren().clear();
+=======
+		addLabelPane();
+>>>>>>> master
 		actors = FXCollections.observableArrayList(new ArrayList<String>());
 		if (controller != null) {
 			actors.addAll(controller.getAuthoringActorConstructor().getActorList());
 		}
 		rightlist = new ListView<String>(actors);
 		leftlist = new ListView<String>(actors);
+<<<<<<< HEAD
 		listPane.add(leftlist, 0, 1);
 		listPane.add(rightlist, 1, 1);
 		listPane.setAlignment(Pos.TOP_CENTER);
+=======
+		pane.add(leftlist, 0, 1);
+		pane.add(rightlist, 1, 1);
+		pane.setAlignment(Pos.TOP_CENTER);
+>>>>>>> master
 		configure(leftlist);
 		configure(rightlist);
 		lists = new ArrayList<ListView<String>>();
@@ -69,6 +79,12 @@ public class ActorBrowser extends AbstractDockElement {
 		lists.add(rightlist);
 	}
 
+	private void addLabelPane() {
+		GridPane labelPane = makeLabelPane();
+		pane.add(labelPane, 0, 0);
+		GridPane.setColumnSpan(labelPane, 2);
+	}
+	
 	private void configure(ListView<String> list) {
 		list.prefHeightProperty().bind(screen.getScene().heightProperty());
 		list.setMaxWidth(Double.parseDouble(myResources.getString("width")));

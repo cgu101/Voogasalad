@@ -1,6 +1,7 @@
 package player;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
@@ -100,22 +101,33 @@ public class PlayerController implements IPlayer {
 	private void run(){
 		try {
 			myEngine.play().call(this);
-			this.render(myEngine.getActors());
+			mySpriteManager.updateSprites(getActorList(), this.myScene);
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+<<<<<<< HEAD
 
 	public void render(Map<String, Bundle<Actor>> actorMap){
 		//System.out.println(actorMap);
+=======
+	
+
+	public ArrayList<Actor> getActorList(){
+>>>>>>> master
 		ArrayList<Actor> actors = new ArrayList<Actor>();
-		for(Bundle<Actor> b : actorMap.values()){
+		for(Bundle<Actor> b : myEngine.getActors().values()){
 			actors.addAll(b.getComponents().values());
 		}
-		mySpriteManager.updateSprites(actors, this.myScene);
+		return actors;
 	}
-
+	
+	
+	public Map<String,Bundle<Actor>> getActorMap(){
+		return myEngine.getActors();
+	}
+	
 	public void saveState (String fileName) throws GameFileException {
 		pause();
 		State saveState;
