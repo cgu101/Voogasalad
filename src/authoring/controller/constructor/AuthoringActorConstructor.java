@@ -1,7 +1,6 @@
 package authoring.controller.constructor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,7 @@ import authoring.model.actors.ActorPropertyMap;
 public class AuthoringActorConstructor {
 
 	private Map<String, ActorObject> actorMap;
+	private static final String ALT = "b";
 
 	AuthoringActorConstructor() {
 		actorMap = new HashMap<String, ActorObject>();
@@ -24,9 +24,8 @@ public class AuthoringActorConstructor {
 					new ActorObject(s, AuthoringConfigManager.getInstance().getPropertyList(s),
 							AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.SELF_TRIGGER),
 							AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.EVENT_TRIGGER),
-							AuthoringConfigManager.getInstance().getConfigList(s,
-									AuthoringConfigManager.ONE_ACTOR_ACTIONS),
-					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.TWO_ACTOR_ACTIONS)));
+							AuthoringConfigManager.getInstance().getConfigList(s,AuthoringConfigManager.ONE_ACTOR_ACTIONS),
+							AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.TWO_ACTOR_ACTIONS)));
 		}
 	}
 
@@ -76,8 +75,8 @@ public class AuthoringActorConstructor {
 		for(String actor: otherActors) {
 			List<String> actorProperties = getPropertyList(actor);
 			for(String s: actions) {
-				List<String> requiredProperties = AuthoringConfigManager.getRequiredPropertyList(s);
-				if(!actorProperties.containsAll(requiredProperties)) {
+				List<String> requiredProperties = AuthoringConfigManager.getRequiredPropertyList(String.format("%s.%s", s, ALT));
+				if(!requiredProperties.isEmpty() && !actorProperties.containsAll(requiredProperties)) {
 					toRemove.add(s);
 				}
 			}

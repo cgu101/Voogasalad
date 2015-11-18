@@ -67,45 +67,61 @@ public class AuthoringConfigManager {
 	}
 
 	public List<String> getPropertyList(String actor) {
-		return  Arrays.asList(actorMap.get(actor).getString(PROPERTIES).split(REG_EX));
+		return splitString(actorMap.get(actor).getString(PROPERTIES));
 	}
-	
+
 	public String getDefaultPropertyValue(String actor, String property) {
 		return actorMap.get(actor).getString(property);
 	}
 	
 	public String getPropertyType(String property) {
-		System.out.println(propertyMap.keySet());
 		return propertyMap.get(property).getString(TYPE);
 	}
 	
 	public List<String> getConfigList(String actor, String type) {
-		List<String> triggerList = Arrays.asList(actorMap.get(actor).getString(type).split(REG_EX));
-		String[] propertyList = actorMap.get(actor).getString(type).split(REG_EX);
+		List<String> triggerList = splitString(actorMap.get(actor).getString(type));
+		List<String> propertyList = getPropertyList(actor);
 		for(String s: propertyList) {
 			if(propertyMap.containsKey(s)) {
-				String[] toAdd = propertyMap.get(s).getString(type).split(REG_EX);
-				triggerList.addAll(checkIfAdditionIsPossible(propertyList, toAdd, actor));
+				List<String> toAdd = splitString(propertyMap.get(s).getString(type));
+				combineList(triggerList, checkIfAdditionIsPossible(propertyList, toAdd, actor));
 			}
 		}	
 		return triggerList;
 	}
 	
 	public static List<String> getRequiredPropertyList(String instance) {
-		return Arrays.asList(myManager.myConfiguration.getString(String.format("%s.%s", instance, PROPERTIES)).split(REG_EX));
+		return splitString(myManager.myConfiguration.getString(String.format("%s.%s", instance, PROPERTIES)));
 	}
 	
-	private List<String> checkIfAdditionIsPossible(String[] propertyList, String[] toAdd, String actor) {
-		List<String> actorProperties = Arrays.asList(propertyList);
+	private List<String> checkIfAdditionIsPossible(List<String> propertyList, List<String> toAdd, String actor) {
 		List<String> ret = new ArrayList<String>();
 		for(String add: toAdd) {
-			List<String> requiredProperties = getRequiredPropertyList(add);
-			if(requiredProperties.isEmpty() || actorProperties.containsAll(requiredProperties)) {
-				if(!ret.contains(add)) {
-					ret.add(add);
+			if(!add.equals("")) {
+				List<String> requiredProperties = getRequiredPropertyList(add);
+				if(requiredProperties.isEmpty() || propertyList.containsAll(requiredProperties)) {
+					if(!ret.contains(add)) {
+						ret.add(add);
+					}
 				}
 			}
 		}
 		return ret;
+	}
+	
+	private static List<String> splitString(String toSplit) {
+		List<String> ret = new ArrayList<String>();
+		if(!toSplit.equals("")) {
+			ret.addAll(Arrays.asList(toSplit.split(REG_EX)));
+		}
+		return ret;
+	}
+	
+	private void combineList(List<String> a, List<String> b) {
+		for(String s : b) {
+			if(!a.contains(s)) {
+				a.add(s);
+			}
+		}
 	}
 }
