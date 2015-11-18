@@ -1,6 +1,7 @@
 package authoring.controller.constructor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,18 +54,35 @@ public class AuthoringActorConstructor {
 		return actorMap.get(actor).selfTriggerList;
 	}
 
-	public List<String> getEventTriggerList(String aActor, String... otherActors) {
-		// Need to compare bActor's properties against eventTriggers before
-		// adding
-		return actorMap.get(aActor).eventTriggerList;
+	public List<String> getEventTriggerList(String actor, String... otherActors) {
+		List<String> ret = new ArrayList<String>(actorMap.get(actor).eventTriggerList);
+		removeInvalidInstances(ret, otherActors);
+		return ret;
 	}
 
-	public List<String> getActionList(String actor, String... otherActors) {
-		List<String> ret = new ArrayList<String>();
-		ret.addAll(actorMap.get(actor).oneActorActionList);
-		// Need to compare bActors properties against actions before adding
-		ret.addAll(actorMap.get(actor).twoActorActionList);
+	public List<String> getActionList(String actor) {
+		return new ArrayList<String>(actorMap.get(actor).oneActorActionList);
+	}
+	
+	public List<String> getTwoActorActionList(String actor, String...otherActors) {
+		List<String> ret = new ArrayList<String>(actorMap.get(actor).twoActorActionList);
+		removeInvalidInstances(ret, otherActors);
+		ret.addAll(getActionList(actor));
 		return ret;
+	}
+	
+	private void removeInvalidInstances(List<String> actions, String...otherActors) {
+		List<String> toRemove = new ArrayList<String>();
+		for(String actor: otherActors) {
+			List<String> actorProperties = getPropertyList(actor);
+			for(String s: actions) {
+				List<String> requiredProperties = AuthoringConfigManager.getRequiredPropertyList(s);
+				if(!actorProperties.containsAll(requiredProperties)) {
+					toRemove.add(s);
+				}
+			}
+			actions.removeAll(toRemove);
+		}
 	}
 
 	private class ActorObject {

@@ -13,12 +13,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
-public class SelfTriggerCell extends AbstractListCell {
+public class TriggerCell extends AbstractListCell {
 	private AuthoringController controller;
 	private ListView<String> list;
 	private String actor;
 
-	public SelfTriggerCell(AuthoringController controller, String actor, ListView<String> list) {
+	public TriggerCell(AuthoringController controller, String actor, ListView<String> list) {
 		findResources();
 		this.controller = controller;
 		this.actor = actor;
@@ -43,7 +43,7 @@ public class SelfTriggerCell extends AbstractListCell {
 
 	protected CheckComboBox<String> makeSelector(String item) {
 		final ObservableList<String> actions = FXCollections.observableArrayList();
-		actions.addAll(controller.getAuthoringActorConstructor().getActionList(actor, null));
+		actions.addAll(controller.getAuthoringActorConstructor().getActionList(actor));
 		CheckComboBox<String> selector = new CheckComboBox<String>(actions);
 		selector.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 			public void onChanged(ListChangeListener.Change<? extends String> c) {
