@@ -19,7 +19,7 @@
                             <value>authoring.model.actions.twoActorActions.SwapDirections</value>
                           </authoring.model.tree.InteractionTreeNode>
                         </children>
-                        <value>authoring.model.triggers.externalconditions.CircleCollision</value>
+                        <value>authoring.model.triggers.externalconditions.InRange</value>
                       </authoring.model.tree.InteractionTreeNode>
                     </children>
                     <value>asteroid</value>
@@ -86,14 +86,14 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">350.0</myValue>
+                                <myValue class="double">250.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>size</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">120.0</myValue>
+                                <myValue class="double">25.0</myValue>
                                 <identifier>size</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -107,21 +107,21 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">185.0</myValue>
+                                <myValue class="double">225.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">350.0</myValue>
+                                <myValue class="double">250.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">0.5</myValue>
+                                <myValue class="double">10.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -156,14 +156,14 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">50.0</myValue>
+                                <myValue class="double">0.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>size</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">50.0</myValue>
+                                <myValue class="double">5.0</myValue>
                                 <identifier>size</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -177,14 +177,21 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">5.0</myValue>
+                                <myValue class="double">45.0</myValue>
                                 <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>range</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">40.0</myValue>
+                                <identifier>range</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">50.0</myValue>
+                                <myValue class="double">0.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -211,8 +218,8 @@
               <authoring.model.triggers.selfconditions.SpaceBarKey/>
             </entry>
             <entry>
-              <string>authoring.model.triggers.externalconditions.CircleCollision</string>
-              <authoring.model.triggers.externalconditions.CircleCollision/>
+              <string>authoring.model.triggers.externalconditions.InRange</string>
+              <authoring.model.triggers.externalconditions.InRange/>
             </entry>
             <entry>
               <string>authoring.model.triggers.selfconditions.RightArrowKey</string>

@@ -47,6 +47,10 @@ public class Main extends Application {
 		
 		tc.addEventTriggerActions("player", "asteroid", "authoring.model.triggers.externalconditions.CircleCollision", 
 				Arrays.asList(new String[]{"authoring.model.actions.twoActorActions.SwapDirections"}));
+
+		tc.addEventTriggerActions("player", "asteroid", "authoring.model.triggers.externalconditions.InRange", 
+				Arrays.asList(new String[]{"authoring.model.actions.twoActorActions.SwapDirections"}));
+
 		
 		testLevel.setTreeConstructorValues(tc);
 		ActorGroupsConstructor ac = new ActorGroupsConstructor();
@@ -58,6 +62,7 @@ public class Main extends Application {
 		apm.addProperty("image", "megaman.png");
 		apm.addProperty("groupID", "player");
 		apm.addProperty("size", "5");
+		apm.addProperty("range", "40");
 		ac.updateActor("testActor", apm);
 		
 		ActorPropertyMap apm2 = new ActorPropertyMap();
