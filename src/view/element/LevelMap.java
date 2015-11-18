@@ -13,7 +13,7 @@ public class LevelMap extends Map {
 
 
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
-		super(pane);
+		super(pane, screen);
 		myTab = new Tab("Level " + (i + 1));
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));	
