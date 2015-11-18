@@ -105,14 +105,12 @@ public class Map extends AbstractElement {
 		background.setPreserveRatio(true);
 		
 		//Test white rectangle
-		Rectangle test = new Rectangle(20, 20);
+		Rectangle test = new Rectangle(720, 480);
 		test.setFill(Color.WHITE);
 		System.out.println((int) background.getBoundsInParent().getWidth());
 
 		//Add any elements you want to appear on the map using this method
-		addActor(background, 0, 0);
-		addActor(test, 200, 200);
-
+		addActor(test, 0, 0);
 		//Create the map after adding elements you want
 		createTheMap();
 		
