@@ -11,18 +11,20 @@ public class AuthoringConfigManager {
 
 	private Map<String, ResourceBundle> actorMap;
 	private Map<String, ResourceBundle> propertyMap;
+	private ResourceBundle myConfiguration;
 	
 	private static final String CONFIGURATION_DIR = "authoring/files/%s";
 	private static final String ACTORS = "actors";
 	private static final String PROPERTIES= "properties";
 	private static final String CONFIGURATION = "configuration";
 	private static final String DIRECTORY_FORMAT = "%s/%s";
-	
 	private static final String REG_EX = ",";
-	private static final String SELF_TRIGGER = "selfTrigger";
-	private static final String EVENT_TRIGGER = "eventTrigger";
-	private static final String TYPE = "type";
-	private static final String ACTIONS = "actions";
+	private static final String TYPE = "type";	
+
+	public static final String SELF_TRIGGER = "selfTrigger";
+	public static final String EVENT_TRIGGER = "eventTrigger";
+	public static final String ONE_ACTOR_ACTIONS = "oneActorActions";
+	public static final String TWO_ACTOR_ACTIONS = "twoActorActions";
 	
 	private static final AuthoringConfigManager myManager = new AuthoringConfigManager();
 	
@@ -33,7 +35,7 @@ public class AuthoringConfigManager {
 	private void load() {
 		actorMap = new HashMap<String, ResourceBundle>();
 		propertyMap = new HashMap<String, ResourceBundle>();
-		ResourceBundle myConfiguration = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, CONFIGURATION));
+		myConfiguration = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, CONFIGURATION));
 		loadMap(actorMap, myConfiguration.getString(ACTORS).split(REG_EX), ACTORS);
 		loadMap(propertyMap, myConfiguration.getString(PROPERTIES).split(REG_EX), PROPERTIES);
 	}
@@ -72,32 +74,34 @@ public class AuthoringConfigManager {
 		return actorMap.get(actor).getString(property);
 	}
 	
-	public List<String> getSelfTriggerList(String actor) {
-		return getTriggerList(actor, SELF_TRIGGER);
-	}
-	
-	public List<String> getEventTriggerList(String actor) {
-		return getTriggerList(actor, EVENT_TRIGGER);
-	}
-	
-	public List<String> getActionList(String actor) {
-		return getTriggerList(actor, ACTIONS);
-	}
-	
 	public String getPropertyType(String property) {
+		System.out.println(propertyMap.keySet());
 		return propertyMap.get(property).getString(TYPE);
 	}
 	
-	private List<String> getTriggerList(String actor, String type) {
+	public List<String> getConfigList(String actor, String type) {
 		List<String> triggerList = Arrays.asList(actorMap.get(actor).getString(type).split(REG_EX));
 		String[] propertyList = actorMap.get(actor).getString(type).split(REG_EX);
 		for(String s: propertyList) {
 			if(propertyMap.containsKey(s)) {
 				String[] toAdd = propertyMap.get(s).getString(type).split(REG_EX);
-				triggerList.addAll(Arrays.asList(toAdd));
+				triggerList.addAll(checkIfAdditionIsPossible(propertyList, toAdd, actor));
+			}
+		}	
+		return triggerList;
+	}
+	
+	private List<String> checkIfAdditionIsPossible(String[] propertyList, String[] toAdd, String actor) {
+		List<String> actorProperties = Arrays.asList(propertyList);
+		List<String> ret = new ArrayList<String>();
+		for(String add: toAdd) {
+			List<String> requiredProperties = Arrays.asList(myConfiguration.getString(String.format("%s.%s", add, PROPERTIES)).split(REG_EX));
+			if(requiredProperties.isEmpty() || actorProperties.containsAll(requiredProperties)) {
+				if(!ret.contains(add)) {
+					ret.add(add);
+				}
 			}
 		}
-		
-		return triggerList;
+		return ret;
 	}
 }

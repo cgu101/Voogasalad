@@ -5,8 +5,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import authoring.controller.AuthoringController;
+import authoring.controller.constructor.LevelConstructor;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -79,25 +81,32 @@ public class CreatorScreen extends AbstractScreen {
 	//TODO
 	public void saveGame() {
 		System.out.println("Testing saving game ");
-		
 		String test = "test child";
 		
-        BufferedWriter output = null;
+		List<LevelConstructor> levelConstructors = w.getLevels();
+		
+		for (int i = 0; i < levelConstructors.size(); i++) {
+			System.out.println(i);
+		}
+		
+        File saveFile = FileChooserUtility.save(scene.getWindow());
+
         try {
-        	File saveFile = FileChooserUtility.save(null);
-            output = new BufferedWriter(new FileWriter(saveFile));
-            output.write(test);
-        } catch ( IOException e ) {
-            e.printStackTrace();
-        } finally {
-            if ( output != null )
-				try {
-					output.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+        	writeToFile(saveFile, test);
+        } catch (IOException | NullPointerException e) {
+        	System.out.println("Error in writing to file");
         }
 	}
+	
+	private void writeToFile (File file, String text) throws IOException, NullPointerException {
+		BufferedWriter output = new BufferedWriter(new FileWriter(file));
+		output.write(text);
+		
+		if (output != null) {
+			output.close();
+		}
+	}
+	
 	//TODO
 	public void loadGame(){
 		System.out.println("Testing loading game ");

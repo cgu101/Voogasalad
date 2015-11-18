@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 
-public class ActorCell extends ListCell<String> {
+public class ActorCell extends AbstractListCell {
 
 	private AuthoringController controller;
 	private boolean deselect;
@@ -20,24 +20,9 @@ public class ActorCell extends ListCell<String> {
 		this.controller = controller;
 	}
 
-	@Override
-	public void updateItem(String item, boolean empty) {
-		super.updateItem(item, empty);
-		HBox box = new HBox(5);
-		if (empty) {
-			setText(null);
-			setGraphic(null);
-		} else if (item != null) {
-			box.setAlignment(Pos.CENTER_LEFT);
-			box.getChildren().add(makeImage(item));
-			box.getChildren().add(new Label(item));
-			setGraphic(box);
-		}
-	}
-
 	private ImageView makeImage(String item) {
-		ImageView output = new ImageView(new Image(getClass().getClassLoader()
-				.getResourceAsStream(controller.getAuthoringConfigManager().getDefaultPropertyValue(item, "image"))));
+		ImageView output = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(
+				controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image"))));
 		output.setFitHeight(25);
 		output.setPreserveRatio(true);
 		output.setSmooth(true);
@@ -58,5 +43,14 @@ public class ActorCell extends ListCell<String> {
 	public void drag(MouseEvent me) {
 		this.deselect = false;
 		Dragboard db = this.startDragAndDrop(TransferMode.COPY);
+	}
+
+	@Override
+	protected void makeCell(String item) {
+		HBox box = new HBox(5);
+		box.setAlignment(Pos.CENTER_LEFT);
+		box.getChildren().add(makeImage(item));
+		box.getChildren().add(new Label(item));
+		setGraphic(box);
 	}
 }
