@@ -85,9 +85,9 @@ public class PlayerScreen extends AbstractScreen {
 		System.out.println("Testing saving game state ");
 
 		//TODO: do gui stuff
-		String fileName = "";
+		File saveFile = FileChooserUtility.save(scene.getWindow());
 		try {
-			playerController.saveState(fileName);
+			playerController.saveState(saveFile.getName());
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,9 +96,9 @@ public class PlayerScreen extends AbstractScreen {
 
 	public void loadState () {
 		//TODO: do gui stuff
-		String fileName = "";
+		File loadFile = FileChooserUtility.load(scene.getWindow());
 		try {
-			playerController.loadState(fileName);
+			playerController.loadState(loadFile.getPath());
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

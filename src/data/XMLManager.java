@@ -140,15 +140,17 @@ public class XMLManager implements IFileManager{
 	}
 
 	@Override
-	public void saveState(State state, String fileName) throws GameFileException {
+	public void saveState(State state, String filePath) throws GameFileException {
 		// TODO Auto-generated method stub
-		saveFile(state, DEFAULT_SAVESTATE_FOLDER + fileName);
+		saveFile(state, filePath);
+//		saveFile(state, DEFAULT_SAVESTATE_FOLDER + filePath);
 	}
 
 	@Override
-	public State loadState(String fileName) throws GameFileException {
+	public State loadState(String filePath) throws GameFileException {
 		try {
-			return (State) loadFile(DEFAULT_SAVESTATE_FOLDER + fileName);
+			return (State) loadFile(filePath);
+//			return (State) loadFile(DEFAULT_SAVESTATE_FOLDER + filePath);
 		} catch (Exception e) {
 			throw new GameFileException();
 		}

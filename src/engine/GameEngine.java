@@ -9,11 +9,13 @@ import authoring.model.game.Game;
 import authoring.model.level.Level;
 import authoring.model.properties.Property;
 import exceptions.EngineException;
+import exceptions.engine.EngineStateException;
 import player.InputManager;
 
 public class GameEngine implements IEngine {
 	private static final String DEFAULT_INPUTS_FILENAME = "resources/gameplayer/Inputs";
 	private static final String LEVEL_ID_KEY = "level";
+	private static final String GAME_ID_KEY = "name";
 
 	private Game game;
 	private InteractionExecutor levelExecutor;
@@ -57,15 +59,20 @@ public class GameEngine implements IEngine {
 		return levelExecutor.getActors().getMap();
 	}
 	@Override
-	public State ejectState () {
+	public State ejectState () throws EngineStateException {
 		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
 		propertyBundle.add(new Property<String>(LEVEL_ID_KEY, levelExecutor.getLevelID()));
+		propertyBundle.add(new Property<String>(GAME_ID_KEY, (String) game.getProperty(GAME_ID_KEY).getValue()));
 		return new State(propertyBundle, levelExecutor.getActors());
 	}
 	@Override
-	public void injectState (State state) {
-		Level level = game.getLevel((String) state.getProperty(LEVEL_ID_KEY).getValue());
-		init(level);
-		levelExecutor.setActors(state.getActorMap());
+	public void injectState (State state) throws EngineException {
+		if (state.getProperty(GAME_ID_KEY).getValue().equals(game.getProperty(GAME_ID_KEY).getValue())) {
+			Level level = game.getLevel((String) state.getProperty(LEVEL_ID_KEY).getValue());
+			init(level);
+			levelExecutor.setActors(state.getActorMap());
+		} else {
+			throw new EngineStateException("Wrong game", null);
+		}
 	}
 }
