@@ -28,21 +28,25 @@ public class Map extends AbstractElement {
 		findResources();
 		this.screen = screen;
 
-
 		//Use a StackPane so we can layer things on top of one another, like an actor
 		//over a background tile. Note that you can probably use something else if a
 		//StackPane is not appropriate, such as a Canvas.
 		layout = new StackPane();
 		mapArea = new ScrollPane();
+		
+		//The actorManager needs access to the layout so it can place actors on it
 		actorManager = new MapActorManager(layout);
 	}
 
 	public void addActor(Node element, double x, double y) {
+		//Use this method to add an actor to the StackPane.
 		actorManager.addActor(element, x, y);
 	}
 
 	public void createTheMap() {
 		createMapArea();
+		
+		//The slider needs access to the zoomGroup so it can resize it when it gets dragged
 		slider = new MapZoomSlider(zoomGroup, Double.valueOf(myResources.getString("sliderwidth")));
 		slider.createTheSlider();
 	}
@@ -53,13 +57,12 @@ public class Map extends AbstractElement {
 	}
 
 	private void createMapArea() {
+		//Creates the ScrollPane where all the map elements will be displayed
 		createGroups();
-		createScrollPane();
+		createMapScrollPane();
 	}
 
-	private void createScrollPane() {
-		mapArea = new ScrollPane();
-
+	private void createMapScrollPane() {
 		//Hide the vertical and horizontal scrollbars, make the pane pannable
 		mapArea.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		mapArea.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -73,9 +76,8 @@ public class Map extends AbstractElement {
 	}
 
 	private void createGroups() {
-		// Groups all the nodes that will appear on the map and allows them to
-		// be
-		// collectively rescaled using a Scale.
+		//Groups all the nodes that will appear on the map and allows them to
+		//be collectively rescaled using a Scale.
 		zoomGroup = new Group();
 
 		//Contains the zoomGroup that will then be displayed on the map
