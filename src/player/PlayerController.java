@@ -1,13 +1,11 @@
 package player;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
-import controller.AController;
 import data.IFileManager;
 import data.XMLManager;
 import engine.GameEngine;
@@ -15,13 +13,13 @@ import engine.IEngine;
 import engine.State;
 import exceptions.EngineException;
 import exceptions.data.GameFileException;
+import exceptions.engine.EngineStateException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class PlayerController extends AController implements IPlayer {
+public class PlayerController implements IPlayer {
 
 	Scene myScene;
 	IEngine myEngine;
@@ -97,8 +95,7 @@ public class PlayerController extends AController implements IPlayer {
 		}
 	}
 
-	@Override
-	public void run(){
+	private void run(){
 		try {
 			myEngine.play().call(this);
 			this.render(myEngine.getActors());
@@ -119,14 +116,23 @@ public class PlayerController extends AController implements IPlayer {
 
 	public void saveState (String fileName) throws GameFileException {
 		pause();
-		State saveState = myEngine.ejectState();
-		myXMLManager.saveState(saveState, fileName);
+		State saveState;
+		try {
+			saveState = myEngine.ejectState();
+			myXMLManager.saveState(saveState, fileName);
+		} catch (EngineStateException e) {
+			throw new GameFileException(e.getMessage());
+		}
 		resume();
 	}
 	public void loadState (String fileName) throws GameFileException {
 		pause();
 		State saveState = myXMLManager.loadState(fileName);
-		myEngine.injectState(saveState);
+		try {
+			myEngine.injectState(saveState);
+		} catch (EngineException e) {
+			throw new GameFileException(e.getMessage());
+		}
 		resume();
 	}
 }

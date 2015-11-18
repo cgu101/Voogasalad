@@ -6,6 +6,7 @@ import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import exceptions.EngineException;
+import exceptions.engine.EngineStateException;
 
 /**
  * Basic implementation of the engine is as follows:
@@ -24,6 +25,6 @@ public interface IEngine {
 	public void reset ();
 	public EngineHeartbeat play() throws EngineException;
 	public Map<String, Bundle<Actor>> getActors();
-	public State ejectState();
-	public void injectState(State state);
+	public State ejectState() throws EngineStateException;
+	public void injectState(State state) throws EngineException;
 }

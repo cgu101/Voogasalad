@@ -9,6 +9,8 @@ import java.util.List;
 
 import authoring.controller.AuthoringController;
 import authoring.controller.constructor.LevelConstructor;
+import authoring.model.game.Game;
+import exceptions.data.GameFileException;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -85,17 +87,22 @@ public class CreatorScreen extends AbstractScreen {
 		
 		List<LevelConstructor> levelConstructors = w.getLevels();
 		
-		for (int i = 0; i < levelConstructors.size(); i++) {
-			System.out.println(i);
-		}
-		
+		Game game = controller.getGameWithLevels(levelConstructors);
         File saveFile = FileChooserUtility.save(scene.getWindow());
-
+        String fileLocation = saveFile.getAbsolutePath();
+        System.out.println(saveFile.getName());
+        
         try {
-        	writeToFile(saveFile, test);
-        } catch (IOException | NullPointerException e) {
-        	System.out.println("Error in writing to file");
-        }
+			controller.saveGame(game, fileLocation);
+		} catch (GameFileException e) {
+			System.err.println(e.getMessage());
+		}
+
+//        try {
+//        	writeToFile(saveFile, test);
+//        } catch (IOException | NullPointerException e) {
+//        	System.out.println("Error in writing to file");
+//        }
 	}
 	
 	private void writeToFile (File file, String text) throws IOException, NullPointerException {

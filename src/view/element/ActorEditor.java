@@ -124,6 +124,7 @@ public class ActorEditor extends AbstractDockElement {
 				return new PropertyCell(controller, item, list);
 			}
 		});
+		list.setFocusTraversable(false);
 		return list;
 	}
 
@@ -138,6 +139,7 @@ public class ActorEditor extends AbstractDockElement {
 			}
 		});
 		GridPane.setColumnSpan(list, 2);
+		list.setFocusTraversable(false);
 		return list;
 	}
 
@@ -160,6 +162,7 @@ public class ActorEditor extends AbstractDockElement {
 		// refresh();
 		// });
 		name.prefWidthProperty().bind(pane.widthProperty());
+		name.setFont(textFont);
 		return name;
 	}
 }
