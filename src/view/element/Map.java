@@ -6,14 +6,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 import view.screen.AbstractScreen;
 
 public class Map extends AbstractElement {
-	private AbstractScreen screen;
 	
 	private Group contentGroup;
 	private Group zoomGroup;
@@ -21,12 +19,11 @@ public class Map extends AbstractElement {
 
 	private ScrollPane mapArea;
 	private MapZoomSlider slider;
-	//private MapActorManager actorManager;
+	private MapActorManager actorManager;
 
 	public Map(GridPane pane) {
 		super(pane);
 		findResources();
-		this.screen = screen;
 
 		//Use a StackPane so we can layer things on top of one another, like an actor
 		//over a background tile. Note that you can probably use something else if a
@@ -35,16 +32,16 @@ public class Map extends AbstractElement {
 		mapArea = new ScrollPane();
 		
 		//The actorManager needs access to the layout so it can place actors on it
-		//actorManager = new MapActorManager(layout);
+		actorManager = new MapActorManager(layout);
 		
 		makePane();
 	}
 	
 
-	/*public void addActor(Node element, double x, double y) {
+	public void addActor(Node element, double x, double y) {
 		//Use this method to add an actor to the StackPane.
 		actorManager.addActor(element, x, y);
-	}*/
+	}
 	
 	public Group getGroup(){
 		return layout;
@@ -89,7 +86,7 @@ public class Map extends AbstractElement {
 
 		//Contains the zoomGroup that will then be displayed on the map
 		contentGroup = new Group();
-
+		
 		contentGroup.getChildren().add(zoomGroup);
 		zoomGroup.getChildren().add(layout);
 	}
@@ -104,21 +101,17 @@ public class Map extends AbstractElement {
 		//Test Narnia map image
 		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
 		ImageView background = new ImageView(backgroundImage);
-
+		background.fitWidthProperty().bind(pane.widthProperty());
+		background.setPreserveRatio(true);
+		
 		//Test white rectangle
-		Rectangle test = new Rectangle(200, 200);
-//		test.widthProperty().bind(screen.getScene().widthProperty());
-//		test.heightProperty().bind(screen.getScene().heightProperty());
+		Rectangle test = new Rectangle(20, 20);
 		test.setFill(Color.WHITE);
+		System.out.println((int) background.getBoundsInParent().getWidth());
 
 		//Add any elements you want to appear on the map using this method
-		//addActor(background, 0, 0);
-		//addActor(test, 200, 200);
-		layout.getChildren().add(background);
-		layout.getChildren().add(test);
-		test.setX(200);
-		test.setY(200);
-		
+		addActor(background, 0, 0);
+		addActor(test, 200, 200);
 
 		//Create the map after adding elements you want
 		createTheMap();

@@ -39,7 +39,7 @@ public class MapZoomSlider {
 	}
 	
 	private void initializeSlider() {
-		theSlider.setMin(25); //Can modify the minimum display size of map, just needs to be > 0
+		theSlider.setMin(0); //Can modify the minimum display size of map, just needs to be > 0
 		theSlider.setMax(100);
 		theSlider.setValue(100);
 		theSlider.setShowTickLabels(true);
