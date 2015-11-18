@@ -3,27 +3,34 @@ package view.element;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.transform.Scale;
 import view.screen.AbstractScreen;
 
-public class Map {
+public class Map extends AbstractElement {
 	private AbstractScreen screen;
 	private Group contentGroup;
 	private Group zoomGroup;
 	
 	private StackPane layout;
-	private ScrollPane theMap;
+	private ScrollPane mapArea;
+	private MapZoomSlider slider;
+
 	
 	
-	public Map(AbstractScreen screen) {
+	public Map(GridPane pane, AbstractScreen screen) {
+		super(pane);
+		findResources();
 		this.screen = screen;
 		
 		//Use a StackPane so we can layer things on top of one another, like an actor
 		//over a background tile. Note that you can probably use something else if a
 		//StackPane is not appropriate, such as a Canvas.
 		layout = new StackPane();
-		theMap = new ScrollPane();
+		mapArea = new ScrollPane();
+		
+		
 	}
 	
 	public void addMapElements(Node... elements) {
@@ -31,23 +38,31 @@ public class Map {
 	}
 	
 	public void createTheMap() {
+		createMapArea();
+		slider = new MapZoomSlider(zoomGroup, Double.valueOf(myResources.getString("sliderwidth")));
+		slider.createTheSlider();
+		pane.add(mapArea, 0, 0);
+		pane.add(slider.getTheSlider(), 0, 1);
+	}
+	
+	private void createMapArea() {
 		createGroups();
 		createScrollPane();
 	}
 	
 	private void createScrollPane() {
-		theMap = new ScrollPane();
+		mapArea = new ScrollPane();
 		
 		//Hide the vertical and horizontal scrollbars, make the pane pannable
-		theMap.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		theMap.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		theMap.setPannable(true);
+		mapArea.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		mapArea.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		mapArea.setPannable(true);
 		
 		//Bind the preferred size of the scroll area to the size of the scene
-		theMap.prefWidthProperty().bind(screen.getScene().widthProperty());
-		theMap.prefHeightProperty().bind(screen.getScene().heightProperty());
+		mapArea.prefWidthProperty().bind(screen.getScene().widthProperty());
+		mapArea.prefHeightProperty().bind(screen.getScene().heightProperty());
 
-		theMap.setContent(contentGroup);
+		mapArea.setContent(contentGroup);
 	}
 	
 	private void createGroups() {
@@ -66,13 +81,17 @@ public class Map {
 		zoomGroup.getTransforms().clear();
 		zoomGroup.getTransforms().add(scaleTransform);
 	}
-	
-	public ScrollPane getTheMap() {
-		return theMap;
-	}
-	
-	public Group getZoomGroup() {
-		return zoomGroup;
-	}
 
+	@Override
+	protected void makePane() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public GridPane getMap() {
+		//Problem from earlier is still present
+		
+		return null;
+		//return theMapElement;
+	}
 }
