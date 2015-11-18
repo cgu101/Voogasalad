@@ -3,7 +3,6 @@ package util;
 import java.io.File;
 
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 
 public class FileChooserUtility {
@@ -12,7 +11,7 @@ public class FileChooserUtility {
 	private static final String SAVE_MESSAGE = "File Saver Window";
 	private static final String DEFAULT_DIRECTORY = ".";
 	private static final String DEFAULT_FILE_PROMPT  = "XML files (*.xml)";
-	private static final String DEFAULT_FILE_FORMAT = "*xml";
+	private static final String DEFAULT_FILE_FORMAT = "*.xml";
 	
 	public static File load (Window stage) {
 		FileChooser fileChooser = initializeFileChooser(LOAD_MESSAGE, DEFAULT_DIRECTORY);

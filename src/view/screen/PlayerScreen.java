@@ -74,7 +74,7 @@ public class PlayerScreen extends AbstractScreen {
 		
 		
 		try {
-			playerController.loadGame(file.getName());
+			playerController.loadGame(file.getAbsolutePath());
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -87,7 +87,7 @@ public class PlayerScreen extends AbstractScreen {
 		//TODO: do gui stuff
 		File saveFile = FileChooserUtility.save(scene.getWindow());
 		try {
-			playerController.saveState(saveFile.getName());
+			playerController.saveState(saveFile.getAbsolutePath());
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

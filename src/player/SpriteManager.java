@@ -45,7 +45,7 @@ public class SpriteManager {
 			}else{
 				Sprite newsp = createSprite(a);
 				sprites.put(a.getUniqueID(), newsp);
-				myCamera.addAll(newsp);
+				myCamera.getGroup().getChildren().add(newsp);
 				newsp.play(4);
 			}
 			stillAlive.put(a.getUniqueID(), true);
