@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 import authoring.controller.constructor.ActorGroupsConstructor;
 import authoring.controller.constructor.TreeConstructor;
 import authoring.model.actors.ActorPropertyMap;
@@ -37,16 +39,19 @@ public class Main extends Application {
 		Level testLevel = new Level("0");
 		TreeConstructor tc = new TreeConstructor();
 		
-		//tc.addSelfTrigger("testActor", "DownArrowKey");
+		tc.addSelfTriggerActions("testActor", "authoring.model.triggers.selfconditions.DownArrowKey", 
+				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
 		
 		testLevel.setTreeConstructorValues(tc);
 		ActorGroupsConstructor ac = new ActorGroupsConstructor();
 		ActorPropertyMap apm = new ActorPropertyMap();
 		apm.addProperty("xLocation", "150");
 		apm.addProperty("yLocation", "150");
+		apm.addProperty("angle", "5");
+		apm.addProperty("speed", "0.5");
 		apm.addProperty("image", "megaman.png");
 		apm.addProperty("groupID", "onlyone");
-		ac.updateActor("testActor", "123", apm);
+		ac.updateActor("testActor", apm);
 		testLevel.setActorGroupsValues(ac);
 		testGame.addLevel(testLevel);
 		XMLManager out = new XMLManager();
