@@ -6,6 +6,7 @@ import org.controlsfx.control.CheckComboBox;
 
 import authoring.controller.AuthoringController;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -49,6 +50,12 @@ public class SelfTriggerCell extends AbstractListCell {
 		final ObservableList<String> actions = FXCollections.observableArrayList();
 		actions.addAll(controller.getAuthoringActorConstructor().getActionList(actor, null));
 		CheckComboBox<String> selector = new CheckComboBox<String>(actions);
+		selector.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+			public void onChanged(ListChangeListener.Change<? extends String> c) {
+				List<String> actions = selector.getCheckModel().getCheckedItems();
+				controller.getLevelConstructor().getTreeConstructor().addSelfTriggerActions(actor, item, actions);
+			}
+		});
 		return selector;
 	}
 
