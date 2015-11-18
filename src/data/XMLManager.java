@@ -15,9 +15,6 @@ import exceptions.data.GameFileException;
 
 
 public class XMLManager implements IFileManager{
-	private static final String DEFAULT_FILE_FOLDER = "src/resources/datafiles/";
-	private static final String DEFAULT_GAME_LIBRARY_FOLDER = DEFAULT_FILE_FOLDER + "games/";
-	private static final String DEFAULT_SAVESTATE_FOLDER = DEFAULT_FILE_FOLDER + "saves/";
 	
 	private void saveFile (Object obj, String filePath) throws GameFileException {
 		XStream mySerializer = new XStream(new DomDriver());
@@ -65,11 +62,11 @@ public class XMLManager implements IFileManager{
 	}
 
 	@Override
-	public void saveGame(Game game, String fileName) throws GameFileException {
+	public void saveGame(Game game, String fileLocation) throws GameFileException {
 		
 		// save to game.xml file
 		// filepath = "src/DESIGN/datafiles/game.xml";
-		saveFile(game, DEFAULT_GAME_LIBRARY_FOLDER + fileName);
+		saveFile(game, fileLocation);
 		
 		
 	}
@@ -101,10 +98,10 @@ public class XMLManager implements IFileManager{
 	}
 
 	public Game testLoadGame (File file) throws GameFileException {
-		String fileName = file.getName();
+		String fileLocation = file.getName();
 		
 		try {
-			System.out.println(DEFAULT_GAME_LIBRARY_FOLDER + fileName);
+			System.out.println(fileLocation);
 			return null;
 		} catch (Exception e) {
 			throw new GameFileException();
@@ -112,11 +109,11 @@ public class XMLManager implements IFileManager{
 	}
 	
 	@Override
-	public Game loadGame(String fileName) throws GameFileException {
+	public Game loadGame(String fileLocation) throws GameFileException {
 
 		// load from game.xml
 		try {
-			return (Game) loadFile(DEFAULT_GAME_LIBRARY_FOLDER + fileName);
+			return (Game) loadFile(fileLocation);
 		} catch (Exception e) {
 			throw new GameFileException();
 		}
@@ -124,31 +121,33 @@ public class XMLManager implements IFileManager{
 	}
 
 	@Override
-	public void saveLevel(Level level, String fileName) throws GameFileException {
+	public void saveLevel(Level level, String fileLocation) throws GameFileException {
 		// TODO Auto-generated method stub
-		saveFile(level, DEFAULT_GAME_LIBRARY_FOLDER + fileName);
+		saveFile(level, fileLocation);
 	}
 
 	@Override
-	public Level loadLevel(String fileName) throws GameFileException {
+	public Level loadLevel(String fileLocation) throws GameFileException {
 		// TODO Auto-generated method stub
 		try {
-			return (Level) loadFile(DEFAULT_GAME_LIBRARY_FOLDER + fileName);
+			return (Level) loadFile(fileLocation);
 		} catch (Exception e) {
 			throw new GameFileException();
 		}
 	}
 
 	@Override
-	public void saveState(State state, String fileName) throws GameFileException {
+	public void saveState(State state, String filePath) throws GameFileException {
 		// TODO Auto-generated method stub
-		saveFile(state, DEFAULT_SAVESTATE_FOLDER + fileName);
+		saveFile(state, filePath);
+//		saveFile(state, DEFAULT_SAVESTATE_FOLDER + filePath);
 	}
 
 	@Override
-	public State loadState(String fileName) throws GameFileException {
+	public State loadState(String filePath) throws GameFileException {
 		try {
-			return (State) loadFile(DEFAULT_SAVESTATE_FOLDER + fileName);
+			return (State) loadFile(filePath);
+//			return (State) loadFile(DEFAULT_SAVESTATE_FOLDER + filePath);
 		} catch (Exception e) {
 			throw new GameFileException();
 		}
