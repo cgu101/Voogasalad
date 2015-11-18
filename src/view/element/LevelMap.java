@@ -55,16 +55,17 @@ public class LevelMap extends Map {
 
 				map.addProperty("xLocation", "" + (event.getSceneX() - this.getPane().getLayoutX()));
 				map.addProperty("yLocation", "" + (event.getSceneY() - this.getPane().getLayoutY()));
-				controller.getLevelConstructor().getActorGroupsConstructor().updateActor(new Date().toString(), map);
+				String uniqueID = new Date().toString();
+				controller.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, map);
 				
-				Actor a = controller;
+				Actor a = controller.getLevelConstructor().getActorGroupsConstructor().getActor(actor, uniqueID);
 				
 				String img = (String)a.getProperties().getComponents().get("image").getValue();
 				ResourceBundle myResources = ResourceBundle.getBundle("resources/SpriteManager");
 				String[] dimensions = myResources.getString(img).split(",");
 				Sprite newSp = new Sprite(img, Integer.parseInt(dimensions[0]), Integer.parseInt(dimensions[1]));
 				
-				addActor(newSp, 50, 50);
+				addActor(newSp, (event.getSceneX()), (event.getSceneY()));
 				
 				success = true;
 			}
