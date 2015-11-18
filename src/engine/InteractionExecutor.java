@@ -42,7 +42,7 @@ public class InteractionExecutor {
 		this.currentLevelIdentifier = level.getUniqueID();
 		this.selfTriggerTree = level.getSelfTriggerTree();
 		this.externalTriggerTree = level.getInteractionTree();
-		System.out.println(level.getActorGroups().getMap() + " InteractionExecutor 44");
+		//System.out.println(level.getActorGroups().getMap() + " InteractionExecutor 44");
 		this.currentActorMap = level.getActorGroups();
 		// TODO: input map
 		this.inputMap = inputMap;
@@ -62,12 +62,12 @@ public class InteractionExecutor {
 	}
 	
 	private void runSelfTriggers () {
-		System.out.println(selfTriggerTree.children());
+		//System.out.println(selfTriggerTree.children());
 		for (InteractionTreeNode actorA : selfTriggerTree.children()) {
 			List<InteractionTreeNode> triggerNodes = actorA.children();
-			System.out.println(currentActorMap + " InteractionExecutor 67");
-			System.out.println(currentActorMap.getMap().keySet() + " InteractionExecutor 68");
-			System.out.println(actorA.getValue() + " InteractionExecutor 69 ;)");
+			//System.out.println(currentActorMap + " InteractionExecutor 67");
+			//System.out.println(currentActorMap.getMap().keySet() + " InteractionExecutor 68");
+			//System.out.println(actorA.getValue() + " InteractionExecutor 69 ;)");
 			for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
 				for (InteractionTreeNode trigger : triggerNodes) {
 					List<InteractionTreeNode> actionNodes = trigger.children();
@@ -106,7 +106,7 @@ public class InteractionExecutor {
 		return ret;*/
 	}
 	public ActorGroups getActors () {
-		//System.out.println(currentActorMap.getMap() + " InteractionExecutor");
+		////System.out.println(currentActorMap.getMap() + " InteractionExecutor");
 		return currentActorMap;
 	}
 	// TODO

@@ -29,6 +29,6 @@ public class Move extends AActionOneActor{
 		((Property<Double>)futureActor.getProperty("yLocation")).setValue(y);
 		actorGroup.addActor(futureActor);
 
-		System.out.println(this.getClass().getName()+ " Moved Actor!");
+		//System.out.println(this.getClass().getName()+ " Moved Actor!");
 	}
 }

@@ -47,7 +47,7 @@ public class PlayerController implements IPlayer {
 
 	// should be called by front end
 	public void loadGame(String fileName) throws GameFileException, EngineException {
-		System.out.println("PlayController.loadGame(" + fileName + ")");
+		//System.out.println("PlayController.loadGame(" + fileName + ")");
 		Game game = XMLManager.loadGame(fileName);
 		myEngine.init(game);
 		start();
@@ -56,7 +56,7 @@ public class PlayerController implements IPlayer {
 	/*
 	 * public void loadGame (File file) { this.loadGame(file.getName()); try {
 	 * myXMLManager.testLoadGame(file); } catch (GameFileException e) {
-	 * System.out.println("Test has failed"); } }
+	 * //System.out.println("Test has failed"); } }
 	 */
 
 	/*
@@ -74,7 +74,7 @@ public class PlayerController implements IPlayer {
 		myGameLoop.setCycleCount(Timeline.INDEFINITE);
 		myGameLoop.getKeyFrames().add(frame);
 		myGameLoop.play();
-		System.out.println("Game started...");
+		//System.out.println("Game started...");
 	}
 
 	public void pause() throws GameFileException {

@@ -55,7 +55,7 @@ public class InteractionTreeNode {
 	}
 	
 	public void printGraph() {
-		System.out.println(value);
+		//System.out.println(value);
 		for(InteractionTreeNode child: children) {
 			child.printGraph();
 		}

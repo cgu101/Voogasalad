@@ -19,7 +19,7 @@ public abstract class AActionOneActor implements IAction {
 			run (actorMap, actor);
 		}
 		if(a.length>1){
-			System.out.println(this.getClass().getName()+": More than 1 actor as argument!!. Running Action on all Actors");
+			//System.out.println(this.getClass().getName()+": More than 1 actor as argument!!. Running Action on all Actors");
 		}
 	}
 }

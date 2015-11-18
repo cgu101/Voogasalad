@@ -113,7 +113,7 @@ public class Map extends AbstractElement {
 		//Test white rectangle
 		Rectangle test = new Rectangle(720, 480);
 		test.setFill(Color.WHITE);
-		System.out.println((int) background.getBoundsInParent().getWidth());
+		//System.out.println((int) background.getBoundsInParent().getWidth());
 
 		//Add any elements you want to appear on the map using this method
 		addActor(test, 0, 0);

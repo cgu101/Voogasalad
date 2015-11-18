@@ -21,7 +21,7 @@ public abstract class XMLSaver {
 	
 	public void save (IActor s) {
 		String serializedActor = mySerializer.toXML(s);
-        System.out.println(serializedActor);
+        //System.out.println(serializedActor);
 	}
 	
 	public void saveGame (GameData game, String filePath) {

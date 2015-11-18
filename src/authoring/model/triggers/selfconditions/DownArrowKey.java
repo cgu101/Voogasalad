@@ -13,7 +13,7 @@ public class DownArrowKey extends ASelfTrigger {
 	@Override
 	public boolean condition(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager,
 			Actor... actors) {
-		System.out.println("CONDITION");
+		//System.out.println("CONDITION");
 		if (inputManager.getValue("DOWN")) {
 			return performActions(actions, actorGroup, actors);
 		}

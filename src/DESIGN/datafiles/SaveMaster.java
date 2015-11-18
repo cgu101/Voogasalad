@@ -18,7 +18,7 @@ public class SaveMaster implements IFileManager{
 	public static void main (String[] args) {
 		GameSaver q = new GameSaver();
 		Spaceship s = new Spaceship();
-		System.out.println("saving");
+		//System.out.println("saving");
 		ILevel level = new LevelOne();
 		level.addActor(s);
 		List<ILevel> levelList = new ArrayList<ILevel>();

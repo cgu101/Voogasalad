@@ -77,14 +77,14 @@ public class CreatorScreen extends AbstractScreen {
 
 	// TODO
 	public void saveGame() {
-		System.out.println("Testing saving game ");
+		//System.out.println("Testing saving game ");
 
 		List<LevelConstructor> levelConstructors = w.getLevels();
 
 		Game game = AuthoringController.getGameWithLevels(levelConstructors);
 		File saveFile = FileChooserUtility.save(scene.getWindow());
 		String fileLocation = saveFile.getAbsolutePath();
-		System.out.println(saveFile.getName());
+		//System.out.println(saveFile.getName());
 
 		try {
 			XMLManager.saveGame(game, fileLocation);
@@ -95,6 +95,6 @@ public class CreatorScreen extends AbstractScreen {
 
 	// TODO
 	public void loadGame() {
-		System.out.println("Testing loading game ");
+		//System.out.println("Testing loading game ");
 	}
 }

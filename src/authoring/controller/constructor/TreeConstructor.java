@@ -36,7 +36,7 @@ public class TreeConstructor {
 		addActionsToMap(actions);
 		TreeNodeAdder.addSelfTriggerActions(selfTriggerTree, actor, trigger, actions);
 		this.selfTriggerTree.printGraph();
-		System.out.println();
+		//System.out.println();
 	}
 
 	// public void addEventTrigger(String aActor, String bActor, String trigger)
@@ -93,7 +93,7 @@ public class TreeConstructor {
 	}
 
 	public InteractionTreeNode getSelfTriggerTree() {
-		System.out.println(selfTriggerTree.children() + " TreeConstructor 93");
+		//System.out.println(selfTriggerTree.children() + " TreeConstructor 93");
 		return selfTriggerTree;
 	}
 

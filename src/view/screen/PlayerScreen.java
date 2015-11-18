@@ -90,11 +90,11 @@ public class PlayerScreen extends AbstractScreen {
 	// TODO: David: need a stage eventually for the line: fileChooser.showOpenDialog(null);
 	// You want to force the user to choose
 	public void loadGame() {
-		System.out.println("Testing");
+		//System.out.println("Testing");
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Game File Loader");
 		fileChooser.setInitialDirectory(new File("."));
-		System.out.println(playerController);
+		//System.out.println(playerController);
 		File file = fileChooser.showOpenDialog(null);
 		
 		try {
@@ -109,7 +109,7 @@ public class PlayerScreen extends AbstractScreen {
 	}
 
 	public void saveState () {
-		System.out.println("Testing saving game state ");
+		//System.out.println("Testing saving game state ");
 
 		//TODO: do gui stuff
 		File saveFile = FileChooserUtility.save(scene.getWindow());
