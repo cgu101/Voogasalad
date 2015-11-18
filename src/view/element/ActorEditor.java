@@ -160,6 +160,7 @@ public class ActorEditor extends AbstractDockElement {
 		// refresh();
 		// });
 		name.prefWidthProperty().bind(pane.widthProperty());
+		name.setFont(textFont);
 		return name;
 	}
 }
