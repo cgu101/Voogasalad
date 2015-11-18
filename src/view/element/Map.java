@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -96,6 +97,11 @@ public class Map extends AbstractElement {
 		zoomGroup.getTransforms().add(scaleTransform);
 	}
 
+	private void addEventFilters () {
+		mapArea.addEventFilter(KeyEvent.ANY, e -> {e.consume();});
+		slider.getTheSlider().addEventFilter(KeyEvent.ANY, e -> {e.consume();});
+	}
+	
 	@Override
 	protected void makePane() {
 		//Test Narnia map image
@@ -105,18 +111,20 @@ public class Map extends AbstractElement {
 		background.setPreserveRatio(true);
 		
 		//Test white rectangle
-		Rectangle test = new Rectangle(20, 20);
+		Rectangle test = new Rectangle(720, 480);
 		test.setFill(Color.WHITE);
 		System.out.println((int) background.getBoundsInParent().getWidth());
 
 		//Add any elements you want to appear on the map using this method
-		addActor(background, 0, 0);
-		addActor(test, 200, 200);
-
+		addActor(test, 0, 0);
 		//Create the map after adding elements you want
 		createTheMap();
 		
+		// remove pesky key event handlers
+		addEventFilters();
+		
 		//Add the map to the GridPane
 		addMapToPane(pane);
+		
 	}
 }

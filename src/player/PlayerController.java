@@ -18,6 +18,7 @@ import exceptions.engine.EngineStateException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 
 public class PlayerController implements IPlayer {
@@ -31,7 +32,6 @@ public class PlayerController implements IPlayer {
 	private InputManager myInputManager;
 	private static int fps = 10;
 
-
 	public PlayerController(Scene s) {
 		mySpriteManager = new SpriteManager(s);
 		myScene = s;
@@ -41,8 +41,8 @@ public class PlayerController implements IPlayer {
 	}
 
 	private void attachInputs(Scene s) {
-		s.setOnKeyPressed(e -> myInputManager.keyPressed(e));
-		s.setOnKeyReleased(e -> myInputManager.keyReleased(e));
+		s.addEventFilter(KeyEvent.KEY_PRESSED, e -> myInputManager.keyPressed(e));
+		s.addEventFilter(KeyEvent.KEY_RELEASED, e -> myInputManager.keyReleased(e));
 	}
 
 	// should be called by front end
@@ -53,26 +53,23 @@ public class PlayerController implements IPlayer {
 		start();
 	}
 
-	/*public void loadGame (File file) {
-		this.loadGame(file.getName());
-		try {
-			myXMLManager.testLoadGame(file);
-		} catch (GameFileException e) {
-			System.out.println("Test has failed");
-		}
-	}*/
+	/*
+	 * public void loadGame (File file) { this.loadGame(file.getName()); try {
+	 * myXMLManager.testLoadGame(file); } catch (GameFileException e) {
+	 * System.out.println("Test has failed"); } }
+	 */
 
 	/*
-	private void initializeGame(Game game) throws EngineException {
-		myEngine.init(game);
-	}*/
+	 * private void initializeGame(Game game) throws EngineException {
+	 * myEngine.init(game); }
+	 */
 
-	public Scene getScene () {
+	public Scene getScene() {
 		return myScene;
 	}
 
 	public void start() {
-		KeyFrame frame = new KeyFrame(new Duration(1000/this.fps), e -> this.run());
+		KeyFrame frame = new KeyFrame(new Duration(1000 / this.fps), e -> this.run());
 		myGameLoop = new Timeline();
 		myGameLoop.setCycleCount(Timeline.INDEFINITE);
 		myGameLoop.getKeyFrames().add(frame);
@@ -80,11 +77,11 @@ public class PlayerController implements IPlayer {
 		System.out.println("Game started...");
 	}
 
-	public void pause() throws GameFileException {	
-		try {			
+	public void pause() throws GameFileException {
+		try {
 			myGameLoop.pause();
 			mySpriteManager.pause();
-		} catch (NullPointerException e){
+		} catch (NullPointerException e) {
 			throw new GameFileException();
 		}
 	}
@@ -93,12 +90,12 @@ public class PlayerController implements IPlayer {
 		try {
 			myGameLoop.play();
 			mySpriteManager.resume();
-		} catch (NullPointerException e){
+		} catch (NullPointerException e) {
 			throw new GameFileException();
 		}
 	}
 
-	private void run(){
+	private void run() {
 		try {
 			myEngine.play().call(this);
 			mySpriteManager.updateSprites(getActorList(), this.myScene);
@@ -107,28 +104,20 @@ public class PlayerController implements IPlayer {
 			e.printStackTrace();
 		}
 	}
-<<<<<<< HEAD
 
-	public void render(Map<String, Bundle<Actor>> actorMap){
-		//System.out.println(actorMap);
-=======
-	
-
-	public ArrayList<Actor> getActorList(){
->>>>>>> master
+	public ArrayList<Actor> getActorList() {
 		ArrayList<Actor> actors = new ArrayList<Actor>();
-		for(Bundle<Actor> b : myEngine.getActors().values()){
+		for (Bundle<Actor> b : myEngine.getActors().values()) {
 			actors.addAll(b.getComponents().values());
 		}
 		return actors;
 	}
-	
-	
-	public Map<String,Bundle<Actor>> getActorMap(){
+
+	public Map<String, Bundle<Actor>> getActorMap() {
 		return myEngine.getActors();
 	}
-	
-	public void saveState (String fileName) throws GameFileException {
+
+	public void saveState(String fileName) throws GameFileException {
 		pause();
 		State saveState;
 		try {
@@ -139,7 +128,8 @@ public class PlayerController implements IPlayer {
 		}
 		resume();
 	}
-	public void loadState (String fileName) throws GameFileException {
+
+	public void loadState(String fileName) throws GameFileException {
 		pause();
 		State saveState = XMLManager.loadState(fileName);
 		try {
