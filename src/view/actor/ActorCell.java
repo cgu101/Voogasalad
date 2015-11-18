@@ -3,9 +3,9 @@ package view.actor;
 import authoring.controller.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
@@ -16,6 +16,7 @@ public class ActorCell extends AbstractListCell {
 
 	private AuthoringController controller;
 	private boolean deselect;
+	private String actor;
 
 	public ActorCell(AuthoringController controller) {
 		this.controller = controller;
@@ -24,6 +25,7 @@ public class ActorCell extends AbstractListCell {
 	private ImageView makeImage(String item) {
 		ImageView output = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(
 				controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image"))));
+		this.actor = item;
 		output.setFitHeight(25);
 		output.setPreserveRatio(true);
 		output.setSmooth(true);
@@ -43,9 +45,10 @@ public class ActorCell extends AbstractListCell {
 
 	public void drag(MouseEvent e) {
 		this.deselect = false;
-		Dragboard db = this.startDragAndDrop(TransferMode.COPY);
-		e.consume();
-		
+		Dragboard db = this.startDragAndDrop(TransferMode.ANY);
+		ClipboardContent content = new ClipboardContent();
+		content.putString(this.actor);
+		db.setContent(content);
 	}
 
 	@Override
