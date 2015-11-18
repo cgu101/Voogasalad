@@ -11,19 +11,24 @@ import data.XMLManager;
 import exceptions.data.GameFileException;
 
 public class AuthoringController {
+	
+	private LevelConstructor levelConstructor;
+	private AuthoringActorConstructor authActorConstructor;
 
 	IFileManager myXMLManager;
 	
 	public AuthoringController() {
+		levelConstructor = ConstructorFactory.getLevelConstructor();
+		authActorConstructor = ConstructorFactory.getAuthoringActorConstructor();
 		myXMLManager = new XMLManager();
 	}
 	
 	public LevelConstructor getLevelConstructor() {
-		return ConstructorFactory.getLevelConstructor();
+		return levelConstructor;
 	}
 	
 	public AuthoringActorConstructor getAuthoringActorConstructor() {
-		return ConstructorFactory.getAuthoringActorConstructor();
+		return authActorConstructor;
 	}
 	
 	public void saveGame (Game game, String fileLocation) throws GameFileException {

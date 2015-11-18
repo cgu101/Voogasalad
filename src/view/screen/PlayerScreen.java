@@ -5,19 +5,25 @@ import java.io.File;
 import java.util.ArrayList;
 
 import exceptions.data.GameFileException;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import player.PlayerController;
 import util.FileChooserUtility;
 import view.controlbar.ControlBarPlayer;
 import view.element.AbstractDockElement;
+import view.element.ActorBrowser;
+import view.element.ActorMonitor;
 import view.element.Workspace;
 
 public class PlayerScreen extends AbstractScreen {
 
 	private ControlBarPlayer t;
 	private PlayerController playerController;
+	private ArrayList<GridPane> dockPanes;
+	private ArrayList<GridPane> homePanes;
 //	private Workspace w;
 
 	public PlayerScreen() {
@@ -59,7 +65,25 @@ public class PlayerScreen extends AbstractScreen {
 //		w = new Workspace(myPanes.get(1), this);
 		r.setCenter(myPanes.get(1));
 		root = r;
+		r.setTop(myPanes.get(0));
+		r.setCenter(myPanes.get(1));
+		dockPanes = new ArrayList<GridPane>();
+		homePanes = new ArrayList<GridPane>();
+		for (int i = 0; i < 3; i++) {
+			dockPanes.add(new GridPane());
+			homePanes.add(new GridPane());
+		}
+		GridPane rightPane = new GridPane();
+		rightPane.add(homePanes.get(0), 0, 0);
+		rightPane.add(homePanes.get(1), 0, 1);
+		rightPane.setAlignment(Pos.CENTER);
+		r.setRight(rightPane);
+		GridPane bottomPane = new GridPane();
+		bottomPane.add(homePanes.get(2), 0, 0);
+		r.setBottom(bottomPane);
 		components = new ArrayList<AbstractDockElement>(); //No components yet! 
+		ActorMonitor monitor = new ActorMonitor(dockPanes.get(0), homePanes.get(0),
+				myResources.getString("monitorname"), this, playerController);
 	}
 	
 	// TODO: David: need a stage eventually for the line: fileChooser.showOpenDialog(null);
@@ -71,7 +95,6 @@ public class PlayerScreen extends AbstractScreen {
 		fileChooser.setInitialDirectory(new File("."));
 		System.out.println(playerController);
 		File file = fileChooser.showOpenDialog(null);
-		
 		
 		try {
 			playerController.loadGame(file.getAbsolutePath());

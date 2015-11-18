@@ -12,7 +12,6 @@ import javafx.scene.transform.Scale;
 import view.screen.AbstractScreen;
 
 public class Map extends AbstractElement {
-	private AbstractScreen screen;
 	
 	private Group contentGroup;
 	private Group zoomGroup;
@@ -22,10 +21,9 @@ public class Map extends AbstractElement {
 	private MapZoomSlider slider;
 	private MapActorManager actorManager;
 
-	public Map(GridPane pane, AbstractScreen screen) {
+	public Map(GridPane pane) {
 		super(pane);
 		findResources();
-		this.screen = screen;
 
 		//Use a StackPane so we can layer things on top of one another, like an actor
 		//over a background tile. Note that you can probably use something else if a
@@ -38,10 +36,15 @@ public class Map extends AbstractElement {
 		
 		makePane();
 	}
+	
 
 	public void addActor(Node element, double x, double y) {
 		//Use this method to add an actor to the StackPane.
 		actorManager.addActor(element, x, y);
+	}
+	
+	public Group getGroup(){
+		return layout;
 	}
 
 	public void createTheMap() {
@@ -70,8 +73,8 @@ public class Map extends AbstractElement {
 		mapArea.setPannable(true);
 
 		//Bind the preferred size of the scroll area to the size of the scene
-		mapArea.prefWidthProperty().bind(screen.getScene().widthProperty());
-		mapArea.prefHeightProperty().bind(screen.getScene().heightProperty());
+		mapArea.prefWidthProperty().bind(pane.widthProperty());
+		mapArea.prefHeightProperty().bind(pane.heightProperty());
 
 		mapArea.setContent(contentGroup);
 	}
@@ -108,7 +111,7 @@ public class Map extends AbstractElement {
 
 		//Add any elements you want to appear on the map using this method
 		addActor(background, 0, 0);
-		addActor(test, 100, 100);
+		addActor(test, 200, 200);
 
 		//Create the map after adding elements you want
 		createTheMap();

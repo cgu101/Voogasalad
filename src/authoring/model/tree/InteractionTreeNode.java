@@ -53,6 +53,13 @@ public class InteractionTreeNode {
 	public String getValue () {
 		return value;
 	}
+	
+	public void printGraph() {
+		System.out.println(value);
+		for(InteractionTreeNode child: children) {
+			child.printGraph();
+		}
+	}
 }
 //
 //// possible alternative

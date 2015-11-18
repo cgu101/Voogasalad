@@ -10,18 +10,25 @@
             <children/>
           </interactionTree>
           <selfTriggerTree>
-            <children/>
+            <children>
+              <authoring.model.tree.InteractionTreeNode>
+                <children>
+                  <authoring.model.tree.InteractionTreeNode>
+                    <children>
+                      <authoring.model.tree.InteractionTreeNode>
+                        <children/>
+                        <value>authoring.model.actions.oneActorActions.Move</value>
+                      </authoring.model.tree.InteractionTreeNode>
+                    </children>
+                    <value>authoring.model.triggers.selfconditions.TrueSelfTrigger</value>
+                  </authoring.model.tree.InteractionTreeNode>
+                </children>
+                <value>onlyone</value>
+              </authoring.model.tree.InteractionTreeNode>
+            </children>
           </selfTriggerTree>
           <actorGroups>
             <actorMap>
-              <entry>
-                <string>testActor</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
               <entry>
                 <string>onlyone</string>
                 <authoring.model.bundles.Bundle>
@@ -29,7 +36,7 @@
                   <obs/>
                   <components>
                     <entry>
-                      <string>123</string>
+                      <string>testActor</string>
                       <authoring.model.actors.Actor>
                         <myPropertyBundle>
                           <changed>false</changed>
@@ -57,15 +64,29 @@
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">5.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
                                 <myValue class="double">150.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">5.0</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
                           </components>
                         </myPropertyBundle>
-                        <identifier>123</identifier>
+                        <identifier>testActor</identifier>
                       </authoring.model.actors.Actor>
                     </entry>
                   </components>
@@ -73,8 +94,18 @@
               </entry>
             </actorMap>
           </actorGroups>
-          <triggerMap/>
-          <actionMap/>
+          <triggerMap>
+            <entry>
+              <string>authoring.model.triggers.selfconditions.TrueSelfTrigger</string>
+              <authoring.model.triggers.selfconditions.TrueSelfTrigger/>
+            </entry>
+          </triggerMap>
+          <actionMap>
+            <entry>
+              <string>authoring.model.actions.oneActorActions.Move</string>
+              <authoring.model.actions.oneActorActions.Move/>
+            </entry>
+          </actionMap>
           <uniqueID>0</uniqueID>
         </authoring.model.level.Level>
       </entry>

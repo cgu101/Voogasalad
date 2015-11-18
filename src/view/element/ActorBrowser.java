@@ -28,6 +28,7 @@ public class ActorBrowser extends AbstractDockElement {
 	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,
 			AuthoringController controller) {
 		super(pane, home, title, screen);
+		findResources();
 		doubleLists = new SimpleBooleanProperty(true);
 		doubleLists.addListener(e -> toggleDoubleLists(doubleLists.getValue()));
 		this.controller = controller;
@@ -36,9 +37,7 @@ public class ActorBrowser extends AbstractDockElement {
 
 	@Override
 	protected void makePane() {
-		GridPane labelPane = makeLabelPane();
-		pane.add(labelPane, 0, 0);
-		GridPane.setColumnSpan(labelPane, 2);
+		addLabelPane();
 		actors = FXCollections.observableArrayList(new ArrayList<String>());
 		actors.addAll(controller.getAuthoringActorConstructor().getActorList());
 		rightlist = new ListView<String>(actors);
@@ -46,10 +45,6 @@ public class ActorBrowser extends AbstractDockElement {
 		pane.add(leftlist, 0, 1);
 		pane.add(rightlist, 1, 1);
 		pane.setAlignment(Pos.TOP_CENTER);
-		leftlist.prefHeightProperty().bind(screen.getScene().heightProperty());
-		rightlist.prefHeightProperty().bind(screen.getScene().heightProperty());
-		leftlist.setFocusTraversable(false);
-		rightlist.setFocusTraversable(false);
 		configure(leftlist);
 		configure(rightlist);
 		lists = new ArrayList<ListView<String>>();
@@ -57,7 +52,16 @@ public class ActorBrowser extends AbstractDockElement {
 		lists.add(rightlist);
 	}
 
+	private void addLabelPane() {
+		GridPane labelPane = makeLabelPane();
+		pane.add(labelPane, 0, 0);
+		GridPane.setColumnSpan(labelPane, 2);
+	}
+	
 	private void configure(ListView<String> list) {
+		list.prefHeightProperty().bind(screen.getScene().heightProperty());
+		list.setMaxWidth(Double.parseDouble(myResources.getString("width")));
+		list.setFocusTraversable(false);
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {
