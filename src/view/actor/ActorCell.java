@@ -50,7 +50,9 @@ public class ActorCell extends AbstractListCell {
 		HBox box = new HBox(5);
 		box.setAlignment(Pos.CENTER_LEFT);
 		box.getChildren().add(makeImage(item));
-		box.getChildren().add(new Label(item));
+		Label label = new Label(item);
+		label.setFont(textFont);
+		box.getChildren().add(label);
 		setGraphic(box);
 	}
 }

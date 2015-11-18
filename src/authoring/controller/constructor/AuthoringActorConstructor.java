@@ -9,64 +9,64 @@ import authoring.controller.AuthoringConfigManager;
 import authoring.model.actors.ActorPropertyMap;
 
 public class AuthoringActorConstructor {
-	
+
 	private Map<String, ActorObject> actorMap;
-	
+
 	AuthoringActorConstructor() {
 		actorMap = new HashMap<String, ActorObject>();
 		load();
 	}
-	
+
 	private void load() {
-		for(String s: AuthoringConfigManager.getInstance().getActorList()) {
-			actorMap.put(s, new ActorObject(s, AuthoringConfigManager.getInstance().getPropertyList(s)));
-			actorMap.put(s, new ActorObject(s, 
-					AuthoringConfigManager.getInstance().getPropertyList(s),
-					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.SELF_TRIGGER),
-					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.EVENT_TRIGGER),
-					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.ONE_ACTOR_ACTIONS),
+		for (String s : AuthoringConfigManager.getInstance().getActorList()) {
+			actorMap.put(s,
+					new ActorObject(s, AuthoringConfigManager.getInstance().getPropertyList(s),
+							AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.SELF_TRIGGER),
+							AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.EVENT_TRIGGER),
+							AuthoringConfigManager.getInstance().getConfigList(s,
+									AuthoringConfigManager.ONE_ACTOR_ACTIONS),
 					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.TWO_ACTOR_ACTIONS)));
 		}
 	}
-	
+
 	public List<String> getActorList() {
 		return new ArrayList<String>(actorMap.keySet());
 	}
-	
+
 	public List<String> getPropertyList(String actor) {
-		return  actorMap.get(actor).propertyMap.getPropertyList();
+		return actorMap.get(actor).propertyMap.getPropertyList();
 	}
-	
+
 	public String getDefaultPropertyValue(String actor, String property) {
 		return actorMap.get(actor).propertyMap.getPropertyValue(property);
 	}
-	
+
 	public ActorPropertyMap getActorPropertyMap(String actor) {
 		return actorMap.get(actor).propertyMap;
 	}
-	
+
 	public void setPropertyValue(String actor, String property, String value) {
 		actorMap.get(actor).propertyMap.addProperty(property, value);
 	}
-	
+
 	public List<String> getSelfTriggerList(String actor) {
 		return actorMap.get(actor).selfTriggerList;
 	}
-	
-	public List<String> getEventTriggerList(String aActor, String...otherActors) {		
-		// Need to compare bActor's properties against eventTriggers before adding
+
+	public List<String> getEventTriggerList(String aActor, String... otherActors) {
+		// Need to compare bActor's properties against eventTriggers before
+		// adding
 		return actorMap.get(aActor).eventTriggerList;
 	}
 
-	public List<String> getActionList(String actor, String...otherActors) {
+	public List<String> getActionList(String actor, String... otherActors) {
 		List<String> ret = new ArrayList<String>();
 		ret.addAll(actorMap.get(actor).oneActorActionList);
 		// Need to compare bActors properties against actions before adding
 		ret.addAll(actorMap.get(actor).twoActorActionList);
 		return ret;
-	}	
-	
-	
+	}
+
 	private class ActorObject {
 		private String actor;
 		private ActorPropertyMap propertyMap;
@@ -74,19 +74,11 @@ public class AuthoringActorConstructor {
 		private List<String> eventTriggerList;
 		private List<String> oneActorActionList;
 		private List<String> twoActorActionList;
-		
-		private ActorObject(String actor, List<String> propertyList) {
-			this.actor = actor;
-			load(propertyList);
-		}
-		
-		private ActorObject(String actor,
-				List<String> propertyList,
-				List<String> selfTriggerList,
-				List<String> eventTriggerList, 
-				List<String> oneActorActionList, 
-				List<String> twoActorActionList) {
-			propertyMap = new ActorPropertyMap();
+
+
+		private ActorObject(String actor, List<String> propertyList, List<String> selfTriggerList,
+				List<String> eventTriggerList, List<String> oneActorActionList, List<String> twoActorActionList) {
+			this.propertyMap = new ActorPropertyMap();
 			this.actor = actor;
 			this.selfTriggerList = selfTriggerList;
 			this.eventTriggerList = eventTriggerList;
@@ -94,12 +86,12 @@ public class AuthoringActorConstructor {
 			this.twoActorActionList = twoActorActionList;
 			load(propertyList);
 		}
-		
+
 		private void load(List<String> propertyList) {
-			for(String s: propertyList) {
+			for (String s : propertyList) {
 				propertyMap.addProperty(s, AuthoringConfigManager.getInstance().getDefaultPropertyValue(actor, s));
 			}
-		}		
+		}
 	}
- 
+
 }
