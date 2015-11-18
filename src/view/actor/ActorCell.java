@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
@@ -40,9 +41,11 @@ public class ActorCell extends AbstractListCell {
 		this.deselect = true;
 	}
 
-	public void drag(MouseEvent me) {
+	public void drag(MouseEvent e) {
 		this.deselect = false;
 		Dragboard db = this.startDragAndDrop(TransferMode.COPY);
+		e.consume();
+		
 	}
 
 	@Override
@@ -54,5 +57,10 @@ public class ActorCell extends AbstractListCell {
 		label.setFont(textFont);
 		box.getChildren().add(label);
 		setGraphic(box);
+	}
+
+	public void dragDone(DragEvent e) {
+		// TODO Auto-generated method stub
+		e.consume();
 	}
 }

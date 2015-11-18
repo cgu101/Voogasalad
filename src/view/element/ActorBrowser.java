@@ -90,6 +90,7 @@ public class ActorBrowser extends AbstractDockElement {
 				cell.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handlePress(cell, list, event));
 				cell.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> handleRelease(cell, list, event));
 				cell.setOnDragDetected(e -> cell.drag(e));
+				cell.setOnDragDone(e -> cell.dragDone(e));
 				return cell;
 			}
 		});
