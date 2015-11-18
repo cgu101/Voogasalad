@@ -1,5 +1,6 @@
 package engine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,8 +97,13 @@ public class InteractionExecutor {
 
 	private List<IAction> parseActions(List<InteractionTreeNode> actionNodes) {
 		return actionNodes.stream()
-						  .map(k -> { return actionMap.get(k);})
+						  .map(k -> { return actionMap.get(k.getValue());})
 						  .collect(Collectors.toList());
+		/*ArrayList<IAction> ret = new ArrayList<IAction>();
+		for (InteractionTreeNode k : actionNodes){
+			ret.add(actionMap.get(k.getValue()));
+		}
+		return ret;*/
 	}
 	public ActorGroups getActors () {
 		//System.out.println(currentActorMap.getMap() + " InteractionExecutor");
