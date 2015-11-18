@@ -2,13 +2,10 @@ package view.element;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-
 import authoring.controller.AuthoringController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -20,7 +17,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
-import view.actor.ActorCell;
 import view.actor.PropertyCell;
 import view.actor.SelfTriggerCell;
 import view.screen.AbstractScreenInterface;
