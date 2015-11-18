@@ -53,6 +53,7 @@ public class SelfTriggerCell extends AbstractListCell {
 		selector.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 			public void onChanged(ListChangeListener.Change<? extends String> c) {
 				List<String> actions = selector.getCheckModel().getCheckedItems();
+				controller.getLevelConstructor().getTreeConstructor().removeSelfTrigger(actor, item);
 				controller.getLevelConstructor().getTreeConstructor().addSelfTriggerActions(actor, item, actions);
 			}
 		});

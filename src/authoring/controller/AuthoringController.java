@@ -8,16 +8,21 @@ import authoring.controller.constructor.LevelConstructor;
 import authoring.model.game.Game;
 
 public class AuthoringController {
+	
+	private LevelConstructor levelConstructor;
+	private AuthoringActorConstructor authActorConstructor;
 
 	public AuthoringController() {
+		levelConstructor = ConstructorFactory.getLevelConstructor();
+		authActorConstructor = ConstructorFactory.getAuthoringActorConstructor();
 	}
 	
 	public LevelConstructor getLevelConstructor() {
-		return ConstructorFactory.getLevelConstructor();
+		return levelConstructor;
 	}
 	
 	public AuthoringActorConstructor getAuthoringActorConstructor() {
-		return ConstructorFactory.getAuthoringActorConstructor();
+		return authActorConstructor;
 	}
 
 	public Game getGameWithLevels (List<LevelConstructor> levelBuilderList) {
