@@ -24,13 +24,20 @@ public class ActorBrowser extends AbstractDockElement {
 	private ObservableList<String> actors;
 	private BooleanProperty doubleLists;
 	private AuthoringController controller;
+	private GridPane listPane;
 
 	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,
-			AuthoringController controller) {
+			Workspace workspace) {
 		super(pane, home, title, screen);
+		findResources();
 		doubleLists = new SimpleBooleanProperty(true);
 		doubleLists.addListener(e -> toggleDoubleLists(doubleLists.getValue()));
-		this.controller = controller;
+		this.controller = null;
+		workspace.addListener((ov, oldTab, newTab) -> {
+			if (workspace.getCurrentLevel() != null) {
+				load(workspace.getCurrentLevel().getController());
+			}
+		});
 		makePane();
 	}
 
@@ -38,18 +45,23 @@ public class ActorBrowser extends AbstractDockElement {
 	protected void makePane() {
 		GridPane labelPane = makeLabelPane();
 		pane.add(labelPane, 0, 0);
-		GridPane.setColumnSpan(labelPane, 2);
+		listPane = new GridPane();
+		pane.add(listPane, 0, 1);
+		load(controller);
+	}
+
+	public void load(AuthoringController controller) {
+		this.controller = controller;
+		listPane.getChildren().clear();
 		actors = FXCollections.observableArrayList(new ArrayList<String>());
-		actors.addAll(controller.getAuthoringActorConstructor().getActorList());
+		if (controller != null) {
+			actors.addAll(controller.getAuthoringActorConstructor().getActorList());
+		}
 		rightlist = new ListView<String>(actors);
 		leftlist = new ListView<String>(actors);
-		pane.add(leftlist, 0, 1);
-		pane.add(rightlist, 1, 1);
-		pane.setAlignment(Pos.TOP_CENTER);
-		leftlist.prefHeightProperty().bind(screen.getScene().heightProperty());
-		rightlist.prefHeightProperty().bind(screen.getScene().heightProperty());
-		leftlist.setFocusTraversable(false);
-		rightlist.setFocusTraversable(false);
+		listPane.add(leftlist, 0, 1);
+		listPane.add(rightlist, 1, 1);
+		listPane.setAlignment(Pos.TOP_CENTER);
 		configure(leftlist);
 		configure(rightlist);
 		lists = new ArrayList<ListView<String>>();
@@ -58,6 +70,9 @@ public class ActorBrowser extends AbstractDockElement {
 	}
 
 	private void configure(ListView<String> list) {
+		list.prefHeightProperty().bind(screen.getScene().heightProperty());
+		list.setMaxWidth(Double.parseDouble(myResources.getString("width")));
+		list.setFocusTraversable(false);
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {

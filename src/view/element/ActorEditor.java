@@ -2,13 +2,10 @@ package view.element;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-
 import authoring.controller.AuthoringController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -20,7 +17,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
-import view.actor.ActorCell;
 import view.actor.PropertyCell;
 import view.actor.SelfTriggerCell;
 import view.screen.AbstractScreenInterface;
@@ -29,16 +25,19 @@ public class ActorEditor extends AbstractDockElement {
 
 	private ActorBrowser browser;
 	private AuthoringController controller;
+	private Workspace workspace;
 	private ImageView image;
 
 	public ActorEditor(GridPane pane, GridPane home, String title, AbstractScreenInterface screen, ActorBrowser browser,
-			AuthoringController controller) {
+			Workspace workspace) {
 		super(pane, home, title, screen);
 		findResources();
-		this.controller = controller;
+		this.controller = null;
 		this.browser = browser;
+		this.workspace = workspace;
 		for (ListView<String> list : browser.getLists()) {
-			list.getSelectionModel().selectedItemProperty().addListener(e -> load());
+			list.getSelectionModel().selectedItemProperty()
+					.addListener(e -> load(workspace.getCurrentLevel().getController()));
 		}
 		makePane();
 	}
@@ -48,7 +47,7 @@ public class ActorEditor extends AbstractDockElement {
 		addLabelPane();
 		pane.prefWidthProperty().bind(browser.getPane().widthProperty());
 		pane.setMaxHeight(Double.parseDouble(myResources.getString("height")));
-		load();
+		load(null);
 		showing.setValue(false);
 		pane.setAlignment(Pos.CENTER);
 	}
@@ -80,10 +79,11 @@ public class ActorEditor extends AbstractDockElement {
 				list.refresh();
 			}
 		}
-		load();
+		load(workspace.getCurrentLevel().getController());
 	}
 
-	private void load() {
+	private void load(AuthoringController controller) {
+		this.controller = controller;
 		pane.getChildren().clear();
 		addLabelPane();
 		if (!showing.getValue()) {
@@ -91,7 +91,7 @@ public class ActorEditor extends AbstractDockElement {
 		}
 		String leftItem = browser.getLists().get(0).getSelectionModel().getSelectedItem();
 		String rightItem = browser.getLists().get(1).getSelectionModel().getSelectedItem();
-		if (leftItem == null && rightItem == null) {
+		if (controller == null || (leftItem == null && rightItem == null)) {
 			Text none = new Text(myResources.getString("none"));
 			none.setFont(textFont);
 			pane.add(none, 0, 1);

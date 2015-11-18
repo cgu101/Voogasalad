@@ -9,38 +9,38 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class InputManager {
-	private Map<KeyCode,Boolean> inputMap;
+	private Map<String,Boolean> inputMap;
 	
 	public InputManager () {
-		inputMap = new HashMap<KeyCode, Boolean>();
+		this(null);
 	}
 	
 	public InputManager (String fileName) {
-		inputMap = new HashMap<KeyCode,Boolean>();
+		inputMap = new HashMap<String,Boolean>();
 		populateMap(inputMap, fileName);
 	}
-	private void populateMap(Map<KeyCode,Boolean> map, String fileName) {
+	private void populateMap(Map<String,Boolean> map, String fileName) {
 		try {
 			ResourceBundle resources = ResourceBundle.getBundle(fileName);
-			resources.keySet().forEach(k -> {map.put(KeyCode.getKeyCode(k), false);});
+			resources.keySet().forEach(k -> {map.put(KeyCode.valueOf(k).toString(), false);});
 		} catch (Exception e) {
-			Arrays.asList(KeyCode.values()).forEach(k -> {map.put(k, false);});
+			Arrays.asList(KeyCode.values()).forEach(k -> {map.put(k.toString(), false);});
 		}	
 	}
 	public void keyPressed(KeyEvent ke) {
 		KeyCode code = ke.getCode();
-		inputMap.put(code, true);
+		inputMap.put(code.toString(), true);
 	}
 	public void keyReleased(KeyEvent ke) {
 		KeyCode code = ke.getCode();
-		inputMap.put(code, false);
+		inputMap.put(code.toString(), false);
 	}
 	
 	public boolean getValue (String keyName) {
-		return inputMap.get(KeyCode.getKeyCode(keyName));
+		return getValue(KeyCode.valueOf(keyName));
 	}
 	public boolean getValue (KeyCode keyCode) {
-		return inputMap.get(keyCode);
+		return inputMap.get(keyCode.toString());
 	}
 	
 }
