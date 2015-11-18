@@ -6,22 +6,16 @@ import authoring.controller.constructor.AuthoringActorConstructor;
 import authoring.controller.constructor.ConstructorFactory;
 import authoring.controller.constructor.LevelConstructor;
 import authoring.model.game.Game;
-import controller.AController;
-import javafx.stage.Stage;
-import view.screen.AbstractScreen;
-import view.screen.CreatorScreen;
+import data.IFileManager;
+import data.XMLManager;
+import exceptions.data.GameFileException;
 
-public class AuthoringController extends AController {
+public class AuthoringController {
 
+	IFileManager myXMLManager;
+	
 	public AuthoringController() {
-	}
-	
-	public AuthoringController (Stage stage) {
-		this(stage, new CreatorScreen());
-	}
-	
-	public AuthoringController(Stage stage, AbstractScreen screen) {
-		super(stage, screen);
+		myXMLManager = new XMLManager();
 	}
 	
 	public LevelConstructor getLevelConstructor() {
@@ -32,13 +26,8 @@ public class AuthoringController extends AController {
 		return ConstructorFactory.getAuthoringActorConstructor();
 	}
 	
-	public AuthoringConfigManager getAuthoringConfigManager() {
-		return AuthoringConfigManager.getInstance();
-	}
-	
-	@Override
-	public void run() throws Exception {
-		currentScreen.run();
+	public void saveGame (Game game, String fileLocation) throws GameFileException {
+		myXMLManager.saveGame(game, fileLocation);
 	}
 
 	public Game getGameWithLevels (List<LevelConstructor> levelBuilderList) {

@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import player.PlayerController;
+import util.FileChooserUtility;
 import view.controlbar.ControlBarPlayer;
 import view.element.AbstractDockElement;
 import view.element.ActorMonitor;
@@ -25,10 +26,11 @@ public class PlayerScreen extends AbstractScreen {
 		WIDTH = Integer.parseInt(myResources.getString("width"));
 		HEIGHT = Integer.parseInt(myResources.getString("height"));
 		this.title = myResources.getString("title");
-		this.playerController = new PlayerController();
 		
 		makeScene();
 		scene = new Scene(root, WIDTH, HEIGHT);
+		this.playerController = new PlayerController(scene);
+
 	}
 
 	//TODO: Throw NullGameException when Game hasn't been loaded yet
@@ -71,16 +73,22 @@ public class PlayerScreen extends AbstractScreen {
 		System.out.println(playerController);
 		File file = fileChooser.showOpenDialog(null);
 		
-		playerController.loadGame(file);
+		
+		try {
+			playerController.loadGame(file.getAbsolutePath());
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void saveState () {
 		System.out.println("Testing saving game state ");
 
 		//TODO: do gui stuff
-		String fileName = "";
+		File saveFile = FileChooserUtility.save(scene.getWindow());
 		try {
-			playerController.saveState(fileName);
+			playerController.saveState(saveFile.getAbsolutePath());
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,9 +97,9 @@ public class PlayerScreen extends AbstractScreen {
 
 	public void loadState () {
 		//TODO: do gui stuff
-		String fileName = "";
+		File loadFile = FileChooserUtility.load(scene.getWindow());
 		try {
-			playerController.loadState(fileName);
+			playerController.loadState(loadFile.getPath());
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

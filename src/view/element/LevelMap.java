@@ -18,11 +18,14 @@ public class LevelMap extends Map {
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));	
 		constructor = lc;
-		makePane();
 	}
 
 	public Tab getTab() {
 		return myTab;
+	}
+	
+	public LevelConstructor getLevelConstructor () {
+		return constructor;
 	}
 	
 }
