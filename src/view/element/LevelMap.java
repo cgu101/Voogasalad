@@ -21,6 +21,7 @@ public class LevelMap extends Map {
 	private ScrollPane sp;
 	private AuthoringController controller;
 
+
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
 		super(pane, screen);
 		myTab = new Tab("Level " + (i + 1));
