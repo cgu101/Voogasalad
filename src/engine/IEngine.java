@@ -7,6 +7,7 @@ import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import exceptions.EngineException;
 import exceptions.engine.EngineStateException;
+import player.InputManager;
 
 /**
  * Basic implementation of the engine is as follows:

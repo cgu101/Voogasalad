@@ -21,35 +21,39 @@ import javafx.util.Duration;
 
 public class PlayerController implements IPlayer {
 
-	Scene myScene;
-	IEngine myEngine;
-	IFileManager myXMLManager;
-	Timeline myGameLoop;
-	SpriteManager mySpriteManager;
-	int fps = 10;
-	
+	private static final String DEFAULT_INPUTS_FILENAME = "resources/gameplayer/Inputs";
+
+	private Scene myScene;
+	private IEngine myEngine;
+	private IFileManager myXMLManager;
+	private Timeline myGameLoop;
+	private SpriteManager mySpriteManager;
+	private InputManager myInputManager;
+	private static int fps = 10;
+
 
 	public PlayerController(Scene s) {
-		myEngine = new GameEngine();
 		myXMLManager = new XMLManager();
 		mySpriteManager = new SpriteManager(s);
 		myScene = s;
+		myInputManager = new InputManager(DEFAULT_INPUTS_FILENAME);
+		myEngine = new GameEngine(myInputManager);
+		attachInputs(s);
 	}
-	
+
+	private void attachInputs(Scene s) {
+		s.setOnKeyPressed(e -> myInputManager.keyPressed(e));
+		s.setOnKeyReleased(e -> myInputManager.keyReleased(e));
+	}
+
 	// should be called by front end
-	public void loadGame(String fileName) throws GameFileException {
+	public void loadGame(String fileName) throws GameFileException, EngineException {
 		System.out.println("PlayController.loadGame(" + fileName + ")");
-		try {
-			Game game = myXMLManager.loadGame(fileName);
-			myEngine = new GameEngine();
-			myEngine.init(game);
-			start();
-		} catch (EngineException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Game game = myXMLManager.loadGame(fileName);
+		myEngine.init(game);
+		start();
 	}
-	
+
 	/*public void loadGame (File file) {
 		this.loadGame(file.getName());
 		try {
@@ -58,7 +62,7 @@ public class PlayerController implements IPlayer {
 			System.out.println("Test has failed");
 		}
 	}*/
-	
+
 	/*
 	private void initializeGame(Game game) throws EngineException {
 		myEngine.init(game);
@@ -67,7 +71,7 @@ public class PlayerController implements IPlayer {
 	public Scene getScene () {
 		return myScene;
 	}
-	
+
 	public void start() {
 		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.run());
 		myGameLoop = new Timeline();
@@ -85,7 +89,7 @@ public class PlayerController implements IPlayer {
 			throw new GameFileException();
 		}
 	}
-	
+
 	public void resume() throws GameFileException {
 		try {
 			myGameLoop.play();
@@ -104,7 +108,7 @@ public class PlayerController implements IPlayer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void render(Map<String, Bundle<Actor>> actorMap){
 		//System.out.println(actorMap);
 		ArrayList<Actor> actors = new ArrayList<Actor>();
