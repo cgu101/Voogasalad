@@ -45,10 +45,10 @@ public class ActorEditor extends AbstractDockElement {
 	@Override
 	protected void makePane() {
 		addLabelPane();
-		pane.prefWidthProperty().bind(browser.getPane().widthProperty());
 		pane.setMaxHeight(Double.parseDouble(myResources.getString("height")));
 		load(null);
 		showing.setValue(false);
+		pane.prefWidthProperty().bind(browser.getPane().widthProperty());
 		pane.setAlignment(Pos.CENTER);
 	}
 
