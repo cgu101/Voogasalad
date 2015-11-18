@@ -36,8 +36,6 @@ public class TreeConstructor {
 		addTriggerToMap(trigger);
 		addActionsToMap(actions);
 		TreeNodeAdder.addSelfTriggerActions(selfTriggerTree, actor, trigger, actions);
-		selfTriggerTree.printGraph();
-		System.out.println();
 	}
 	
 //	public void addEventTrigger(String aActor, String bActor, String trigger) {
@@ -53,8 +51,6 @@ public class TreeConstructor {
 		
 	public void removeSelfTrigger(String actor, String trigger) {
 		TreeNodeDeleter.removeSelfTrigger(selfTriggerTree, actor, trigger);
-		selfTriggerTree.printGraph();
-		System.out.println();
 	}
 	
 //	public void removeSelfTriggerActions(String actor, String trigger, List<String> actions) {
