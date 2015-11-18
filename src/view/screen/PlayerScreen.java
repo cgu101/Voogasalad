@@ -25,10 +25,11 @@ public class PlayerScreen extends AbstractScreen {
 		WIDTH = Integer.parseInt(myResources.getString("width"));
 		HEIGHT = Integer.parseInt(myResources.getString("height"));
 		this.title = myResources.getString("title");
-		this.playerController = new PlayerController();
 		
 		makeScene();
 		scene = new Scene(root, WIDTH, HEIGHT);
+		this.playerController = new PlayerController(scene);
+
 	}
 
 	//TODO: Throw NullGameException when Game hasn't been loaded yet
@@ -64,17 +65,29 @@ public class PlayerScreen extends AbstractScreen {
 	// TODO: David: need a stage eventually for the line: fileChooser.showOpenDialog(null);
 	// You want to force the user to choose
 	public void loadGame() {
-		File file = FileChooserUtility.load(scene.getWindow());
-		playerController.loadGame(file);
+		System.out.println("Testing");
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Game File Loader");
+		fileChooser.setInitialDirectory(new File("."));
+		System.out.println(playerController);
+		File file = fileChooser.showOpenDialog(null);
+		
+		
+		try {
+			playerController.loadGame(file.getName());
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void saveState () {
 		System.out.println("Testing saving game state ");
 
 		//TODO: do gui stuff
-		String fileName = "";
+		File saveFile = FileChooserUtility.save(scene.getWindow());
 		try {
-			playerController.saveState(fileName);
+			playerController.saveState(saveFile.getName());
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,9 +96,9 @@ public class PlayerScreen extends AbstractScreen {
 
 	public void loadState () {
 		//TODO: do gui stuff
-		String fileName = "";
+		File loadFile = FileChooserUtility.load(scene.getWindow());
 		try {
-			playerController.loadState(fileName);
+			playerController.loadState(loadFile.getPath());
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

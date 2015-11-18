@@ -75,6 +75,7 @@ public class AuthoringConfigManager {
 	}
 	
 	public String getPropertyType(String property) {
+		System.out.println(propertyMap.keySet());
 		return propertyMap.get(property).getString(TYPE);
 	}
 	

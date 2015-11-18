@@ -1,8 +1,10 @@
 package view.element;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import authoring.controller.AuthoringController;
+import authoring.controller.constructor.LevelConstructor;
 import javafx.geometry.Side;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -86,8 +88,12 @@ public class Workspace extends AbstractElement {
 		manager.getSelectionModel().select(switchID);
 	}
 
-	public ArrayList<LevelMap> getLevels(){
-		return levels;
+	public List<LevelConstructor> getLevels(){
+		List<LevelConstructor> levelConstructorList = new ArrayList<LevelConstructor>();
+		for (LevelMap levelMap : levels) { 
+			levelConstructorList.add(levelMap.getLevelConstructor());
+		}
+		return levelConstructorList;
 	}
 	
 	private void removeLevel(Tab tab) {

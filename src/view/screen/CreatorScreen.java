@@ -5,8 +5,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import authoring.controller.AuthoringController;
+import authoring.controller.constructor.LevelConstructor;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -81,12 +83,18 @@ public class CreatorScreen extends AbstractScreen {
 		System.out.println("Testing saving game ");
 		String test = "test child";
 		
+		List<LevelConstructor> levelConstructors = w.getLevels();
+		
+		for (int i = 0; i < levelConstructors.size(); i++) {
+			System.out.println(i);
+		}
+		
         File saveFile = FileChooserUtility.save(scene.getWindow());
 
         try {
         	writeToFile(saveFile, test);
         } catch (IOException | NullPointerException e) {
-        	System.err.print(e.getMessage());
+        	System.out.println("Error in writing to file");
         }
 	}
 	
