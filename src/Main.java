@@ -48,7 +48,7 @@ public class Main extends Application {
 		apm.addProperty("xLocation", "150");
 		apm.addProperty("yLocation", "150");
 		apm.addProperty("angle", "5");
-		apm.addProperty("speed", "15");
+		apm.addProperty("speed", "5");
 		apm.addProperty("image", "megaman.png");
 		apm.addProperty("groupID", "onlyone");
 		ac.updateActor("testActor", apm);

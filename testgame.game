@@ -80,7 +80,7 @@
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">15.0</myValue>
+                                <myValue class="double">5.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
