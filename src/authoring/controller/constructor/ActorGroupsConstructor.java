@@ -53,6 +53,11 @@ public class ActorGroupsConstructor {
 		}
 	}
 	
+	public Actor getActor(String className, String id) {
+		Bundle<Actor> actorBundle = actorGroups.addGroup(className);
+		return actorBundle.get(id);
+	}
+	
 	private Bundle<Property<?>> getPropertyBundle(ActorPropertyMap propertyMap) {
 		Bundle<Property<?>> ret = new Bundle<Property<?>>();
 		for(String p : propertyMap.getPropertyList()) {
