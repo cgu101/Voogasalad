@@ -67,12 +67,12 @@ public class InteractionExecutor {
 			List<InteractionTreeNode> triggerNodes = actorA.children();
 			System.out.println(currentActorMap + " InteractionExecutor 67");
 			System.out.println(currentActorMap.getMap().keySet() + " InteractionExecutor 68");
-			System.out.println(actorA.getValue() + " InteractionExecutor 69 ;)");
+			System.out.println(actorA.getValue() + " InteractionExecutor 69");
 			for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
 				for (InteractionTreeNode trigger : triggerNodes) {
 					List<InteractionTreeNode> actionNodes = trigger.children();
 					ITriggerEvent selfTriggerEvent = triggerMap.get(trigger.getValue());
-					selfTriggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, uniqueA);
+					selfTriggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, (Actor) uniqueA.getCopy());
 				}
 			}
 		}	
@@ -87,7 +87,7 @@ public class InteractionExecutor {
 						for (InteractionTreeNode trigger : triggerNodes) {
 							List<InteractionTreeNode> actionNodes = trigger.children();
 							ITriggerEvent triggerEvent = triggerMap.get(trigger.getValue());
-							triggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, uniqueA, uniqueB);
+							triggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy());
 						}
 					}
 				}
