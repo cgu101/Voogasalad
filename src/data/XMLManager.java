@@ -25,6 +25,7 @@ public class XMLManager implements IFileManager{
 			fos.write("<?xml version=\"1.0\"?>".getBytes("UTF-8"));
 			byte[] bytes = xml.getBytes("UTF-8");
 			fos.write(bytes);
+			System.out.println("what?");
 		}catch (Exception e){
 			e.printStackTrace();
 			System.err.println("Error in XML Write: " + e.getMessage());
