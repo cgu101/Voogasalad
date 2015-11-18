@@ -43,8 +43,7 @@ public class ControlBarPlayer extends ControlBar {
 
 	private void createMenuBar(MenuBar mainMenu) {
 		MenuItem load = makeMenuItem(myResources.getString("loadGame"), e -> currentScreen.loadGame());
-		MenuItem save = makeMenuItem(myResources.getString("saveGame"), e -> currentScreen.saveState());
-		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save);
+		Menu file = addToMenu(new Menu(myResources.getString("file")), load);
 
 		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
 		fullscreen.selectedProperty().bindBidirectional(currentScreen.getFullscreenProperty());
