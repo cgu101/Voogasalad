@@ -11,7 +11,6 @@ import authoring.model.actors.Actor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 
 //  Probably shouldn't be in player package... class to update, delete, keep track of sprites
 public class SpriteManager {
