@@ -20,10 +20,10 @@
                         <value>authoring.model.actions.oneActorActions.Move</value>
                       </authoring.model.tree.InteractionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.DownArrowKey</value>
+                    <value>authoring.model.triggers.selfconditions.TrueSelfTrigger</value>
                   </authoring.model.tree.InteractionTreeNode>
                 </children>
-                <value>testActor</value>
+                <value>onlyone</value>
               </authoring.model.tree.InteractionTreeNode>
             </children>
           </selfTriggerTree>
@@ -80,7 +80,7 @@
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">0.5</myValue>
+                                <myValue class="double">5.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -96,8 +96,8 @@
           </actorGroups>
           <triggerMap>
             <entry>
-              <string>authoring.model.triggers.selfconditions.DownArrowKey</string>
-              <authoring.model.triggers.selfconditions.DownArrowKey/>
+              <string>authoring.model.triggers.selfconditions.TrueSelfTrigger</string>
+              <authoring.model.triggers.selfconditions.TrueSelfTrigger/>
             </entry>
           </triggerMap>
           <actionMap>

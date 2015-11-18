@@ -86,6 +86,7 @@ public class TreeConstructor {
 	}
 	
 	public InteractionTreeNode getSelfTriggerTree() {
+		System.out.println(selfTriggerTree.children() + " TreeConstructor 93");
 		return selfTriggerTree;
 	}
 	
