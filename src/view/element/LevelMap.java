@@ -25,4 +25,8 @@ public class LevelMap extends Map {
 		return myTab;
 	}
 	
+	public LevelConstructor getLevelConstructor () {
+		return constructor;
+	}
+	
 }
