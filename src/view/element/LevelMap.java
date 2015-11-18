@@ -9,6 +9,7 @@ import authoring.model.actors.ActorPropertyMap;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.effect.BlendMode;
+import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
@@ -57,16 +58,16 @@ public class LevelMap extends Map {
 				map.addProperty("yLocation", "" + (event.getSceneY() - this.getPane().getLayoutY()));
 				String uniqueID = new Date().toString();
 				controller.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, map);
-				
+
 				Actor a = controller.getLevelConstructor().getActorGroupsConstructor().getActor(actor, uniqueID);
-				
-				String img = (String)a.getProperties().getComponents().get("image").getValue();
-				ResourceBundle myResources = ResourceBundle.getBundle("resources/SpriteManager");
-				String[] dimensions = myResources.getString(img).split(",");
-				Sprite newSp = new Sprite(img, Integer.parseInt(dimensions[0]), Integer.parseInt(dimensions[1]));
-				
-				addActor(newSp, (event.getSceneX()), (event.getSceneY()));
-				
+
+				String img = (String) a.getProperties().getComponents().get("image").getValue();
+				Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
+				Sprite newSp = new Sprite(image);
+
+				addActor(newSp, (event.getSceneX() - background.getLayoutX()),
+						(event.getSceneY() - background.getLayoutY()));
+
 				success = true;
 			}
 			event.setDropCompleted(success);
