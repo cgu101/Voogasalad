@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -99,6 +100,11 @@ public class Map extends AbstractElement {
 		zoomGroup.getTransforms().add(scaleTransform);
 	}
 
+	private void addEventFilters () {
+		mapArea.addEventFilter(KeyEvent.ANY, e -> {e.consume();});
+		slider.getTheSlider().addEventFilter(KeyEvent.ANY, e -> {e.consume();});
+	}
+	
 	@Override
 	protected void makePane() {
 		//Test Narnia map image
@@ -123,7 +129,11 @@ public class Map extends AbstractElement {
 		//Create the map after adding elements you want
 		createTheMap();
 		
+		// remove pesky key event handlers
+		addEventFilters();
+		
 		//Add the map to the GridPane
 		addMapToPane(pane);
+		
 	}
 }

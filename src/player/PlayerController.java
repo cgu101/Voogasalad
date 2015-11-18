@@ -17,6 +17,7 @@ import exceptions.engine.EngineStateException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 
 public class PlayerController implements IPlayer {
@@ -42,8 +43,8 @@ public class PlayerController implements IPlayer {
 	}
 
 	private void attachInputs(Scene s) {
-		s.setOnKeyPressed(e -> myInputManager.keyPressed(e));
-		s.setOnKeyReleased(e -> myInputManager.keyReleased(e));
+		s.addEventFilter(KeyEvent.KEY_PRESSED, e -> myInputManager.keyPressed(e));
+		s.addEventFilter(KeyEvent.KEY_RELEASED, e -> myInputManager.keyReleased(e));
 	}
 
 	// should be called by front end
