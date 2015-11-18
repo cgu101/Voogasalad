@@ -3,10 +3,10 @@ package view.actor;
 import authoring.controller.AuthoringController;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
@@ -43,7 +43,7 @@ public class ActorCell extends AbstractListCell {
 		this.deselect = true;
 	}
 
-	public void drag(MouseEvent me) {
+	public void drag(MouseEvent e) {
 		this.deselect = false;
 		Dragboard db = this.startDragAndDrop(TransferMode.ANY);
 		ClipboardContent content = new ClipboardContent();
@@ -60,5 +60,10 @@ public class ActorCell extends AbstractListCell {
 		label.setFont(textFont);
 		box.getChildren().add(label);
 		setGraphic(box);
+	}
+
+	public void dragDone(DragEvent e) {
+		// TODO Auto-generated method stub
+		e.consume();
 	}
 }
