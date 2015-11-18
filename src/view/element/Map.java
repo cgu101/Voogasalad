@@ -1,10 +1,12 @@
 package view.element;
 
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -78,6 +80,18 @@ public class Map extends AbstractElement {
 		mapArea.prefHeightProperty().bind(pane.heightProperty());
 
 		mapArea.setContent(contentGroup);
+		mapArea.setOnDragEntered(new EventHandler<DragEvent>() {
+		    public void handle(DragEvent event) {
+		    /* the drag-and-drop gesture entered the target */
+		    /* show to the user that it is an actual gesture target */
+		         if (event.getGestureSource() != mapArea &&
+		                 event.getDragboard().hasString()) {
+		        	 mapArea.requestFocus();
+		         }
+		                
+		         event.consume();
+		    }
+		});
 	}
 
 	private void createGroups() {
