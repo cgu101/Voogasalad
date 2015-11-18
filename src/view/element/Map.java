@@ -20,7 +20,7 @@ public class Map extends AbstractElement {
 	private AbstractScreen screen;
 
 	private ScrollPane mapArea;
-	private MapZoomSlider slider;
+	private MapZoomSlider sliderArea;
 	private MapActorManager actorManager;
 
 	public Map(GridPane pane, AbstractScreen screen) {
@@ -53,13 +53,13 @@ public class Map extends AbstractElement {
 		createMapArea();
 		
 		//The slider needs access to the zoomGroup so it can resize it when it gets dragged
-		slider = new MapZoomSlider(zoomGroup, Double.valueOf(myResources.getString("sliderwidth")));
-		slider.createTheSlider();
+		sliderArea = new MapZoomSlider(zoomGroup, Double.valueOf(myResources.getString("sliderwidth")));
+		sliderArea.createTheSlider();
 	}
 	
 	public void addMapToPane(GridPane pane) {
 		pane.add(mapArea, 1, 0);
-		pane.add(slider.getTheSlider(), 1, 1);
+		pane.add(sliderArea.getTheSlider(), 1, 1);
 	}
 
 	private void createMapArea() {
@@ -100,13 +100,14 @@ public class Map extends AbstractElement {
 
 	private void addEventFilters () {
 		mapArea.addEventFilter(KeyEvent.ANY, e -> {e.consume();});
-		slider.getTheSlider().addEventFilter(KeyEvent.ANY, e -> {e.consume();});
+		sliderArea.getTheSlider().addEventFilter(KeyEvent.ANY, e -> {e.consume();});
 	}
 	
 	@Override
 	protected void makePane() {
 		//Test Narnia map image
-		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
+//		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
+		Image backgroundImage = new Image("http://bitforgestudios.com/wp-content/uploads/2013/09/starfield.gif");
 		ImageView background = new ImageView(backgroundImage);
 		background.fitWidthProperty().bind(pane.widthProperty());
 		background.setPreserveRatio(true);
