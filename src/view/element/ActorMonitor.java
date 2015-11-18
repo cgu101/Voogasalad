@@ -16,67 +16,75 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 import player.PlayerController;
 import view.actor.ActorCell;
+import view.actor.ActorMonitorCell;
+import view.actor.PropertyCell;
 import view.element.AbstractDockElement;
 import view.screen.AbstractScreenInterface;
 
 public class ActorMonitor extends AbstractDockElement {
 
-	private ListView<String> actorListView;
 	private ObservableList<String> actors;
 	private PlayerController controller; 
-	private ImageView image;
 	
 	public ActorMonitor(GridPane pane, GridPane home, String title, AbstractScreenInterface screen, PlayerController controller) {
 		super(pane, home, title, screen);
 		findResources();
 		this.controller = controller;
-		makePane();
+		//makePane();
 	}
 
 	@Override
 	protected void makePane() {
 		addLabelPane();
 		actors = FXCollections.observableArrayList(new ArrayList<String>());
+		
+		//Actor's keyset = List<String> 
 		actors.addAll(controller.getActorMap().keySet());
-		actorListView.prefHeightProperty().bind(screen.getScene().heightProperty());
-		actorListView.setFocusTraversable(false);
-
-		int i = 0;
-		for(Actor a : controller.getActorList()){
-			pane.add(makeImage(a), i, 1);
-			//pane.add(makeProperties(a), i+1, 1);
-		}
-		actorListView = new ListView<String>(actors);
-		pane.add(actorListView, 0, 1);
+		pane.prefHeightProperty().bind(screen.getScene().heightProperty());
+		pane.setFocusTraversable(false);
 		pane.setAlignment(Pos.TOP_CENTER);
 		pane.setMaxWidth(Double.parseDouble(myResources.getString("width")));
 	}
 	
-	private Node makeProperties(Actor a) {
-//		for(Property<?> b : a.getProperties()){
-//			b.
-//		}
-		return null;
-	}
-
-	//TODO: Make a non-default image
-	private ImageView makeImage(Actor a) {
-		image = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("rcd.jpg")));
-		image.setFitHeight(Double.parseDouble(myResources.getString("imagesize")));
-		image.setPreserveRatio(true);
-		image.setSmooth(true);
-		image.setCache(true);
-		GridPane.setRowSpan(image, 2);
-		return image;
+	//Creates the Hbox of Properties for a single actor
+	private ListView<String> makeProperties(Actor a) {
+		ObservableList<String> properties = FXCollections.observableArrayList(new ArrayList<String>());
+		properties.addAll(controller.getActorMap().keySet());
+		ListView<String> list = new ListView<String>(properties);
+		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+			@Override
+			public ListCell<String> call(ListView<String> list) {
+				return new ActorMonitorCell(controller, a);
+			}
+		});
+		list.setFocusTraversable(false);
+		return list;
 	}
 
 	private void addLabelPane() {
 		GridPane labelPane = makeLabelPane();
 		pane.add(labelPane, 0, 0);
 		GridPane.setColumnSpan(labelPane, 2);
+	}
+	
+	//Call to reload the properties for every actor
+	private void update() {
+		pane.getChildren().clear();
+		addLabelPane();
+		if (!showing.getValue()) {
+			showing.setValue(true);
+		}
+		
+		int i = 0;
+		for(Actor a : controller.getActorList()){
+			pane.add(makeProperties(a), i, 1);
+			i++;
+		}
+
 	}
 
 }

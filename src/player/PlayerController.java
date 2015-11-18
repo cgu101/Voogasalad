@@ -115,6 +115,7 @@ public class PlayerController implements IPlayer {
 		return actors;
 	}
 	
+	
 	public Map<String,Bundle<Actor>> getActorMap(){
 		return myEngine.getActors();
 	}
