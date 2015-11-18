@@ -15,6 +15,7 @@ import engine.IEngine;
 import engine.State;
 import exceptions.EngineException;
 import exceptions.data.GameFileException;
+import exceptions.engine.EngineStateException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
@@ -119,14 +120,23 @@ public class PlayerController extends AController implements IPlayer {
 
 	public void saveState (String fileName) throws GameFileException {
 		pause();
-		State saveState = myEngine.ejectState();
-		myXMLManager.saveState(saveState, fileName);
+		State saveState;
+		try {
+			saveState = myEngine.ejectState();
+			myXMLManager.saveState(saveState, fileName);
+		} catch (EngineStateException e) {
+			throw new GameFileException(e.getMessage());
+		}
 		resume();
 	}
 	public void loadState (String fileName) throws GameFileException {
 		pause();
 		State saveState = myXMLManager.loadState(fileName);
-		myEngine.injectState(saveState);
+		try {
+			myEngine.injectState(saveState);
+		} catch (EngineException e) {
+			throw new GameFileException(e.getMessage());
+		}
 		resume();
 	}
 }
