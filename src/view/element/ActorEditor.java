@@ -39,8 +39,7 @@ public class ActorEditor extends AbstractDockElement {
 		this.browser = browser;
 		this.workspace = workspace;
 		for (ListView<String> list : browser.getLists()) {
-			list.getSelectionModel().selectedItemProperty()
-					.addListener(e -> load(workspace.getCurrentLevel().getController()));
+			list.getSelectionModel().selectedItemProperty().addListener(e -> load());
 		}
 		makePane();
 	}
@@ -55,7 +54,7 @@ public class ActorEditor extends AbstractDockElement {
 		pane.add(labelPane, 0, 0);
 		contentPane = new GridPane();
 		pane.add(contentPane, 0, 1);
-		load(null);
+		load();
 		showing.setValue(false);
 	}
 
@@ -79,11 +78,15 @@ public class ActorEditor extends AbstractDockElement {
 				list.refresh();
 			}
 		}
-		load(workspace.getCurrentLevel().getController());
+		load();
 	}
 
-	private void load(AuthoringController controller) {
-		this.controller = controller;
+	private void load() {
+		if (workspace.getCurrentLevel() == null) {
+			controller = null;
+		} else {
+			this.controller = workspace.getCurrentLevel().getController();
+		}
 		contentPane.getChildren().clear();
 		if (!showing.getValue()) {
 			showing.setValue(true);

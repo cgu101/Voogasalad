@@ -45,7 +45,7 @@ public class ActorCell extends AbstractListCell {
 
 	public void drag(MouseEvent me) {
 		this.deselect = false;
-		Dragboard db = this.startDragAndDrop(TransferMode.COPY);
+		Dragboard db = this.startDragAndDrop(TransferMode.ANY);
 		ClipboardContent content = new ClipboardContent();
 		content.putString(this.actor);
 		db.setContent(content);
