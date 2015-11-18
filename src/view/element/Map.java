@@ -6,7 +6,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
@@ -84,7 +83,7 @@ public class Map extends AbstractElement {
 
 		//Contains the zoomGroup that will then be displayed on the map
 		contentGroup = new Group();
-
+		
 		contentGroup.getChildren().add(zoomGroup);
 		zoomGroup.getChildren().add(layout);
 	}
@@ -99,16 +98,17 @@ public class Map extends AbstractElement {
 		//Test Narnia map image
 		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
 		ImageView background = new ImageView(backgroundImage);
-
+		background.fitWidthProperty().bind(pane.widthProperty());
+		background.setPreserveRatio(true);
+		
 		//Test white rectangle
-		Rectangle test = new Rectangle(200, 200);
-//		test.widthProperty().bind(screen.getScene().widthProperty());
-//		test.heightProperty().bind(screen.getScene().heightProperty());
+		Rectangle test = new Rectangle(20, 20);
 		test.setFill(Color.WHITE);
+		System.out.println((int) background.getBoundsInParent().getWidth());
 
 		//Add any elements you want to appear on the map using this method
 		addActor(background, 0, 0);
-		addActor(test, 200, 200);
+		addActor(test, 100, 100);
 
 		//Create the map after adding elements you want
 		createTheMap();

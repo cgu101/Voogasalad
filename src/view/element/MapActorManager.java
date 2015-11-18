@@ -20,5 +20,6 @@ public class MapActorManager {
 	
 	public void deleteActor() {
 		//Unimplemented - Need a method to remove actors from the map
+		
 	}
 }
