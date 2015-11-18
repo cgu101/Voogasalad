@@ -20,6 +20,8 @@ public class SwapDirections extends AActionTwoActors{
 		Double temp = a_angleP.getValue();
 		a_angleP.setValue(b_angleP.getValue());
 		b_angleP.setValue(temp);
+		actorGroup.addActor(a);
+		actorGroup.addActor(b);
 	}
 
 }

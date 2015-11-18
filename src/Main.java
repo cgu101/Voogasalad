@@ -39,8 +39,14 @@ public class Main extends Application {
 		Level testLevel = new Level("0");
 		TreeConstructor tc = new TreeConstructor();
 		
-		tc.addSelfTriggerActions("onlyone", "authoring.model.triggers.selfconditions.SpaceBarKey", 
+		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.SpaceBarKey", 
 				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
+		
+		tc.addSelfTriggerActions("asteroid", "authoring.model.triggers.selfconditions.TrueSelfTrigger",
+				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
+		
+		tc.addEventTriggerActions("player", "asteroid", "authoring.model.triggers.externalconditions.CircleCollision", 
+				Arrays.asList(new String[]{"authoring.model.actions.twoActorActions.SwapDirections"}));
 		
 		testLevel.setTreeConstructorValues(tc);
 		ActorGroupsConstructor ac = new ActorGroupsConstructor();
@@ -50,7 +56,8 @@ public class Main extends Application {
 		apm.addProperty("angle", "5");
 		apm.addProperty("speed", "15");
 		apm.addProperty("image", "megaman.png");
-		apm.addProperty("groupID", "onlyone");
+		apm.addProperty("groupID", "player");
+		apm.addProperty("size", "50");
 		ac.updateActor("testActor", apm);
 		
 		ActorPropertyMap apm2 = new ActorPropertyMap();
@@ -59,7 +66,8 @@ public class Main extends Application {
 		apm2.addProperty("angle", "185");
 		apm2.addProperty("speed", "0.5");
 		apm2.addProperty("image", "asteroids.png");
-		apm2.addProperty("groupID", "onlyone");
+		apm2.addProperty("groupID", "asteroid");
+		apm2.addProperty("size", "120");
 		ac.updateActor("testActor2", apm2);
 		
 		testLevel.setActorGroupsValues(ac);
