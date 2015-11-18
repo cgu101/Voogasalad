@@ -78,7 +78,7 @@ public class ActorBrowser extends AbstractDockElement {
 		pane.add(labelPane, 0, 0);
 		GridPane.setColumnSpan(labelPane, 2);
 	}
-	
+
 	private void configure(ListView<String> list) {
 		list.prefHeightProperty().bind(screen.getScene().heightProperty());
 		list.setMaxWidth(Double.parseDouble(myResources.getString("width")));

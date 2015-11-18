@@ -1,15 +1,13 @@
 package view.screen;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import authoring.controller.AuthoringController;
 import authoring.controller.constructor.LevelConstructor;
 import authoring.model.game.Game;
+import data.XMLManager;
 import exceptions.data.GameFileException;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -80,34 +78,18 @@ public class CreatorScreen extends AbstractScreen {
 	// TODO
 	public void saveGame() {
 		System.out.println("Testing saving game ");
-		String test = "test child";
 
 		List<LevelConstructor> levelConstructors = w.getLevels();
 
-		//Game game = controller.getGameWithLevels(levelConstructors);
+		Game game = AuthoringController.getGameWithLevels(levelConstructors);
 		File saveFile = FileChooserUtility.save(scene.getWindow());
 		String fileLocation = saveFile.getAbsolutePath();
 		System.out.println(saveFile.getName());
 
-//		try {
-//			controller.saveGame(game, fileLocation);
-//		} catch (GameFileException e) {
-//			System.err.println(e.getMessage());
-//		}
-
-		// try {
-		// writeToFile(saveFile, test);
-		// } catch (IOException | NullPointerException e) {
-		// System.out.println("Error in writing to file");
-		// }
-	}
-
-	private void writeToFile(File file, String text) throws IOException, NullPointerException {
-		BufferedWriter output = new BufferedWriter(new FileWriter(file));
-		output.write(text);
-
-		if (output != null) {
-			output.close();
+		try {
+			XMLManager.saveGame(game, fileLocation);
+		} catch (GameFileException e) {
+			System.err.println(e.getMessage());
 		}
 	}
 

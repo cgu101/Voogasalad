@@ -14,9 +14,9 @@ import engine.State;
 import exceptions.data.GameFileException;
 
 
-public class XMLManager implements IFileManager{
+public class XMLManager {
 	
-	private void saveFile (Object obj, String filePath) throws GameFileException {
+	private static void saveFile (Object obj, String filePath) throws GameFileException {
 		XStream mySerializer = new XStream(new DomDriver());
 		FileOutputStream fos = null;
 		try{            
@@ -42,7 +42,7 @@ public class XMLManager implements IFileManager{
 		}
 	}
 	
-	private Object loadFile (String filePath) throws GameFileException {
+	private static Object loadFile (String filePath) throws GameFileException {
 		XStream mySerializer = new XStream(new DomDriver());
 		FileInputStream fis = null;
 		try {
@@ -62,8 +62,7 @@ public class XMLManager implements IFileManager{
 		throw new GameFileException();
 	}
 
-	@Override
-	public void saveGame(Game game, String fileLocation) throws GameFileException {
+	public static void saveGame(Game game, String fileLocation) throws GameFileException {
 		
 		// save to game.xml file
 		// filepath = "src/DESIGN/datafiles/game.xml";
@@ -72,7 +71,7 @@ public class XMLManager implements IFileManager{
 		
 	}
 	
-	public void testSaveGame (Game obj, File file) throws GameFileException {
+	public static void testSaveGame (Game obj, File file) throws GameFileException {
 		String filePath = file.getAbsolutePath();
 		
 		XStream mySerializer = new XStream(new DomDriver());
@@ -98,7 +97,7 @@ public class XMLManager implements IFileManager{
 		throw new GameFileException();
 	}
 
-	public Game testLoadGame (File file) throws GameFileException {
+	public static Game testLoadGame (File file) throws GameFileException {
 		String fileLocation = file.getName();
 		
 		try {
@@ -109,8 +108,7 @@ public class XMLManager implements IFileManager{
 		}
 	}
 	
-	@Override
-	public Game loadGame(String fileLocation) throws GameFileException {
+	public static Game loadGame(String fileLocation) throws GameFileException {
 
 		// load from game.xml
 		try {
@@ -121,14 +119,12 @@ public class XMLManager implements IFileManager{
 		
 	}
 
-	@Override
-	public void saveLevel(Level level, String fileLocation) throws GameFileException {
+	public static void saveLevel(Level level, String fileLocation) throws GameFileException {
 		// TODO Auto-generated method stub
 		saveFile(level, fileLocation);
 	}
 
-	@Override
-	public Level loadLevel(String fileLocation) throws GameFileException {
+	public static Level loadLevel(String fileLocation) throws GameFileException {
 		// TODO Auto-generated method stub
 		try {
 			return (Level) loadFile(fileLocation);
@@ -137,15 +133,13 @@ public class XMLManager implements IFileManager{
 		}
 	}
 
-	@Override
-	public void saveState(State state, String filePath) throws GameFileException {
+	public static void saveState(State state, String filePath) throws GameFileException {
 		// TODO Auto-generated method stub
 		saveFile(state, filePath);
 //		saveFile(state, DEFAULT_SAVESTATE_FOLDER + filePath);
 	}
 
-	@Override
-	public State loadState(String filePath) throws GameFileException {
+	public static State loadState(String filePath) throws GameFileException {
 		try {
 			return (State) loadFile(filePath);
 //			return (State) loadFile(DEFAULT_SAVESTATE_FOLDER + filePath);
@@ -154,18 +148,15 @@ public class XMLManager implements IFileManager{
 		}
 	}
 
-	@Override
-	public Game loadGame(File file) throws GameFileException {
+	public static Game loadGame(File file) throws GameFileException {
 		return loadGame(file.getName());
 	}
 
-	@Override
-	public Level loadLevel(File file) throws GameFileException {
+	public static Level loadLevel(File file) throws GameFileException {
 		return loadLevel(file.getName());
 	}
 
-	@Override
-	public State loadState(File file) throws GameFileException {
+	public static State loadState(File file) throws GameFileException {
 		return loadState(file.getName());
 	}
 
