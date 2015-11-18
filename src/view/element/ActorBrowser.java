@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import view.actor.ActorCell;
@@ -60,14 +61,38 @@ public class ActorBrowser extends AbstractDockElement {
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {
-				return new ActorCell(controller);
+				ActorCell cell = new ActorCell(controller);
+				cell.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handlePress(cell, list, event));
+				cell.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> handleRelease(cell, list, event));
+				cell.setOnDragDetected(e -> cell.drag(e));
+				return cell;
 			}
 		});
 	}
 
+	private void handlePress(ActorCell cell, ListView<String> list, MouseEvent event) {
+		if (!cell.isEmpty()) {
+			int index = cell.getIndex();
+			if (list.getSelectionModel().getSelectedIndices().contains(index)) {
+				cell.markForDeselection();
+			} else {
+				list.getSelectionModel().select(index);
+			}
+			event.consume();
+		}
+	}
+
+	private void handleRelease(ActorCell cell, ListView<String> list, MouseEvent event) {
+		if (cell.deselect()) {
+			int index = cell.getIndex();
+			list.getSelectionModel().clearSelection(index);
+		}
+		event.consume();
+	}
+
 	public void addNewActor() {
-		//actors.add("Actor " + actors.size());
-		//TODO: add backend implementation
+		// actors.add("Actor " + actors.size());
+		// TODO: add backend implementation
 	}
 
 	public BooleanProperty getDoubleListsProperty() {

@@ -4,6 +4,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -20,19 +21,17 @@ public class Map extends AbstractElement {
 	private ScrollPane mapArea;
 	private MapZoomSlider slider;
 
-
-
 	public Map(GridPane pane, AbstractScreen screen) {
 		super(pane);
 		findResources();
 		this.screen = screen;
+
 
 		//Use a StackPane so we can layer things on top of one another, like an actor
 		//over a background tile. Note that you can probably use something else if a
 		//StackPane is not appropriate, such as a Canvas.
 		layout = new StackPane();
 		mapArea = new ScrollPane();
-
 	}
 
 	public void addMapElements(Node... elements) {
@@ -68,8 +67,9 @@ public class Map extends AbstractElement {
 	}
 
 	private void createGroups() {
-		//Groups all the nodes that will appear on the map and allows them to be 
-		//collectively rescaled using a Scale.
+		// Groups all the nodes that will appear on the map and allows them to
+		// be
+		// collectively rescaled using a Scale.
 		zoomGroup = new Group();
 
 		//Contains the zoomGroup that will then be displayed on the map
@@ -88,9 +88,12 @@ public class Map extends AbstractElement {
 	protected void makePane() {
 		//Test Narnia map image
 		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
+		ImageView background = new ImageView(backgroundImage);
 
 		//Test white rectangle
 		Rectangle test = new Rectangle(640, 480);
+		test.widthProperty().bind(screen.getScene().widthProperty());
+		test.heightProperty().bind(screen.getScene().heightProperty());
 		test.setFill(Color.WHITE);
 
 		//Add any elements you want to appear on the map using this method
@@ -98,12 +101,5 @@ public class Map extends AbstractElement {
 
 		//Create the map after adding elements you want
 		createTheMap();
-	}
-
-	public GridPane getMap() {
-		//Problem from earlier is still present
-
-		return null;
-		//return theMapElement;
 	}
 }
