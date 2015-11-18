@@ -36,6 +36,8 @@ public class Map extends AbstractElement {
 		
 		//The actorManager needs access to the layout so it can place actors on it
 		actorManager = new MapActorManager(layout);
+		
+		makePane();
 	}
 
 	public void addActor(Node element, double x, double y) {
