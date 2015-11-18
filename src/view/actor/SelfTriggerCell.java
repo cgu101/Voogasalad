@@ -48,7 +48,7 @@ public class SelfTriggerCell extends AbstractListCell {
 
 	protected CheckComboBox<String> makeSelector(String item) {
 		final ObservableList<String> actions = FXCollections.observableArrayList();
-		actions.addAll(controller.getAuthoringActorConstructor().getActionList(actor, null));
+		actions.addAll(controller.getAuthoringActorConstructor().getActionList(actor));
 		CheckComboBox<String> selector = new CheckComboBox<String>(actions);
 		selector.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 			public void onChanged(ListChangeListener.Change<? extends String> c) {

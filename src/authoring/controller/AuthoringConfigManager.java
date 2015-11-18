@@ -91,11 +91,15 @@ public class AuthoringConfigManager {
 		return triggerList;
 	}
 	
+	public static List<String> getRequiredPropertyList(String instance) {
+		return Arrays.asList(myManager.myConfiguration.getString(String.format("%s.%s", instance, PROPERTIES)).split(REG_EX));
+	}
+	
 	private List<String> checkIfAdditionIsPossible(String[] propertyList, String[] toAdd, String actor) {
 		List<String> actorProperties = Arrays.asList(propertyList);
 		List<String> ret = new ArrayList<String>();
 		for(String add: toAdd) {
-			List<String> requiredProperties = Arrays.asList(myConfiguration.getString(String.format("%s.%s", add, PROPERTIES)).split(REG_EX));
+			List<String> requiredProperties = getRequiredPropertyList(add);
 			if(requiredProperties.isEmpty() || actorProperties.containsAll(requiredProperties)) {
 				if(!ret.contains(add)) {
 					ret.add(add);
