@@ -5,6 +5,8 @@ import java.util.List;
 import org.controlsfx.control.CheckComboBox;
 
 import authoring.controller.AuthoringController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -14,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.util.StringConverter;
 
 public class SelfTriggerCell extends AbstractListCell {
 	private AuthoringController controller;
@@ -26,26 +29,26 @@ public class SelfTriggerCell extends AbstractListCell {
 		this.list = list;
 	}
 
-	private HBox makeNameField(String item) {
+	private Text makeNameField(String item) {
 		String triggerName = item.substring(item.lastIndexOf('.') + 1);
 		Text text = new Text(triggerName + " -> ");
 		text.setFont(textFont);
-		HBox box = new HBox();
-		box.getChildren().add(text);
-		return box;
+		return text;
 	}
 
 	@Override
 	protected void makeCell(String item) {
-		VBox box = new VBox(5);
+		HBox box = new HBox(5);
 		box.setAlignment(Pos.CENTER_LEFT);
 		box.getChildren().add(makeNameField(item));
-		List<String> events = controller.getAuthoringActorConstructor().getActionList(actor, null);
+		box.getChildren().add(makeSelector(item));
 		setGraphic(box);
 	}
 
-	protected CheckComboBox<String> makeSelector() {
-		CheckComboBox<String> selector = new CheckComboBox<String>();
+	protected CheckComboBox<String> makeSelector(String item) {
+		final ObservableList<String> actions = FXCollections.observableArrayList();
+		actions.addAll(controller.getAuthoringActorConstructor().getActionList(actor, null));
+		CheckComboBox<String> selector = new CheckComboBox<String>(actions);
 		return selector;
 	}
 
