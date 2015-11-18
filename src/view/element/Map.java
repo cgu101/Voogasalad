@@ -17,7 +17,7 @@ public class Map extends AbstractElement {
 	
 	private Group contentGroup;
 	private Group zoomGroup;
-	private StackPane layout;
+	private Group layout;
 
 	private ScrollPane mapArea;
 	private MapZoomSlider slider;
@@ -31,11 +31,13 @@ public class Map extends AbstractElement {
 		//Use a StackPane so we can layer things on top of one another, like an actor
 		//over a background tile. Note that you can probably use something else if a
 		//StackPane is not appropriate, such as a Canvas.
-		layout = new StackPane();
+		layout = new Group();
 		mapArea = new ScrollPane();
 		
 		//The actorManager needs access to the layout so it can place actors on it
 		actorManager = new MapActorManager(layout);
+		
+		makePane();
 	}
 
 	public void addActor(Node element, double x, double y) {
