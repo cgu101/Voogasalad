@@ -1,8 +1,10 @@
 package view.element;
 
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import authoring.controller.AuthoringController;
+import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -10,6 +12,7 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import util.Sprite;
 import view.screen.AbstractScreen;
 
 public class LevelMap extends Map {
@@ -53,6 +56,16 @@ public class LevelMap extends Map {
 				map.addProperty("xLocation", "" + (event.getSceneX() - this.getPane().getLayoutX()));
 				map.addProperty("yLocation", "" + (event.getSceneY() - this.getPane().getLayoutY()));
 				controller.getLevelConstructor().getActorGroupsConstructor().updateActor(new Date().toString(), map);
+				
+				Actor a = controller;
+				
+				String img = (String)a.getProperties().getComponents().get("image").getValue();
+				ResourceBundle myResources = ResourceBundle.getBundle("resources/SpriteManager");
+				String[] dimensions = myResources.getString(img).split(",");
+				Sprite newSp = new Sprite(img, Integer.parseInt(dimensions[0]), Integer.parseInt(dimensions[1]));
+				
+				addActor(newSp, 50, 50);
+				
 				success = true;
 			}
 			event.setDropCompleted(success);
