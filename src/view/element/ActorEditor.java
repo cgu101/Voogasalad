@@ -116,7 +116,7 @@ public class ActorEditor extends AbstractDockElement {
 
 	private ListView<String> makePropertyEditor(String item) {
 		ObservableList<String> properties = FXCollections.observableArrayList(new ArrayList<String>());
-		properties.addAll(controller.getAuthoringConfigManager().getPropertyList(item));
+		properties.addAll(controller.getAuthoringActorConstructor().getPropertyList(item));
 		ListView<String> list = new ListView<String>(properties);
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
@@ -129,7 +129,7 @@ public class ActorEditor extends AbstractDockElement {
 
 	private ListView<String> makeSelfTriggerEditor(String item) {
 		ObservableList<String> triggers = FXCollections.observableArrayList(new ArrayList<String>());
-		triggers.addAll(controller.getAuthoringConfigManager().getSelfTriggerList(item));
+		triggers.addAll(controller.getAuthoringActorConstructor().getSelfTriggerList(item));
 		ListView<String> list = new ListView<String>(triggers);
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
@@ -142,8 +142,8 @@ public class ActorEditor extends AbstractDockElement {
 	}
 
 	private ImageView makeImage(String item) {
-		image = new ImageView(new Image(getClass().getClassLoader()
-				.getResourceAsStream(controller.getAuthoringConfigManager().getDefaultPropertyValue(item, "image"))));
+		image = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(
+				controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image"))));
 		image.setFitHeight(Double.parseDouble(myResources.getString("imagesize")));
 		image.setPreserveRatio(true);
 		image.setSmooth(true);

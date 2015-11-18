@@ -40,7 +40,7 @@ public class ActorBrowser extends AbstractDockElement {
 		pane.add(labelPane, 0, 0);
 		GridPane.setColumnSpan(labelPane, 2);
 		actors = FXCollections.observableArrayList(new ArrayList<String>());
-		actors.addAll(controller.getAuthoringConfigManager().getActorList());
+		actors.addAll(controller.getAuthoringActorConstructor().getActorList());
 		rightlist = new ListView<String>(actors);
 		leftlist = new ListView<String>(actors);
 		pane.add(leftlist, 0, 1);
