@@ -45,14 +45,14 @@
                             <entry>
                               <string>image</string>
                               <authoring.model.properties.Property>
-                                <myValue class="string">megaman.png</myValue>
+                                <myValue class="string">asteroids.png</myValue>
                                 <identifier>image</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">150.0</myValue>
+                                <myValue class="double">50.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -73,20 +73,74 @@
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">150.0</myValue>
+                                <myValue class="double">50.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">5.0</myValue>
+                                <myValue class="double">0.5</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                           </components>
                         </myPropertyBundle>
                         <identifier>testActor</identifier>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                    <entry>
+                      <string>testActor2</string>
+                      <authoring.model.actors.Actor>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">asteroids.png</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">350.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">onlyone</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">185.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">350.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.5</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>testActor2</identifier>
                       </authoring.model.actors.Actor>
                     </entry>
                   </components>

@@ -35,23 +35,34 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		/* Create a test game */
-		/*Game testGame = new Game();
+		Game testGame = new Game();
 		Level testLevel = new Level("0");
 		TreeConstructor tc = new TreeConstructor();
 		
-		tc.addSelfTriggerActions("onlyone", "authoring.model.triggers.selfconditions.TrueSelfTrigger", 
+		tc.addSelfTriggerActions("onlyone", "authoring.model.triggers.selfconditions.DownArrowKey", 
 				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
 		
 		testLevel.setTreeConstructorValues(tc);
 		ActorGroupsConstructor ac = new ActorGroupsConstructor();
 		ActorPropertyMap apm = new ActorPropertyMap();
-		apm.addProperty("xLocation", "150");
-		apm.addProperty("yLocation", "150");
+		apm.addProperty("xLocation", "50");
+		apm.addProperty("yLocation", "50");
 		apm.addProperty("angle", "5");
-		apm.addProperty("speed", "5");
+		apm.addProperty("speed", "0.5");
 		apm.addProperty("image", "megaman.png");
 		apm.addProperty("groupID", "onlyone");
 		ac.updateActor("testActor", apm);
+		
+		ActorPropertyMap apm2 = new ActorPropertyMap();
+		apm2.addProperty("xLocation", "350");
+		apm2.addProperty("yLocation", "350");
+		apm2.addProperty("angle", "185");
+		apm2.addProperty("speed", "0.5");
+		apm2.addProperty("image", "asteroids.png");
+		apm2.addProperty("groupID", "onlyone");
+		ac.updateActor("testActor2", apm2);
+		testLevel.setActorGroupsValues(ac);
+		
 		testLevel.setActorGroupsValues(ac);
 		testGame.addLevel(testLevel);
 		XMLManager out = new XMLManager();
@@ -60,7 +71,7 @@ public class Main extends Application {
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		
 		launch(args);
 	}
