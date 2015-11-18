@@ -41,6 +41,7 @@ public class SpriteManager {
 				Sprite newsp = createSprite(a);
 				sprites.put(a.getUniqueID(), newsp);
 				group.getChildren().add(newsp);
+				newsp.play(4);
 			}
 			stillAlive.put(a.getUniqueID(), true);
 		}
@@ -64,6 +65,18 @@ public class SpriteManager {
 		return new Sprite(img,
 						  Integer.parseInt(dimensions[0]),
 						  Integer.parseInt(dimensions[1]));
+	}
+	
+	public void pause(){
+		for(Sprite s : sprites.values()){
+			s.pause();
+		}
+	}
+	
+	public void resume(){
+		for(Sprite s : sprites.values()){
+			s.play();
+		}
 	}
 
 }

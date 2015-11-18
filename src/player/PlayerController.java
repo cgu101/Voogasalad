@@ -72,7 +72,7 @@ public class PlayerController extends AController implements IPlayer {
 	
 	public void start() {
 		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.run());
-		Timeline myGameLoop = new Timeline();
+		myGameLoop = new Timeline();
 		myGameLoop.setCycleCount(Timeline.INDEFINITE);
 		myGameLoop.getKeyFrames().add(frame);
 		myGameLoop.play();
@@ -82,6 +82,7 @@ public class PlayerController extends AController implements IPlayer {
 	public void pause() throws GameFileException {	
 		try {			
 			myGameLoop.pause();
+			mySpriteManager.pause();
 		} catch (NullPointerException e){
 			throw new GameFileException();
 		}
@@ -90,6 +91,7 @@ public class PlayerController extends AController implements IPlayer {
 	public void resume() throws GameFileException {
 		try {
 			myGameLoop.play();
+			mySpriteManager.resume();
 		} catch (NullPointerException e){
 			throw new GameFileException();
 		}

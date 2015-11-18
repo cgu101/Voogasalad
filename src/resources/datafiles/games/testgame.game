@@ -38,7 +38,7 @@
                             <entry>
                               <string>image</string>
                               <authoring.model.properties.Property>
-                                <myValue class="string">rcd.jpg</myValue>
+                                <myValue class="string">megaman.png</myValue>
                                 <identifier>image</identifier>
                               </authoring.model.properties.Property>
                             </entry>

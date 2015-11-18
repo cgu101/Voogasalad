@@ -43,7 +43,7 @@ public class Main extends Application {
 		ActorPropertyMap apm = new ActorPropertyMap();
 		apm.addProperty("xLocation", "150");
 		apm.addProperty("yLocation", "150");
-		apm.addProperty("image", "rcd.jpg");
+		apm.addProperty("image", "megaman.png");
 		apm.addProperty("groupID", "onlyone");
 		ac.updateActor("testActor", "123", apm);
 		testLevel.setActorGroupsValues(ac);
