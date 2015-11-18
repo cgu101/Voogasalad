@@ -14,12 +14,14 @@ import view.screen.AbstractScreen;
 
 public class Map extends AbstractElement {
 	private AbstractScreen screen;
+	
 	private Group contentGroup;
 	private Group zoomGroup;
-
 	private StackPane layout;
+
 	private ScrollPane mapArea;
 	private MapZoomSlider slider;
+	private MapActorManager actorManager;
 
 	public Map(GridPane pane, AbstractScreen screen) {
 		super(pane);
@@ -32,16 +34,20 @@ public class Map extends AbstractElement {
 		//StackPane is not appropriate, such as a Canvas.
 		layout = new StackPane();
 		mapArea = new ScrollPane();
+		actorManager = new MapActorManager(layout);
 	}
 
-	public void addMapElements(Node... elements) {
-		layout.getChildren().addAll(elements);
+	public void addActor(Node element, double x, double y) {
+		actorManager.addActor(element, x, y);
 	}
 
 	public void createTheMap() {
 		createMapArea();
 		slider = new MapZoomSlider(zoomGroup, Double.valueOf(myResources.getString("sliderwidth")));
 		slider.createTheSlider();
+	}
+	
+	public void addMapToPane(GridPane pane) {
 		pane.add(mapArea, 0, 0);
 		pane.add(slider.getTheSlider(), 0, 1);
 	}
@@ -91,15 +97,19 @@ public class Map extends AbstractElement {
 		ImageView background = new ImageView(backgroundImage);
 
 		//Test white rectangle
-		Rectangle test = new Rectangle(640, 480);
-		test.widthProperty().bind(screen.getScene().widthProperty());
-		test.heightProperty().bind(screen.getScene().heightProperty());
+		Rectangle test = new Rectangle(200, 200);
+//		test.widthProperty().bind(screen.getScene().widthProperty());
+//		test.heightProperty().bind(screen.getScene().heightProperty());
 		test.setFill(Color.WHITE);
 
 		//Add any elements you want to appear on the map using this method
-		addMapElements(test);
+		addActor(background, 0, 0);
+		addActor(test, 200, 200);
 
 		//Create the map after adding elements you want
 		createTheMap();
+		
+		//Add the map to the GridPane
+		addMapToPane(pane);
 	}
 }
