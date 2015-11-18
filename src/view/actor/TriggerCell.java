@@ -13,12 +13,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
-public class SelfTriggerCell extends AbstractListCell {
+public class TriggerCell extends AbstractListCell {
 	private AuthoringController controller;
 	private ListView<String> list;
 	private String actor;
 
-	public SelfTriggerCell(AuthoringController controller, String actor, ListView<String> list) {
+	public TriggerCell(AuthoringController controller, String actor, ListView<String> list) {
 		findResources();
 		this.controller = controller;
 		this.actor = actor;
