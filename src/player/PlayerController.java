@@ -70,7 +70,7 @@ public class PlayerController implements IPlayer {
 	}
 	
 	public void start() {
-		KeyFrame frame = new KeyFrame(new Duration(10000/this.fps), e -> this.run());
+		KeyFrame frame = new KeyFrame(new Duration(1000/this.fps), e -> this.run());
 		myGameLoop = new Timeline();
 		myGameLoop.setCycleCount(Timeline.INDEFINITE);
 		myGameLoop.getKeyFrames().add(frame);

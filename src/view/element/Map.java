@@ -21,9 +21,9 @@ public class Map extends AbstractElement {
 
 	private ScrollPane mapArea;
 	private MapZoomSlider slider;
-	private MapActorManager actorManager;
+	//private MapActorManager actorManager;
 
-	public Map(GridPane pane, AbstractScreen screen) {
+	public Map(GridPane pane) {
 		super(pane);
 		findResources();
 		this.screen = screen;
@@ -35,14 +35,19 @@ public class Map extends AbstractElement {
 		mapArea = new ScrollPane();
 		
 		//The actorManager needs access to the layout so it can place actors on it
-		actorManager = new MapActorManager(layout);
+		//actorManager = new MapActorManager(layout);
 		
 		makePane();
 	}
+	
 
-	public void addActor(Node element, double x, double y) {
+	/*public void addActor(Node element, double x, double y) {
 		//Use this method to add an actor to the StackPane.
 		actorManager.addActor(element, x, y);
+	}*/
+	
+	public Group getGroup(){
+		return layout;
 	}
 
 	public void createTheMap() {
@@ -71,8 +76,8 @@ public class Map extends AbstractElement {
 		mapArea.setPannable(true);
 
 		//Bind the preferred size of the scroll area to the size of the scene
-		mapArea.prefWidthProperty().bind(screen.getScene().widthProperty());
-		mapArea.prefHeightProperty().bind(screen.getScene().heightProperty());
+		mapArea.prefWidthProperty().bind(pane.widthProperty());
+		mapArea.prefHeightProperty().bind(pane.heightProperty());
 
 		mapArea.setContent(contentGroup);
 	}
@@ -107,8 +112,13 @@ public class Map extends AbstractElement {
 		test.setFill(Color.WHITE);
 
 		//Add any elements you want to appear on the map using this method
-		addActor(background, 0, 0);
-		addActor(test, 200, 200);
+		//addActor(background, 0, 0);
+		//addActor(test, 200, 200);
+		layout.getChildren().add(background);
+		layout.getChildren().add(test);
+		test.setX(200);
+		test.setY(200);
+		
 
 		//Create the map after adding elements you want
 		createTheMap();
