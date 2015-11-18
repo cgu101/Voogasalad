@@ -32,7 +32,8 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
-		Game testGame = new Game();
+		/* Create a test game */
+		/*Game testGame = new Game();
 		Level testLevel = new Level("0");
 		TreeConstructor tc = new TreeConstructor();
 		
@@ -54,7 +55,7 @@ public class Main extends Application {
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		launch(args);
 	}
