@@ -1,13 +1,11 @@
 package player;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
-import data.IFileManager;
 import data.XMLManager;
 import engine.GameEngine;
 import engine.IEngine;
