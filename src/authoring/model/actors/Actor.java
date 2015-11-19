@@ -3,7 +3,6 @@ package authoring.model.actors;
 import authoring.model.bundles.Bundle;
 import authoring.model.bundles.Identifiable;
 import authoring.model.properties.Property;
-import exceptions.authoring.ActorPropertyNotFound;
 
 public class Actor implements Identifiable, IActor {
 
@@ -40,6 +39,11 @@ public class Actor implements Identifiable, IActor {
 		return (Property<?>) myPropertyBundle.getComponents().get(identifier);
 	}
 
+	@Override
+	public void setProperty(String identifier, Object value) {
+		myPropertyBundle.getComponents().get(identifier).setValue(value);
+	}
+	
 	@Override
 	public <T> void setProperty(Property<T> property) {
 		myPropertyBundle.getComponents().put(property.getUniqueID(), property);
