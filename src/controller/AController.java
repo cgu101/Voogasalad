@@ -8,7 +8,7 @@ import view.element.AbstractDockElement;
 import view.screen.AbstractScreen;
 
 /**
- * 
+ * The controller that handles displaying and swapping out GUI screens.
  * @author Sung-Hoon and Austin
  *
  */

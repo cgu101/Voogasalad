@@ -6,7 +6,6 @@ import authoring.controller.constructor.AuthoringActorConstructor;
 import authoring.controller.constructor.ConstructorFactory;
 import authoring.controller.constructor.LevelConstructor;
 import authoring.model.game.Game;
-import data.IFileManager;
 import data.XMLManager;
 import exceptions.data.GameFileException;
 

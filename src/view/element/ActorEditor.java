@@ -123,7 +123,7 @@ public class ActorEditor extends AbstractDockElement {
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {
-				return new TriggerCell(controller, leftItem, list);
+				return new TriggerCell(controller, leftItem, rightItem);
 			}
 		});
 		GridPane.setColumnSpan(list, 3);
@@ -175,7 +175,7 @@ public class ActorEditor extends AbstractDockElement {
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {
-				return new TriggerCell(controller, item, list);
+				return new TriggerCell(controller, item);
 			}
 		});
 		GridPane.setColumnSpan(list, 2);

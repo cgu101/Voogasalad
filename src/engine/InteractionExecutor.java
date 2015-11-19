@@ -1,6 +1,5 @@
 package engine;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,12 @@ import authoring.model.triggers.ITriggerEvent;
 import player.InputManager;
 import player.IPlayer;
 
-// runs the interaction tree
+/**
+ * The InteractionExecutor runs a single level for the engine.
+ * @author Sung-Hoon
+ *
+ */
+
 public class InteractionExecutor {
 	private String currentLevelIdentifier;
 	private InteractionTreeNode externalTriggerTree;
@@ -37,14 +41,12 @@ public class InteractionExecutor {
 		this.nextActorMap = new ActorGroups();
 	}
 	
-	// TODO: take in a single object and extract all of the needed information
 	public InteractionExecutor (Level level, InputManager inputMap) {
 		this.currentLevelIdentifier = level.getUniqueID();
 		this.selfTriggerTree = level.getSelfTriggerTree();
 		this.externalTriggerTree = level.getInteractionTree();
 		System.out.println(level.getActorGroups().getMap() + " InteractionExecutor 44");
 		this.currentActorMap = level.getActorGroups();
-		// TODO: input map
 		this.inputMap = inputMap;
 		
 		this.triggerMap = level.getTriggerMap();
@@ -52,10 +54,9 @@ public class InteractionExecutor {
 		
 		this.nextActorMap = new ActorGroups(currentActorMap);
 	}
-	
 	/**
-	 * Creates an engine heartbeat which performs on one iteration based on input InteractionExecutor parameters
-	 * @return EngineHearbeat
+	 * Runs a single step of the level. Resolves all self-triggers before external triggers.
+	 * @return A {@link EngineHeartbeat} that allows the engine to communicate with the player controller.
 	 */
 	public EngineHeartbeat run () {
 		nextActorMap = new ActorGroups(currentActorMap);
@@ -71,12 +72,12 @@ public class InteractionExecutor {
 			List<InteractionTreeNode> triggerNodes = actorA.children();
 			System.out.println(currentActorMap + " InteractionExecutor 67");
 			System.out.println(currentActorMap.getMap().keySet() + " InteractionExecutor 68");
-			System.out.println(actorA.getValue() + " InteractionExecutor 69 ;)");
+			System.out.println(actorA.getValue() + " InteractionExecutor 69");
 			for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
 				for (InteractionTreeNode trigger : triggerNodes) {
 					List<InteractionTreeNode> actionNodes = trigger.children();
 					ITriggerEvent selfTriggerEvent = triggerMap.get(trigger.getValue());
-					selfTriggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, uniqueA);
+					selfTriggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, (Actor) uniqueA.getCopy());
 				}
 			}
 		}	
@@ -91,7 +92,7 @@ public class InteractionExecutor {
 						for (InteractionTreeNode trigger : triggerNodes) {
 							List<InteractionTreeNode> actionNodes = trigger.children();
 							ITriggerEvent triggerEvent = triggerMap.get(trigger.getValue());
-							triggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, uniqueA, uniqueB);
+							triggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy());
 						}
 					}
 				}
@@ -103,22 +104,19 @@ public class InteractionExecutor {
 		return actionNodes.stream()
 						  .map(k -> { return actionMap.get(k.getValue());})
 						  .collect(Collectors.toList());
-		/*ArrayList<IAction> ret = new ArrayList<IAction>();
-		for (InteractionTreeNode k : actionNodes){
-			ret.add(actionMap.get(k.getValue()));
-		}
-		return ret;*/
 	}
 	
 	public ActorGroups getActors () {
 		//System.out.println(currentActorMap.getMap() + " InteractionExecutor");
 		return currentActorMap;
 	}
-	// TODO
 	public void setActors (ActorGroups actors) {
 		this.currentActorMap = actors;
 	}
-	
+	/**
+	 * 
+	 * @return The ID of the current level as a String.
+	 */
 	public String getLevelID () {
 		return currentLevelIdentifier;
 	}

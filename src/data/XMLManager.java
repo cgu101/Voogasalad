@@ -61,11 +61,9 @@ public class XMLManager {
 		}
 		throw new GameFileException();
 	}
-
 	/**
-	 * Core method to save a game object based on its absolute file location
-	 * 
-	 * @param game
+	 * Saves a game to an absolute file location.
+	 * @param game A {@link Game} containing a bundle of metadata properties and a bundle of levels.
 	 * @param fileLocation
 	 * @throws GameFileException
 	 */
@@ -130,12 +128,11 @@ public class XMLManager {
 			throw new GameFileException();
 		}
 	}
-	
+
 	/**
-	 * Core method for loading a game based on a file to return a Game object
-	 * 
+	 * Loads a game from an absolute file path.
 	 * @param fileLocation
-	 * @return Game
+	 * @return A {@link Game} to be loaded into the engine.
 	 * @throws GameFileException
 	 */
 	public static Game loadGame(String fileLocation) throws GameFileException {
@@ -148,10 +145,8 @@ public class XMLManager {
 		}
 		
 	}
-
 	/**
-	 *  Core method for saving a level
-	 * 
+	 * Saves a single level to an absolute file location.
 	 * @param level
 	 * @param fileLocation
 	 * @throws GameFileException
@@ -160,12 +155,11 @@ public class XMLManager {
 		// TODO Auto-generated method stub
 		saveFile(level, fileLocation);
 	}
-
+	
 	/**
-	 * Core method for loading a level based on a file location
-	 * 
+	 * Loads a single level from an absolute file path.
 	 * @param fileLocation
-	 * @return Level
+	 * @return
 	 * @throws GameFileException
 	 */
 	public static Level loadLevel(String fileLocation) throws GameFileException {
@@ -178,8 +172,7 @@ public class XMLManager {
 	}
 
 	/**
-	 * Core method for saving a state based on its file location
-	 * 
+	 * Saves a save state to an absolute file location.
 	 * @param state
 	 * @param filePath
 	 * @throws GameFileException
@@ -191,10 +184,9 @@ public class XMLManager {
 	}
 
 	/**
-	 * Core method for loading a state based off its file location
-	 * 
+	 * Loads a save state from an absolute file path.
 	 * @param filePath
-	 * @return State
+	 * @return
 	 * @throws GameFileException
 	 */
 	public static State loadState(String filePath) throws GameFileException {
@@ -205,15 +197,30 @@ public class XMLManager {
 			throw new GameFileException();
 		}
 	}
-
+	/**
+	 * Loads a game from a file.
+	 * @param file
+	 * @return
+	 * @throws GameFileException
+	 */
 	public static Game loadGame(File file) throws GameFileException {
 		return loadGame(file.getName());
 	}
-
+	/**
+	 * Loads a single level from a file.
+	 * @param file
+	 * @return
+	 * @throws GameFileException
+	 */
 	public static Level loadLevel(File file) throws GameFileException {
 		return loadLevel(file.getName());
 	}
-
+	/**
+	 * Loads a savestate from a file.
+	 * @param file
+	 * @return
+	 * @throws GameFileException
+	 */
 	public static State loadState(File file) throws GameFileException {
 		return loadState(file.getName());
 	}
