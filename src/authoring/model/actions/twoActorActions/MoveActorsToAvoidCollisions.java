@@ -33,8 +33,13 @@ public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 		System.out.println("A_start: (" + xA + ", " + yA + ")");
 		System.out.println("B_start: (" + xB + ", " + yB + ")");
 		
+		Double angleAB;
+		if (xA == xB && yA == yB) {
+			angleAB = 0.0;
+		} else {
 		Double slope = (yB - yA) / (xB - xA);
-		Double angleAB = Math.atan(slope);
+		angleAB = Math.atan(slope);
+		}
 
 		if (xA < xB) {
 			xA = xA - (difference / 2 + 1) * Math.cos(angleAB);

@@ -40,7 +40,16 @@
                         <value>authoring.model.actions.oneActorActions.Move</value>
                       </authoring.model.tree.InteractionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.SpaceBarKey</value>
+                    <value>authoring.model.triggers.selfconditions.UpArrowKey</value>
+                  </authoring.model.tree.InteractionTreeNode>
+                  <authoring.model.tree.InteractionTreeNode>
+                    <children>
+                      <authoring.model.tree.InteractionTreeNode>
+                        <children/>
+                        <value>authoring.model.actions.oneActorActions.MoveBackwards</value>
+                      </authoring.model.tree.InteractionTreeNode>
+                    </children>
+                    <value>authoring.model.triggers.selfconditions.DownArrowKey</value>
                   </authoring.model.tree.InteractionTreeNode>
                 </children>
                 <value>player</value>
@@ -54,7 +63,25 @@
                         <value>authoring.model.actions.oneActorActions.Move</value>
                       </authoring.model.tree.InteractionTreeNode>
                     </children>
+                    <value>authoring.model.triggers.selfconditions.LeftArrowKey</value>
+                  </authoring.model.tree.InteractionTreeNode>
+                  <authoring.model.tree.InteractionTreeNode>
+                    <children>
+                      <authoring.model.tree.InteractionTreeNode>
+                        <children/>
+                        <value>authoring.model.actions.oneActorActions.MoveBackwards</value>
+                      </authoring.model.tree.InteractionTreeNode>
+                    </children>
                     <value>authoring.model.triggers.selfconditions.RightArrowKey</value>
+                  </authoring.model.tree.InteractionTreeNode>
+                  <authoring.model.tree.InteractionTreeNode>
+                    <children>
+                      <authoring.model.tree.InteractionTreeNode>
+                        <children/>
+                        <value>authoring.model.actions.oneActorActions.SplitAndReduceSize</value>
+                      </authoring.model.tree.InteractionTreeNode>
+                    </children>
+                    <value>authoring.model.triggers.selfconditions.SpaceBarKey</value>
                   </authoring.model.tree.InteractionTreeNode>
                 </children>
                 <value>asteroid</value>
@@ -86,14 +113,14 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">250.0</myValue>
+                                <myValue class="double">300.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>size</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">25.0</myValue>
+                                <myValue class="double">12.0</myValue>
                                 <identifier>size</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -107,21 +134,28 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">225.0</myValue>
+                                <myValue class="double">135.0</myValue>
                                 <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>health</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">20.0</myValue>
+                                <identifier>health</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">250.0</myValue>
+                                <myValue class="double">0.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">5.0</myValue>
+                                <myValue class="double">15.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -163,7 +197,7 @@
                             <entry>
                               <string>size</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">25.0</myValue>
+                                <myValue class="double">12.0</myValue>
                                 <identifier>size</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -198,7 +232,7 @@
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">5.0</myValue>
+                                <myValue class="double">15.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -218,8 +252,20 @@
               <authoring.model.triggers.selfconditions.SpaceBarKey/>
             </entry>
             <entry>
+              <string>authoring.model.triggers.selfconditions.UpArrowKey</string>
+              <authoring.model.triggers.selfconditions.UpArrowKey/>
+            </entry>
+            <entry>
+              <string>authoring.model.triggers.selfconditions.LeftArrowKey</string>
+              <authoring.model.triggers.selfconditions.LeftArrowKey/>
+            </entry>
+            <entry>
               <string>authoring.model.triggers.externalconditions.CircleCollision</string>
               <authoring.model.triggers.externalconditions.CircleCollision/>
+            </entry>
+            <entry>
+              <string>authoring.model.triggers.selfconditions.DownArrowKey</string>
+              <authoring.model.triggers.selfconditions.DownArrowKey/>
             </entry>
             <entry>
               <string>authoring.model.triggers.selfconditions.RightArrowKey</string>
@@ -230,6 +276,14 @@
             <entry>
               <string>authoring.model.actions.twoActorActions.SwapDirections</string>
               <authoring.model.actions.twoActorActions.SwapDirections/>
+            </entry>
+            <entry>
+              <string>authoring.model.actions.oneActorActions.SplitAndReduceSize</string>
+              <authoring.model.actions.oneActorActions.SplitAndReduceSize/>
+            </entry>
+            <entry>
+              <string>authoring.model.actions.oneActorActions.MoveBackwards</string>
+              <authoring.model.actions.oneActorActions.MoveBackwards/>
             </entry>
             <entry>
               <string>authoring.model.actions.oneActorActions.Move</string>
