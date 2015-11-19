@@ -48,8 +48,8 @@ public class Main extends Application {
 		tc.addEventTriggerActions("player", "asteroid", "authoring.model.triggers.externalconditions.CircleCollision", 
 				Arrays.asList(new String[]{"authoring.model.actions.twoActorActions.SwapDirections"}));
 
-		tc.addEventTriggerActions("player", "asteroid", "authoring.model.triggers.externalconditions.InRange", 
-				Arrays.asList(new String[]{"authoring.model.actions.twoActorActions.SwapDirections"}));
+		/*tc.addEventTriggerActions("player", "asteroid", "authoring.model.triggers.externalconditions.InRange", 
+				Arrays.asList(new String[]{"authoring.model.actions.twoActorActions.SwapDirections"}));*/
 
 		
 		testLevel.setTreeConstructorValues(tc);
