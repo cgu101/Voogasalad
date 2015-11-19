@@ -37,7 +37,9 @@ public class PlayerScreen extends AbstractScreen {
 		makeScene();
 	}
 
-	//TODO: Throw NullGameException when Game hasn't been loaded yet
+	/**
+	 * Causes the PlayerControllers game loop to be resumed. 
+	 */
  	public void resume() {
 		try{
 			playerController.resume();
@@ -46,7 +48,9 @@ public class PlayerScreen extends AbstractScreen {
 		}
  	}
  
- 	//TODO: Throw NullGameException when Game hasn't been loaded yet
+ 	/**
+	 * Causes the PlayerControllers game loop to be paused. 
+	 */
  	public void pause() {
 		try{
 			playerController.pause();
@@ -91,6 +95,9 @@ public class PlayerScreen extends AbstractScreen {
 	
 	// TODO: David: need a stage eventually for the line: fileChooser.showOpenDialog(null);
 	// You want to force the user to choose
+	/**
+	 * Method that allows for a game to be loaded. Brings up a file selector using 'FileChooser' class 
+	 */
 	public void loadGame() {
 		System.out.println("Testing");
 		FileChooser fileChooser = new FileChooser();
@@ -113,6 +120,9 @@ public class PlayerScreen extends AbstractScreen {
 		t.initializeComponents();
 	}
 
+	/**
+	 * Method that calls for the player to save the game state. 
+	 */
 	public void saveState () {
 		System.out.println("Testing saving game state ");
 
@@ -126,6 +136,9 @@ public class PlayerScreen extends AbstractScreen {
 		}
 	}
 
+	/**
+	 * Method that calls for the player to load a game state. 
+	 */
 	public void loadState () {
 		//TODO: do gui stuff
 		File loadFile = FileChooserUtility.load(scene.getWindow());

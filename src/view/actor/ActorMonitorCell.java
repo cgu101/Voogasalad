@@ -20,6 +20,13 @@ public class ActorMonitorCell extends AbstractListCell {
 
 	private PlayerController controller;
 	
+	/**
+	 * ActorMonitorCell Constructor
+	 * This method creates a new instance of an ActorMonitorCell
+	 *
+	 * @param  actor The Actor that will have its properties displayed.
+	 * @param  controller The PlayerController which allows the ActorMonitorCell to grab the actors' properties
+	 */
 	public ActorMonitorCell(PlayerController controller, Actor actor) {
 		findResources();
 		this.controller = controller;

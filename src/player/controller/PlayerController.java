@@ -37,6 +37,12 @@ public class PlayerController implements IPlayer {
 	private InputManager myInputManager;
 	private static int fps = 10;
 
+	/**
+	 * Player Controller Constructor
+	 * This method creates a new instance of a PlayerController.
+	 *
+	 * @param  screen The Screen used to determine dimensions of the component
+	 */
 	public PlayerController(Scene s) {
 		mySpriteManager = new SpriteManager(s);
 		myScene = s;
@@ -69,10 +75,16 @@ public class PlayerController implements IPlayer {
 	 * myEngine.init(game); }
 	 */
 
+	/**
+	 * This method grabs the PlayerController's scene.
+	 */
 	public Scene getScene() {
 		return myScene;
 	}
 
+	/**
+	 * This method starts a GameLoop.
+	 */
 	public void start() {
 		KeyFrame frame = new KeyFrame(new Duration(1000 / this.fps), e -> this.run());
 		myGameLoop = new Timeline();
@@ -82,6 +94,9 @@ public class PlayerController implements IPlayer {
 		System.out.println("Game started...");
 	}
 
+	/**
+	 * This method pauses the GameLoop.
+	 */
 	public void pause() throws GameFileException {
 		try {
 			myGameLoop.pause();
@@ -91,6 +106,9 @@ public class PlayerController implements IPlayer {
 		}
 	}
 
+	/**
+	 * This method resumes the GameLoop.
+	 */
 	public void resume() throws GameFileException {
 		try {
 			myGameLoop.play();
@@ -111,6 +129,11 @@ public class PlayerController implements IPlayer {
 		}
 	}
 
+	/**
+	 * This method grabs a list of all current actors from the Game Engine.
+	 *
+	 * @return the list of Actors.
+	 */
 	public ArrayList<Actor> getActorList() {
 		ArrayList<Actor> actors = new ArrayList<Actor>();
 		for (Bundle<Actor> b : myEngine.getActors().values()) {
@@ -119,6 +142,12 @@ public class PlayerController implements IPlayer {
 		return actors;
 	}
 	
+	/**
+	 * This method grabs a list of properties of the specified Actor 'a'.
+	 *
+	 * @param a The Actor you would like to retrieve the properties for.
+	 * @return The list of Properties.
+	 */
 	public ArrayList<Property<?>> getProperties(Actor a){
 		ArrayList<Property<?>> properties = new ArrayList<Property<?>>();
 		Bundle<Property<?>> propBundle = a.getProperties();
@@ -128,10 +157,22 @@ public class PlayerController implements IPlayer {
 		return properties;
 	}
 	
+	/**
+	 * This method grabs the the Actor Map from the Game Engine.
+	 *
+	 * @return The map of Actors.
+	 */
 	public Map<String, Bundle<Actor>> getActorMap() {
 		return myEngine.getActors();
 	}
 
+	/**
+	 * This method creates a Map the actor's Property Identifier to it's value
+	 * The map is in <String, String> format to allow for easy GUI display.
+	 *
+	 * @param a The Actor you would like to retrieve the properties for.
+	 * @return The map of properties identifier -> value casted to Strings.
+	 */
 	public Map<String, String> getPropertyStringMap(Actor a){
 		Map<String, String> propertyMap = new HashMap<String, String>();
 		Bundle<Property<?>> b = a.getProperties();
@@ -143,6 +184,11 @@ public class PlayerController implements IPlayer {
 		return propertyMap;
 	}
 	
+	/**
+	 * This method creates an XML of the Game's saved state.
+	 * 
+	 * @param fileName Name that the file should be stored as.
+	 */
 	public void saveState (String fileName) throws GameFileException {
 		pause();
 		State saveState;
@@ -155,6 +201,11 @@ public class PlayerController implements IPlayer {
 		resume();
 	}
 
+	/**
+	 * This method loads an XML of a Game's saved state.
+	 * 
+	 * @param fileName The XML file's name that should be loaded.
+	 */
 	public void loadState(String fileName) throws GameFileException {
 		pause();
 		State saveState = XMLManager.loadState(fileName);

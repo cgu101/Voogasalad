@@ -89,6 +89,11 @@ public class ControlBarPlayer extends ControlBar {
 		}
 	}
 
+	/**
+	 * This method initializes the different components of the 
+	 * Player that are relevant only once a game has been loaded
+	 * i.e. ActorMonitor and HUD
+	 */
 	public void initializeComponents() {
 		if(currentScreen.getComponents() != null){
 			for (AbstractDockElement c : currentScreen.getComponents()) {

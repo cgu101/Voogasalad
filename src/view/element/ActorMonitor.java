@@ -30,6 +30,16 @@ public class ActorMonitor extends AbstractDockElement {
 	private ObservableList<String> actors;
 	private PlayerController controller; 
 	
+	/**
+	 * Actor Monitor Constructor
+	 * This method creates a new instance of an ActorMonitor
+	 *
+	 * @param  pane The GridPane on which the component will be applied
+	 * @param  name The GridPane location on which the component will snapback to on the main Player
+	 * @param  title The Title of this component
+	 * @param  screen The Screen used to determine dimensions of the component
+	 * @param  controller The PlayerController which allows the ActorMonitor to grab the actors' properties
+	 */
 	public ActorMonitor(GridPane pane, GridPane home, String title, AbstractScreenInterface screen, PlayerController controller) {
 		super(pane, home, title, screen);
 		findResources();
@@ -86,11 +96,17 @@ public class ActorMonitor extends AbstractDockElement {
 
 	}
 	
-	//Initializes Pane once a game has been loaded
+	/**
+	 * This method allows for the initialization of the Actor Monitor Pane 
+	 * component once a Game has been loaded. 
+	 */
 	public void initializePane(){
 		makePane();
 	}
 	
+	/**
+	 * This method allows properties of Actor's to be refreshed.
+	 */
 	public void refresh(){
 		update();
 	}
