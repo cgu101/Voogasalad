@@ -2,7 +2,12 @@ package authoring.model.properties;
 
 import authoring.model.bundles.Identifiable;
 
-public class Property<T> implements Identifiable {
+/**
+ * @author Inan
+ *
+ * @param <T> Generic values (either String or Double. Can be states in the future)
+ */
+public class Property<T> implements Identifiable, IProperty<T> {
 
 	private T myValue;
 	private String identifier;
