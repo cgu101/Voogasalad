@@ -244,7 +244,7 @@ Post conditions include the objectives must be able to be reset, as well as any 
 
 ### Use Case 21: ###
 
-#### Filler ####
+#### The user can create time-based triggers and actions, perhaps through interactions with a special timer actor. ####
 
 
 ----------
@@ -252,21 +252,21 @@ Post conditions include the objectives must be able to be reset, as well as any 
 
 ### Use Case 22: ###
 
-#### Filler ####
+#### Multiple separate trigger conditions for an actor are satisfied, each causing a different action that tries to modify the same property.  For some properties, such as location, the action of highest precedence should be chosen, while for other properties, such as health, multiple actions can take effect in the same iteration (get shot -> lose health, drink potion -> increase health). ####
 
 
 ----------
 
 ### Use Case 23: ###
 
-#### Filler ####
+#### After creating and placing several actors of one type onto a level in the authoring environment, the user decides to change the name of that actor type.  All actors of this type already created must update their identifiers.  Additionally, the old group should be deleted from ActorGroups, and the actors should be re-added under their new group name. ####
 
 
 ----------
 
 ### Use Case 24: ###
 
-#### Filler ####
+#### The user specifies an action to occur only when two or more triggers are satisfied at once.  This may involve restructuring how our interaction tree is built and read. ####
 
 
 ----------
@@ -361,7 +361,7 @@ Post conditions include the objectives must be able to be reset, as well as any 
 
 ### Use Case 37: ###
 
-#### Filler ####
+#### The user loads a game and selects to show the Actor Monitor. This actor monitor will display individual and/or groups of actors and their important properties. These can be refreshed within the game loop or by hand. ####
 
 
 ----------
@@ -369,19 +369,19 @@ Post conditions include the objectives must be able to be reset, as well as any 
 
 ### Use Case 38: ###
 
-#### Filler ####
+#### The user loads a game and selects to show the HUD. This dynamic HUD, specific to the type of game created, will show relevant stats to the game state that are from Global parameters that were selected in the authoring environment. ####
 
 
 ----------
 
 ### Use Case 39: ###
 
-#### Filler ####
+#### A user will be able to modify game preferences (by selecting to show the preferences component) These preferences will be specific to the type of game created that will be used to control the overall game settings (not specific to a particular level). ####
 
 
 ----------
 
 ### Use Case 40: ###
 
-#### Filler ####
+#### A user will be able to view the ‘about’ page from the Main Menu to see details about the project as well as short bios about each team member. ####
 
