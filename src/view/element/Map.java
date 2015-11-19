@@ -14,7 +14,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 import view.screen.AbstractScreen;
-
+/**
+ * The Map class allows for a visual representation of the game map. Includes a 
+ * ScrollPane for the map's display area, and a Slider for zooming in and out of the ScrollPane
+ * contents. Allows for the addition and removal of Actor nodes within the display area.
+ * @author Daniel
+ *
+ */
 public class Map extends AbstractElement {
 
 	private Group contentGroup;
@@ -27,6 +33,14 @@ public class Map extends AbstractElement {
 	private MapActorManager actorManager;
 	protected ImageView background;
 
+	
+	/**
+	 * Creates a Map for the visual representation of the game
+	 * map on the GUI, with an included zoom slider. This constructor will display this map within the GridPane you 
+	 * specify.
+	 * @param pane - GridPane on which to display this map
+	 * @param screen - screen associated with this map
+	 */
 	public Map(GridPane pane, AbstractScreen screen) {
 		super(pane);
 		findResources();
@@ -46,15 +60,29 @@ public class Map extends AbstractElement {
 		makePane();
 	}
 
+	/**
+	 * Adds a Node onto the Map's display area at the given x and y coordinates.
+	 * @param element - Node to add to the map
+	 * @param x	- horizontal position to place the Node
+	 * @param y - vertical position to place the Node
+	 */
 	public void addActor(Node element, double x, double y) {
 		// Use this method to add an actor to the StackPane.
 		actorManager.addActor(element, x, y);
 	}
 	
+	/**
+	 * Remove a Node from the Map's display area.
+	 * @param element - the Node to be removed
+	 */
 	public void removeActor(Node element) {
 		actorManager.removeActor(element);
 	}
 	
+	/**
+	 * Update the Map's background to the Node in the parameter.
+	 * @param background - the Node to set as the new Map background
+	 */
 	public void updateBackground(Node background) {
 		actorManager.updateBackground(background);
 	}
@@ -63,6 +91,10 @@ public class Map extends AbstractElement {
 		return layout;
 	}
 
+	/**
+	 * Creates both of the elements of the map to be displayed on the GUI: a ScrollPane on which 
+	 * to display the background and actors, and a Slider to allow for zooming in the ScrollPane.
+	 */
 	public void createTheMap() {
 		createMapArea();
 
@@ -72,17 +104,25 @@ public class Map extends AbstractElement {
 		sliderArea.createTheSlider();
 	}
 
-	public void addMapToPane(GridPane pane) {
+	
+	/**
+	 * Adds the Map's display area and associated zoom slider to the specified GridPane.
+	 * @param pane - the GridPane on which to add the Map and its zoom slider
+	 */
+	private void addMapToPane(GridPane pane) {
 		pane.add(mapArea, 1, 0);
 		pane.add(sliderArea.getTheSlider(), 1, 1);
 	}
-
+	/**
+	 * Creates  a ScrollPane to display the background and all Actor nodes,
+	 * and the Groups in which Actor nodes can be placed.
+	 */
 	private void createMapArea() {
 		// Creates the ScrollPane where all the map elements will be displayed
 		createGroups();
 		createMapScrollPane();
 	}
-
+	
 	private void createMapScrollPane() {
 		// Hide the vertical and horizontal scrollbars, make the pane pannable
 		mapArea.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -107,7 +147,11 @@ public class Map extends AbstractElement {
 		contentGroup.getChildren().add(zoomGroup);
 		zoomGroup.getChildren().add(layout);
 	}
-
+	
+	/** 
+	 * Scales all the Nodes within the zoomGroup by the given Scale.
+	 * @param scaleTransform
+	 */
 	public void setMapTransform(Scale scaleTransform) {
 		zoomGroup.getTransforms().clear();
 		zoomGroup.getTransforms().add(scaleTransform);
@@ -124,7 +168,6 @@ public class Map extends AbstractElement {
 
 	@Override
 	protected void makePane() {
-		// Test Narnia map image
 		Image backgroundImage = new Image("http://bitforgestudios.com/wp-content/uploads/2013/09/starfield.gif");
 		background = new ImageView(backgroundImage);
 		background.fitWidthProperty().bind(pane.widthProperty());

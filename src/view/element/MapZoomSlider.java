@@ -9,6 +9,14 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.transform.Scale;
 
+/**
+ * The MapZoomSlider class creates a Slider associated with a Map class, and allows for zooming
+ * in and out of the Map's ScrollPane area. The Slider is composed of three Nodes contained within
+ * a GridPane: a Slider, and two Labels for showing relevant information.
+ * @author Daniel
+ *
+ */
+
 public class MapZoomSlider {
 
 	private GridPane sliderElements;
