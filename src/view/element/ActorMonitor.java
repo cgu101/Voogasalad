@@ -18,7 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
-import player.PlayerController;
+import player.controller.PlayerController;
 import view.actor.ActorCell;
 import view.actor.ActorMonitorCell;
 import view.actor.PropertyCell;
@@ -47,11 +47,6 @@ public class ActorMonitor extends AbstractDockElement {
 		pane.setFocusTraversable(false);
 		pane.setAlignment(Pos.TOP_CENTER);
 		pane.setMaxWidth(Double.parseDouble(myResources.getString("width")));
-	}
-	
-	//Initializes Pane once a game has been loaded
-	public void initializePane(){
-			makePane();
 	}
 		
 	//Creates the Hbox of Properties for a single actor
@@ -90,5 +85,15 @@ public class ActorMonitor extends AbstractDockElement {
 		}
 
 	}
+	
+	//Initializes Pane once a game has been loaded
+	public void initializePane(){
+		makePane();
+	}
+	
+	public void refresh(){
+		update();
+	}
+		
 
 }
