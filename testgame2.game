@@ -113,14 +113,14 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">300.0</myValue>
+                                <myValue class="double">330.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>size</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">12.0</myValue>
+                                <myValue class="double">30.0</myValue>
                                 <identifier>size</identifier>
                               </authoring.model.properties.Property>
                             </entry>

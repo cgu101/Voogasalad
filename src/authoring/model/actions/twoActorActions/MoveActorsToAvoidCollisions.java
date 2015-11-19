@@ -30,8 +30,8 @@ public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 		Double xB = ((Property<Double>) b.getProperties().getComponents().get("xLocation")).getValue();
 		Double yB = ((Property<Double>) b.getProperties().getComponents().get("yLocation")).getValue();
 
-		System.out.println("A_start: (" + xA + ", " + yA + ")");
-		System.out.println("B_start: (" + xB + ", " + yB + ")");
+//		System.out.println("A_start: (" + xA + ", " + yA + ")");
+//		System.out.println("B_start: (" + xB + ", " + yB + ")");
 		
 		Double angleAB;
 		if (xA == xB && yA == yB) {
@@ -57,10 +57,10 @@ public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 			yB = yB - (difference / 2 + 1) * Math.abs(Math.sin(angleAB));
 		}
 		
-		System.out.println("A_end: (" + xA + ", " + yA + ")");
-		System.out.println("B_end: (" + xB + ", " + yB + ")");
-
-		System.out.println("NOW THE DISTANCE BETWEEN ACTORS IS: " + distance(a,b));
+//		System.out.println("A_end: (" + xA + ", " + yA + ")");
+//		System.out.println("B_end: (" + xB + ", " + yB + ")");
+//
+//		System.out.println("NOW THE DISTANCE BETWEEN ACTORS IS: " + distance(a,b));
 		
 		((Property<Double>) a.getProperties().getComponents().get("xLocation")).setValue(xA);
 		((Property<Double>) a.getProperties().getComponents().get("yLocation")).setValue(yA);

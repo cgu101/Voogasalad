@@ -124,13 +124,13 @@ public class Main extends Application {
 		ac.updateActor("testActor", apm);
 		
 		ActorPropertyMap apm2 = new ActorPropertyMap();
-		apm2.addProperty("xLocation", "300");
+		apm2.addProperty("xLocation", "330");
 		apm2.addProperty("yLocation", "0");
 		apm2.addProperty("angle", "135");
 		apm2.addProperty("speed", "15");
 		apm2.addProperty("image", "asteroids.png");
 		apm2.addProperty("groupID", "asteroid");
-		apm2.addProperty("size", "12");
+		apm2.addProperty("size", "30");
 		apm2.addProperty("health", "20");
 		ac.updateActor("testActor2", apm2);
 		
