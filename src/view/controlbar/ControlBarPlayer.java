@@ -94,6 +94,7 @@ public class ControlBarPlayer extends ControlBar {
 			for (AbstractDockElement c : currentScreen.getComponents()) {
 				CheckMenuItem item = new CheckMenuItem(myResources.getString(c.getClass().getSimpleName()));
 				item.selectedProperty().bindBidirectional(c.getShowingProperty());
+				item.selectedProperty().set(false);
 				addToMenu(hideAndShow, item);
 			}
 		}
