@@ -3,6 +3,7 @@ package authoring.model.actors;
 import authoring.model.bundles.Bundle;
 import authoring.model.bundles.Identifiable;
 import authoring.model.properties.Property;
+import exceptions.authoring.ActorPropertyNotFound;
 
 public class Actor implements Identifiable, IActor {
 
@@ -13,7 +14,7 @@ public class Actor implements Identifiable, IActor {
 		this.myPropertyBundle = myPropertyBundle;
 		this.identifier = identifier;
 	}
-	
+
 	public Actor (Actor a) {
 		this.myPropertyBundle = new Bundle<Property<?>>(a.getProperties());
 		this.identifier = a.getUniqueID();
@@ -43,7 +44,7 @@ public class Actor implements Identifiable, IActor {
 	public <T> void setProperty(Property<T> property) {
 		myPropertyBundle.getComponents().put(property.getUniqueID(), property);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> void setProperty(Property<T>... properties) {
