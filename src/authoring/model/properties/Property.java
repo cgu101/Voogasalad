@@ -5,7 +5,7 @@ import authoring.model.bundles.Identifiable;
 /**
  * @author Inan
  *
- * @param <T> Generic values (either String or Double. Can be states in the future)
+ * @param <T> Generic property values (either String or Double. Can be states in the future)
  */
 public class Property<T> implements Identifiable, IProperty<T> {
 
