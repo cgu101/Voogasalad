@@ -4,7 +4,7 @@ import exceptions.AuthoringException;
 
 public class CopyException extends AuthoringException {
 	/**
-	 * 
+	 * CopyException Serial ID
 	 */
 	private static final long serialVersionUID = 1L;
 

@@ -53,6 +53,10 @@ public class InteractionExecutor {
 		this.nextActorMap = new ActorGroups(currentActorMap);
 	}
 	
+	/**
+	 * Creates an engine heartbeat which performs on one iteration based on input InteractionExecutor parameters
+	 * @return EngineHearbeat
+	 */
 	public EngineHeartbeat run () {
 		nextActorMap = new ActorGroups(currentActorMap);
 		runSelfTriggers();
@@ -105,6 +109,7 @@ public class InteractionExecutor {
 		}
 		return ret;*/
 	}
+	
 	public ActorGroups getActors () {
 		//System.out.println(currentActorMap.getMap() + " InteractionExecutor");
 		return currentActorMap;

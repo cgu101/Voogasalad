@@ -11,6 +11,10 @@ public class EngineHeartbeat {
 		myPlayerCaller = p;
 	}
 	
+	/**
+	 * Calls the PlayerCaller class
+	 * @param p
+	 */
 	public void call(IPlayer p){
 		myPlayerCaller.call(p);
 	}

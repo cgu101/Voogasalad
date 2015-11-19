@@ -13,12 +13,25 @@ public class FileChooserUtility {
 	private static final String DEFAULT_FILE_PROMPT  = "XML files (*.xml)";
 	private static final String DEFAULT_FILE_FORMAT = "*.xml";
 	
+	
+	/**
+	 * Method used for generalized load-file using JavaFX FileChooser utility
+	 * 
+	 * @param stage
+	 * @return Loaded file corresponding to the user's choice
+	 */
 	public static File load (Window stage) {
 		FileChooser fileChooser = initializeFileChooser(LOAD_MESSAGE, DEFAULT_DIRECTORY);
 		File file = fileChooser.showOpenDialog(stage);
 		return file;
 	}
 	
+	/**
+	 * Method used for generalized save-file using JavaFX FileChooser utility
+	 * 
+	 * @param stage
+	 * @return File object for saved file corresponding to the user's choice
+	 */
 	public static File save (Window stage) {
 		FileChooser fileChooser = initializeFileChooser(SAVE_MESSAGE, DEFAULT_DIRECTORY);
 		

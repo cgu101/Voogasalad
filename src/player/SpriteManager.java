@@ -34,6 +34,11 @@ public class SpriteManager {
 		bp.setCenter(gp);
 	}
 	
+	/**
+	 * Core game loop functionality that iterates through all available actors, updates them, and displays
+	 * @param actors
+	 * @param scene
+	 */
 	public void updateSprites(ArrayList<Actor> actors, Scene scene){
 		for(Actor a : actors){
 			if(sprites.containsKey(a.getUniqueID())){
@@ -64,6 +69,12 @@ public class SpriteManager {
 		
 	}
 	
+	/**
+	 * Creates a visual sprite object based on a back-end actor object
+	 * 
+	 * @param a
+	 * @return created sprite
+	 */
 	public Sprite createSprite(Actor a){
 		String img = (String)a.getProperties().getComponents().get("image").getValue();
 		String[] dimensions = myResources.getString(img).split(",");
@@ -72,12 +83,18 @@ public class SpriteManager {
 						  Integer.parseInt(dimensions[1]));
 	}
 	
+	/**
+	 * Pauses all sprite animations
+	 */
 	public void pause(){
 		for(Sprite s : sprites.values()){
 			s.pause();
 		}
 	}
 	
+	/**
+	 * Resumes all sprite animations 
+	 */
 	public void resume(){
 		for(Sprite s : sprites.values()){
 			s.play();

@@ -15,6 +15,11 @@ public class State {
 	public ActorGroups getActorMap() {
 		return myActorMap;
 	}
+	
+	/**
+	 * @param key
+	 * @return property value from property bundle
+	 */
 	public Property<?> getProperty (String key) {
 		return myPropertyBundle.get(key);
 	}

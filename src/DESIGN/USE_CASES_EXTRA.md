@@ -273,7 +273,7 @@ Post conditions include the objectives must be able to be reset, as well as any 
 
 ### Use Case 25: ###
 
-#### Filler ####
+#### The user can place Actors onto the display area of the map by dragging and dropping actors from the side pane, and can remove those Actors by deleting them. The Map keeps track of all the Nodes (Actors) that were placed onto it, and can delete them when necessary. ####
 
 
 ----------
@@ -281,21 +281,22 @@ Post conditions include the objectives must be able to be reset, as well as any 
 
 ### Use Case 26: ###
 
-#### Filler ####
+#### User can zoom in and out of the Map’s display area using the slider bar underneath the map, and the map and actors placed on the map will scale accordingly. Currently, dragging the slider to its maximum value will fit the map’s width within the bounds allocated to the map. ####
 
 
 ----------
 
 ### Use Case 27: ###
 
-#### Filler ####
+#### (To be implemented) User can see a minimap on the bottom of the screen that visually indicates the boundaries of the map display area they are currently looking at relative to the entire map’s area. The minimap might be transparent and occupy the bottom right corner of the map’s display area. Dragging the slider and thus changing the area of the screen the user can see will be reflected within the minimap.
+ ####
 
 
 ----------
 
 ### Use Case 28: ###
 
-#### Filler ####
+#### When the user chooses to go into full-screen mode, the Map, its display area, and all the actors within it will resize and reposition themselves correctly. ####
 
 
 ----------

@@ -62,6 +62,13 @@ public class XMLManager {
 		throw new GameFileException();
 	}
 
+	/**
+	 * Core method to save a game object based on its absolute file location
+	 * 
+	 * @param game
+	 * @param fileLocation
+	 * @throws GameFileException
+	 */
 	public static void saveGame(Game game, String fileLocation) throws GameFileException {
 		
 		// save to game.xml file
@@ -71,6 +78,14 @@ public class XMLManager {
 		
 	}
 	
+	/**
+	 * Core method to test a game object based on its absolute file location
+	 * TODO: Remove this method for final production
+	 * 
+	 * @param game
+	 * @param fileLocation
+	 * @throws GameFileException
+	 */
 	public static void testSaveGame (Game obj, File file) throws GameFileException {
 		String filePath = file.getAbsolutePath();
 		
@@ -97,6 +112,14 @@ public class XMLManager {
 		throw new GameFileException();
 	}
 
+	/**
+	 * Core method to test loading a game based on a file to return a Game object
+	 * TODO: Eventually remove this method for production
+	 * 
+	 * @param file
+	 * @return Game Object
+	 * @throws GameFileException
+	 */
 	public static Game testLoadGame (File file) throws GameFileException {
 		String fileLocation = file.getName();
 		
@@ -108,6 +131,13 @@ public class XMLManager {
 		}
 	}
 	
+	/**
+	 * Core method for loading a game based on a file to return a Game object
+	 * 
+	 * @param fileLocation
+	 * @return Game
+	 * @throws GameFileException
+	 */
 	public static Game loadGame(String fileLocation) throws GameFileException {
 
 		// load from game.xml
@@ -119,11 +149,25 @@ public class XMLManager {
 		
 	}
 
+	/**
+	 *  Core method for saving a level
+	 * 
+	 * @param level
+	 * @param fileLocation
+	 * @throws GameFileException
+	 */
 	public static void saveLevel(Level level, String fileLocation) throws GameFileException {
 		// TODO Auto-generated method stub
 		saveFile(level, fileLocation);
 	}
 
+	/**
+	 * Core method for loading a level based on a file location
+	 * 
+	 * @param fileLocation
+	 * @return Level
+	 * @throws GameFileException
+	 */
 	public static Level loadLevel(String fileLocation) throws GameFileException {
 		// TODO Auto-generated method stub
 		try {
@@ -133,12 +177,26 @@ public class XMLManager {
 		}
 	}
 
+	/**
+	 * Core method for saving a state based on its file location
+	 * 
+	 * @param state
+	 * @param filePath
+	 * @throws GameFileException
+	 */
 	public static void saveState(State state, String filePath) throws GameFileException {
 		// TODO Auto-generated method stub
 		saveFile(state, filePath);
 //		saveFile(state, DEFAULT_SAVESTATE_FOLDER + filePath);
 	}
 
+	/**
+	 * Core method for loading a state based off its file location
+	 * 
+	 * @param filePath
+	 * @return State
+	 * @throws GameFileException
+	 */
 	public static State loadState(String filePath) throws GameFileException {
 		try {
 			return (State) loadFile(filePath);
