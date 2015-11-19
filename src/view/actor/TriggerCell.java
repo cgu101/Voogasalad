@@ -12,7 +12,13 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-
+/**
+ * @author David
+ * 
+ * This class is designed to be used with the ActorEditor
+ * It allows for modification of Triggers
+ * 
+ */
 public class TriggerCell extends AbstractListCell {
 	private AuthoringController controller;
 	private ListView<String> list;

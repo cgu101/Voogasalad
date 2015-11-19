@@ -22,7 +22,13 @@ import javafx.util.Callback;
 import view.actor.PropertyCell;
 import view.actor.TriggerCell;
 import view.screen.AbstractScreenInterface;
-
+/**
+ * @author David
+ * 
+ * Allows for modification of a single actor type.
+ * Loads the actor information when they are selected in the actor browser.
+ * 
+ */
 public class ActorEditor extends AbstractDockElement {
 
 	private ActorBrowser browser;

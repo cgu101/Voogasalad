@@ -8,7 +8,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-
+/**
+ * @author David
+ * 
+ * This class is designed to be used with the ActorEditor
+ * This allows for modification of properties
+ * 
+ */
 public class PropertyCell extends AbstractListCell {
 	private AuthoringController controller;
 	private ListView<String> list;

@@ -6,7 +6,14 @@ import javafx.scene.control.ListCell;
 import javafx.scene.text.Font;
 
 public abstract class AbstractListCell extends ListCell<String> {
-
+	/**
+	 * @author David
+	 * 
+	 * This class is designed to be extended to create modified ListCells.
+	 * It contains info for getting resource files and fonts.
+	 * Implement the makeCell method to decide how a cell should be created.
+	 * 
+	 */
 	private final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	private String className = this.getClass().getName();
 	protected ResourceBundle myResources;
