@@ -6,7 +6,6 @@ import java.util.List;
 /**
  * A node in the interaction trees (the self-trigger and external trigger trees).
  * Contains a String representing an Actor, Trigger, or Action.
- * @author Sung-Hoon
  *
  */
 public class InteractionTreeNode {

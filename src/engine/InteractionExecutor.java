@@ -16,7 +16,7 @@ import player.IPlayer;
 
 /**
  * The InteractionExecutor runs a single level for the engine.
- * @author Sung-Hoon
+ * Contains most of the state of the game.
  *
  */
 

@@ -8,8 +8,7 @@ import java.util.ResourceBundle;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 /**
- * Contains a map of keys (as Strings) to whether or not they are being pressed.
- * @author Sung-Hoon
+ * Contains a map of keys (as Strings) to whether or not they are being pressed (as booleans).
  *
  */
 public class InputManager {
