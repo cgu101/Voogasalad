@@ -29,40 +29,97 @@ public class AuthoringActorConstructor {
 		}
 	}
 
+	/**
+	 * Returns the list of actors. 
+	 * 
+	 * @return List<String>
+	 */
 	public List<String> getActorList() {
 		return new ArrayList<String>(actorMap.keySet());
 	}
-
+	
+	/**
+	 * Returns the list of properties for a given actor. 
+	 * 
+	 * @param actor
+	 * @return List<String>
+	 */
 	public List<String> getPropertyList(String actor) {
 		return actorMap.get(actor).propertyMap.getPropertyList();
 	}
 
+	/**
+	 * Returns the default value for a property for a given actor. 
+	 * 
+	 * @param actor
+	 * @param property
+	 * @return String
+	 */
 	public String getDefaultPropertyValue(String actor, String property) {
 		return actorMap.get(actor).propertyMap.getPropertyValue(property);
 	}
 
+	/**
+	 * Returns the ActorPropertyMap for a given actor. 
+	 * 
+	 * @param actor
+	 * @return ActorPropertyMap
+	 */
 	public ActorPropertyMap getActorPropertyMap(String actor) {
 		return actorMap.get(actor).propertyMap;
 	}
 
+	/**
+	 * Sets the property for a given actor to value. 
+	 * 
+	 * @param actor
+	 * @param property
+	 * @param value
+	 */
 	public void setPropertyValue(String actor, String property, String value) {
 		actorMap.get(actor).propertyMap.addProperty(property, value);
 	}
 
+	/**
+	 * Returns the self trigger list for an actor. 
+	 * 
+	 * @param actor
+	 * @return
+	 */
 	public List<String> getSelfTriggerList(String actor) {
 		return actorMap.get(actor).selfTriggerList;
 	}
 
+	/**
+	 * Returns the trigger list between two or more actors. 
+	 * 
+	 * @param actor
+	 * @param otherActors
+	 * @return List<String>
+	 */
 	public List<String> getEventTriggerList(String actor, String... otherActors) {
 		List<String> ret = new ArrayList<String>(actorMap.get(actor).eventTriggerList);
 		removeInvalidInstances(ret, otherActors);
 		return ret;
 	}
 
+	/**
+	 * Returns the actions for a single actor. 
+	 * 
+	 * @param actor
+	 * @return List<String>
+	 */
 	public List<String> getActionList(String actor) {
 		return new ArrayList<String>(actorMap.get(actor).oneActorActionList);
 	}
 	
+	/**
+	 * Returns the actions between two actors. 
+	 * 
+	 * @param actor
+	 * @param otherActors
+	 * @return List<String>
+	 */
 	public List<String> getTwoActorActionList(String actor, String...otherActors) {
 		List<String> ret = new ArrayList<String>(actorMap.get(actor).twoActorActionList);
 		removeInvalidInstances(ret, otherActors);

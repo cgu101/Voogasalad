@@ -157,29 +157,28 @@ Post conditions include the objectives must be able to be reset, as well as any 
 
 ### Use Case 9: ###
 
-#### Filler ####
-
+#### The user will be able to create new actors. This will write a new configuration file. The user will be able to specify the properties of the actor, the self triggers, event triggers, and actions. This actor will then be loaded for every game thereafter.
 
 ----------
 
 
 ### Use Case 10: ###
 
-#### Filler ####
+#### The user will be able to modify the default values for actor properties. This will overwrite the config files for the actors, and will remain until the user changes them. 
 
 
 ----------
 
 ### Use Case 11: ###
 
-#### Filler ####
+#### The user will be able to create unique actions for the actor. These actions will be math equations that act on the properties defined by the user. 
 
 
 ----------
 
 ### Use Case 12: ###
 
-#### Filler ####
+#### The user will be able to select groups of actors on the display, and modify values for all of these actors. The properties of the actors will be divided between global and unique -- the global will change, but the unique won't. An example of this is when the user wants to modify the range property for a group of actors. When the update occurs, the range should by convergent for all actors, but the coordinates should remain unique. 
 
 
 ----------
