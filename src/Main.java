@@ -128,7 +128,7 @@ public class Main extends Application {
 		apm2.addProperty("yLocation", "0");
 		apm2.addProperty("angle", "135");
 		apm2.addProperty("speed", "15");
-		apm2.addProperty("image", "megaman.png");
+		apm2.addProperty("image", "asteroids.png");
 		apm2.addProperty("groupID", "asteroid");
 		apm2.addProperty("size", "12");
 		apm2.addProperty("health", "20");

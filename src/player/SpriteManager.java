@@ -51,7 +51,9 @@ public class SpriteManager {
 				Sprite newsp = createSprite(a);
 				sprites.put(a.getUniqueID(), newsp);
 				myCamera.getGroup().getChildren().add(newsp);
-				newsp.play(4);
+				newsp.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
+				newsp.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
+				newsp.play(0);
 			}
 			stillAlive.put(a.getUniqueID(), true);
 		}
