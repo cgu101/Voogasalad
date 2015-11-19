@@ -9,7 +9,7 @@ import authoring.model.properties.Property;
 import authoring.model.triggers.selftriggers.ASelfTrigger;
 import player.InputManager;
 
-public class CircleCollision extends ASelfTrigger {
+public class InRange extends ASelfTrigger {
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -19,13 +19,12 @@ public class CircleCollision extends ASelfTrigger {
 		Actor actorA = actors[0];
 		Actor actorB = actors[1];
 		
-		Double sizeA = ((Property<Double>) actorA.getProperties().getComponents().get("size")).getValue();
+		Double rangeA = ((Property<Double>) actorA.getProperties().getComponents().get("range")).getValue();
 		Double sizeB = ((Property<Double>) actorB.getProperties().getComponents().get("size")).getValue();
-
-		double radiusSum = sizeA + sizeB;
-		double distance = distance(actorA, actorB);
 		
-		if (Double.compare(distance, radiusSum) <= 0) {
+		double distanceToActorB = distance(actorA, actorB) - sizeB;
+		
+		if (Double.compare(distanceToActorB, rangeA) <= 0) {
 			return true;
 		}
 		return false;

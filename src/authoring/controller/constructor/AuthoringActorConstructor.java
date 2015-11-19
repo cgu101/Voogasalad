@@ -11,6 +11,7 @@ import authoring.model.actors.ActorPropertyMap;
 public class AuthoringActorConstructor {
 
 	private Map<String, ActorObject> actorMap;
+	private static final String ALT = "b";
 
 	AuthoringActorConstructor() {
 		actorMap = new HashMap<String, ActorObject>();
@@ -23,9 +24,8 @@ public class AuthoringActorConstructor {
 					new ActorObject(s, AuthoringConfigManager.getInstance().getPropertyList(s),
 							AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.SELF_TRIGGER),
 							AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.EVENT_TRIGGER),
-							AuthoringConfigManager.getInstance().getConfigList(s,
-									AuthoringConfigManager.ONE_ACTOR_ACTIONS),
-					AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.TWO_ACTOR_ACTIONS)));
+							AuthoringConfigManager.getInstance().getConfigList(s,AuthoringConfigManager.ONE_ACTOR_ACTIONS),
+							AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.TWO_ACTOR_ACTIONS)));
 		}
 	}
 
@@ -53,18 +53,35 @@ public class AuthoringActorConstructor {
 		return actorMap.get(actor).selfTriggerList;
 	}
 
-	public List<String> getEventTriggerList(String aActor, String... otherActors) {
-		// Need to compare bActor's properties against eventTriggers before
-		// adding
-		return actorMap.get(aActor).eventTriggerList;
+	public List<String> getEventTriggerList(String actor, String... otherActors) {
+		List<String> ret = new ArrayList<String>(actorMap.get(actor).eventTriggerList);
+		removeInvalidInstances(ret, otherActors);
+		return ret;
 	}
 
-	public List<String> getActionList(String actor, String... otherActors) {
-		List<String> ret = new ArrayList<String>();
-		ret.addAll(actorMap.get(actor).oneActorActionList);
-		// Need to compare bActors properties against actions before adding
-		ret.addAll(actorMap.get(actor).twoActorActionList);
+	public List<String> getActionList(String actor) {
+		return new ArrayList<String>(actorMap.get(actor).oneActorActionList);
+	}
+	
+	public List<String> getTwoActorActionList(String actor, String...otherActors) {
+		List<String> ret = new ArrayList<String>(actorMap.get(actor).twoActorActionList);
+		removeInvalidInstances(ret, otherActors);
+		ret.addAll(getActionList(actor));
 		return ret;
+	}
+	
+	private void removeInvalidInstances(List<String> actions, String...otherActors) {
+		List<String> toRemove = new ArrayList<String>();
+		for(String actor: otherActors) {
+			List<String> actorProperties = getPropertyList(actor);
+			for(String s: actions) {
+				List<String> requiredProperties = AuthoringConfigManager.getRequiredPropertyList(String.format("%s.%s", s, ALT));
+				if(!requiredProperties.isEmpty() && !actorProperties.containsAll(requiredProperties)) {
+					toRemove.add(s);
+				}
+			}
+			actions.removeAll(toRemove);
+		}
 	}
 
 	private class ActorObject {

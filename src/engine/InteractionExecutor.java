@@ -72,7 +72,7 @@ public class InteractionExecutor {
 				for (InteractionTreeNode trigger : triggerNodes) {
 					List<InteractionTreeNode> actionNodes = trigger.children();
 					ITriggerEvent selfTriggerEvent = triggerMap.get(trigger.getValue());
-					selfTriggerEvent.condition(parseActions(actionNodes), nextActorMap, inputMap, uniqueA);
+					selfTriggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, uniqueA);
 				}
 			}
 		}	
@@ -87,7 +87,7 @@ public class InteractionExecutor {
 						for (InteractionTreeNode trigger : triggerNodes) {
 							List<InteractionTreeNode> actionNodes = trigger.children();
 							ITriggerEvent triggerEvent = triggerMap.get(trigger.getValue());
-							triggerEvent.condition(parseActions(actionNodes), nextActorMap, inputMap, uniqueA, uniqueB);
+							triggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, uniqueA, uniqueB);
 						}
 					}
 				}
