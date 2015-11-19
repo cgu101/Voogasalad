@@ -27,7 +27,8 @@ public class Map extends AbstractElement {
 	private MapActorManager actorManager;
 	protected ImageView background;
 
-	public Map(GridPane pane, AbstractScreen screen) {
+//	public Map(GridPane pane, AbstractScreen screen) {
+	public Map(GridPane pane) {
 		super(pane);
 		findResources();
 		this.screen = screen;
@@ -82,8 +83,8 @@ public class Map extends AbstractElement {
 		mapArea.setPannable(true);
 
 		// Bind the preferred size of the scroll area to the size of the scene
-		mapArea.prefWidthProperty().bind(screen.getScene().widthProperty());
-		mapArea.prefHeightProperty().bind(screen.getScene().heightProperty());
+//		mapArea.prefWidthProperty().bind(screen.getScene().widthProperty());
+//		mapArea.prefHeightProperty().bind(screen.getScene().heightProperty());
 
 		mapArea.setContent(contentGroup);
 	}
