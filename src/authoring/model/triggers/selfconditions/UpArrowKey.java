@@ -13,9 +13,9 @@ public class UpArrowKey extends ASelfTrigger {
 	@Override
 	public boolean condition(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager,
 			Actor... actors) {
-		
+
 		if (inputManager.getValue("UP")) {
-			return performActions(actions, actorGroup, actors);
+			return true;
 		}
 		return false;
 	}

@@ -23,12 +23,8 @@ public class Move extends AActionOneActor{
 		x = x + Math.cos(Math.toRadians(angle)) * speed; 
 		y = y + Math.sin(Math.toRadians(angle)) * speed;
 
-		
-		Actor futureActor = (Actor) actor.getCopy();
-		((Property<Double>)futureActor.getProperty("xLocation")).setValue(x);
-		((Property<Double>)futureActor.getProperty("yLocation")).setValue(y);
-		actorGroup.addActor(futureActor);
-
-		System.out.println(this.getClass().getName()+ " Moved Actor!");
+		((Property<Double>)actor.getProperty("xLocation")).setValue(x);
+		((Property<Double>)actor.getProperty("yLocation")).setValue(y);
+		actorGroup.addActor(actor);
 	}
 }

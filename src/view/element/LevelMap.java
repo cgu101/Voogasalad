@@ -23,7 +23,7 @@ public class LevelMap extends Map {
 
 
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
-		super(pane, screen);
+		super(pane);
 		myTab = new Tab("Level " + (i + 1));
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));
@@ -55,8 +55,14 @@ public class LevelMap extends Map {
 				String actor = db.getString();
 				ActorPropertyMap map = controller.getAuthoringActorConstructor().getActorPropertyMap(actor);
 
-				map.addProperty("xLocation", "" + (event.getSceneX() - this.getPane().getLayoutX()));
-				map.addProperty("yLocation", "" + (event.getSceneY() - this.getPane().getLayoutY()));
+//				map.addProperty("xLocation", "" + (event.getSceneX() - this.getPane().getLayoutX()));
+//				map.addProperty("yLocation", "" + (event.getSceneY() - this.getPane().getLayoutY()));
+				
+				map.addProperty("xLocation", "" + (event.getX()));
+				map.addProperty("yLocation", "" + (event.getY())); //TODO Change this
+				
+//				map.addProperty("xLocation", "" + (event.getSceneX()));
+//				map.addProperty("yLocation", "" + (event.getSceneY() - 50)); //TODO Change this
 				String uniqueID = new Date().toString();
 				controller.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, map);
 
@@ -66,8 +72,8 @@ public class LevelMap extends Map {
 				Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
 				Sprite newSp = new Sprite(image);
 
-				addActor(newSp, (event.getSceneX() - background.getLayoutX()),
-						(event.getSceneY() - background.getLayoutY()));
+				addActor(newSp, (double)a.getProperties().getComponents().get("xLocation").getValue(),
+						(double)a.getProperties().getComponents().get("xLocation").getValue());
 
 				success = true;
 			}

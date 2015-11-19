@@ -9,7 +9,7 @@ public abstract class EngineException extends Exception {
 	 *
 	 */
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3L;
 
 	public EngineException (String err, String argument) {
 		super(String.format(err, argument));

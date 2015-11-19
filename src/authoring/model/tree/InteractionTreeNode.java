@@ -3,7 +3,12 @@ package authoring.model.tree;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+/**
+ * A node in the interaction trees (the self-trigger and external trigger trees).
+ * Contains a String representing an Actor, Trigger, or Action.
+ * @author Sung-Hoon
+ *
+ */
 public class InteractionTreeNode {
 	
 	private List<InteractionTreeNode> children;
@@ -61,28 +66,3 @@ public class InteractionTreeNode {
 		}
 	}
 }
-//
-//// possible alternative
-//class TriggerNode {
-//	private List<Actor> actors;
-//	private List<String> actions;
-//	private List<Condition> conditions;
-//	public TriggerNode () {
-//		actors = new ArrayList<Actor>();
-//		actions = new ArrayList<String>();
-//		conditions = new ArrayList<String>();
-//	}
-//	public void run () {
-//		// for each combination of actors:
-//		for (String condition : conditions) {
-//			// run scripts
-//		}
-//		// if all true:
-//		for (String action : actions) {
-//			// run scripts
-//		}
-//	}
-//	private boolean applyGroovy (String script) {
-//		
-//	}
-//}

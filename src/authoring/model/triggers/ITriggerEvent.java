@@ -9,6 +9,6 @@ import player.InputManager;
 
 public interface ITriggerEvent {
 
-	public abstract boolean condition(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager, Actor... actors);
+	public boolean performActions(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager, Actor... actors);
 
 }

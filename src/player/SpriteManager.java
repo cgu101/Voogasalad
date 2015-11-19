@@ -29,8 +29,8 @@ public class SpriteManager {
 		//group = new Group();
 		//bp.setCenter(group);
 		GridPane gp = new GridPane();
-		//myCamera = new view.element.Map(gp);
-		//myCamera.createTheMap();
+		myCamera = new view.element.Map(gp);
+		myCamera.createTheMap();
 		bp.setCenter(gp);
 	}
 	
