@@ -22,7 +22,7 @@ public class LevelMap extends Map {
 	private AuthoringController controller;
 
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
-		super(pane, screen);
+		super(pane);
 		myTab = new Tab("Level " + (i + 1));
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));

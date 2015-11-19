@@ -1,11 +1,14 @@
-package player;
+package player.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
+import authoring.model.properties.Property;
 import data.XMLManager;
 import engine.GameEngine;
 import engine.IEngine;
@@ -18,6 +21,9 @@ import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
+import player.IPlayer;
+import player.InputManager;
+import player.SpriteManager;
 
 public class PlayerController implements IPlayer {
 
@@ -97,6 +103,7 @@ public class PlayerController implements IPlayer {
 		try {
 			myEngine.play().call(this);
 			mySpriteManager.updateSprites(getActorList(), this.myScene);
+			
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -110,12 +117,32 @@ public class PlayerController implements IPlayer {
 		}
 		return actors;
 	}
-
+	
+	public ArrayList<Property<?>> getProperties(Actor a){
+		ArrayList<Property<?>> properties = new ArrayList<Property<?>>();
+		Bundle<Property<?>> propBundle = a.getProperties();
+		for(Property<?> b : propBundle){
+			properties.add((Property<?>) b.getValue());
+		}
+		return properties;
+	}
+	
 	public Map<String, Bundle<Actor>> getActorMap() {
 		return myEngine.getActors();
 	}
 
-	public void saveState(String fileName) throws GameFileException {
+	public Map<String, String> getPropertyStringMap(Actor a){
+		Map<String, String> propertyMap = new HashMap<String, String>();
+		Bundle<Property<?>> b = a.getProperties();
+		for(Property<?> prop : b){
+			String identifier = prop.getUniqueID(); //health or whatever
+			String value = String.valueOf(prop.getValue());
+			propertyMap.put(identifier, value);
+		}
+		return propertyMap;
+	}
+	
+	public void saveState (String fileName) throws GameFileException {
 		pause();
 		State saveState;
 		try {

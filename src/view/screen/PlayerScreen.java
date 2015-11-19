@@ -11,7 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import player.PlayerController;
+import player.controller.PlayerController;
 import util.FileChooserUtility;
 import view.controlbar.ControlBarPlayer;
 import view.element.AbstractDockElement;
@@ -109,6 +109,7 @@ public class PlayerScreen extends AbstractScreen {
 			ee.printStackTrace();
 		}
 		monitor.initializePane();
+		monitor.refresh();
 		t.initializeComponents();
 	}
 
