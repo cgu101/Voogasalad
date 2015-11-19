@@ -9,7 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 /**
@@ -21,14 +20,19 @@ import javafx.scene.text.Text;
  */
 public class TriggerCell extends AbstractListCell {
 	private AuthoringController controller;
-	private ListView<String> list;
 	private String actor;
+	private String other;
 
-	public TriggerCell(AuthoringController controller, String actor, ListView<String> list) {
+	public TriggerCell(AuthoringController controller, String actor) {
 		findResources();
 		this.controller = controller;
 		this.actor = actor;
-		this.list = list;
+		this.other = null;
+	}
+
+	public TriggerCell(AuthoringController controller, String actor, String other) {
+		this(controller, actor);
+		this.other = other;
 	}
 
 	private Text makeNameField(String item) {
@@ -49,15 +53,27 @@ public class TriggerCell extends AbstractListCell {
 
 	protected CheckComboBox<String> makeSelector(String item) {
 		final ObservableList<String> actions = FXCollections.observableArrayList();
-		actions.addAll(controller.getAuthoringActorConstructor().getActionList(actor));
 		CheckComboBox<String> selector = new CheckComboBox<String>(actions);
-		selector.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
-			public void onChanged(ListChangeListener.Change<? extends String> c) {
-				List<String> actions = selector.getCheckModel().getCheckedItems();
-				controller.getLevelConstructor().getTreeConstructor().removeSelfTrigger(actor, item);
-				controller.getLevelConstructor().getTreeConstructor().addSelfTriggerActions(actor, item, actions);
-			}
-		});
+		if (other == null) {
+			actions.addAll(controller.getAuthoringActorConstructor().getActionList(actor));
+			selector.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+				public void onChanged(ListChangeListener.Change<? extends String> c) {
+					List<String> actions = selector.getCheckModel().getCheckedItems();
+					controller.getLevelConstructor().getTreeConstructor().removeSelfTrigger(actor, item);
+					controller.getLevelConstructor().getTreeConstructor().addSelfTriggerActions(actor, item, actions);
+				}
+			});
+		} else {
+			actions.addAll(controller.getAuthoringActorConstructor().getTwoActorActionList(actor, other));
+			selector.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
+				public void onChanged(ListChangeListener.Change<? extends String> c) {
+					List<String> actions = selector.getCheckModel().getCheckedItems();
+					controller.getLevelConstructor().getTreeConstructor().removeEventTrigger(actor, other, item);
+					controller.getLevelConstructor().getTreeConstructor().addEventTriggerActions(actor, other, item,
+							actions);
+				}
+			});
+		}
 		selector.setMaxWidth(Double.parseDouble(myResources.getString("checkwidth")));
 		return selector;
 	}

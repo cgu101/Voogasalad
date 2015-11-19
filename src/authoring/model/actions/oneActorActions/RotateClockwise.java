@@ -11,10 +11,11 @@ public class RotateClockwise extends AActionOneActor{
 	@Override
 	public void run(ActorGroups actorGroup, Actor actor) {
 
-		Double angle = ((Property<Double>) actor.getProperty("angle")).getValue();
+		Double rotation = 1.0;
 		
-		Actor futureActor = (Actor) actor.getCopy();
-		((Property<Double>)futureActor.getProperty("angle")).setValue((angle-1) % 360);
-		actorGroup.addActor(futureActor);
+		Property<Double> angle = (Property<Double>) actor.getProperty("angle");
+		angle.setValue((angle.getValue() - rotation) % 360);
+		
+		actorGroup.addActor(actor);
 	}
 }

@@ -21,6 +21,10 @@ public class ShootBullet extends AActionOneActor{
 
 		Actor bullet = createBullet(angle, x, y);
 		actorGroup.addActor(bullet);
+		//actorGroup.addActor(actor);
+		//^I think we need to add this line.  If this is the only action called on this actor, 
+		// then the actor will disappear and only the bullet will persist in the next iteration
+		// of the game.
 	}
 
 	private Actor createBullet(Property<Double> angle, Property<Double> x, Property<Double> y) {

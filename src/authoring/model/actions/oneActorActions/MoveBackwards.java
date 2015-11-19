@@ -5,11 +5,7 @@ import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
 
-/**
- * @author Inan
- *
- */
-public class Move extends AActionOneActor{
+public class MoveBackwards extends AActionOneActor{
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -20,8 +16,8 @@ public class Move extends AActionOneActor{
 		Double x = ((Property<Double>) actor.getProperty("xLocation")).getValue();
 		Double y = ((Property<Double>) actor.getProperty("yLocation")).getValue();
 		
-		x = x + Math.cos(Math.toRadians(angle)) * speed; 
-		y = y + Math.sin(Math.toRadians(angle)) * speed;
+		x = x - Math.cos(Math.toRadians(angle)) * speed; 
+		y = y - Math.sin(Math.toRadians(angle)) * speed;
 
 		((Property<Double>)actor.getProperty("xLocation")).setValue(x);
 		((Property<Double>)actor.getProperty("yLocation")).setValue(y);
