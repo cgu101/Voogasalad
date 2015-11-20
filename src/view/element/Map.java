@@ -31,7 +31,6 @@ public class Map extends AbstractElement {
 	public Map(GridPane pane) {
 		super(pane);
 		findResources();
-		this.screen = screen;
 		// Use a StackPane so we can layer things on top of one another, like an
 		// actor
 		// over a background tile. Note that you can probably use something else
