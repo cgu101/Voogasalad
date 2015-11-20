@@ -41,10 +41,11 @@ public class Map extends AbstractElement {
 	 * @param pane - GridPane on which to display this map
 	 * @param screen - screen associated with this map
 	 */
-	public Map(GridPane pane, AbstractScreen screen) {
+
+//	public Map(GridPane pane, AbstractScreen screen) {
+	public Map(GridPane pane) {
 		super(pane);
 		findResources();
-		this.screen = screen;
 		// Use a StackPane so we can layer things on top of one another, like an
 		// actor
 		// over a background tile. Note that you can probably use something else
@@ -130,8 +131,8 @@ public class Map extends AbstractElement {
 		mapArea.setPannable(true);
 
 		// Bind the preferred size of the scroll area to the size of the scene
-		mapArea.prefWidthProperty().bind(screen.getScene().widthProperty());
-		mapArea.prefHeightProperty().bind(screen.getScene().heightProperty());
+//		mapArea.prefWidthProperty().bind(screen.getScene().widthProperty());
+//		mapArea.prefHeightProperty().bind(screen.getScene().heightProperty());
 
 		mapArea.setContent(contentGroup);
 	}

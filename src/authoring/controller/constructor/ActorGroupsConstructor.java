@@ -16,19 +16,39 @@ public class ActorGroupsConstructor {
 	private ActorGroups actorGroups;
 	
 	private static final String GROUP_ID = "groupID";
-		
+	
+	/**
+	 * Empty contructor for ActorGroupsConstructor
+	 */
 	public ActorGroupsConstructor() {
 		actorGroups = new ActorGroups();
 	}
 	
+	/**
+	 * Returns the ActorGroups instance that has been built by the user. 
+	 * @return ActorGroups
+	 */
 	public ActorGroups getActorGroups() {
 		return actorGroups;
 	}
 	
+	/**
+	 * This method calls updateActor(List<String> ids, ActorPropertyMap propertyMap)
+	 * 
+	 * @param id
+	 * @param propertyMap
+	 */
 	public void updateActor(String id, ActorPropertyMap propertyMap) {
 		updateActor(Arrays.asList(new String[] {id}), propertyMap);
 	}
 	
+	/**
+	 * This method will create a new instanc of an actor if it doesn't exist. Otherwise, it will update all of the actors
+	 * identified by the id's in the String list. 
+	 * 
+	 * @param ids
+	 * @param propertyMap
+	 */
 	public void updateActor(List<String> ids, ActorPropertyMap propertyMap) {		
 		Bundle<Actor> actorBundle = actorGroups.addGroup(propertyMap.getPropertyValue(GROUP_ID));		
 		Bundle<Property<?>> properties = getPropertyBundle(propertyMap);	
@@ -44,6 +64,12 @@ public class ActorGroupsConstructor {
 		}
 	}
 	
+	/**
+	 * This method will delete all actors identified by id for a given String className.
+	 * 
+	 * @param className
+	 * @param ids
+	 */
 	public void deleteActor(String className, List<String> ids) {
 		Bundle<Actor> actorBundle = actorGroups.addGroup(className);
 		if(actorBundle != null) {
@@ -53,6 +79,13 @@ public class ActorGroupsConstructor {
 		}
 	}
 	
+	/**
+	 * This method will return an individual actor identified by its className and id.
+	 * 
+	 * @param className
+	 * @param id
+	 * @return ACtor
+	 */
 	public Actor getActor(String className, String id) {
 		Bundle<Actor> actorBundle = actorGroups.addGroup(className);
 		return actorBundle.get(id);

@@ -11,18 +11,16 @@ public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 	@Override
 	@SuppressWarnings("unchecked")
 	public void run(ActorGroups actorGroup, Actor a, Actor b) {
-		Actor aCopy = (Actor) a.getCopy();
-		Actor bCopy = (Actor) b.getCopy();
 
-		if (checkIfCollided(actorGroup, aCopy, bCopy)) {
-			Double sizeA = ((Property<Double>) aCopy.getProperties().getComponents().get("size")).getValue();
-			Double sizeB = ((Property<Double>) bCopy.getProperties().getComponents().get("size")).getValue();
-			Double difference = (sizeA + sizeB) - distance(aCopy, bCopy);
-			move(aCopy, bCopy, difference);
+		if (checkIfCollided(actorGroup, a, b)) {
+			Double sizeA = ((Property<Double>) a.getProperties().getComponents().get("size")).getValue();
+			Double sizeB = ((Property<Double>) b.getProperties().getComponents().get("size")).getValue();
+			Double difference = (sizeA + sizeB) - distance(a, b);
+			move(a, b, difference);
 		}
 
-		actorGroup.addActor(aCopy);
-		actorGroup.addActor(bCopy);
+		actorGroup.addActor(a);
+		actorGroup.addActor(b);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -32,8 +30,16 @@ public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 		Double xB = ((Property<Double>) b.getProperties().getComponents().get("xLocation")).getValue();
 		Double yB = ((Property<Double>) b.getProperties().getComponents().get("yLocation")).getValue();
 
+//		System.out.println("A_start: (" + xA + ", " + yA + ")");
+//		System.out.println("B_start: (" + xB + ", " + yB + ")");
+		
+		Double angleAB;
+		if (xA == xB && yA == yB) {
+			angleAB = 0.0;
+		} else {
 		Double slope = (yB - yA) / (xB - xA);
-		Double angleAB = Math.atan(slope);
+		angleAB = Math.atan(slope);
+		}
 
 		if (xA < xB) {
 			xA = xA - (difference / 2 + 1) * Math.cos(angleAB);
@@ -50,7 +56,12 @@ public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 			yA = yA + (difference / 2 + 1) * Math.abs(Math.sin(angleAB));
 			yB = yB - (difference / 2 + 1) * Math.abs(Math.sin(angleAB));
 		}
-
+		
+//		System.out.println("A_end: (" + xA + ", " + yA + ")");
+//		System.out.println("B_end: (" + xB + ", " + yB + ")");
+//
+//		System.out.println("NOW THE DISTANCE BETWEEN ACTORS IS: " + distance(a,b));
+		
 		((Property<Double>) a.getProperties().getComponents().get("xLocation")).setValue(xA);
 		((Property<Double>) a.getProperties().getComponents().get("yLocation")).setValue(yA);
 		((Property<Double>) b.getProperties().getComponents().get("xLocation")).setValue(xB);

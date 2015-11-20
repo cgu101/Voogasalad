@@ -62,7 +62,7 @@ public class XMLManager {
 		throw new GameFileException();
 	}
 	/**
-	 * Saves a game to the given file location.
+	 * Saves a game to an absolute file location.
 	 * @param game A {@link Game} containing a bundle of metadata properties and a bundle of levels.
 	 * @param fileLocation
 	 * @throws GameFileException
@@ -76,6 +76,14 @@ public class XMLManager {
 		
 	}
 	
+	/**
+	 * Core method to test a game object based on its absolute file location
+	 * TODO: Remove this method for final production
+	 * 
+	 * @param game
+	 * @param fileLocation
+	 * @throws GameFileException
+	 */
 	public static void testSaveGame (Game obj, File file) throws GameFileException {
 		String filePath = file.getAbsolutePath();
 		
@@ -102,6 +110,14 @@ public class XMLManager {
 		throw new GameFileException();
 	}
 
+	/**
+	 * Core method to test loading a game based on a file to return a Game object
+	 * TODO: Eventually remove this method for production
+	 * 
+	 * @param file
+	 * @return Game Object
+	 * @throws GameFileException
+	 */
 	public static Game testLoadGame (File file) throws GameFileException {
 		String fileLocation = file.getName();
 		
@@ -112,6 +128,7 @@ public class XMLManager {
 			throw new GameFileException();
 		}
 	}
+
 	/**
 	 * Loads a game from an absolute file path.
 	 * @param fileLocation
@@ -129,7 +146,7 @@ public class XMLManager {
 		
 	}
 	/**
-	 * Saves a single level to the given file location. 
+	 * Saves a single level to an absolute file location.
 	 * @param level
 	 * @param fileLocation
 	 * @throws GameFileException
@@ -153,8 +170,9 @@ public class XMLManager {
 			throw new GameFileException();
 		}
 	}
+
 	/**
-	 * Saves a save state.
+	 * Saves a save state to an absolute file location.
 	 * @param state
 	 * @param filePath
 	 * @throws GameFileException
@@ -164,6 +182,7 @@ public class XMLManager {
 		saveFile(state, filePath);
 //		saveFile(state, DEFAULT_SAVESTATE_FOLDER + filePath);
 	}
+
 	/**
 	 * Loads a save state from an absolute file path.
 	 * @param filePath

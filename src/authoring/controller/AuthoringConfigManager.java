@@ -50,34 +50,85 @@ public class AuthoringConfigManager {
 		}	
 	}
 	
+	/**
+	 * This method returns the static instance of the AuthuringConfigManager.
+	 * This class holds the information for the relationships between all actors, triggers, and actions.
+	 * 
+	 * @return AuthoringConfigManager
+	 */
 	public static AuthoringConfigManager getInstance() {
 		return myManager;
 	}
 	
+	/**
+	 * This method will reload the configuration files and should be called whenever the configuration files
+	 * change during a game. 
+	 */
 	public void refresh() {
 		load();
 	}
 	
+	/**
+	 * This method will return a String array of all default Actors. 
+	 * 
+	 * @return List<String> 
+	 */
 	public List<String> getActorList() {
 		return new ArrayList<String>(actorMap.keySet());
 	}
 	
+	/**
+	 * This method will return a String array of all default Properties. 
+	 * 
+	 * @return List<String> 
+	 */	
 	public List<String> getPropertyList() {
 		return new ArrayList<String>(propertyMap.keySet());
 	}
-
+	
+	/**
+	 * This method will return a String array of all default Properties. 
+	 * 
+	 * @return List<String> 
+	 */	
 	public List<String> getPropertyList(String actor) {
 		return splitString(actorMap.get(actor).getString(PROPERTIES));
 	}
 
+	/**
+	 * This method will return the default value for a property mapped to an actor.
+	 * 
+	 * @param actor
+	 * @param property
+	 * @return String
+	 */
 	public String getDefaultPropertyValue(String actor, String property) {
 		return actorMap.get(actor).getString(property);
 	}
 	
+	/**
+	 * This method will return the type for the given property. These types are primitives and are used
+	 * for the instantiation of the property class. 
+	 * 
+	 * @param property
+	 * @return String
+	 */
 	public String getPropertyType(String property) {
 		return propertyMap.get(property).getString(TYPE);
 	}
 	
+	/**
+	 * This method will return a list of Strings representing the given type for the Actor. The different
+	 * types are represented by the public constants and are: 
+	 * 		public static final String SELF_TRIGGER = "selfTrigger";
+	 *		public static final String EVENT_TRIGGER = "eventTrigger";
+	 *		public static final String ONE_ACTOR_ACTIONS = "oneActorActions";
+	 * 		public static final String TWO_ACTOR_ACTIONS = "twoActorActions";
+	 * 
+	 * @param actor
+	 * @param type
+	 * @return List<String>
+	 */
 	public List<String> getConfigList(String actor, String type) {
 		List<String> triggerList = splitString(actorMap.get(actor).getString(type));
 		List<String> propertyList = getPropertyList(actor);
@@ -90,6 +141,12 @@ public class AuthoringConfigManager {
 		return triggerList;
 	}
 	
+	/**
+	 * This method will return the properties required by an trigger or action.
+	 * 
+	 * @param instance
+	 * @return List<String>
+	 */
 	public static List<String> getRequiredPropertyList(String instance) {
 		return splitString(myManager.myConfiguration.getString(String.format("%s.%s", instance, PROPERTIES)));
 	}

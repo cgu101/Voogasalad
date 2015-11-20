@@ -89,11 +89,17 @@ public class ControlBarPlayer extends ControlBar {
 		}
 	}
 
+	/**
+	 * This method initializes the different components of the 
+	 * Player that are relevant only once a game has been loaded
+	 * i.e. ActorMonitor and HUD
+	 */
 	public void initializeComponents() {
 		if(currentScreen.getComponents() != null){
 			for (AbstractDockElement c : currentScreen.getComponents()) {
 				CheckMenuItem item = new CheckMenuItem(myResources.getString(c.getClass().getSimpleName()));
 				item.selectedProperty().bindBidirectional(c.getShowingProperty());
+				item.selectedProperty().set(false);
 				addToMenu(hideAndShow, item);
 			}
 		}

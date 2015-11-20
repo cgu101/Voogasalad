@@ -11,6 +11,10 @@ import exceptions.EngineException;
 import exceptions.engine.EngineStateException;
 import player.InputManager;
 
+/**
+ * The game engine, which handles loading single levels and level transitions.
+ */
+
 public class GameEngine implements IEngine {
 	private static final String LEVEL_ID_KEY = "level";
 	private static final String GAME_ID_KEY = "name";

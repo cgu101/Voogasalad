@@ -11,7 +11,12 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
-
+/**
+ * @author David
+ * 
+ * This class is designed to be used with the ActorBrowser
+ * 
+ */
 public class ActorCell extends AbstractListCell {
 
 	private AuthoringController controller;

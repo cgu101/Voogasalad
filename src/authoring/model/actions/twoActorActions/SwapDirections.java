@@ -16,20 +16,23 @@ public class SwapDirections extends AActionTwoActors {
 	@SuppressWarnings("unchecked")
 	public void run(ActorGroups actorGroup, Actor a, Actor b) {
 
-		Actor aCopy = (Actor) a.getCopy();
-		Actor bCopy = (Actor) b.getCopy();
+		Property<Double> a_angleP = (Property<Double>) a.getProperties().getComponents().get("angle");
+		Property<Double> b_angleP = (Property<Double>) b.getProperties().getComponents().get("angle");
 
-		Property<Double> a_angleP = (Property<Double>) aCopy.getProperties().getComponents().get("angle");
-		Property<Double> b_angleP = (Property<Double>) bCopy.getProperties().getComponents().get("angle");
-
-		a_angleP.setValue(((Property<Double>) b.getProperties().getComponents().get("angle")).getValue());
-		b_angleP.setValue(((Property<Double>) a.getProperties().getComponents().get("angle")).getValue());
+		Double temp = a_angleP.getValue();
+		a_angleP.setValue(b_angleP.getValue());
+		b_angleP.setValue(temp);
 
 		MoveActorsToAvoidCollisions adjust = new MoveActorsToAvoidCollisions();
-		adjust.run(actorGroup, aCopy, bCopy);
+		adjust.run(actorGroup, a, b);
 		
-		actorGroup.addActor(aCopy);
-		actorGroup.addActor(bCopy);
+		CircleCollision collision = new CircleCollision();
+		if (collision.condition(null, actorGroup, null, new Actor[]{ a , b})) {
+			System.out.println("STILL COLLIDING AFTER ADJUSTMENT");
+		}
+		
+		actorGroup.addActor(a);
+		actorGroup.addActor(b);
 	}
 
 }

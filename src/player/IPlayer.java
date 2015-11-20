@@ -4,10 +4,16 @@ import exceptions.data.GameFileException;
 
 public interface IPlayer {
 
-	// Resumes gameplay
+	/**
+	 * Resumes gameplay of the main game loop
+	 * @throws GameFileException
+	 */
 	public void resume() throws GameFileException;
 	
-	// Pauses gameplay
+	/**
+	 * Pauses gameplay of the main game loop
+	 * @throws GameFileException
+	 */
 	public void pause() throws GameFileException;
 	
 }
