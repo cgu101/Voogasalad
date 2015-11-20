@@ -15,6 +15,8 @@ public class MapActorManager {
 	public void addActor(Node actor, double x, double y) {
 		actor.setTranslateX(x);
 		actor.setTranslateY(y);
+		System.out.println(x);
+		System.out.println(y);
 		mapLayout.getChildren().add(actor);
 	}
 	

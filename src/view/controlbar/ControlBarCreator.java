@@ -58,7 +58,6 @@ public class ControlBarCreator extends ControlBar {
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
-		// TODO:
 		MenuItem load = makeMenuItem(myResources.getString("load"), e -> screen.loadGame());
 		MenuItem save = makeMenuItem(myResources.getString("save"), e -> screen.saveGame());
 		MenuItem exit = makeMenuItem(myResources.getString("exit"), e -> Platform.exit(), KeyCode.E, KeyCombination.CONTROL_DOWN);
@@ -81,7 +80,9 @@ public class ControlBarCreator extends ControlBar {
 
 		CheckMenuItem doubleLists = new CheckMenuItem(myResources.getString("dualactors"));
 		doubleLists.selectedProperty().bindBidirectional(findActorBrowser().getDoubleListsProperty());
-		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow, doubleLists);
+		
+		MenuItem changeBackground = makeMenuItem(myResources.getString("background"), null); //TODO:
+		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow, doubleLists, changeBackground);
 		makeMenuBar(mainMenu, file, edit, window);
 	}
 
