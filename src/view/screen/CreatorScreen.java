@@ -1,18 +1,28 @@
 package view.screen;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
+import authoring.controller.AuthoringController;
+import authoring.controller.constructor.LevelConstructor;
+import authoring.model.game.Game;
+import data.XMLManager;
+import exceptions.data.GameFileException;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import view.controlbar.CreatorControlBar;
+import util.FileChooserUtility;
+import view.controlbar.ControlBarCreator;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
+import view.element.ActorEditor;
 import view.element.Workspace;
 
 public class CreatorScreen extends AbstractScreen {
 
-	private CreatorControlBar t;
+	private ControlBarCreator t;
 	private Workspace w;
 	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
@@ -21,7 +31,6 @@ public class CreatorScreen extends AbstractScreen {
 		findResources();
 		WIDTH = Integer.parseInt(myResources.getString("width"));
 		HEIGHT = Integer.parseInt(myResources.getString("height"));
-
 		makeScene();
 		root.prefHeightProperty().bind(scene.heightProperty());
 		root.prefWidthProperty().bind(scene.widthProperty());
@@ -50,14 +59,42 @@ public class CreatorScreen extends AbstractScreen {
 		}
 		GridPane rightPane = new GridPane();
 		rightPane.add(homePanes.get(0), 0, 0);
+		rightPane.add(homePanes.get(1), 0, 1);
+		rightPane.setAlignment(Pos.CENTER);
 		r.setRight(rightPane);
 		GridPane bottomPane = new GridPane();
-		bottomPane.add(homePanes.get(1), 0, 0);
-		bottomPane.add(homePanes.get(2), 1, 0);
+		bottomPane.add(homePanes.get(2), 0, 0);
 		r.setBottom(bottomPane);
 		components = new ArrayList<AbstractDockElement>();
-		components
-				.add(new ActorBrowser(dockPanes.get(0), homePanes.get(0), myResources.getString("browsername"), this));
-		t = new CreatorControlBar(myPanes.get(0), this, w);
+		ActorBrowser browser = new ActorBrowser(dockPanes.get(0), homePanes.get(0),
+				myResources.getString("browsername"), this, w);
+		components.add(browser);
+		ActorEditor editor = new ActorEditor(dockPanes.get(1), homePanes.get(1), myResources.getString("editorname"),
+				this, browser, w);
+		components.add(editor);
+		t = new ControlBarCreator(myPanes.get(0), this, w);
+	}
+
+	// TODO
+	public void saveGame() {
+		System.out.println("Testing saving game ");
+
+		List<LevelConstructor> levelConstructors = w.getLevels();
+
+		Game game = AuthoringController.getGameWithLevels(levelConstructors);
+		File saveFile = FileChooserUtility.save(scene.getWindow());
+		String fileLocation = saveFile.getAbsolutePath();
+		System.out.println(saveFile.getName());
+
+		try {
+			XMLManager.saveGame(game, fileLocation);
+		} catch (GameFileException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	// TODO
+	public void loadGame() {
+		System.out.println("Testing loading game ");
 	}
 }

@@ -2,6 +2,7 @@ package view.element;
 
 import java.util.ArrayList;
 
+import authoring.controller.AuthoringController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -9,61 +10,121 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import view.actor.ActorCell;
-import view.actor.ActorFactory;
 import view.screen.AbstractScreenInterface;
-
+/**
+ * @author David
+ * 
+ * A double list view element class that allows the user to see the level's current actor types.
+ * Also allows for drag and drop placement of new actor instances
+ * 
+ */
 public class ActorBrowser extends AbstractDockElement {
 
-	private ListView<ActorFactory> rightlist;
-	private ListView<ActorFactory> leftlist;
-	private ArrayList<ListView<ActorFactory>> lists;
-	private ObservableList<ActorFactory> actors;
+	private ListView<String> rightlist;
+	private ListView<String> leftlist;
+	private ArrayList<ListView<String>> lists;
+	private ObservableList<String> actors;
 	private BooleanProperty doubleLists;
+	private AuthoringController controller;
+	private GridPane listPane;
 
-	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen) {
+	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,
+			Workspace workspace) {
 		super(pane, home, title, screen);
+		findResources();
 		doubleLists = new SimpleBooleanProperty(true);
 		doubleLists.addListener(e -> toggleDoubleLists(doubleLists.getValue()));
+		this.controller = null;
+		workspace.addListener((ov, oldTab, newTab) -> {
+			if (workspace.getCurrentLevel() != null) {
+				load(workspace.getCurrentLevel().getController());
+			} else {
+				load(null);
+			}
+		});
 		makePane();
 	}
 
 	@Override
 	protected void makePane() {
-		actors = FXCollections.observableArrayList(new ArrayList<ActorFactory>());
-		rightlist = new ListView<ActorFactory>(actors);
-		leftlist = new ListView<ActorFactory>(actors);
+		GridPane labelPane = makeLabelPane();
+		pane.add(labelPane, 0, 0);
+		listPane = new GridPane();
+		pane.add(listPane, 0, 1);
+		actors = FXCollections.observableArrayList(new ArrayList<String>());
+		rightlist = new ListView<String>(actors);
+		leftlist = new ListView<String>(actors);
+		listPane.add(leftlist, 0, 1);
+		listPane.add(rightlist, 1, 1);
+		listPane.setAlignment(Pos.TOP_CENTER);
+		configure(leftlist);
+		configure(rightlist);
+		lists = new ArrayList<ListView<String>>();
+		lists.add(leftlist);
+		lists.add(rightlist);
+		load(controller);
+	}
+
+	public void load(AuthoringController controller) {
+		this.controller = controller;
+		actors = FXCollections.observableArrayList(new ArrayList<String>());
+		leftlist.setItems(actors);
+		rightlist.setItems(actors);
+		if (controller != null) {
+			actors.addAll(controller.getAuthoringActorConstructor().getActorList());
+		}
+	}
+
+	private void addLabelPane() {
 		GridPane labelPane = makeLabelPane();
 		pane.add(labelPane, 0, 0);
 		GridPane.setColumnSpan(labelPane, 2);
-		pane.add(leftlist, 0, 1);
-		pane.add(rightlist, 1, 1);
-		pane.setAlignment(Pos.TOP_CENTER);
-		leftlist.prefHeightProperty().bind(screen.getScene().heightProperty());
-		rightlist.prefHeightProperty().bind(screen.getScene().heightProperty());
-		leftlist.setFocusTraversable(false);
-		rightlist.setFocusTraversable(false);
-		configure(leftlist);
-		configure(rightlist);
-		lists = new ArrayList<ListView<ActorFactory>>();
-		lists.add(leftlist);
-		lists.add(rightlist);
 	}
 
-	private void configure(ListView<ActorFactory> list) {
-		list.setCellFactory(new Callback<ListView<ActorFactory>, ListCell<ActorFactory>>() {
+	private void configure(ListView<String> list) {
+		list.prefHeightProperty().bind(screen.getScene().heightProperty());
+		list.setMaxWidth(Double.parseDouble(myResources.getString("width")));
+		list.setFocusTraversable(false);
+		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
-			public ListCell<ActorFactory> call(ListView<ActorFactory> list) {
-				ActorCell output = new ActorCell(lists);
-				return output;
+			public ListCell<String> call(ListView<String> list) {
+				ActorCell cell = new ActorCell(controller);
+				cell.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handlePress(cell, list, event));
+				cell.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> handleRelease(cell, list, event));
+				cell.setOnDragDetected(e -> cell.drag(e));
+				cell.setOnDragDone(e -> cell.dragDone(e));
+				return cell;
 			}
 		});
 	}
 
+	private void handlePress(ActorCell cell, ListView<String> list, MouseEvent event) {
+		if (!cell.isEmpty()) {
+			int index = cell.getIndex();
+			if (list.getSelectionModel().getSelectedIndices().contains(index)) {
+				cell.markForDeselection();
+			} else {
+				list.getSelectionModel().select(index);
+			}
+			event.consume();
+		}
+	}
+
+	private void handleRelease(ActorCell cell, ListView<String> list, MouseEvent event) {
+		if (cell.deselect()) {
+			int index = cell.getIndex();
+			list.getSelectionModel().clearSelection(index);
+		}
+		event.consume();
+	}
+
 	public void addNewActor() {
-		actors.add(new ActorFactory(actors.size()));
+		// actors.add("Actor " + actors.size());
+		// TODO: add backend implementation
 	}
 
 	public BooleanProperty getDoubleListsProperty() {
@@ -77,6 +138,10 @@ public class ActorBrowser extends AbstractDockElement {
 			rightlist.getSelectionModel().clearSelection();
 			pane.getChildren().remove(rightlist);
 		}
+	}
+
+	public ArrayList<ListView<String>> getLists() {
+		return lists;
 	}
 
 }

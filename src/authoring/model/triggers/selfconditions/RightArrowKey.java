@@ -15,7 +15,7 @@ public class RightArrowKey extends ASelfTrigger {
 			Actor... actors) {
 
 		if (inputManager.getValue("RIGHT")) {
-			return performActions(actions, actorGroup, actors);
+			return true;
 		}
 		return false;
 	}

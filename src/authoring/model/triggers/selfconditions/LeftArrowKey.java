@@ -13,9 +13,9 @@ public class LeftArrowKey extends ASelfTrigger {
 	@Override
 	public boolean condition(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager,
 			Actor... actors) {
-		
+
 		if (inputManager.getValue("LEFT")) {
-			return performActions(actions, actorGroup, actors);
+			return true;
 		}
 		return false;
 	}

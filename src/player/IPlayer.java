@@ -1,15 +1,19 @@
 package player;
 
-import javafx.scene.Scene;
+import exceptions.data.GameFileException;
 
 public interface IPlayer {
 
-	// Resumes gameplay
-	public void play();
+	/**
+	 * Resumes gameplay of the main game loop
+	 * @throws GameFileException
+	 */
+	public void resume() throws GameFileException;
 	
-	// Pauses gameplay
-	public void pause();
+	/**
+	 * Pauses gameplay of the main game loop
+	 * @throws GameFileException
+	 */
+	public void pause() throws GameFileException;
 	
-	// Draws the player's gui elements
-	public void renderGui(Scene s);
 }

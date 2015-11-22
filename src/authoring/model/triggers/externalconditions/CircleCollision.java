@@ -11,6 +11,7 @@ import player.InputManager;
 
 public class CircleCollision extends ASelfTrigger {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean condition(List<IAction> actions, ActorGroups actorGroup, InputManager inputManager,
 			Actor... actors) {
@@ -25,16 +26,17 @@ public class CircleCollision extends ASelfTrigger {
 		double distance = distance(actorA, actorB);
 		
 		if (Double.compare(distance, radiusSum) <= 0) {
-			return performActions(actions, actorGroup, actors);
+			return true;
 		}
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public double distance(Actor actorA, Actor actorB) {
-		Double xA = ((Property<Double>) actorA.getProperties().getComponents().get("x-coordinate")).getValue();
-		Double yA = ((Property<Double>) actorA.getProperties().getComponents().get("y-coordinate")).getValue();
-		Double xB = ((Property<Double>) actorB.getProperties().getComponents().get("x-coordinate")).getValue();
-		Double yB = ((Property<Double>) actorB.getProperties().getComponents().get("y-coordinate")).getValue();
+		Double xA = ((Property<Double>) actorA.getProperties().getComponents().get("xLocation")).getValue();
+		Double yA = ((Property<Double>) actorA.getProperties().getComponents().get("yLocation")).getValue();
+		Double xB = ((Property<Double>) actorB.getProperties().getComponents().get("xLocation")).getValue();
+		Double yB = ((Property<Double>) actorB.getProperties().getComponents().get("yLocation")).getValue();
 		return Math.sqrt(Math.pow(xB - xA, 2) + Math.pow(yB - yA, 2));
 	}
 

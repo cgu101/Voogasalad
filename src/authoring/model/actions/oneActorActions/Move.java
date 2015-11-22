@@ -14,20 +14,17 @@ public class Move extends AActionOneActor{
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run(ActorGroups actorGroup, Actor actor) {
-		Double angle = ((Property<Double>) actor.getProperties().getComponents().get("angle")).getValue();
-		Double speed = ((Property<Double>) actor.getProperties().getComponents().get("angle")).getValue();
 
-		Property<Double> xP = (Property<Double>) actor.getProperties().getComponents().get("xlocation");
-		Property<Double> yP = (Property<Double>) actor.getProperties().getComponents().get("ylocation");
-		Double x = xP.getValue();
-		Double y = yP.getValue();
+		Double angle = ((Property<Double>) actor.getProperty("angle")).getValue();
+		Double speed = ((Property<Double>) actor.getProperty("speed")).getValue();
+		Double x = ((Property<Double>) actor.getProperty("xLocation")).getValue();
+		Double y = ((Property<Double>) actor.getProperty("yLocation")).getValue();
 		
-		x = Math.cos(Math.toRadians(angle)) * speed; 
-		y = Math.cos(Math.toRadians(angle)) * speed; 
-		
-		xP.setValue(x);
-		yP.setValue(y);
+		x = x + Math.cos(Math.toRadians(angle)) * speed; 
+		y = y + Math.sin(Math.toRadians(angle)) * speed;
 
-		System.out.println(this.getClass().getName()+ " Moved Actor!");
+		((Property<Double>)actor.getProperty("xLocation")).setValue(x);
+		((Property<Double>)actor.getProperty("yLocation")).setValue(y);
+		actorGroup.addActor(actor);
 	}
 }

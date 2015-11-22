@@ -13,7 +13,7 @@ public class Actor implements Identifiable, IActor {
 		this.myPropertyBundle = myPropertyBundle;
 		this.identifier = identifier;
 	}
-	
+
 	public Actor (Actor a) {
 		this.myPropertyBundle = new Bundle<Property<?>>(a.getProperties());
 		this.identifier = a.getUniqueID();
@@ -31,6 +31,29 @@ public class Actor implements Identifiable, IActor {
 
 	@Override
 	public Identifiable getCopy() {
-		return null;
+		return new Actor(this);
+	}
+
+	@Override
+	public Property<?> getProperty(String identifier) {
+		return (Property<?>) myPropertyBundle.getComponents().get(identifier);
+	}
+
+	@Override
+	public void setProperty(String identifier, Object value) {
+		myPropertyBundle.getComponents().get(identifier).setValue(value);
+	}
+	
+	@Override
+	public <T> void setProperty(Property<T> property) {
+		myPropertyBundle.getComponents().put(property.getUniqueID(), property);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> void setProperty(Property<T>... properties) {
+		for(Property<T> prop: properties){
+			setProperty(prop);
+		}
 	}
 }
