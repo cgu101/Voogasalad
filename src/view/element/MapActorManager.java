@@ -21,8 +21,6 @@ public class MapActorManager {
 	public void addActor(Node actor, double x, double y) {
 		actor.setTranslateX(x);
 		actor.setTranslateY(y);
-		System.out.println(x);
-		System.out.println(y);
 		mapLayout.getChildren().add(actor);
 	}
 	
@@ -36,7 +34,7 @@ public class MapActorManager {
 	 * @param background - the new background to be set
 	 */
 	public void updateBackground(Node background) {
-		mapLayout.getChildren().remove(background);
+		mapLayout.getChildren().remove(0);
 		mapLayout.getChildren().add(0, background);
 	}
 }

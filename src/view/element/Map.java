@@ -84,8 +84,11 @@ public class Map extends AbstractElement {
 	 * Update the Map's background to the Node in the parameter.
 	 * @param background - the Node to set as the new Map background
 	 */
-	public void updateBackground(Node background) {
-		actorManager.updateBackground(background);
+	public void updateBackground(Image background) {
+		ImageView bg = new ImageView(background);
+		actorManager.updateBackground(bg);
+		bg.fitWidthProperty().bind(pane.widthProperty());
+		bg.setPreserveRatio(true);
 	}
 
 	public Group getGroup() {
@@ -169,10 +172,7 @@ public class Map extends AbstractElement {
 
 	@Override
 	protected void makePane() {
-		Image backgroundImage = new Image("http://bitforgestudios.com/wp-content/uploads/2013/09/starfield.gif");
-		background = new ImageView(backgroundImage);
-		background.fitWidthProperty().bind(pane.widthProperty());
-		background.setPreserveRatio(true);
+		Image backgroundImage = new Image(myResources.getString("backgroundURL"));
 
 		// Test white rectangle
 		Rectangle test = new Rectangle(100, 100);
@@ -181,7 +181,7 @@ public class Map extends AbstractElement {
 		// Add any elements you want to appear on the map using this method
 		
 		addActor(test, 0, 0);
-		updateBackground(background);
+		updateBackground(backgroundImage);
 
 		// Create the map after adding elements you want
 		createTheMap();

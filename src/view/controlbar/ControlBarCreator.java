@@ -1,5 +1,8 @@
 package view.controlbar;
 
+import java.io.File;
+import java.io.IOException;
+
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
@@ -8,11 +11,14 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.Workspace;
@@ -81,7 +87,7 @@ public class ControlBarCreator extends ControlBar {
 		CheckMenuItem doubleLists = new CheckMenuItem(myResources.getString("dualactors"));
 		doubleLists.selectedProperty().bindBidirectional(findActorBrowser().getDoubleListsProperty());
 		
-		MenuItem changeBackground = makeMenuItem(myResources.getString("background"), null); //TODO:
+		MenuItem changeBackground = makeMenuItem(myResources.getString("background"), e -> updateBackground()); //TODO:
 		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow, doubleLists, changeBackground);
 		makeMenuBar(mainMenu, file, edit, window);
 	}
@@ -91,6 +97,26 @@ public class ControlBarCreator extends ControlBar {
 		if (!findActorBrowser().getShowingProperty().getValue()){
 			findActorBrowser().getShowingProperty().setValue(true);
 		}
+	}
+	
+	private void updateBackground() {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle(myResources.getString("background"));
+		fileChooser.getExtensionFilters().addAll(
+				new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+				new FileChooser.ExtensionFilter("PNG", "*.png")
+				);
+
+		File file = fileChooser.showOpenDialog(null);
+
+		try {
+			Image img = new Image(file.toURI().toURL().toExternalForm(), 60, 0, true, false);
+			workspace.getCurrentLevel().updateBackground(img);
+		} catch(IOException ex) {
+//			Alert fail = new Alert(AlertType.ERROR, "Unable to Load Image", ButtonType.OK);
+//			fail.showAndWait();
+		}
+		
 	}
 
 	private void toggleToolbar(Boolean value) {
@@ -108,7 +134,7 @@ public class ControlBarCreator extends ControlBar {
 			addToMenu(window, item);
 		}
 	}
-
+	
 	private ActorBrowser findActorBrowser() {
 		for (AbstractDockElement c : screen.getComponents()) {
 			if (c instanceof ActorBrowser) {
