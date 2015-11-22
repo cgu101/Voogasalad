@@ -2,7 +2,6 @@ package authoring.controller.constructor;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import authoring.controller.AuthoringConfigManager;
 import authoring.model.actors.Actor;
@@ -15,38 +14,88 @@ import voogasalad.util.reflection.Reflection;
 public class ActorGroupsConstructor {
 	
 	private ActorGroups actorGroups;
-		
-	ActorGroupsConstructor() {
+	
+	private static final String GROUP_ID = "groupID";
+	
+	/**
+	 * Empty contructor for ActorGroupsConstructor
+	 */
+	public ActorGroupsConstructor() {
 		actorGroups = new ActorGroups();
 	}
 	
+	/**
+	 * Returns the ActorGroups instance that has been built by the user. 
+	 * @return ActorGroups
+	 */
 	public ActorGroups getActorGroups() {
 		return actorGroups;
 	}
 	
-	public void updateActor(String className, String id, ActorPropertyMap propertyMap) {
-		updateActor(className, Arrays.asList(new String[] {id}), propertyMap);
+	/**
+	 * This method calls updateActor(List<String> ids, ActorPropertyMap propertyMap)
+	 * 
+	 * @param id
+	 * @param propertyMap
+	 */
+	public void updateActor(String id, ActorPropertyMap propertyMap) {
+		updateActor(Arrays.asList(new String[] {id}), propertyMap);
 	}
 	
-	public void updateActor(String className, List<String> ids, ActorPropertyMap propertyMap) {
-		Map<String, Actor> actors = actorGroups.getGroup(className).getComponents();
-		Bundle<Property<?>> properties = getPropertyBundle(propertyMap);
+	/**
+	 * This method will create a new instanc of an actor if it doesn't exist. Otherwise, it will update all of the actors
+	 * identified by the id's in the String list. 
+	 * 
+	 * @param ids
+	 * @param propertyMap
+	 */
+	public void updateActor(List<String> ids, ActorPropertyMap propertyMap) {		
+		Bundle<Actor> actorBundle = actorGroups.addGroup(propertyMap.getPropertyValue(GROUP_ID));		
+		Bundle<Property<?>> properties = getPropertyBundle(propertyMap);	
 		
 		for(String id: ids) {
-			if(actors.containsKey(id)) {
+			if(actorBundle.getComponents().containsKey(id)) {
 				for(Property<?> p: properties) {
-					actors.get(id).getProperties().add(p);
+					actorBundle.getComponents().get(id).getProperties().add(p);
 				}
 			} else {
-				actorGroups.addToGroup(className, new Actor(properties, id));
+				actorGroups.addActor(new Actor(properties, id));
 			} 
 		}
+	}
+	
+	/**
+	 * This method will delete all actors identified by id for a given String className.
+	 * 
+	 * @param className
+	 * @param ids
+	 */
+	public void deleteActor(String className, List<String> ids) {
+		Bundle<Actor> actorBundle = actorGroups.addGroup(className);
+		if(actorBundle != null) {
+			for(String id: ids) {
+				actorBundle.remove(id);
+			}
+		}
+	}
+	
+	/**
+	 * This method will return an individual actor identified by its className and id.
+	 * 
+	 * @param className
+	 * @param id
+	 * @return ACtor
+	 */
+	public Actor getActor(String className, String id) {
+		Bundle<Actor> actorBundle = actorGroups.addGroup(className);
+		return actorBundle.get(id);
 	}
 	
 	private Bundle<Property<?>> getPropertyBundle(ActorPropertyMap propertyMap) {
 		Bundle<Property<?>> ret = new Bundle<Property<?>>();
 		for(String p : propertyMap.getPropertyList()) {
 			String type = AuthoringConfigManager.getInstance().getPropertyType(p);
+			System.out.println(type);
 			Object newObject = Reflection.createInstance(type, propertyMap.getPropertyValue(p));
 			ret.add(new Property(p, newObject));
 		}

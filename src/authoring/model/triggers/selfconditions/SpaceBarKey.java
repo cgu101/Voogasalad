@@ -15,7 +15,7 @@ public class SpaceBarKey extends ASelfTrigger {
 			Actor... actors) {
 
 		if (inputManager.getValue("SPACE")) {
-			return performActions(actions, actorGroup, actors);
+			return true;
 		}
 		return false;
 	}

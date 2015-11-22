@@ -9,17 +9,19 @@ import authoring.model.actors.ActorGroups;
  */
 public abstract class AActionOneActor implements IAction {
 
-	public abstract void run(ActorGroups actorMap, Actor a);
+	/**
+	 * @param actorGroups ActorGroups object
+	 * @param a Actor that you want to run the action on/with
+	 */
+	public abstract void run(ActorGroups actorGroups, Actor a);
 
 	@Override
-	public void run(ActorGroups actorMap, Actor... a){
+	public void run(ActorGroups actorGroups, Actor... a){
 		for(Actor actor: a){
-			run (actorMap, actor);
+			run (actorGroups, actor);
 		}
 		if(a.length>1){
 			System.out.println(this.getClass().getName()+": More than 1 actor as argument!!. Running Action on all Actors");
 		}
 	}
-	
-	
 }

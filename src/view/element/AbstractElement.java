@@ -2,7 +2,12 @@ package view.element;
 
 import javafx.scene.layout.GridPane;
 import view.visual.AbstractVisual;
-
+/**
+ * @author David
+ * 
+ * A wrapper class for a GridPane that allows for modular construction of Screens.
+ * 
+ */
 public abstract class AbstractElement extends AbstractVisual {
 	public GridPane pane;
 
@@ -11,5 +16,9 @@ public abstract class AbstractElement extends AbstractVisual {
 	}
 
 	protected abstract void makePane();
+
+	public GridPane getPane() {
+		return pane;
+	}
 
 }

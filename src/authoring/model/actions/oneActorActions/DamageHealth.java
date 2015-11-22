@@ -9,13 +9,17 @@ import authoring.model.properties.Property;
  * @author Inan
  *
  */
-public class DamageHealth extends AActionOneActor{
+public class DamageHealth extends AActionOneActor {
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run(ActorGroups actorGroup, Actor actor) {
-		Property<Integer> health = (Property<Integer>) actor.getProperties().getComponents().get("health");
-		Integer h = health.getValue();
-		health.setValue(--h);
+		
+		Double decrement = 1.0;
+
+		Property<Double> health = (Property<Double>) actor.getProperty("health");
+		health.setValue(health.getValue() - decrement);
+
+		actorGroup.addActor(actor);
 	}
 }

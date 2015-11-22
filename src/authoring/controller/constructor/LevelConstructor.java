@@ -7,21 +7,38 @@ public class LevelConstructor {
 	private ActorGroupsConstructor actorConstructor;
 	private TreeConstructor treeConstructor;
 	
-	public LevelConstructor() {
+	LevelConstructor() {
 		actorConstructor = new ActorGroupsConstructor();
 		treeConstructor = new TreeConstructor();
 	}
 	
+	/**
+	 * Returns an ActorGroupContructor. 
+	 * 
+	 * @return ActorGroupsConstructor
+	 */
 	public ActorGroupsConstructor getActorGroupsConstructor() {
 		return actorConstructor;
 	}
 	
+	/**
+	 * Returns a TreeConstructor.
+	 * 
+	 * @return TreeConstructor
+	 */
 	public TreeConstructor getTreeConstructor() {
 		return treeConstructor;
 	}
 	
-	public Level buildLevel() {
-		Level ret = new Level();
+	/**
+	 * This method will return the Level that has been built by the user through the API calls
+	 * to TreeConstructor and ActorGroupsContructor. 
+	 * 
+	 * @param level
+	 * @return Level
+	 */
+	public Level buildLevel(String level) {
+		Level ret = new Level(level);
 		ret.setActorGroupsValues(actorConstructor);
 		ret.setTreeConstructorValues(treeConstructor);
 		return ret;
