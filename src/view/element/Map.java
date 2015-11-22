@@ -84,11 +84,11 @@ public class Map extends AbstractElement {
 	 * Update the Map's background to the Node in the parameter.
 	 * @param background - the Node to set as the new Map background
 	 */
-	public void updateBackground(Image background) {
-		ImageView bg = new ImageView(background);
-		actorManager.updateBackground(bg);
-		bg.fitWidthProperty().bind(pane.widthProperty());
-		bg.setPreserveRatio(true);
+	public void updateBackground(Image bg) {
+		background = new ImageView(bg);
+		background.fitWidthProperty().bind(pane.widthProperty());
+		background.setPreserveRatio(true);
+		actorManager.updateBackground(background);
 	}
 
 	public Group getGroup() {

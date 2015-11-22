@@ -87,7 +87,7 @@ public class ControlBarCreator extends ControlBar {
 		CheckMenuItem doubleLists = new CheckMenuItem(myResources.getString("dualactors"));
 		doubleLists.selectedProperty().bindBidirectional(findActorBrowser().getDoubleListsProperty());
 		
-		MenuItem changeBackground = makeMenuItem(myResources.getString("background"), e -> updateBackground()); //TODO:
+		MenuItem changeBackground = makeMenuItem(myResources.getString("background"), e -> updateBackground()); 
 		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow, doubleLists, changeBackground);
 		makeMenuBar(mainMenu, file, edit, window);
 	}
@@ -99,7 +99,7 @@ public class ControlBarCreator extends ControlBar {
 		}
 	}
 	
-	private void updateBackground() {
+ 	private void updateBackground() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(myResources.getString("background"));
 		fileChooser.getExtensionFilters().addAll(
@@ -110,8 +110,8 @@ public class ControlBarCreator extends ControlBar {
 		File file = fileChooser.showOpenDialog(null);
 
 		try {
-			Image img = new Image(file.toURI().toURL().toExternalForm(), 60, 0, true, false);
-			workspace.getCurrentLevel().updateBackground(img);
+			Image backgroundImage = new Image(file.toURI().toURL().toExternalForm(), 60, 0, true, false);
+			workspace.getCurrentLevel().updateBackground(backgroundImage);
 		} catch(IOException ex) {
 //			Alert fail = new Alert(AlertType.ERROR, "Unable to Load Image", ButtonType.OK);
 //			fail.showAndWait();
