@@ -63,17 +63,6 @@ public class PlayerController implements IPlayer {
 		start();
 	}
 
-	/*
-	 * public void loadGame (File file) { this.loadGame(file.getName()); try {
-	 * myXMLManager.testLoadGame(file); } catch (GameFileException e) {
-	 * System.out.println("Test has failed"); } }
-	 */
-
-	/*
-	 * private void initializeGame(Game game) throws EngineException {
-	 * myEngine.init(game); }
-	 */
-
 	/**
 	 * This method grabs the PlayerController's scene.
 	 */
@@ -192,7 +181,7 @@ public class PlayerController implements IPlayer {
 		pause();
 		State saveState;
 		try {
-			saveState = myEngine.ejectState();
+			saveState = myEngine.saveState();
 			XMLManager.saveState(saveState, fileName);
 		} catch (EngineStateException e) {
 			throw new GameFileException(e.getMessage());
@@ -209,7 +198,7 @@ public class PlayerController implements IPlayer {
 		pause();
 		State saveState = XMLManager.loadState(fileName);
 		try {
-			myEngine.injectState(saveState);
+			myEngine.loadState(saveState);
 		} catch (EngineException e) {
 			throw new GameFileException(e.getMessage());
 		}
