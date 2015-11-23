@@ -112,8 +112,8 @@ public class PlayerScreen extends AbstractScreen {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EngineException ee) {
-			// TODO Auto-generated catch block
-			ee.printStackTrace();
+//			ee.printStackTrace();
+			System.err.println("Level exception!");
 		}
 		monitor.initializePane();
 		monitor.refresh();
