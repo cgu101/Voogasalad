@@ -331,7 +331,7 @@ Post conditions include the objectives must be able to be reset, as well as any 
 
 ### Use Case 33: ###
 
-#### Filler ####
+#### User can specify, when creating a level, the dimensions of the level, and the Player window will resize to match this. ####
 
 
 ----------
@@ -339,21 +339,21 @@ Post conditions include the objectives must be able to be reset, as well as any 
 
 ### Use Case 34: ###
 
-#### Filler ####
+#### User can define custom events and triggers using a scripting language and taking advantage of a clear and convenient API. ####
 
 
 ----------
 
 ### Use Case 35: ###
 
-#### Filler ####
+#### User can save their levels or game progress to Ted’s cloud services utility. They can then load them at a later time, from any internet-connected machine. ####
 
 
 ----------
 
 ### Use Case 36: ###
 
-#### Filler ####
+#### User will have a large variety of premade and readily available sprite sheets, triggers, events, and game objectives to choose from when creating their game. ####
 
 
 ----------

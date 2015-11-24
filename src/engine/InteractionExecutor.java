@@ -42,17 +42,20 @@ public class InteractionExecutor {
 	}
 	
 	public InteractionExecutor (Level level, InputManager inputMap) {
-		this.currentLevelIdentifier = level.getUniqueID();
-		this.selfTriggerTree = level.getSelfTriggerTree();
-		this.externalTriggerTree = level.getInteractionTree();
-//		System.out.println(level.getActorGroups().getMap() + " InteractionExecutor 44");
-		this.currentActorMap = level.getActorGroups();
+		this();
 		this.inputMap = inputMap;
 		
-		this.triggerMap = level.getTriggerMap();
-		this.actionMap = level.getActionMap();
-		
-		this.nextActorMap = new ActorGroups(currentActorMap);
+		if (level != null) {
+			this.currentLevelIdentifier = level.getUniqueID();
+			this.selfTriggerTree = level.getSelfTriggerTree();
+			this.externalTriggerTree = level.getInteractionTree();
+			this.currentActorMap = level.getActorGroups();
+
+			this.triggerMap = level.getTriggerMap();
+			this.actionMap = level.getActionMap();
+
+			this.nextActorMap = new ActorGroups(currentActorMap);
+		}
 	}
 	/**
 	 * Runs a single step of the level. Resolves all self-triggers before external triggers.
@@ -63,7 +66,8 @@ public class InteractionExecutor {
 		runSelfTriggers();
 		runExternalTriggers();
 		currentActorMap = nextActorMap;
-		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
+//		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
+		return new EngineHeartbeat((IPlayer p) -> {});
 	}
 	
 	private void runSelfTriggers () {

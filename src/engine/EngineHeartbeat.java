@@ -3,13 +3,17 @@ package engine;
 import player.IPlayer;
 
 public class EngineHeartbeat {
-	private InteractionExecutor myGameState;
+//	private InteractionExecutor myGameState;
 	private PlayerCaller myPlayerCaller;
 	
-	public EngineHeartbeat(InteractionExecutor ref, PlayerCaller p){
-		myGameState = ref;
+	public EngineHeartbeat (PlayerCaller p) {
 		myPlayerCaller = p;
 	}
+	
+//	public EngineHeartbeat(InteractionExecutor ref, PlayerCaller p){
+//		myGameState = ref;
+//		myPlayerCaller = p;
+//	}
 	
 	/**
 	 * Calls the PlayerCaller class
