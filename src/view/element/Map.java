@@ -1,5 +1,6 @@
 package view.element;
 
+import authoring.model.actors.Actor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
@@ -67,7 +68,7 @@ public class Map extends AbstractElement {
 	 * @param x	- horizontal position to place the Node
 	 * @param y - vertical position to place the Node
 	 */
-	public void addActor(Node element, double x, double y) {
+	public void addActor(Actor element, double x, double y) {
 		// Use this method to add an actor to the StackPane.
 		actorManager.addActor(element, x, y);
 	}
@@ -174,13 +175,7 @@ public class Map extends AbstractElement {
 	protected void makePane() {
 		Image backgroundImage = new Image(myResources.getString("backgroundURL"));
 
-		// Test white rectangle
-		Rectangle test = new Rectangle(100, 100);
-		test.setFill(Color.GRAY);
-
 		// Add any elements you want to appear on the map using this method
-		
-		addActor(test, 0, 0);
 		updateBackground(backgroundImage);
 
 		// Create the map after adding elements you want

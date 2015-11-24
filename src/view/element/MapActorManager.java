@@ -1,12 +1,15 @@
 package view.element;
 
+import authoring.model.actors.Actor;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import util.Sprite;
 
 /**
  * The MapActorManager class is responsible for adding and removing all Nodes that
@@ -25,16 +28,23 @@ public class MapActorManager {
 		mapLayout = layout;
 		currNode = null;
 		moveActor = false;
-	}
+	}	
 	
-	
-	public void addActor(Node actor, double x, double y) {
-		currNode = actor;
+	public void addActor(Actor actor, double x, double y) {		
+		String img = (String) actor.getProperties().getComponents().get("image").getValue();
+		Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
+		Sprite newSp = new Sprite(image);
+		currNode = newSp;
+
 		ContextMenu cm = makeContextMenu();
-		actor.setOnContextMenuRequested(e -> cm.show(actor, e.getScreenX(), e.getScreenY()));
-		actor.setTranslateX(x);
-		actor.setTranslateY(y);
-		mapLayout.getChildren().add(actor);
+		newSp.setOnContextMenuRequested(e -> {
+			currNode = newSp;
+			cm.show(newSp, e.getScreenX(), e.getScreenY());
+		});
+		
+		newSp.setTranslateX(x);
+		newSp.setTranslateY(y);
+		mapLayout.getChildren().add(newSp);
 	}
 	
 	private ContextMenu makeContextMenu() {
@@ -60,6 +70,8 @@ public class MapActorManager {
 			
 			currNode.setTranslateX(x);
 			currNode.setTranslateY(y);
+			
+			// TODO: edit properties file
 			moveActor = false;
 		}
 	}
@@ -98,7 +110,9 @@ public class MapActorManager {
 	 * @param background - the new background to be set
 	 */
 	public void updateBackground(Node background) {
-		mapLayout.getChildren().remove(0);
+		if (!mapLayout.getChildren().isEmpty()) {
+			mapLayout.getChildren().remove(0);
+		}
 		mapLayout.getChildren().add(0, background);
 		background.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> dragDrop(e));
 	}

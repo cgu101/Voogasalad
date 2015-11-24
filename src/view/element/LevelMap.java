@@ -1,7 +1,6 @@
 package view.element;
 
 import java.util.Date;
-import java.util.ResourceBundle;
 
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
@@ -9,12 +8,10 @@ import authoring.model.actors.ActorPropertyMap;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.effect.BlendMode;
-import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
-import util.Sprite;
 import view.screen.AbstractScreen;
 
 public class LevelMap extends Map {
@@ -42,24 +39,15 @@ public class LevelMap extends Map {
 			String actor = db.getString();
 			ActorPropertyMap map = controller.getAuthoringActorConstructor().getActorPropertyMap(actor);
 
-//			map.addProperty("xLocation", "" + (event.getSceneX() - this.getPane().getLayoutX()));
-//			map.addProperty("yLocation", "" + (event.getSceneY() - this.getPane().getLayoutY()));
-			
 			map.addProperty("xLocation", "" + (event.getX()));
 			map.addProperty("yLocation", "" + (event.getY())); //TODO Change this
 			
-//			map.addProperty("xLocation", "" + (event.getSceneX()));
-//			map.addProperty("yLocation", "" + (event.getSceneY() - 50)); //TODO Change this
 			String uniqueID = new Date().toString();
 			controller.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, map);
 
 			Actor a = controller.getLevelConstructor().getActorGroupsConstructor().getActor(actor, uniqueID);
 
-			String img = (String) a.getProperties().getComponents().get("image").getValue();
-			Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
-			Sprite newSp = new Sprite(image);
-
-			addActor(newSp, (double)a.getProperties().getComponents().get("xLocation").getValue(),
+			addActor(a, (double)a.getProperties().getComponents().get("xLocation").getValue(),
 					(double)a.getProperties().getComponents().get("yLocation").getValue());
 
 			success = true;
