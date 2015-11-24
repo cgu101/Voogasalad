@@ -22,7 +22,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
+/**
+ * KeyLibrary: A utility for assigning keys and keeping track of which keys are being used.
+ * @author David
+ *
+ */
 public class KeyLibrary {
 	private Stage stage;
 	private GridPane mainPane;
@@ -33,29 +37,74 @@ public class KeyLibrary {
 	private Text currentKey;
 	private ResourceBundle myResources = ResourceBundle.getBundle("KeyLibrary/KeyLibrary");
 	private boolean multi;
+	private Scene s;
 
+	/**
+	 * 
+	 * @param multi
+	 */
 	public KeyLibrary(boolean multi) {
 		this.multi = multi;
 		load();
 		makePane();
 	}
 
-	public KeyCode checkout(String s, KeyCode selection) {
+	/**
+	 * 
+	 * @param s
+	 * @param selection
+	 * @return
+	 */
+	public boolean checkoutKey(String s, KeyCode selection) {
+		if (!library.keySet().contains(selection)) {
+			return false;
+		}
 		if (!multi && !library.get(selection).isEmpty()) {
-			return null;
+			return false;
 		}
 		if (!mainPane.getChildren().contains(keys.get(selection))) {
 			mainPane.add(keys.get(selection), 0, 0);
 		}
 		library.get(selection).add(s);
-		return selection;
+		return true;
+	}
+
+	public boolean checkoutKey(String s) {
+		show();
+		// showAndWaitResult = _______;
+		// library.get(showAndWaitResult).add(s);
+		return true;
+
+	}
+
+	public boolean returnKey(String s, KeyCode selection) {
+		if (library.get(selection).contains(s)) {
+			library.get(selection).remove(s);
+			if (library.get(selection).isEmpty()) {
+				mainPane.getChildren().remove(keys.get(selection));
+			}
+			return true;
+		}
+		return false;
+	}
+
+	public boolean returnKey(String s) {
+		boolean output = false;
+		for (KeyCode selection : library.keySet()) {
+			if (library.get(selection).contains(s)) {
+				library.get(selection).remove(s);
+				if (library.get(selection).isEmpty()) {
+					mainPane.getChildren().remove(keys.get(selection));
+				}
+				output = true;
+			}
+		}
+		return output;
 	}
 
 	public void show() {
 		if (stage == null) {
 			stage = new Stage();
-			Scene s = new Scene(mainPane);
-			s.setOnKeyPressed(e -> select(e));
 			stage.setScene(s);
 			stage.setTitle(myResources.getString("title"));
 			stage.show();
@@ -63,6 +112,7 @@ public class KeyLibrary {
 			stage.setAlwaysOnTop(true);
 			stage.setOnCloseRequest(e -> {
 				currentKey.setText(myResources.getString("default"));
+				stage = null;
 			});
 		}
 	}
@@ -106,6 +156,8 @@ public class KeyLibrary {
 		infoPane.add(list, 0, 1);
 		mainPane.add(infoPane, 1, 0);
 		mainPane.setHgap(Double.parseDouble(myResources.getString("hgap")));
+		s = new Scene(mainPane);
+		s.setOnKeyPressed(e -> select(e));
 	}
 
 	private void select(KeyEvent e) {
