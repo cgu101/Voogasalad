@@ -1,6 +1,7 @@
 package engine;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -81,7 +82,9 @@ public class InteractionExecutor {
 				for (InteractionTreeNode trigger : triggerNodes) {
 					List<InteractionTreeNode> actionNodes = trigger.children();
 					ITriggerEvent selfTriggerEvent = triggerMap.get(trigger.getValue());
-					selfTriggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, (Actor) uniqueA.getCopy());
+					if (selfTriggerEvent.condition(nextActorMap, inputMap, (Actor) uniqueA.getCopy())) {
+						performActions(parseActions(actionNodes), nextActorMap, (Actor) uniqueA.getCopy());
+					}
 				}
 			}
 		}	
@@ -96,7 +99,9 @@ public class InteractionExecutor {
 						for (InteractionTreeNode trigger : triggerNodes) {
 							List<InteractionTreeNode> actionNodes = trigger.children();
 							ITriggerEvent triggerEvent = triggerMap.get(trigger.getValue());
-							triggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy());
+							if (triggerEvent.condition(nextActorMap, inputMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy())) {
+								performActions(parseActions(actionNodes), nextActorMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy());
+							}
 						}
 					}
 				}
@@ -124,4 +129,13 @@ public class InteractionExecutor {
 	public String getLevelID () {
 		return currentLevelIdentifier;
 	}
+	
+	public boolean performActions(List<IAction> actions, ActorGroups actorGroup, Actor... actors) {
+		Iterator<IAction> iterator = actions.iterator();
+		while (iterator.hasNext()) {
+			iterator.next().run(actorGroup, actors);
+		}
+		return actions.size() > 0;
+	}
+	
 }

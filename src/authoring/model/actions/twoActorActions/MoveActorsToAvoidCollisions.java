@@ -70,6 +70,6 @@ public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 
 	private boolean checkIfCollided(ActorGroups actorGroup, Actor a, Actor b) {
 		CircleCollision circleCollision = new CircleCollision();
-		return circleCollision.condition(null, actorGroup, null, new Actor[] { a, b });
+		return circleCollision.condition(actorGroup, null, new Actor[] { a, b });
 	}
 }
