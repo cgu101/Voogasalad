@@ -27,7 +27,7 @@ public class SwapDirections extends AActionTwoActors {
 		adjust.run(actorGroup, a, b);
 		
 		CircleCollision collision = new CircleCollision();
-		if (collision.condition(actorGroup, null, new Actor[]{ a , b})) {
+		if (collision.condition(null, new Actor[]{ a , b})) {
 			System.out.println("STILL COLLIDING AFTER ADJUSTMENT");
 		}
 		

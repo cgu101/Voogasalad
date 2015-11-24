@@ -82,7 +82,7 @@ public class InteractionExecutor {
 				for (InteractionTreeNode trigger : triggerNodes) {
 					List<InteractionTreeNode> actionNodes = trigger.children();
 					ITriggerEvent selfTriggerEvent = triggerMap.get(trigger.getValue());
-					if (selfTriggerEvent.condition(nextActorMap, inputMap, (Actor) uniqueA.getCopy())) {
+					if (selfTriggerEvent.condition(inputMap, (Actor) uniqueA.getCopy())) {
 						performActions(parseActions(actionNodes), nextActorMap, (Actor) uniqueA.getCopy());
 					}
 				}
@@ -99,7 +99,7 @@ public class InteractionExecutor {
 						for (InteractionTreeNode trigger : triggerNodes) {
 							List<InteractionTreeNode> actionNodes = trigger.children();
 							ITriggerEvent triggerEvent = triggerMap.get(trigger.getValue());
-							if (triggerEvent.condition(nextActorMap, inputMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy())) {
+							if (triggerEvent.condition(inputMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy())) {
 								performActions(parseActions(actionNodes), nextActorMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy());
 							}
 						}
