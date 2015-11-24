@@ -1,8 +1,8 @@
-package authoring.tests;
+package authoring.events;
 
-import authoring.tests.interfaces.ICondition;
-import authoring.tests.interfaces.IExecuter;
-import authoring.tests.interfaces.IReaction;
+import authoring.events.interfaces.ICondition;
+import authoring.events.interfaces.IExecuter;
+import authoring.events.interfaces.IReaction;
 
 public class Executer implements IExecuter {
 

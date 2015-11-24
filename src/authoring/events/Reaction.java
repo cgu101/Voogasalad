@@ -1,7 +1,7 @@
-package authoring.tests;
+package authoring.events;
 
-import authoring.tests.interfaces.IAction;
-import authoring.tests.interfaces.IReaction;
+import authoring.events.interfaces.IAction;
+import authoring.events.interfaces.IReaction;
 
 public class Reaction implements IReaction {
 	private IAction action;
