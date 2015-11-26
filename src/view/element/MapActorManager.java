@@ -1,50 +1,63 @@
 package view.element;
 
+import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import util.Sprite;
+import view.visual.AbstractVisual;
 
 /**
  * The MapActorManager class is responsible for adding and removing all Nodes that
  * are displayed within the Map's ScrollPane. Actors and backgrounds are added
  * through separate methods.
- * @author Daniel
- * @modified Bridget
+ * @author Daniel, Bridget
  * 
  */
-public class MapActorManager {
+public class MapActorManager extends AbstractVisual {
 	private Group mapLayout;
 	private Node currNode;
-	private boolean moveActor;
+	private Actor currActor;
+	private AuthoringController controller;
 	
-	public MapActorManager(Group layout) {
+	public MapActorManager(Group layout, AuthoringController ac) {
 		mapLayout = layout;
 		currNode = null;
-		moveActor = false;
+		currActor = null;
+		controller = ac;
 	}	
 	
 	public void addActor(Actor actor, double x, double y) {		
-		String img = (String) actor.getProperties().getComponents().get("image").getValue();
+		currActor = actor;
+		String img = (String) currActor.getProperties().getComponents().get("image").getValue();
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
-		Sprite newSp = new Sprite(image);
-		currNode = newSp;
-
+		Sprite sp = new Sprite(image);
+		currNode = sp;
+		
 		ContextMenu cm = makeContextMenu();
-		newSp.setOnContextMenuRequested(e -> {
-			currNode = newSp;
-			cm.show(newSp, e.getScreenX(), e.getScreenY());
+		sp.setOnContextMenuRequested(e -> {
+			currActor = actor;
+			currNode = sp;
+			cm.show(sp, e.getScreenX(), e.getScreenY());
 		});
 		
-		newSp.setTranslateX(x);
-		newSp.setTranslateY(y);
-		mapLayout.getChildren().add(newSp);
+		sp.setTranslateX(x);
+		sp.setTranslateY(y);
+		mapLayout.getChildren().add(sp);
 	}
 	
 	private ContextMenu makeContextMenu() {
@@ -58,36 +71,86 @@ public class MapActorManager {
 
 		return cm;
 	}
-	
+		
 	private void moveActor() {
-		moveActor = true;
+		// TODO: make rect & hello length of top of background image & 
+		// make hello float at top of screen
+
+		double origX = currNode.getTranslateX();
+		double origY = currNode.getTranslateY();
+		Rectangle rect = new Rectangle(700, 700); // TODO: make it the size of the background image
+		rect.setFill(Color.rgb(255, 0, 0, 0.3));
+		rect.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> dragDrop(e));
+
+		ToolBar hello = new ToolBar();
+		hello.setMinWidth(700);
+		Pane spacer = new Pane();
+		HBox.setHgrow(spacer, Priority.SOMETIMES);
+		Label instru = makeLabel("Click on new location for actor");
+		Button undo = makeButton("Return to original position", e -> revertToPosition(origX, origY));
+		Button exitFilter = makeButton("Finished", e -> removeElements(rect, hello)); 
+		hello.getItems().addAll(instru, spacer, undo, exitFilter);
+		
+		mapLayout.getChildren().addAll(rect, hello);
+	}
+	
+	private void removeElements(Node... nodes) {
+		for (Node n : nodes) {
+			mapLayout.getChildren().remove(n);
+		}
+	}
+	
+	private void revertToPosition(double x, double y) {
+		currNode.setTranslateX(x);
+		currNode.setTranslateY(y);
+	}
+	
+	private Label makeLabel(String text) {
+		Label l = new Label(text);
+		l.setFont(textFont);
+		return l;
+	}
+	
+	private Button makeButton(String title, EventHandler<ActionEvent> handler) {
+		Button b = new Button(title);
+		b.setOnAction(handler);
+		b.setFont(textFont);
+		return b;
 	}
 
 	private void dragDrop(MouseEvent e) {
-		if (moveActor) {
-			double x = e.getX();
-			double y = e.getY();
-			
-			currNode.setTranslateX(x);
-			currNode.setTranslateY(y);
-			
-			// TODO: edit properties file
-			moveActor = false;
-		}
+		double x = e.getX();
+		double y = e.getY();
+
+		currNode.setTranslateX(x);
+		currNode.setTranslateY(y);
 	}
 
 	private void copyActor() {
 		// TODO: 
-		// create a copy of neighbor and set it as currNode
-		// add currNode to list of nodes
-		// moveNode = true;
+		// refactor with moveActor()
+		Actor a = new Actor(currActor);
+		addActor(a, 0, 0);
+		
+		Rectangle rect = new Rectangle(700, 700); // TODO: make it the size of the background image
+		rect.setFill(Color.rgb(255, 0, 0, 0.3));
+		rect.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> dragDrop(e));
+		
+		ToolBar hello = new ToolBar();
+		hello.setMinWidth(700);
+		Pane spacer = new Pane();
+		HBox.setHgrow(spacer, Priority.SOMETIMES);
+		Label instru = makeLabel("Click on location for new actor");
+		Button exitFilter = makeButton("Finished", e -> removeElements(rect, hello)); 
+		hello.getItems().addAll(instru, spacer, exitFilter);
+		
+		mapLayout.getChildren().addAll(rect, hello);
 	}
 	
 	private void editParams() {
 		// TODO:
 		// create a pop up dialog that a) contains current parameters
 		// b) allows user to edit and change parameters (which are then saved)
-		// *** map actor manager needs access to the actual actors, not just their imageviews.
 	}
 
 	private void removeActor() {
@@ -114,6 +177,5 @@ public class MapActorManager {
 			mapLayout.getChildren().remove(0);
 		}
 		mapLayout.getChildren().add(0, background);
-		background.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> dragDrop(e));
 	}
 }

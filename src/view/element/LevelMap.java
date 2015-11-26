@@ -17,14 +17,12 @@ import view.screen.AbstractScreen;
 public class LevelMap extends Map {
 	private Tab myTab;
 	private ScrollPane sp;
-	private AuthoringController controller;
 
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
 		super(pane);
 		myTab = new Tab("Level " + (i + 1));
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));
-		controller = new AuthoringController();
 		mapArea.setOnDragEntered(event -> dragIntoMap(event));
 		mapArea.setOnDragExited(event -> dragOutsideMap(event));
 			

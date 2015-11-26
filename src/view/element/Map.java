@@ -1,5 +1,6 @@
 package view.element;
 
+import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -28,6 +29,7 @@ public class Map extends AbstractElement {
 	private Group zoomGroup;
 	private Group layout;
 	private AbstractScreen screen;
+	protected AuthoringController controller;
 
 	protected ScrollPane mapArea;
 	private MapZoomSlider sliderArea;
@@ -57,7 +59,8 @@ public class Map extends AbstractElement {
 
 		// The actorManager needs access to the layout so it can place actors on
 		// it
-		actorManager = new MapActorManager(layout);
+		controller = new AuthoringController();
+		actorManager = new MapActorManager(layout, controller);
 
 		makePane();
 	}
