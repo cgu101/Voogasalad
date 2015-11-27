@@ -21,7 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
-import view.element.Workspace;
+import view.level.Workspace;
 import view.screen.CreatorScreen;
 import view.screen.StartScreen;
 

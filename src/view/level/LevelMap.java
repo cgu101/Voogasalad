@@ -1,4 +1,4 @@
-package view.element;
+package view.level;
 
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -15,9 +15,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import util.Sprite;
+import view.element.Map;
 import view.screen.AbstractScreen;
 
-public class LevelMap extends Map {
+public class LevelMap extends Map implements LevelInterface {
 	private Tab myTab;
 	private ScrollPane sp;
 	private AuthoringController controller;
@@ -30,7 +31,7 @@ public class LevelMap extends Map {
 		controller = new AuthoringController();
 		mapArea.setOnDragEntered(event -> dragIntoMap(event));
 		mapArea.setOnDragExited(event -> dragOutsideMap(event));
-			
+
 		mapArea.setOnDragOver(event -> dragAroundMap(event));
 		mapArea.setOnDragDropped(event -> dragDrop(event));
 	}
@@ -42,14 +43,18 @@ public class LevelMap extends Map {
 			String actor = db.getString();
 			ActorPropertyMap map = controller.getAuthoringActorConstructor().getActorPropertyMap(actor);
 
-//			map.addProperty("xLocation", "" + (event.getSceneX() - this.getPane().getLayoutX()));
-//			map.addProperty("yLocation", "" + (event.getSceneY() - this.getPane().getLayoutY()));
-			
+			// map.addProperty("xLocation", "" + (event.getSceneX() -
+			// this.getPane().getLayoutX()));
+			// map.addProperty("yLocation", "" + (event.getSceneY() -
+			// this.getPane().getLayoutY()));
+
 			map.addProperty("xLocation", "" + (event.getX()));
-			map.addProperty("yLocation", "" + (event.getY())); //TODO Change this
-			
-//			map.addProperty("xLocation", "" + (event.getSceneX()));
-//			map.addProperty("yLocation", "" + (event.getSceneY() - 50)); //TODO Change this
+			map.addProperty("yLocation", "" + (event.getY())); // TODO Change
+																// this
+
+			// map.addProperty("xLocation", "" + (event.getSceneX()));
+			// map.addProperty("yLocation", "" + (event.getSceneY() - 50));
+			// //TODO Change this
 			String uniqueID = new Date().toString();
 			controller.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, map);
 
@@ -59,8 +64,8 @@ public class LevelMap extends Map {
 			Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
 			Sprite newSp = new Sprite(image);
 
-			addActor(newSp, (double)a.getProperties().getComponents().get("xLocation").getValue(),
-					(double)a.getProperties().getComponents().get("yLocation").getValue());
+			addActor(newSp, (double) a.getProperties().getComponents().get("xLocation").getValue(),
+					(double) a.getProperties().getComponents().get("yLocation").getValue());
 
 			success = true;
 		}
@@ -74,7 +79,7 @@ public class LevelMap extends Map {
 		}
 		event.consume();
 	}
-	
+
 	private void dragOutsideMap(DragEvent event) {
 		if (event.getGestureSource() != mapArea && event.getDragboard().hasString()) {
 			background.setBlendMode(null);
@@ -86,9 +91,9 @@ public class LevelMap extends Map {
 		if (event.getGestureSource() != mapArea && event.getDragboard().hasString()) {
 			event.acceptTransferModes(TransferMode.ANY);
 		}
-		event.consume();	
+		event.consume();
 	}
-	
+
 	public Tab getTab() {
 		return myTab;
 	}

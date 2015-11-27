@@ -1,4 +1,4 @@
-package view.element;
+package view.level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,8 @@ import javafx.geometry.Side;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
+import view.element.AbstractDockElement;
+import view.element.AbstractElement;
 import view.screen.AbstractScreen;
 
 public class Workspace extends AbstractElement {
