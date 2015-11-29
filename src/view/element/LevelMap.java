@@ -83,7 +83,7 @@ public class LevelMap extends Map {
 		if (event.getGestureSource() != mapScrollableArea && event.getDragboard().hasString()) {
 			event.acceptTransferModes(TransferMode.ANY);
 		}
-		event.consume();	
+		event.consume();
 	}
 	
 	public Tab getTab() {

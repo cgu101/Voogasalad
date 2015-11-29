@@ -134,7 +134,7 @@ public class Map extends AbstractElement {
 		createMiniMap();
 
 		mapArea.getChildren().add(mapScrollableArea);
-		mapArea.getChildren().add(miniMapNode.getMiniMap());
+		//mapArea.getChildren().add(miniMapNode.getMiniMap());
 	}
 	
 	private void createMapScrollPane() {
@@ -206,5 +206,7 @@ public class Map extends AbstractElement {
 		// Add the map to the GridPane
 		addMapToPane(pane);
 		System.out.println(layout.getBoundsInParent());
+		//System.out.println(mapScrollableArea.getHvalue());
+		//System.out.println(mapScrollableArea.getVvalue());
 	}
 }
