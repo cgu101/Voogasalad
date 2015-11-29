@@ -3,10 +3,8 @@ package view.element;
 import java.util.ArrayList;
 import java.util.List;
 
-import authoring.controller.AuthoringController;
 import authoring.controller.constructor.LevelConstructor;
 import javafx.beans.value.ChangeListener;
-import javafx.event.EventHandler;
 import javafx.geometry.Side;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;

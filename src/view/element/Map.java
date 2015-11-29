@@ -1,18 +1,18 @@
 package view.element;
 
+import authoring.controller.AuthoringController;
+import authoring.model.actors.Actor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
 import javafx.scene.transform.Scale;
 import view.screen.AbstractScreen;
 /**
@@ -28,6 +28,7 @@ public class Map extends AbstractElement {
 	private Group zoomGroup;
 	private Group layout;
 	private AbstractScreen screen;
+	protected AuthoringController controller;
 
 	private StackPane mapArea;
 	protected ScrollPane mapScrollableArea;
@@ -60,7 +61,8 @@ public class Map extends AbstractElement {
 
 		// The actorManager needs access to the layout so it can place actors on
 		// it
-		actorManager = new MapActorManager(layout);
+		controller = new AuthoringController();
+		actorManager = new MapActorManager(layout, controller);
 
 		makePane();
 	}
@@ -71,7 +73,7 @@ public class Map extends AbstractElement {
 	 * @param x	- horizontal position to place the Node
 	 * @param y - vertical position to place the Node
 	 */
-	public void addActor(Node element, double x, double y) {
+	public void addActor(Actor element, double x, double y) {
 		// Use this method to add an actor to the StackPane.
 		actorManager.addActor(element, x, y);
 	}
@@ -191,8 +193,7 @@ public class Map extends AbstractElement {
 		Rectangle test = new Rectangle(700, 724);
 		test.setFill(Color.RED);
 
-		// Add any elements you want to appear on the map using this method
-		
+
 		updateBackground(backgroundImage);
 		//addActor(test, 0, 0);
 
