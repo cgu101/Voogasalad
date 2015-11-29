@@ -28,11 +28,11 @@ public class LevelMap extends Map {
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));
 		controller = new AuthoringController();
-		mapArea.setOnDragEntered(event -> dragIntoMap(event));
-		mapArea.setOnDragExited(event -> dragOutsideMap(event));
+		mapScrollableArea.setOnDragEntered(event -> dragIntoMap(event));
+		mapScrollableArea.setOnDragExited(event -> dragOutsideMap(event));
 			
-		mapArea.setOnDragOver(event -> dragAroundMap(event));
-		mapArea.setOnDragDropped(event -> dragDrop(event));
+		mapScrollableArea.setOnDragOver(event -> dragAroundMap(event));
+		mapScrollableArea.setOnDragDropped(event -> dragDrop(event));
 	}
 
 	private void dragDrop(DragEvent event) {
@@ -66,24 +66,26 @@ public class LevelMap extends Map {
 		}
 		event.setDropCompleted(success);
 		event.consume();
+		System.out.println(myTab.getTabPane().getBoundsInParent());
+
 	}
 
 	private void dragIntoMap(DragEvent event) {
-		if (event.getGestureSource() != mapArea && event.getDragboard().hasString()) {
+		if (event.getGestureSource() != mapScrollableArea && event.getDragboard().hasString()) {
 			background.setBlendMode(BlendMode.MULTIPLY);
 		}
 		event.consume();
 	}
 	
 	private void dragOutsideMap(DragEvent event) {
-		if (event.getGestureSource() != mapArea && event.getDragboard().hasString()) {
+		if (event.getGestureSource() != mapScrollableArea && event.getDragboard().hasString()) {
 			background.setBlendMode(null);
 		}
 		event.consume();
 	}
 
 	private void dragAroundMap(DragEvent event) {
-		if (event.getGestureSource() != mapArea && event.getDragboard().hasString()) {
+		if (event.getGestureSource() != mapScrollableArea && event.getDragboard().hasString()) {
 			event.acceptTransferModes(TransferMode.ANY);
 		}
 		event.consume();	

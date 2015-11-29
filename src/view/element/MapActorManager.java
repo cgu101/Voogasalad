@@ -20,14 +20,14 @@ public class MapActorManager {
 	private Group mapLayout;
 	private Node currNode;
 	private boolean moveActor;
-	
+
 	public MapActorManager(Group layout) {
 		mapLayout = layout;
 		currNode = null;
 		moveActor = false;
 	}
-	
-	
+
+
 	public void addActor(Node actor, double x, double y) {
 		currNode = actor;
 		ContextMenu cm = makeContextMenu();
@@ -36,19 +36,19 @@ public class MapActorManager {
 		actor.setTranslateY(y);
 		mapLayout.getChildren().add(actor);
 	}
-	
+
 	private ContextMenu makeContextMenu() {
 		ContextMenu cm = new ContextMenu();
 		MenuItem moveActor = makeMenuItem("Move Actor", event -> moveActor());
 		MenuItem copyActor = makeMenuItem("Copy Actor", event -> copyActor());
 		MenuItem deleteActor = makeMenuItem("Delete Actor", event -> removeActor());
 		MenuItem editParam = makeMenuItem("Edit Parameters", event -> editParams());
-		
+
 		cm.getItems().addAll(moveActor, copyActor, deleteActor, editParam);
 
 		return cm;
 	}
-	
+
 	private void moveActor() {
 		moveActor = true;
 	}
@@ -57,7 +57,7 @@ public class MapActorManager {
 		if (moveActor) {
 			double x = e.getX();
 			double y = e.getY();
-			
+
 			currNode.setTranslateX(x);
 			currNode.setTranslateY(y);
 			moveActor = false;
@@ -70,7 +70,7 @@ public class MapActorManager {
 		// add currNode to list of nodes
 		// moveNode = true;
 	}
-	
+
 	private void editParams() {
 		// TODO:
 		// create a pop up dialog that a) contains current parameters
@@ -81,24 +81,26 @@ public class MapActorManager {
 	private void removeActor() {
 		mapLayout.getChildren().remove(currNode);
 	}
-	
+
 	public void removeActor(Node actor) {
 		mapLayout.getChildren().remove(actor);
 	}
-	
+
 	private MenuItem makeMenuItem(String title, EventHandler<ActionEvent> handler) {
 		MenuItem res = new MenuItem(title);
 		res.setOnAction(handler);
 		return res;
 	}
-	
+
 	/**
 	 * Removes the current background and adds the specified background as the new
 	 * background.
 	 * @param background - the new background to be set
 	 */
 	public void updateBackground(Node background) {
-		mapLayout.getChildren().remove(0);
+		if(!mapLayout.getChildren().isEmpty()) {
+			mapLayout.getChildren().remove(0);
+		}
 		mapLayout.getChildren().add(0, background);
 		background.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> dragDrop(e));
 	}

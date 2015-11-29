@@ -1,5 +1,6 @@
 package view.element;
 
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -26,7 +27,7 @@ public class MapZoomSlider {
 	private Group mapZoomGroup;
 	
 	
-	public MapZoomSlider(Group zoomGroup, double sliderSize) {
+	public MapZoomSlider(Group zoomGroup, Double sliderSize) {
 		sliderElements = new GridPane();
 		theSlider = new Slider();
 		theSlider.setPrefWidth(sliderSize); //The size of the slider is set inside the resource file
@@ -42,14 +43,14 @@ public class MapZoomSlider {
 	
 	private void createLabels() {
 		//Labels that are displayed alongside the slider bar
-		scaleCaption = new Label("Current Scale (%): ");
+		scaleCaption = new Label("Zoom Amount: ");
 		scaleValue = new Label(Double.toString(theSlider.getValue()));
 	}
 	
 	private void initializeSlider() {
 		theSlider.setMin(0); //Can modify the minimum display size of map, just needs to be > 0
 		theSlider.setMax(100);
-		theSlider.setValue(100);
+		theSlider.setValue(0);
 		theSlider.setShowTickLabels(true);
 		theSlider.setShowTickMarks(true);
 		theSlider.setMajorTickUnit(25);
@@ -64,7 +65,7 @@ public class MapZoomSlider {
 					Number old_val, Number new_val) {
 				//Create a scaled transform that resizes everything in the map's zoomGroup
 				//1.0 means no change to the scale
-				double convertedScaleValue = (double) new_val / 100.0;
+				double convertedScaleValue = (((double) new_val) + 100.0) / 100.0;
 				Scale scaleTransform = new Scale(convertedScaleValue, convertedScaleValue, 0, 0);
 				
 				//Transform everything inside the zoomGroup according to the scale
@@ -91,7 +92,12 @@ public class MapZoomSlider {
 		sliderElements.getChildren().addAll(scaleCaption, scaleValue, theSlider);
 	}
 	
-	public GridPane getTheSlider() {
+	public GridPane getSliderWithCaptions() {
 		return sliderElements;
 	}
+	
+	public Slider getSlider() {
+		return theSlider;
+	}
+	
 }
