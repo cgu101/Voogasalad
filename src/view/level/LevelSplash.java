@@ -8,6 +8,7 @@ import view.screen.AbstractScreen;
 
 public class LevelSplash extends AbstractElement implements LevelInterface {
 	private Tab myTab;
+	private String myString;
 
 	public LevelSplash(GridPane pane, int i, AbstractScreen screen) {
 		super(pane);
