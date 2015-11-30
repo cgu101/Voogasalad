@@ -19,7 +19,6 @@ public class LevelMap extends Map implements LevelInterface {
 	private Tab myTab;
 	private ScrollPane sp;
 	private String myString;
-	private AuthoringController controller;
 
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
 		super(pane);
@@ -97,7 +96,7 @@ public class LevelMap extends Map implements LevelInterface {
 	}
 
 	public AuthoringController getController() {
-		return controller;
+		return this.controller;
 	}
 
 	@Override
