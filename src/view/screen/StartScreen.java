@@ -5,7 +5,11 @@ import javafx.scene.layout.GridPane;
 import view.element.Buttons;
 import view.element.Icons;
 import view.element.Title;
-
+/**
+ * Screen for main menu
+ * @author David
+ *
+ */
 public class StartScreen extends AbstractScreen {
 
 	private Title t;

@@ -13,7 +13,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import view.element.AbstractDockElement;
 import view.visual.AbstractVisual;
-
+/**
+ * A wrapper class for a Scene that contains several utility functions.
+ * @author David
+ *
+ */
 public abstract class AbstractScreen extends AbstractVisual implements AbstractScreenInterface {
 	protected Pane root;
 	protected Scene scene;

@@ -1,17 +1,19 @@
 package view.element;
 
+import authoring.controller.AuthoringController;
+import authoring.model.actors.Actor;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
 import javafx.scene.transform.Scale;
 import view.screen.AbstractScreen;
 /**
@@ -27,9 +29,12 @@ public class Map extends AbstractElement {
 	private Group zoomGroup;
 	private Group layout;
 	private AbstractScreen screen;
+	protected AuthoringController controller;
 
-	protected ScrollPane mapArea;
+	private Group mapArea;
+	protected ScrollPane mapScrollableArea;
 	private MapZoomSlider sliderArea;
+	private MiniMap miniMapNode;
 	private MapActorManager actorManager;
 	protected ImageView background;
 
@@ -52,11 +57,13 @@ public class Map extends AbstractElement {
 		// if a
 		// StackPane is not appropriate, such as a Canvas.
 		layout = new Group();
-		mapArea = new ScrollPane();
+		mapScrollableArea = new ScrollPane();
+		mapArea = new Group();
 
 		// The actorManager needs access to the layout so it can place actors on
 		// it
-		actorManager = new MapActorManager(layout);
+		controller = new AuthoringController();
+		actorManager = new MapActorManager(layout, controller);
 
 		makePane();
 	}
@@ -67,7 +74,7 @@ public class Map extends AbstractElement {
 	 * @param x	- horizontal position to place the Node
 	 * @param y - vertical position to place the Node
 	 */
-	public void addActor(Node element, double x, double y) {
+	public void addActor(Actor element, double x, double y) {
 		// Use this method to add an actor to the StackPane.
 		actorManager.addActor(element, x, y);
 	}
@@ -84,7 +91,10 @@ public class Map extends AbstractElement {
 	 * Update the Map's background to the Node in the parameter.
 	 * @param background - the Node to set as the new Map background
 	 */
-	public void updateBackground(Node background) {
+	public void updateBackground(Image bg) {
+		background = new ImageView(bg);
+		background.fitWidthProperty().bind(pane.widthProperty());
+		background.setPreserveRatio(true);
 		actorManager.updateBackground(background);
 	}
 
@@ -101,10 +111,11 @@ public class Map extends AbstractElement {
 
 		// The slider needs access to the zoomGroup so it can resize it when it
 		// gets dragged
-		sliderArea = new MapZoomSlider(zoomGroup, Double.valueOf(myResources.getString("sliderwidth")));
+		sliderArea = new MapZoomSlider(zoomGroup, miniMapNode, 
+				Double.valueOf(myResources.getString("sliderwidth")));
 		sliderArea.createTheSlider();
 	}
-
+	
 	
 	/**
 	 * Adds the Map's display area and associated zoom slider to the specified GridPane.
@@ -112,7 +123,7 @@ public class Map extends AbstractElement {
 	 */
 	private void addMapToPane(GridPane pane) {
 		pane.add(mapArea, 1, 0);
-		pane.add(sliderArea.getTheSlider(), 1, 1);
+		pane.add(sliderArea.getSliderWithCaptions(), 1, 1);
 	}
 	/**
 	 * Creates  a ScrollPane to display the background and all Actor nodes,
@@ -122,19 +133,27 @@ public class Map extends AbstractElement {
 		// Creates the ScrollPane where all the map elements will be displayed
 		createGroups();
 		createMapScrollPane();
+		createMiniMap();
+		//contentGroup.getChildren().add(miniMapNode.getMiniMap());
+		if(!mapArea.getChildren().contains(mapScrollableArea)) {
+			mapArea.getChildren().add(mapScrollableArea);
+		}
+		mapArea.getChildren().add(miniMapNode.getMiniMap());
 	}
 	
 	private void createMapScrollPane() {
 		// Hide the vertical and horizontal scrollbars, make the pane pannable
-		mapArea.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		mapArea.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		mapArea.setPannable(true);
-
-		// Bind the preferred size of the scroll area to the size of the scene
-//		mapArea.prefWidthProperty().bind(screen.getScene().widthProperty());
-//		mapArea.prefHeightProperty().bind(screen.getScene().heightProperty());
-
-		mapArea.setContent(contentGroup);
+		mapScrollableArea.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		mapScrollableArea.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		mapScrollableArea.setPannable(true);
+		
+		mapScrollableArea.setContent(contentGroup);
+		
+		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
+		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
+		
+		//mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());
+		mapScrollableArea.setPrefHeight(500);
 	}
 
 	private void createGroups() {
@@ -149,6 +168,11 @@ public class Map extends AbstractElement {
 		zoomGroup.getChildren().add(layout);
 	}
 	
+	private void createMiniMap() {
+		miniMapNode = new MiniMap(background, mapScrollableArea);
+		StackPane.setAlignment(miniMapNode.getMiniMap(), Pos.BOTTOM_RIGHT);
+	}
+	
 	/** 
 	 * Scales all the Nodes within the zoomGroup by the given Scale.
 	 * @param scaleTransform
@@ -159,29 +183,26 @@ public class Map extends AbstractElement {
 	}
 
 	private void addEventFilters() {
-		mapArea.addEventFilter(KeyEvent.ANY, e -> {
+		mapScrollableArea.addEventFilter(KeyEvent.ANY, e -> {
 			e.consume();
 		});
-		sliderArea.getTheSlider().addEventFilter(KeyEvent.ANY, e -> {
+		sliderArea.getSliderWithCaptions().addEventFilter(KeyEvent.ANY, e -> {
 			e.consume();
 		});
 	}
 
 	@Override
 	protected void makePane() {
-		Image backgroundImage = new Image("http://bitforgestudios.com/wp-content/uploads/2013/09/starfield.gif");
-		background = new ImageView(backgroundImage);
-		background.fitWidthProperty().bind(pane.widthProperty());
-		background.setPreserveRatio(true);
+		//Image backgroundImage = new Image(myResources.getString("backgroundURL"));
+		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
 
 		// Test white rectangle
-		Rectangle test = new Rectangle(100, 100);
-		test.setFill(Color.GRAY);
+		Rectangle test = new Rectangle(700, 724);
+		test.setFill(Color.RED);
 
-		// Add any elements you want to appear on the map using this method
-		
-		addActor(test, 0, 0);
-		updateBackground(background);
+
+		updateBackground(backgroundImage);
+		//addActor(test, 0, 0);
 
 		// Create the map after adding elements you want
 		createTheMap();
@@ -191,6 +212,8 @@ public class Map extends AbstractElement {
 
 		// Add the map to the GridPane
 		addMapToPane(pane);
-
+		System.out.println(layout.getBoundsInParent());
+		//System.out.println(mapScrollableArea.getHvalue());
+		//System.out.println(mapScrollableArea.getVvalue());
 	}
 }

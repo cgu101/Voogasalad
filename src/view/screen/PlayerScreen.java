@@ -17,7 +17,7 @@ import view.controlbar.ControlBarPlayer;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.ActorMonitor;
-import view.element.Workspace;
+import view.level.Workspace;
 
 public class PlayerScreen extends AbstractScreen {
 

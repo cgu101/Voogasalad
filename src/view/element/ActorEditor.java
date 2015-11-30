@@ -21,6 +21,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
 import view.actor.PropertyCell;
 import view.actor.TriggerCell;
+import view.level.Workspace;
 import view.screen.AbstractScreenInterface;
 /**
  * @author David
