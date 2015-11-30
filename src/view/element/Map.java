@@ -31,7 +31,7 @@ public class Map extends AbstractElement {
 	private AbstractScreen screen;
 	protected AuthoringController controller;
 
-	private StackPane mapArea;
+	private Group mapArea;
 	protected ScrollPane mapScrollableArea;
 	private MapZoomSlider sliderArea;
 	private MiniMap miniMapNode;
@@ -58,7 +58,7 @@ public class Map extends AbstractElement {
 		// StackPane is not appropriate, such as a Canvas.
 		layout = new Group();
 		mapScrollableArea = new ScrollPane();
-		mapArea = new StackPane();
+		mapArea = new Group();
 
 		// The actorManager needs access to the layout so it can place actors on
 		// it
@@ -111,7 +111,8 @@ public class Map extends AbstractElement {
 
 		// The slider needs access to the zoomGroup so it can resize it when it
 		// gets dragged
-		sliderArea = new MapZoomSlider(zoomGroup, miniMapNode, Double.valueOf(myResources.getString("sliderwidth")));
+		sliderArea = new MapZoomSlider(zoomGroup, miniMapNode, 
+				Double.valueOf(myResources.getString("sliderwidth")));
 		sliderArea.createTheSlider();
 	}
 	
@@ -133,8 +134,10 @@ public class Map extends AbstractElement {
 		createGroups();
 		createMapScrollPane();
 		createMiniMap();
-
-		mapArea.getChildren().add(mapScrollableArea);
+		//contentGroup.getChildren().add(miniMapNode.getMiniMap());
+		if(!mapArea.getChildren().contains(mapScrollableArea)) {
+			mapArea.getChildren().add(mapScrollableArea);
+		}
 		mapArea.getChildren().add(miniMapNode.getMiniMap());
 	}
 	
@@ -143,12 +146,14 @@ public class Map extends AbstractElement {
 		mapScrollableArea.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		mapScrollableArea.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		mapScrollableArea.setPannable(true);
-
-		// Bind the preferred size of the scroll area to the size of the scene
-//		mapArea.prefWidthProperty().bind(screen.getScene().widthProperty());
-//		mapArea.prefHeightProperty().bind(screen.getScene().heightProperty());
-
+		
 		mapScrollableArea.setContent(contentGroup);
+		
+		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
+		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
+		
+		//mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());
+		mapScrollableArea.setPrefHeight(500);
 	}
 
 	private void createGroups() {
