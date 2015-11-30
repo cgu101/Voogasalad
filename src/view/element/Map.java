@@ -111,7 +111,8 @@ public class Map extends AbstractElement {
 
 		// The slider needs access to the zoomGroup so it can resize it when it
 		// gets dragged
-		sliderArea = new MapZoomSlider(zoomGroup, miniMapNode, Double.valueOf(myResources.getString("sliderwidth")));
+		sliderArea = new MapZoomSlider(zoomGroup, miniMapNode, 
+				Double.valueOf(myResources.getString("sliderwidth")));
 		sliderArea.createTheSlider();
 	}
 	
@@ -151,7 +152,8 @@ public class Map extends AbstractElement {
 		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
 		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
 		
-		mapScrollableArea.setPrefViewportHeight(600);
+		//mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());
+		mapScrollableArea.setPrefHeight(500);
 	}
 
 	private void createGroups() {
