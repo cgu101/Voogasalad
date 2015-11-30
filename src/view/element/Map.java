@@ -133,8 +133,9 @@ public class Map extends AbstractElement {
 		createGroups();
 		createMapScrollPane();
 		createMiniMap();
-
-		mapArea.getChildren().add(mapScrollableArea);
+		if(!mapArea.getChildren().contains(mapScrollableArea)) {
+			mapArea.getChildren().add(mapScrollableArea);
+		}
 		mapArea.getChildren().add(miniMapNode.getMiniMap());
 	}
 	
