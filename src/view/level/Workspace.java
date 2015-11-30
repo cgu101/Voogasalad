@@ -1,4 +1,4 @@
-package view.element;
+package view.level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +9,14 @@ import javafx.geometry.Side;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
+import view.element.AbstractDockElement;
+import view.element.AbstractElement;
 import view.screen.AbstractScreen;
 
 public class Workspace extends AbstractElement {
 	private TabPane manager;
-	private ArrayList<LevelMap> levels;
-	private LevelMap currentLevel;
+	private ArrayList<LevelInterface> levels;
+	private LevelInterface currentLevel;
 	private AbstractScreen screen;
 
 	public Workspace(GridPane pane, AbstractScreen screen) {
@@ -26,7 +28,7 @@ public class Workspace extends AbstractElement {
 	@Override
 	protected void makePane() {
 		manager = new TabPane();
-		levels = new ArrayList<LevelMap>();
+		levels = new ArrayList<LevelInterface>();
 		manager.setSide(Side.TOP);
 		pane.add(manager, 0, 0);
 		addListener((ov, oldTab, newTab) -> {
@@ -50,6 +52,15 @@ public class Workspace extends AbstractElement {
 			}
 		}
 		LevelMap newLevel = new LevelMap(new GridPane(), levels.size(), screen);
+		return configureTab(newLevel);
+	}
+
+	public Tab addSplash() {
+		LevelSplash newLevel = new LevelSplash(new GridPane(), levels.size(), screen);
+		return configureTab(newLevel);
+	}
+
+	public Tab configureTab(LevelInterface newLevel) {
 		levels.add(newLevel);
 		Tab newLevelTab = newLevel.getTab();
 		int newID = Integer.parseInt(newLevelTab.getId());
@@ -74,12 +85,12 @@ public class Workspace extends AbstractElement {
 		if (switchID >= levels.size() || switchID < 0)
 			return;
 
-		LevelMap switchLevel = levels.get(switchID);
+		LevelInterface switchLevel = levels.get(switchID);
 
 		currentLevel.getTab().setId(Integer.toString(switchID));
-		currentLevel.getTab().setText("Level " + (switchID + 1));
+		currentLevel.getTab().setText(currentLevel.makeTitle(switchID));
 		switchLevel.getTab().setId(Integer.toString(currID));
-		switchLevel.getTab().setText("Level " + (currID + 1));
+		switchLevel.getTab().setText(switchLevel.makeTitle(currID));
 
 		manager.getTabs().remove(switchLevel.getTab());
 		manager.getTabs().add(currID, switchLevel.getTab());
@@ -92,7 +103,7 @@ public class Workspace extends AbstractElement {
 
 	public List<LevelConstructor> getLevels() {
 		List<LevelConstructor> levelConstructorList = new ArrayList<LevelConstructor>();
-		for (LevelMap levelMap : levels) {
+		for (LevelInterface levelMap : levels) {
 			levelConstructorList.add(levelMap.getController().getLevelConstructor());
 		}
 		return levelConstructorList;
@@ -107,7 +118,7 @@ public class Workspace extends AbstractElement {
 		}
 	}
 
-	public LevelMap getCurrentLevel() {
+	public LevelInterface getCurrentLevel() {
 		return currentLevel;
 	}
 

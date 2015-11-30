@@ -21,7 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
-import view.element.Workspace;
+import view.level.Workspace;
 import view.screen.CreatorScreen;
 import view.screen.StartScreen;
 
@@ -58,9 +58,10 @@ public class ControlBarCreator extends ControlBar {
 		Button addButton = makeButton("add", e -> workspace.addLevel());
 		Button leftButton = makeButton("left", e -> workspace.moveLevelLeft(true));
 		Button rightButton = makeButton("right", e -> workspace.moveLevelLeft(false));
+		Button splashButton = makeButton("splash", e -> workspace.addSplash());
 		Button newActor = makeButton("new", e -> addActor());
-		toolBar.getItems().addAll(backButton, new Separator(), leftButton, rightButton, addButton, new Separator(),
-				newActor);
+		toolBar.getItems().addAll(backButton, new Separator(), leftButton, rightButton, addButton, splashButton,
+				new Separator(), newActor);
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
@@ -72,9 +73,12 @@ public class ControlBarCreator extends ControlBar {
 
 		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> workspace.addLevel(), KeyCode.T,
 				KeyCombination.CONTROL_DOWN);
+		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> workspace.addSplash(), KeyCode.R,
+				KeyCombination.CONTROL_DOWN);
 		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(),
 				KeyCode.N, KeyCombination.CONTROL_DOWN);
-		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addLevel, addActor);
+		MenuItem changeBackground = makeMenuItem(myResources.getString("background"), e -> updateBackground());
+		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addLevel, addSplash, addActor, changeBackground);
 
 		CheckMenuItem toolbar = new CheckMenuItem(myResources.getString("toolbar"));
 		toolbar.selectedProperty().setValue(true);
@@ -90,9 +94,7 @@ public class ControlBarCreator extends ControlBar {
 		CheckMenuItem doubleLists = new CheckMenuItem(myResources.getString("dualactors"));
 		doubleLists.selectedProperty().bindBidirectional(findActorBrowser().getDoubleListsProperty());
 
-		MenuItem changeBackground = makeMenuItem(myResources.getString("background"), e -> updateBackground());
-		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow, doubleLists,
-				changeBackground);
+		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow, doubleLists);
 		makeMenuBar(mainMenu, file, edit, window);
 	}
 
