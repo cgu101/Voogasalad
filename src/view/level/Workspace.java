@@ -54,17 +54,15 @@ public class Workspace extends AbstractElement {
 			}
 		}
 		LevelMap newLevel = new LevelMap(new GridPane(), levels.size(), screen);
-		levels.add(newLevel);
-		Tab newLevelTab = newLevel.getTab();
-		int newID = Integer.parseInt(newLevelTab.getId());
-		newLevelTab.setOnClosed(e -> removeLevel(newLevelTab));
-		manager.getTabs().add(levels.size() - 1, newLevelTab);
-		manager.getSelectionModel().select(newID);
-		return newLevelTab;
+		return configureTab(newLevel);
 	}
 
 	public Tab addSplash() {
 		LevelSplash newLevel = new LevelSplash(new GridPane(), levels.size(), screen);
+		return configureTab(newLevel);
+	}
+
+	public Tab configureTab(LevelInterface newLevel) {
 		levels.add(newLevel);
 		Tab newLevelTab = newLevel.getTab();
 		int newID = Integer.parseInt(newLevelTab.getId());

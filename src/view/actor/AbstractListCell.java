@@ -9,9 +9,10 @@ public abstract class AbstractListCell extends ListCell<String> {
 	/**
 	 * @author David
 	 * 
-	 * This class is designed to be extended to create modified ListCells.
-	 * It contains info for getting resource files and fonts.
-	 * Implement the makeCell method to decide how a cell should be created.
+	 *         This class is designed to be extended to create modified
+	 *         ListCells. It contains info for getting resource files and fonts.
+	 *         Implement the makeCell method to decide how a cell should be
+	 *         created.
 	 * 
 	 */
 	private final String DEFAULT_RESOURCE_PACKAGE = "resources/";
@@ -34,11 +35,14 @@ public abstract class AbstractListCell extends ListCell<String> {
 	@Override
 	public void updateItem(String item, boolean empty) {
 		super.updateItem(item, empty);
-		if (empty) {
-			setText(null);
-			setGraphic(null);
-		} else if (item != null) {
-			makeCell(item);
+		if (item != null) {
+			try {
+				makeCell(item);
+			} catch (NullPointerException e) {
+				setText(null);
+				setGraphic(null);
+			}
+
 		}
 	}
 

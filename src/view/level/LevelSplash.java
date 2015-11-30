@@ -3,6 +3,7 @@ package view.level;
 import authoring.controller.AuthoringController;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -37,11 +38,11 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 
 	@Override
 	protected void makePane() {
-		Rectangle map = new Rectangle();
-		map.setFill(Color.valueOf(myResources.getString("background")));
-		map.widthProperty().bind(screen.getScene().widthProperty());
-		map.heightProperty().bind(screen.getScene().heightProperty());
-		pane.add(map, 0, 0);
+		Rectangle start = new Rectangle();
+		start.setFill(Color.valueOf(myResources.getString("background")));
+		start.widthProperty().bind(screen.getScene().widthProperty());
+		start.heightProperty().bind(screen.getScene().heightProperty());
+		pane.add(start, 0, 0);
 	}
 
 	@Override
@@ -50,9 +51,11 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 	}
 
 	@Override
-	public void updateBackground(Image backgroundImage) {
-		// TODO Auto-generated method stub
-
+	public void updateBackground(Image i) {
+		pane.getChildren().clear();
+		ImageView image = new ImageView(i);
+		image.fitWidthProperty().bind(screen.getScene().widthProperty());
+		image.setPreserveRatio(true);
+		pane.add(image, 0, 0);
 	}
-
 }
