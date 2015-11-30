@@ -21,17 +21,19 @@ import view.screen.AbstractScreen;
 public class LevelMap extends Map implements LevelInterface {
 	private Tab myTab;
 	private ScrollPane sp;
+	private String myString;
 	private AuthoringController controller;
 
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
 		super(pane);
-		myTab = new Tab("Level " + (i + 1));
+		findResources();
+		myString = myResources.getString("tabName");
+		myTab = new Tab(makeTitle(i));
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));
 		controller = new AuthoringController();
 		mapArea.setOnDragEntered(event -> dragIntoMap(event));
 		mapArea.setOnDragExited(event -> dragOutsideMap(event));
-
 		mapArea.setOnDragOver(event -> dragAroundMap(event));
 		mapArea.setOnDragDropped(event -> dragDrop(event));
 	}
@@ -100,5 +102,10 @@ public class LevelMap extends Map implements LevelInterface {
 
 	public AuthoringController getController() {
 		return controller;
+	}
+
+	@Override
+	public String makeTitle(int i) {
+		return myString + (i + 1);
 	}
 }

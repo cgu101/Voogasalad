@@ -2,17 +2,25 @@ package view.level;
 
 import authoring.controller.AuthoringController;
 import javafx.scene.control.Tab;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import view.element.AbstractElement;
 import view.screen.AbstractScreen;
 
 public class LevelSplash extends AbstractElement implements LevelInterface {
 	private Tab myTab;
 	private String myString;
+	private AbstractScreen screen;
 
 	public LevelSplash(GridPane pane, int i, AbstractScreen screen) {
 		super(pane);
-		myTab = new Tab("Level " + (i + 1));
+		findResources();
+		myString = myResources.getString("tabName");
+		this.screen = screen;
+		makePane();
+		myTab = new Tab(makeTitle(i));
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));
 	}
@@ -29,6 +37,20 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 
 	@Override
 	protected void makePane() {
+		Rectangle map = new Rectangle();
+		map.setFill(Color.valueOf(myResources.getString("background")));
+		map.widthProperty().bind(screen.getScene().widthProperty());
+		map.heightProperty().bind(screen.getScene().heightProperty());
+		pane.add(map, 0, 0);
+	}
+
+	@Override
+	public String makeTitle(int i) {
+		return myString + (i + 1);
+	}
+
+	@Override
+	public void updateBackground(Image backgroundImage) {
 		// TODO Auto-generated method stub
 
 	}
