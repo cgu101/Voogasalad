@@ -25,13 +25,15 @@ public class MapZoomSlider {
 	private Label scaleValue;
 	private Label scaleCaption;
 	private Group mapZoomGroup;
+	private MiniMap theMiniMap;
 	
 	
-	public MapZoomSlider(Group zoomGroup, Double sliderSize) {
+	public MapZoomSlider(Group zoomGroup, MiniMap minimap, Double sliderSize) {
 		sliderElements = new GridPane();
 		theSlider = new Slider();
 		theSlider.setPrefWidth(sliderSize); //The size of the slider is set inside the resource file
 		mapZoomGroup = zoomGroup;
+		theMiniMap = minimap;
 	}
 	
 	public void createTheSlider() {
@@ -74,6 +76,8 @@ public class MapZoomSlider {
 				
 				//Update the text of the label accordingly
 				scaleValue.setText(String.format("%.2f", new_val));
+				
+				theMiniMap.updateMiniMapRectangle(convertedScaleValue);
 			}
 		});
 	}
@@ -99,5 +103,4 @@ public class MapZoomSlider {
 	public Slider getSlider() {
 		return theSlider;
 	}
-	
 }
