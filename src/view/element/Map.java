@@ -149,6 +149,12 @@ public class Map extends AbstractElement {
 		
 		mapScrollableArea.setContent(contentGroup);
 		
+		/*TODO: This section is causing an issue with the width running over the other components
+		 * Change to...
+		 * mapScrollableArea.setPrefWidth(Resource file size);
+		 * mapScrollableArea.setPrefViewportWidth(Resource file size);
+		 * 
+		 */
 		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
 		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
 		
