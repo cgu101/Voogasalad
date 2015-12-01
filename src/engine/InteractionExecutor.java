@@ -170,7 +170,7 @@ public class InteractionExecutor {
 					lambdaMap.get(child.getIdentifier()).apply(child, cloneListAndAdd(list, child.getValue()));
 				} else {
 					List<List<Actor>> comboList = new ArrayList<List<Actor>>();
-					generateActorCombinations(list, comboList, 0, new ArrayList<Actor>());
+					generateActorCombinations(list, comboList, new ArrayList<Actor>());
 					for (List<Actor> combo : comboList) {
 						lambdaMap.get(child.getIdentifier()).apply(child, combo);
 					}
@@ -195,14 +195,15 @@ public class InteractionExecutor {
 		actorList.add(value);
 		return actorList;
 	}
-	private void generateActorCombinations (List<String> groups, List<List<Actor>> uniques, int depth, List<Actor> current) {
+	private void generateActorCombinations (List<String> groups, List<List<Actor>> uniques, List<Actor> current) {
+		int depth = current.size();
 		if (depth == groups.size()) {
 			uniques.add(current);
 			return;
 		}
 		Bundle<Actor> currentGroup = currentActorMap.getGroup(groups.get(depth));
 		for(Actor a : currentGroup) {
-			generateActorCombinations(groups, uniques, depth + 1, cloneListAndAdd(current, (Actor) a.getCopy()));
+			generateActorCombinations(groups, uniques, cloneListAndAdd(current, (Actor) a.getCopy()));
 		}
 	}
 	@FunctionalInterface
