@@ -109,7 +109,7 @@ public class PlayerController implements IPlayer {
 	private void run() {
 		try {
 			myEngine.play().call(this);
-			mySpriteManager.updateSprites(getActorList(), this.myScene);
+			mySpriteManager.updateSprites(getIndividualActorsList(), this.myScene);
 			
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
@@ -122,7 +122,7 @@ public class PlayerController implements IPlayer {
 	 *
 	 * @return the list of Actors.
 	 */
-	public ArrayList<Actor> getActorList() {
+	public ArrayList<Actor> getIndividualActorsList() {
 		ArrayList<Actor> actors = new ArrayList<Actor>();
 		for (Bundle<Actor> b : myEngine.getActors().values()) {
 			actors.addAll(b.getComponents().values());
@@ -147,7 +147,8 @@ public class PlayerController implements IPlayer {
 	
 	/**
 	 * This method grabs the the Actor Map from the Game Engine.
-	 *
+	 * The string correlates to the actor group name.
+	 * 
 	 * @return The map of Actors.
 	 */
 	public Map<String, Bundle<Actor>> getActorMap() {
@@ -170,6 +171,16 @@ public class PlayerController implements IPlayer {
 			propertyMap.put(identifier, value);
 		}
 		return propertyMap;
+	}
+	
+	public Actor getActorFromString(String a){
+		ArrayList<Actor> actorList = getIndividualActorsList();
+		for(Actor curr : actorList){
+			if(curr.getUniqueID().equals(a)){
+				return curr;
+			}
+		}
+		return null;
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 package view.element;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map.Entry;
 
 import authoring.model.actors.Actor;
@@ -27,8 +28,11 @@ import view.screen.AbstractScreenInterface;
 
 public class ActorMonitor extends AbstractDockElement {
 
-	private ObservableList<String> actors;
+	private ObservableList<String> actorsList;
 	private PlayerController controller; 
+	private GridPane listPane;
+	private ListView<String> actorList;
+	private int i = 1;
 	
 	/**
 	 * Actor Monitor Constructor
@@ -49,10 +53,15 @@ public class ActorMonitor extends AbstractDockElement {
 	@Override
 	protected void makePane() {
 		addLabelPane();
-		actors = FXCollections.observableArrayList(new ArrayList<String>());
+		actorsList = FXCollections.observableArrayList(new ArrayList<String>());
 		
 		//Actor's keyset = List<String> 
-		actors.addAll(controller.getActorMap().keySet());
+		for(Actor a : controller.getIndividualActorsList()){
+			actorsList.add(a.getUniqueID());
+		}
+		
+		actorList = new ListView<String>(actorsList);
+		pane.add(actorList, 0, 1);
 		pane.prefHeightProperty().bind(screen.getScene().heightProperty());
 		pane.setFocusTraversable(false);
 		pane.setAlignment(Pos.TOP_CENTER);
@@ -60,18 +69,16 @@ public class ActorMonitor extends AbstractDockElement {
 	}
 		
 	//Creates the Hbox of Properties for a single actor
-	private ListView<String> makeProperties(Actor a) {
-		ObservableList<String> properties = FXCollections.observableArrayList(new ArrayList<String>());
-		properties.addAll(controller.getActorMap().keySet());
-		ListView<String> list = new ListView<String>(properties);
-		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+	private void makeProperties(Actor a) {
+		actorList.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {
 				return new ActorMonitorCell(controller, a);
 			}
 		});
-		list.setFocusTraversable(false);
-		return list;
+		actorList.setFocusTraversable(false);
+		pane.add(actorList, i, 0);
+		i++;
 	}
 
 	private void addLabelPane() {
@@ -88,10 +95,8 @@ public class ActorMonitor extends AbstractDockElement {
 			showing.setValue(true);
 		}
 		
-		int i = 0;
-		for(Actor a : controller.getActorList()){
-			pane.add(makeProperties(a), i, 1);
-			i++;
+		for(Actor a : controller.getIndividualActorsList()){
+			makeProperties(a);
 		}
 
 	}

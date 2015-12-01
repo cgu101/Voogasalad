@@ -19,6 +19,8 @@ import player.controller.PlayerController;
 public class ActorMonitorCell extends AbstractListCell {
 
 	private PlayerController controller;
+	private Actor actor;
+	private int derp = 1;
 	
 	/**
 	 * ActorMonitorCell Constructor
@@ -29,6 +31,7 @@ public class ActorMonitorCell extends AbstractListCell {
 	 */
 	public ActorMonitorCell(PlayerController controller, Actor actor) {
 		findResources();
+		this.actor = actor;
 		this.controller = controller;
 	}
 
@@ -45,22 +48,26 @@ public class ActorMonitorCell extends AbstractListCell {
 	
 	@Override
 	protected void makeCell(String item) {
+		//item is the actor "name" (Group name?)
 		HBox box = new HBox(5);
 		box.setAlignment(Pos.CENTER_LEFT);
-		List<Actor> actorList = controller.getActorList();
+		List<Actor> actorList = controller.getIndividualActorsList();
+		//controller.get
 		for(Actor a : actorList){
 			Map<String, String> propertyStringMap = controller.getPropertyStringMap(a);
 			box.getChildren().add(makeImage(propertyStringMap.get("image")));
 			box.getChildren().add(makePropertiesVBox(controller.getPropertyStringMap(a)));
 		}
 		setGraphic(box);
-	}
+	} 	
 	
 	protected VBox makePropertiesVBox(Map<String, String> propertyStringMap) {
 		VBox props = new VBox();
+		props.getChildren().add(new Label(String.valueOf(derp) + ":" + actor.getUniqueID()));
 		for(String s: propertyStringMap.keySet()){
 			props.getChildren().add(new Label(s + " : " + propertyStringMap.get(s)));
 		}
+		derp++;
 		return props;
 	}
  
