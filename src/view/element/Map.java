@@ -33,7 +33,8 @@ public class Map extends AbstractElement {
 
 	private Group mapArea;
 	protected ScrollPane mapScrollableArea;
-	private MapZoomSlider sliderArea;
+	private MapZoomSlider zoomSliderArea;
+	private MapOpacitySlider opacitySliderArea;
 	private MiniMap miniMapNode;
 	private MapActorManager actorManager;
 	protected ImageView background;
@@ -110,9 +111,13 @@ public class Map extends AbstractElement {
 
 		// The slider needs access to the zoomGroup so it can resize it when it
 		// gets dragged
-		sliderArea = new MapZoomSlider(zoomGroup, miniMapNode, 
+		zoomSliderArea = new MapZoomSlider(zoomGroup, miniMapNode, 
 				Double.valueOf(myResources.getString("sliderwidth")));
-		sliderArea.createTheSlider();
+		zoomSliderArea.createTheSlider();
+		
+		opacitySliderArea = new MapOpacitySlider(miniMapNode, 
+				Double.valueOf(myResources.getString("sliderwidth")));
+		opacitySliderArea.createTheSlider();
 	}
 	
 	
@@ -121,8 +126,9 @@ public class Map extends AbstractElement {
 	 * @param pane - the GridPane on which to add the Map and its zoom slider
 	 */
 	private void addMapToPane(GridPane pane) {
-		pane.add(mapArea, 1, 0);
-		pane.add(sliderArea.getSliderWithCaptions(), 1, 1);
+		pane.add(mapArea, 0, 0);
+		pane.add(zoomSliderArea.getSliderWithCaptions(), 0, 1);
+		pane.add(opacitySliderArea.getSliderWithCaptions(), 0, 2);
 	}
 	/**
 	 * Creates  a ScrollPane to display the background and all Actor nodes,
@@ -149,24 +155,21 @@ public class Map extends AbstractElement {
 		
 		mapScrollableArea.setContent(contentGroup);
 		
-<<<<<<< HEAD
 		/*TODO: This section is causing an issue with the width running over the other components
 		 * Change to...
 		 * mapScrollableArea.setPrefWidth(Resource file size);
 		 * mapScrollableArea.setPrefViewportWidth(Resource file size);
 		 * 
 		 */
-		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
-		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
-=======
+
 //		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
 //		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
 		mapScrollableArea.setPrefWidth(700);
 		mapScrollableArea.setPrefViewportWidth(700);
->>>>>>> dws20
+
 		
 		//mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());
-		mapScrollableArea.setPrefHeight(600);
+		mapScrollableArea.setPrefHeight(550);
 	}
 
 	private void createGroups() {
@@ -183,7 +186,6 @@ public class Map extends AbstractElement {
 	
 	private void createMiniMap() {
 		miniMapNode = new MiniMap(background, mapScrollableArea);
-		StackPane.setAlignment(miniMapNode.getMiniMap(), Pos.BOTTOM_RIGHT);
 	}
 	
 	/** 
@@ -199,7 +201,7 @@ public class Map extends AbstractElement {
 		mapScrollableArea.addEventFilter(KeyEvent.ANY, e -> {
 			e.consume();
 		});
-		sliderArea.getSliderWithCaptions().addEventFilter(KeyEvent.ANY, e -> {
+		zoomSliderArea.getSliderWithCaptions().addEventFilter(KeyEvent.ANY, e -> {
 			e.consume();
 		});
 	}

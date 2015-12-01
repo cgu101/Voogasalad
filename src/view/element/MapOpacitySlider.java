@@ -1,6 +1,5 @@
 package view.element;
 
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -11,30 +10,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.transform.Scale;
 import view.visual.AbstractVisual;
 
-/**
- * The MapZoomSlider class creates a Slider associated with a Map class, and allows for zooming
- * in and out of the Map's ScrollPane area. The Slider is composed of three Nodes contained within
- * a GridPane: a Slider, and two Labels for showing relevant information.
- * @author Daniel
- *
- */
-
-public class MapZoomSlider extends AbstractVisual {
-
+public class MapOpacitySlider extends AbstractVisual {
 	private GridPane sliderElements;
 	private Slider theSlider;
-	private Label scaleValue;
-	private Label scaleCaption;
-	private Group mapZoomGroup;
+	private Label opacityValue;
+	private Label opacityCaption;
 	private MiniMap theMiniMap;
 	
-	
-	public MapZoomSlider(Group zoomGroup, MiniMap minimap, Double sliderSize) {
+	public MapOpacitySlider(MiniMap minimap, Double sliderSize) {
+		theMiniMap = minimap;
 		sliderElements = new GridPane();
 		theSlider = new Slider();
-		theSlider.setPrefWidth(sliderSize); //The size of the slider is set inside the resource file
-		mapZoomGroup = zoomGroup;
-		theMiniMap = minimap;
+		theSlider.setPrefWidth(sliderSize);
 	}
 	
 	public void createTheSlider() {
@@ -46,14 +33,14 @@ public class MapZoomSlider extends AbstractVisual {
 	
 	private void createLabels() {
 		//Labels that are displayed alongside the slider bar
-		scaleCaption = new Label("Zoom Amount: ");
-		scaleValue = new Label(Double.toString(theSlider.getValue()));
+		opacityCaption = new Label("Opacity Level: ");
+		opacityValue = new Label(Double.toString(theSlider.getValue()));
 	}
 	
 	private void initializeSlider() {
-		theSlider.setMin(0); //Can modify the minimum display size of map, just needs to be > 0
+		theSlider.setMin(0);
 		theSlider.setMax(100);
-		theSlider.setValue(0);
+		theSlider.setValue(50);
 		theSlider.setShowTickLabels(true);
 		theSlider.setShowTickMarks(true);
 		theSlider.setMajorTickUnit(25);
@@ -68,17 +55,12 @@ public class MapZoomSlider extends AbstractVisual {
 					Number old_val, Number new_val) {
 				//Create a scaled transform that resizes everything in the map's zoomGroup
 				//1.0 means no change to the scale
-				double convertedScaleValue = (((double) new_val) + 100.0) / 100.0;
-				Scale scaleTransform = new Scale(convertedScaleValue, convertedScaleValue, 0, 0);
-				
-				//Transform everything inside the zoomGroup according to the scale
-				mapZoomGroup.getTransforms().clear();
-				mapZoomGroup.getTransforms().add(scaleTransform);
+				double convertedOpacityValue = ((double) new_val)/ 100.0;
 				
 				//Update the text of the label accordingly
-				scaleValue.setText(String.format("%.2f", new_val));
+				opacityValue.setText(String.format("%.2f", new_val));
 				
-				theMiniMap.updateMiniMapRectangle(convertedScaleValue);
+				theMiniMap.updateMiniMapOpacity(convertedOpacityValue);
 			}
 		});
 	}
@@ -89,19 +71,15 @@ public class MapZoomSlider extends AbstractVisual {
 		sliderElements.setPadding(new Insets(10, 10, 10, 10));
 		
 		//Set the positions of the different GridPane elements
-		GridPane.setConstraints(scaleCaption, 0, 0);
-		GridPane.setConstraints(scaleValue, 1, 0);
+		GridPane.setConstraints(opacityCaption, 0, 0);
+		GridPane.setConstraints(opacityValue, 1, 0);
 		GridPane.setConstraints(theSlider, 2, 0);
 		
 		//Add all the elements to the GridPane
-		sliderElements.getChildren().addAll(scaleCaption, scaleValue, theSlider);
+		sliderElements.getChildren().addAll(opacityCaption, opacityValue, theSlider);
 	}
 	
 	public GridPane getSliderWithCaptions() {
 		return sliderElements;
-	}
-	
-	public Slider getSlider() {
-		return theSlider;
 	}
 }
