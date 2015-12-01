@@ -183,8 +183,6 @@ public class InteractionExecutor {
 				for (InteractionTreeNode child : node.children()) {
 					lambdaMap.get(child.getIdentifier()).apply(child, list);
 				}
-			} else {
-				return;
 			}
 		});
 		lambdaMap.put(ACTION_IDENTIFIER, (node, list) -> {
