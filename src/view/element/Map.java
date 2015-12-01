@@ -213,7 +213,5 @@ public class Map extends AbstractElement {
 		// Add the map to the GridPane
 		addMapToPane(pane);
 		System.out.println(layout.getBoundsInParent());
-		//System.out.println(mapScrollableArea.getHvalue());
-		//System.out.println(mapScrollableArea.getVvalue());
 	}
 }
