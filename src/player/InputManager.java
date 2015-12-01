@@ -13,11 +13,11 @@ import javafx.scene.input.KeyEvent;
  */
 public class InputManager {
 	private Map<String,Boolean> inputMap;
+	private InputTree inputTree;
 	
 	public InputManager () {
 		this(null);
 	}
-	
 	public InputManager (String fileName) {
 		inputMap = new HashMap<String,Boolean>();
 		populateMap(inputMap, fileName);
@@ -66,6 +66,13 @@ public class InputManager {
 	 */
 	public boolean getValue (KeyCode keyCode) {
 		return inputMap.get(keyCode.toString());
+	}
+	// TODO
+	public void setInputTree (InputTree tree) {
+		inputTree = tree;
+	}
+	public boolean checkSequence (String key) {
+		return inputTree.checkSequenceKey(key);
 	}
 	
 }
