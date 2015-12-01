@@ -12,6 +12,7 @@ public class Slider extends AbstractDockElement {
 
 	public Slider(GridPane pane, GridPane home, String title, AbstractScreenInterface screen, Workspace workspace) {
 		super(pane, home, title, screen);
+		showing.addListener(e -> checkMap());
 		workspace.addListener((ov, oldTab, newTab) -> {
 			if (workspace.getCurrentLevel() != null) {
 				load(workspace.getCurrentLevel());
@@ -21,11 +22,18 @@ public class Slider extends AbstractDockElement {
 		});
 	}
 
+	private void checkMap() {
+		if (map == null) {
+			showing.setValue(false);
+		}
+	}
+
 	private void load(LevelInterface currentLevel) {
 		if (currentLevel instanceof LevelMap) {
 			this.map = (LevelMap) currentLevel;
 			makePane();
 		} else {
+			pane.getChildren().clear();
 			map = null;
 			pane.getChildren().clear();
 			showing.setValue(false);

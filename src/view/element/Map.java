@@ -52,7 +52,6 @@ public class Map extends AbstractElement {
 	 *            - screen associated with this map
 	 */
 
-	// public Map(GridPane pane, AbstractScreen screen) {
 	public Map(GridPane pane) {
 		super(pane);
 		findResources();
@@ -157,6 +156,7 @@ public class Map extends AbstractElement {
 		if (!mapArea.getChildren().contains(mapScrollableArea)) {
 			mapArea.getChildren().add(mapScrollableArea);
 		}
+		miniMapNode.getMiniMap().setTranslateY(300);
 		mapArea.getChildren().add(miniMapNode.getMiniMap());
 	}
 
@@ -175,11 +175,15 @@ public class Map extends AbstractElement {
 		 * mapScrollableArea.setPrefViewportWidth(Resource file size);
 		 * 
 		 */
-		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
-		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
 
-		// mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());
-		mapScrollableArea.setPrefHeight(500);
+//		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
+//		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
+		mapScrollableArea.setPrefWidth(700);
+		mapScrollableArea.setPrefViewportWidth(700);
+
+		
+		//mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());
+		mapScrollableArea.setPrefHeight(600);
 	}
 
 	private void createGroups() {

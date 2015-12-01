@@ -16,6 +16,7 @@ public class MiniMap {
 	private ScrollPane theMapArea;
 	private double miniMapWidth;
 	private double miniMapHeight;
+	private double currentScale;
 	
 	public MiniMap(ImageView background, ScrollPane mapArea) {
 		theMiniMap = new StackPane();
@@ -38,16 +39,17 @@ public class MiniMap {
 	
 	private void createMiniMap() {
 		miniMapImageView = new ImageView(theBackground.getImage());
+		miniMapImageView.setOpacity(0.5);
 		miniMapImageView.setFitWidth(200);
 		miniMapImageView.setPreserveRatio(true);
-		StackPane.setAlignment(miniMapImageView, Pos.TOP_LEFT);
+		StackPane.setAlignment(miniMapImageView, Pos.BOTTOM_RIGHT);
 		theMiniMap.getChildren().add(miniMapImageView);
 		miniMapWidth = (double) miniMapImageView.getBoundsInParent().getWidth();
 		miniMapHeight = (double) miniMapImageView.getBoundsInParent().getHeight();
 		
 		Rectangle rect = new Rectangle(miniMapWidth, miniMapHeight);
 		rect.setFill(Color.TRANSPARENT);
-		rect.setStroke(Color.RED);
+		rect.setStroke(Color.rgb(255, 0, 0, 0.5));
 		rect.setStrokeWidth(5);
 		StackPane.setAlignment(rect, Pos.TOP_LEFT);
 		theMiniMap.getChildren().add(rect);
