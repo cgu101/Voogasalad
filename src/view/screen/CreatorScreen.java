@@ -94,15 +94,15 @@ public class CreatorScreen extends AbstractScreen {
 
 		List<LevelConstructor> levelConstructors = w.getLevels();
 
-		Game game = AuthoringController.getGameWithLevels(levelConstructors);
-		File saveFile = FileChooserUtility.save(scene.getWindow());
-		String fileLocation = saveFile.getAbsolutePath();
-		System.out.println(saveFile.getName());
-
 		try {
+			Game game = AuthoringController.getGameWithLevels(levelConstructors);
+			File saveFile = FileChooserUtility.save(scene.getWindow());
+
+			String fileLocation = saveFile.getAbsolutePath();
+
 			XMLManager.saveGame(game, fileLocation);
 		} catch (GameFileException e) {
-			System.err.println(e.getMessage());
+			System.out.println("Unable to save game");
 		}
 	}
 

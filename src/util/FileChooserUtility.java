@@ -2,6 +2,7 @@ package util;
 
 import java.io.File;
 
+import exceptions.data.GameFileException;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
@@ -19,10 +20,14 @@ public class FileChooserUtility {
 	 * 
 	 * @param stage
 	 * @return Loaded file corresponding to the user's choice
+	 * @throws GameFileException 
 	 */
-	public static File load (Window stage) {
+	public static File load (Window stage) throws GameFileException {
 		FileChooser fileChooser = initializeFileChooser(LOAD_MESSAGE, DEFAULT_DIRECTORY);
 		File file = fileChooser.showOpenDialog(stage);
+		
+		if (!isValid(file)) { throw new GameFileException(); }
+		
 		return file;
 	}
 	
@@ -31,8 +36,9 @@ public class FileChooserUtility {
 	 * 
 	 * @param stage
 	 * @return File object for saved file corresponding to the user's choice
+	 * @throws GameFileException 
 	 */
-	public static File save (Window stage) {
+	public static File save (Window stage) throws GameFileException {
 		FileChooser fileChooser = initializeFileChooser(SAVE_MESSAGE, DEFAULT_DIRECTORY);
 		
 		FileChooser.ExtensionFilter extFilter = 
@@ -40,7 +46,18 @@ public class FileChooserUtility {
 		fileChooser.getExtensionFilters().add(extFilter);
 		
 		File saveFile = fileChooser.showSaveDialog(stage);
+		
+		if (!isValid(saveFile)) { throw new GameFileException(); }
+		
 		return saveFile;
+	}
+	
+	private static boolean isValid (File file) {
+		if (file == null ) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	private static FileChooser initializeFileChooser (String title, String initialDirectory) {

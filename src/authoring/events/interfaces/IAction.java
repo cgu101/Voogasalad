@@ -1,4 +1,4 @@
-package authoring.tests.interfaces;
+package authoring.events.interfaces;
 
 import authoring.model.bundles.Identifiable;
 
