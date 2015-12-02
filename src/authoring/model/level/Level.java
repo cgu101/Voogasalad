@@ -3,7 +3,8 @@ package authoring.model.level;
 import java.util.Map;
 
 import authoring.controller.constructor.ActorGroupsConstructor;
-import authoring.controller.constructor.TreeConstructor;
+import authoring.controller.constructor.ITreeConstructor;
+import authoring.controller.constructor.MapConstructor;
 import authoring.model.actions.IAction;
 import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Identifiable;
@@ -14,8 +15,13 @@ public class Level implements Identifiable {
 	
 	private static final String ERROR_COPY = "Cannot copy levels";
 	
+	// TODO replace these with: 
 	private InteractionTreeNode interactionTree;
 	private InteractionTreeNode selfTriggerTree;
+	
+	// TODO this
+	private InteractionTreeNode rootTree;
+	
 	private ActorGroups actorGroups;
 	private Map<String,ITriggerEvent> triggerMap;
 	private Map<String,IAction> actionMap;
@@ -25,23 +31,32 @@ public class Level implements Identifiable {
 		this.uniqueID = levelID;
 	}
 	
-	public void setTreeConstructorValues(TreeConstructor tree) {
-		this.interactionTree = tree.getInteractionTree();
-		this.selfTriggerTree = tree.getSelfTriggerTree();
-		this.triggerMap = tree.getTriggerMap();
-		this.actionMap = tree.getActionMap();
+	public void setMapConstructorValues(MapConstructor map) {
+		this.triggerMap = map.getTriggerMap();
+		this.actionMap = map.getActionMap();
+	}
+	
+	public void setTreeConstructorValues(ITreeConstructor tree) {
+		this.rootTree = tree.getRootTree();
 	}
 	
 	public void setActorGroupsValues(ActorGroupsConstructor actors) {
 		this.actorGroups = actors.getActorGroups();
 	}
 	
+	
+	// TODO replace the below with
 	public InteractionTreeNode getInteractionTree() {
 		return interactionTree;
 	}
 	
 	public InteractionTreeNode getSelfTriggerTree() {
 		return selfTriggerTree;
+	}
+	
+	// TODO this
+	public InteractionTreeNode getRootTree() {
+		return rootTree;
 	}
 	
 	public ActorGroups getActorGroups() {
