@@ -178,8 +178,8 @@ public class Map extends AbstractElement {
 
 //		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
 //		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
-		mapScrollableArea.setPrefWidth(700);
-		mapScrollableArea.setPrefViewportWidth(700);
+		mapScrollableArea.setPrefWidth(300);
+		mapScrollableArea.setPrefViewportWidth(300);
 
 		
 		//mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());

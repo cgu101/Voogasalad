@@ -173,6 +173,29 @@ public class PlayerController implements IPlayer {
 		return propertyMap;
 	}
 	
+	/**
+	 * This method creates a Map the actor's Property Identifier to it's value
+	 * The map is in <String, String> format to allow for easy GUI display.
+	 *
+	 * @param a The Actor you would like to retrieve the properties for.
+	 * @param group The group classification of the Actor you're looking for.
+	 * 
+	 * @return The map of properties identifier -> value casted to Strings.
+	 */
+	public Map<String, String> getPropertyStringMapFromActorString(String a){
+		Actor match = null;
+		for(Actor actor : getIndividualActorsList()){
+			if(actor.getUniqueID().equals(a)){
+				match = actor;	
+				break;
+			}
+		}
+		if(match != null){
+			return getPropertyStringMap(match);
+		}
+		return null;
+	}
+	
 	public Actor getActorFromString(String a){
 		ArrayList<Actor> actorList = getIndividualActorsList();
 		for(Actor curr : actorList){
