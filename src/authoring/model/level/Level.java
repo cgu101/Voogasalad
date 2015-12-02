@@ -2,9 +2,9 @@ package authoring.model.level;
 
 import java.util.Map;
 
-import authoring.controller.constructor.ActorGroupsConstructor;
-import authoring.controller.constructor.ITreeConstructor;
-import authoring.controller.constructor.MapConstructor;
+import authoring.controller.constructor.levelwriter.ActorGroupsConstructor;
+import authoring.controller.constructor.levelwriter.ITreeConstructor;
+import authoring.controller.constructor.levelwriter.MapConstructor;
 import authoring.model.actions.IAction;
 import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Identifiable;

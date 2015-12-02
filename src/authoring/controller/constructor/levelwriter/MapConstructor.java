@@ -1,4 +1,4 @@
-package authoring.controller.constructor;
+package authoring.controller.constructor.levelwriter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import authoring.controller.AuthoringConfigManager;
+import authoring.controller.constructor.configreader.AuthoringConfigManager;
 import authoring.model.actions.IAction;
 import authoring.model.triggers.ITriggerEvent;
 import voogasalad.util.reflection.Reflection;
@@ -17,7 +17,7 @@ public class MapConstructor {
 	private Map<String, ITriggerEvent> triggerMap;
 	private Map<String, IAction> actionMap;
 	
-	public MapConstructor() {
+	MapConstructor() {
 		initializeTriggerMap();
 		initializeActionMap();
 	}

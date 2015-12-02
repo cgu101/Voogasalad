@@ -1,4 +1,4 @@
-package authoring.controller.constructor;
+package authoring.controller.constructor.levelwriter;
 
 import authoring.model.level.Level;
 
@@ -8,7 +8,7 @@ public class LevelConstructor {
 	private ITreeConstructor treeConstructor;
 	private MapConstructor mapConstructor;
 	
-	LevelConstructor() {
+	public LevelConstructor() {
 		actorConstructor = new ActorGroupsConstructor();
 		treeConstructor = new TreeConstructor();
 		mapConstructor = new MapConstructor();

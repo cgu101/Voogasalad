@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
-import authoring.controller.constructor.ActorGroupsConstructor;
-import authoring.controller.constructor.TreeConstructor;
+import authoring.controller.constructor.levelwriter.ActorGroupsConstructor;
+import authoring.controller.constructor.levelwriter.TreeConstructor;
 import authoring.model.actors.ActorPropertyMap;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
@@ -34,7 +34,7 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
-		createTestGame2();
+//		createTestGame2();
 		
 		/* Create a test game */
 		/*Game testGame = new Game();
@@ -71,7 +71,7 @@ public class Main extends Application {
 		/* Create a test game */
 		Game testGame = new Game();
 		Level testLevel = new Level("0");
-		TreeConstructor tc = new TreeConstructor();
+//		TreeConstructor tc = new TreeConstructor();
 		
 //		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.TrueSelfTrigger", 
 //				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));

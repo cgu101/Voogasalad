@@ -1,4 +1,4 @@
-package authoring.controller.constructor;
+package authoring.controller.constructor.levelwriter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class TreeConstructor implements ITreeConstructor {
 	/**
 	 * Empty constructor for TreeConstructor.
 	 */
-	public TreeConstructor() {
+	TreeConstructor() {
 		rootTree = new InteractionTreeNode();
 	}
 	

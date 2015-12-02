@@ -3,7 +3,7 @@ package view.level;
 import java.util.ArrayList;
 import java.util.List;
 
-import authoring.controller.constructor.LevelConstructor;
+import authoring.controller.constructor.levelwriter.LevelConstructor;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Side;
 import javafx.scene.control.Tab;
