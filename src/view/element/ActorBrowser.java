@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import view.actor.ActorCell;
+import view.level.Workspace;
 import view.screen.AbstractScreenInterface;
 /**
  * @author David

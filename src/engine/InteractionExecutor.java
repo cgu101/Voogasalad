@@ -1,6 +1,7 @@
 package engine;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,17 +43,20 @@ public class InteractionExecutor {
 	}
 	
 	public InteractionExecutor (Level level, InputManager inputMap) {
-		this.currentLevelIdentifier = level.getUniqueID();
-		this.selfTriggerTree = level.getSelfTriggerTree();
-		this.externalTriggerTree = level.getInteractionTree();
-//		System.out.println(level.getActorGroups().getMap() + " InteractionExecutor 44");
-		this.currentActorMap = level.getActorGroups();
+		this();
 		this.inputMap = inputMap;
 		
-		this.triggerMap = level.getTriggerMap();
-		this.actionMap = level.getActionMap();
-		
-		this.nextActorMap = new ActorGroups(currentActorMap);
+		if (level != null) {
+			this.currentLevelIdentifier = level.getUniqueID();
+			this.selfTriggerTree = level.getSelfTriggerTree();
+			this.externalTriggerTree = level.getInteractionTree();
+			this.currentActorMap = level.getActorGroups();
+
+			this.triggerMap = level.getTriggerMap();
+			this.actionMap = level.getActionMap();
+
+			this.nextActorMap = new ActorGroups(currentActorMap);
+		}
 	}
 	/**
 	 * Runs a single step of the level. Resolves all self-triggers before external triggers.
@@ -63,7 +67,8 @@ public class InteractionExecutor {
 		runSelfTriggers();
 		runExternalTriggers();
 		currentActorMap = nextActorMap;
-		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
+//		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
+		return new EngineHeartbeat((IPlayer p) -> {});
 	}
 	
 	private void runSelfTriggers () {
@@ -77,7 +82,9 @@ public class InteractionExecutor {
 				for (InteractionTreeNode trigger : triggerNodes) {
 					List<InteractionTreeNode> actionNodes = trigger.children();
 					ITriggerEvent selfTriggerEvent = triggerMap.get(trigger.getValue());
-					selfTriggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, (Actor) uniqueA.getCopy());
+					if (selfTriggerEvent.condition(inputMap, (Actor) uniqueA.getCopy())) {
+						performActions(parseActions(actionNodes), nextActorMap, (Actor) uniqueA.getCopy());
+					}
 				}
 			}
 		}	
@@ -92,7 +99,9 @@ public class InteractionExecutor {
 						for (InteractionTreeNode trigger : triggerNodes) {
 							List<InteractionTreeNode> actionNodes = trigger.children();
 							ITriggerEvent triggerEvent = triggerMap.get(trigger.getValue());
-							triggerEvent.performActions(parseActions(actionNodes), nextActorMap, inputMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy());
+							if (triggerEvent.condition(inputMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy())) {
+								performActions(parseActions(actionNodes), nextActorMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy());
+							}
 						}
 					}
 				}
@@ -120,4 +129,13 @@ public class InteractionExecutor {
 	public String getLevelID () {
 		return currentLevelIdentifier;
 	}
+	
+	public boolean performActions(List<IAction> actions, ActorGroups actorGroup, Actor... actors) {
+		Iterator<IAction> iterator = actions.iterator();
+		while (iterator.hasNext()) {
+			iterator.next().run(actorGroup, actors);
+		}
+		return actions.size() > 0;
+	}
+	
 }

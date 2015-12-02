@@ -7,7 +7,6 @@ import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import exceptions.EngineException;
 import exceptions.engine.EngineStateException;
-import player.InputManager;
 
 /**
  * Basic implementation of the engine is as follows:
@@ -26,12 +25,12 @@ public interface IEngine {
 	 * @param gameData
 	 * @throws EngineException
 	 */
-	public void init(Game gameData) throws EngineException;
+	public void init(Game gameData);
 	
 	/**
 	 * Resets the entire game to its initial load state
 	 */
-	public void reset ();
+	public void reset () throws EngineException;
 	
 	/**
 	 * Plays the game and returns an EngineHeartbeat object representing functionality for
@@ -54,7 +53,7 @@ public interface IEngine {
 	 * @return State
 	 * @throws EngineStateException
 	 */
-	public State ejectState() throws EngineStateException;
+	public State saveState() throws EngineStateException;
 	
 	/**
 	 * Injects a state
@@ -62,5 +61,5 @@ public interface IEngine {
 	 * @param state
 	 * @throws EngineException
 	 */
-	public void injectState(State state) throws EngineException;
+	public void loadState (State state) throws EngineException;
 }

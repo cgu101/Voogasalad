@@ -18,8 +18,15 @@ import view.controlbar.ControlBarCreator;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.ActorEditor;
-import view.element.Workspace;
+import view.element.MapSliders;
+import view.level.Workspace;
 
+/**
+ * Screen for authoring environment
+ * 
+ * @author David
+ *
+ */
 public class CreatorScreen extends AbstractScreen {
 
 	private ControlBarCreator t;
@@ -50,13 +57,16 @@ public class CreatorScreen extends AbstractScreen {
 		makePanes(2);
 		w = new Workspace(myPanes.get(1), this);
 		r.setTop(myPanes.get(0));
-		r.setCenter(myPanes.get(1));
+		GridPane mapPane = new GridPane();
+		mapPane.add(myPanes.get(1), 0, 1);
+		r.setCenter(mapPane);
 		dockPanes = new ArrayList<GridPane>();
 		homePanes = new ArrayList<GridPane>();
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 4; i++) {
 			dockPanes.add(new GridPane());
 			homePanes.add(new GridPane());
 		}
+		mapPane.add(homePanes.get(3), 0, 0);
 		GridPane rightPane = new GridPane();
 		rightPane.add(homePanes.get(0), 0, 0);
 		rightPane.add(homePanes.get(1), 0, 1);
@@ -72,6 +82,9 @@ public class CreatorScreen extends AbstractScreen {
 		ActorEditor editor = new ActorEditor(dockPanes.get(1), homePanes.get(1), myResources.getString("editorname"),
 				this, browser, w);
 		components.add(editor);
+		MapSliders slider = new MapSliders(dockPanes.get(3), homePanes.get(3), myResources.getString("slidername"),
+				this, w);
+		components.add(slider);
 		t = new ControlBarCreator(myPanes.get(0), this, w);
 	}
 
@@ -81,15 +94,15 @@ public class CreatorScreen extends AbstractScreen {
 
 		List<LevelConstructor> levelConstructors = w.getLevels();
 
-		Game game = AuthoringController.getGameWithLevels(levelConstructors);
-		File saveFile = FileChooserUtility.save(scene.getWindow());
-		String fileLocation = saveFile.getAbsolutePath();
-		System.out.println(saveFile.getName());
-
 		try {
+			Game game = AuthoringController.getGameWithLevels(levelConstructors);
+			File saveFile = FileChooserUtility.save(scene.getWindow());
+
+			String fileLocation = saveFile.getAbsolutePath();
+
 			XMLManager.saveGame(game, fileLocation);
 		} catch (GameFileException e) {
-			System.err.println(e.getMessage());
+			System.out.println("Unable to save game");
 		}
 	}
 
