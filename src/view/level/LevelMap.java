@@ -53,8 +53,7 @@ public class LevelMap extends Map implements LevelInterface {
 			ActorPropertyMap map = controller.getAuthoringActorConstructor().getActorPropertyMap(actor);
 
 			map.addProperty("xLocation", "" + (event.getX()));
-			map.addProperty("yLocation", "" + (event.getY())); // TODO Change
-																// this
+			map.addProperty("yLocation", "" + (event.getY())); 
 
 			String uniqueID = new Date().toString();
 			controller.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, map);

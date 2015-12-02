@@ -2,6 +2,7 @@ package view.element;
 
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorPropertyMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -39,12 +40,14 @@ public class MapActorManager extends AbstractVisual {
 	private Node currNode;
 	private Actor currActor;
 	private AuthoringController controller;
+	private ToolBar myToolbar;
 
 	public MapActorManager(Group layout, AuthoringController ac) {
 		mapLayout = layout;
 		currNode = null;
 		currActor = null;
 		controller = ac;
+		
 	}	
 
 	public void addActor(Actor actor, double x, double y) {		
@@ -261,6 +264,10 @@ public class MapActorManager extends AbstractVisual {
 		return res;
 	}
 
+	private void addToMap(String key, String val) {
+		ActorPropertyMap map = controller.getAuthoringActorConstructor().getActorPropertyMap(currActor.getUniqueID());
+	}
+	
 	/**
 	 * Removes the current background and adds the specified background as the new
 	 * background.
