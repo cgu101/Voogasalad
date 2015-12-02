@@ -11,12 +11,14 @@ import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
 import authoring.model.level.Level;
+import authoring.model.tree.ActionTreeNode;
+import authoring.model.tree.ActorTreeNode;
 import authoring.model.tree.InteractionTreeNode;
+import authoring.model.tree.TriggerTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 import exceptions.EngineException;
 import exceptions.engine.InteractionTreeException;
 import player.IPlayer;
-import player.InputManager;
 import player.InputManager;
 
 /**
@@ -26,13 +28,11 @@ import player.InputManager;
  */
 
 public class InteractionExecutor {
-	private static final String ACTOR_IDENTIFIER = "actor";
-	private static final String TRIGGER_IDENTIFIER = "trigger";
-	private static final String ACTION_IDENTIFIER = "action";
+	private static final String ACTOR_IDENTIFIER = ActorTreeNode.class.getSimpleName();
+	private static final String TRIGGER_IDENTIFIER = TriggerTreeNode.class.getSimpleName();
+	private static final String ACTION_IDENTIFIER = ActionTreeNode.class.getSimpleName();
 
 	private String currentLevelIdentifier;
-	private InteractionTreeNode externalTriggerTree;
-	private InteractionTreeNode selfTriggerTree;
 	private ActorGroups currentActorMap;
 	private ActorGroups nextActorMap;
 	private InputManager inputMap;
@@ -44,8 +44,6 @@ public class InteractionExecutor {
 
 	public InteractionExecutor () {
 		this.currentLevelIdentifier = null;
-		this.selfTriggerTree = new InteractionTreeNode();
-		this.externalTriggerTree = new InteractionTreeNode();
 		this.triggerTree = new InteractionTreeNode();
 		this.currentActorMap = new ActorGroups();
 		this.inputMap = new InputManager();
@@ -61,10 +59,7 @@ public class InteractionExecutor {
 
 		if (level != null) {
 			this.currentLevelIdentifier = level.getUniqueID();
-			this.selfTriggerTree = level.getSelfTriggerTree();
-			this.externalTriggerTree = level.getInteractionTree();
-			//TODO
-//			this.triggerTree = level.getTriggerTree();
+			this.triggerTree = level.getRootTree();
 			this.currentActorMap = level.getActorGroups();
 
 			this.triggerMap = level.getTriggerMap();
@@ -80,8 +75,6 @@ public class InteractionExecutor {
 	 */
 	public EngineHeartbeat run () throws EngineException {
 		nextActorMap = new ActorGroups(currentActorMap);
-		//		runSelfTriggers();
-		//		runExternalTriggers();
 		try {
 			runTriggers();
 		} catch (Exception e) {
@@ -131,6 +124,7 @@ public class InteractionExecutor {
 		});
 		lambdaMap.put(TRIGGER_IDENTIFIER, (node, list) -> {
 			ITriggerEvent triggerEvent = triggerMap.get(node.getValue());
+			// TODO: incorporate Parameters
 			if (triggerEvent.condition(null, inputMap, (Actor[]) list.toArray())) {
 				for (InteractionTreeNode child : node.children()) {
 					lambdaMap.get(child.getIdentifier()).apply(child, list);
@@ -142,6 +136,7 @@ public class InteractionExecutor {
 			Actor[] actors = ((List<Actor>) list).stream().map(a -> {
 				return nextActorMap.getGroup(a.getGroupName()).get(a.getUniqueID());
 			}).toArray(Actor[]::new);
+			// TODO: incorporate Parameters
 			action.run(null, nextActorMap, actors);
 		});
 	}
