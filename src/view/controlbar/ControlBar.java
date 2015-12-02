@@ -14,7 +14,13 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination.Modifier;
 import javafx.scene.layout.GridPane;
 import view.element.AbstractElement;
-
+/**
+ * @author David
+ * @author Bridget
+ * 
+ * This class is used to make control bars at the top of Screens
+ * 
+ */
 public abstract class ControlBar extends AbstractElement {
 
 	public ControlBar(GridPane pane) {

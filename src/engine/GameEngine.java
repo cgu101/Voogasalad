@@ -11,9 +11,15 @@ import exceptions.EngineException;
 import exceptions.engine.EngineStateException;
 import player.InputManager;
 
+/**
+ * The game engine, which handles loading single levels and level transitions.
+ */
+
 public class GameEngine implements IEngine {
 	private static final String LEVEL_ID_KEY = "level";
 	private static final String GAME_ID_KEY = "name";
+	private static final String INITIAL_LEVEL = "0";
+	private static final String INITIAL_LEVEL_KEY = "Initial Level";
 
 	private Game game;
 	private InteractionExecutor levelExecutor;
@@ -21,33 +27,39 @@ public class GameEngine implements IEngine {
 	
 	public GameEngine (InputManager inputManager) {
 		this.inputManager = inputManager;
+		this.game = null;
+		this.levelExecutor = null;
 	}
+	
 	/**
 	 * Loads a game into the engine and loads the first level (level with ID "0").
 	 */
 	@Override
 	public void init(Game game) {
 		this.game = game;
-		init(game.getLevel("0"), inputManager);
+		
+		Level initialLevel = makeLevel(game);
+		levelExecutor = new InteractionExecutor(initialLevel, inputManager);
 	}
 	
-	private void init(Level level, InputManager inputManager) {
-		this.inputManager = inputManager;
-		// TODO
-		if (level == null) {
-			level = new Level("testLevel");
-			levelExecutor = new InteractionExecutor();
-		} else {
-			levelExecutor = new InteractionExecutor(level, inputManager);
+	private Level makeLevel(Game myGame) {
+		Object levelProperty = myGame.getProperty(INITIAL_LEVEL_KEY);
+		String iLevel = INITIAL_LEVEL;
+		if (levelProperty != null) {
+			iLevel = levelProperty.toString();
 		}
+		return myGame.getLevel(iLevel);
 	}
+
 	/**
 	 * Loads the first level of the game (level with ID "0")
 	 */
 	@Override
-	public void reset() {
-		init(game.getLevel("0"), inputManager);
+	public void reset() throws EngineException {
+		Level iLevel = makeLevel(game);
+		levelExecutor = new InteractionExecutor(iLevel, inputManager);
 	}
+	
 	/**
 	 * Calls run method of the current {@link InteractionExecutor}.
 	 * @return A {@link EngineHeartbeat} for the player controller to call.
@@ -56,6 +68,7 @@ public class GameEngine implements IEngine {
 	public EngineHeartbeat play () throws EngineException {
 		return levelExecutor.run();
 	}
+	
 	/**
 	 * @return The current actor map of the level executor.
 	 */
@@ -63,11 +76,12 @@ public class GameEngine implements IEngine {
 	public Map<String, Bundle<Actor>> getActors() {
 		return levelExecutor.getActors().getMap();
 	}
+	
 	/**
 	 * @return A {@link State} to be saved.
 	 */
 	@Override
-	public State ejectState () throws EngineStateException {
+	public State saveState () throws EngineStateException {
 		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
 		propertyBundle.add(new Property<String>(LEVEL_ID_KEY, levelExecutor.getLevelID()));
 		propertyBundle.add(new Property<String>(GAME_ID_KEY, (String) game.getProperty(GAME_ID_KEY).getValue()));
@@ -77,10 +91,10 @@ public class GameEngine implements IEngine {
 	 * Loads a save state into the engine. If the state does not match the current game, a {@link EngineStateException} is thrown.
 	 */
 	@Override
-	public void injectState (State state) throws EngineException {
+	public void loadState (State state) throws EngineException {
 		if (state.getProperty(GAME_ID_KEY).getValue().equals(game.getProperty(GAME_ID_KEY).getValue())) {
 			Level level = game.getLevel((String) state.getProperty(LEVEL_ID_KEY).getValue());
-			init(level, inputManager);
+			levelExecutor = new InteractionExecutor(level, inputManager);
 			levelExecutor.setActors(state.getActorMap());
 		} else {
 			throw new EngineStateException("Wrong game", null);

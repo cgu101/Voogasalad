@@ -21,8 +21,15 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
 import view.actor.PropertyCell;
 import view.actor.TriggerCell;
+import view.level.Workspace;
 import view.screen.AbstractScreenInterface;
-
+/**
+ * @author David
+ * 
+ * Allows for modification of a single actor type.
+ * Loads the actor information when they are selected in the actor browser.
+ * 
+ */
 public class ActorEditor extends AbstractDockElement {
 
 	private ActorBrowser browser;
@@ -123,7 +130,7 @@ public class ActorEditor extends AbstractDockElement {
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {
-				return new TriggerCell(controller, leftItem, list);
+				return new TriggerCell(controller, leftItem, rightItem);
 			}
 		});
 		GridPane.setColumnSpan(list, 3);
@@ -175,7 +182,7 @@ public class ActorEditor extends AbstractDockElement {
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {
-				return new TriggerCell(controller, item, list);
+				return new TriggerCell(controller, item);
 			}
 		});
 		GridPane.setColumnSpan(list, 2);

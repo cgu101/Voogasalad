@@ -29,24 +29,31 @@ public class SpriteManager {
 		//group = new Group();
 		//bp.setCenter(group);
 		GridPane gp = new GridPane();
-		//myCamera = new view.element.Map(gp);
-		//myCamera.createTheMap();
+		myCamera = new view.element.Map(gp);
+		myCamera.createTheMap();
 		bp.setCenter(gp);
 	}
 	
+	/**
+	 * Core game loop functionality that iterates through all available actors, updates them, and displays
+	 * @param actors
+	 * @param scene
+	 */
 	public void updateSprites(ArrayList<Actor> actors, Scene scene){
 		for(Actor a : actors){
 			if(sprites.containsKey(a.getUniqueID())){
 				Sprite s = sprites.get(a.getUniqueID());
 				s.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
 				s.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
-				System.out.println(s.getX() + ", " + s.getY() + " - " + s.getImage());
+//				System.out.println(s.getX() + ", " + s.getY() + " - " + s.getImage());
 			//}else if((Boolean)a.getProperties().getComponents().get("_visible").getValue()){
 			}else{
 				Sprite newsp = createSprite(a);
 				sprites.put(a.getUniqueID(), newsp);
 				myCamera.getGroup().getChildren().add(newsp);
-				newsp.play(4);
+				newsp.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
+				newsp.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
+				newsp.play(0);
 			}
 			stillAlive.put(a.getUniqueID(), true);
 		}
@@ -64,6 +71,12 @@ public class SpriteManager {
 		
 	}
 	
+	/**
+	 * Creates a visual sprite object based on a back-end actor object
+	 * 
+	 * @param a
+	 * @return created sprite
+	 */
 	public Sprite createSprite(Actor a){
 		String img = (String)a.getProperties().getComponents().get("image").getValue();
 		String[] dimensions = myResources.getString(img).split(",");
@@ -72,12 +85,18 @@ public class SpriteManager {
 						  Integer.parseInt(dimensions[1]));
 	}
 	
+	/**
+	 * Pauses all sprite animations
+	 */
 	public void pause(){
 		for(Sprite s : sprites.values()){
 			s.pause();
 		}
 	}
 	
+	/**
+	 * Resumes all sprite animations 
+	 */
 	public void resume(){
 		for(Sprite s : sprites.values()){
 			s.play();

@@ -8,17 +8,16 @@ import java.util.ResourceBundle;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 /**
- * Contains a map of keys (as Strings) to whether or not they are being pressed.
- * @author Sung-Hoon
+ * Contains a map of keys (as Strings) to whether or not they are being pressed (as booleans).
  *
  */
 public class InputManager {
 	private Map<String,Boolean> inputMap;
+	private InputTree inputTree;
 	
 	public InputManager () {
 		this(null);
 	}
-	
 	public InputManager (String fileName) {
 		inputMap = new HashMap<String,Boolean>();
 		populateMap(inputMap, fileName);
@@ -31,6 +30,7 @@ public class InputManager {
 			Arrays.asList(KeyCode.values()).forEach(k -> {map.put(k.toString(), false);});
 		}	
 	}
+
 	/**
 	 * A method to attach to a keyPressed event in order to update the map when a key is pressed.
 	 * @param ke
@@ -39,6 +39,7 @@ public class InputManager {
 		KeyCode code = ke.getCode();
 		inputMap.put(code.toString(), true);
 	}
+
 	/**
 	 * A method to attach to a keyReleased event in order to update the map when a key is released.
 	 * @param ke
@@ -47,11 +48,31 @@ public class InputManager {
 		KeyCode code = ke.getCode();
 		inputMap.put(code.toString(), false);
 	}
+	/**
+	 * Obtains the boolean value from a string indicating whether a key has been assigned 
+	 * 
+	 * @param keyName
+	 * @return assignment value
+	 */
 	public boolean getValue (String keyName) {
 		return getValue(KeyCode.valueOf(keyName));
 	}
+	
+	/**
+	 * Obtains the boolean value from a KeyCode indicating whether a key has been assigned 
+	 * 
+	 * @param keyCode
+	 * @return assignment value
+	 */
 	public boolean getValue (KeyCode keyCode) {
 		return inputMap.get(keyCode.toString());
+	}
+	// TODO
+	public void setInputTree (InputTree tree) {
+		inputTree = tree;
+	}
+	public boolean checkSequence (String key) {
+		return inputTree.checkSequenceKey(key);
 	}
 	
 }

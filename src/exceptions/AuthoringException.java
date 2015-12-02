@@ -7,7 +7,7 @@ public abstract class AuthoringException extends Exception {
 	}
 
 	/**
-	 * 
+	 * Creates a dummy serial ID
 	 */
 	private static final long serialVersionUID = 1L;
 	

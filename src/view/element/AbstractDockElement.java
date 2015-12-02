@@ -13,7 +13,13 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import view.screen.AbstractScreenInterface;
-
+/**
+ * @author David
+ * 
+ * This class allows for elements that can be docked
+ * In addition to a pane to house the contents, this class uses a home pane that contains the location of the element when docked.
+ * 
+ */
 public abstract class AbstractDockElement extends AbstractElement {
 
 	protected Stage stage;

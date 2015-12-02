@@ -29,6 +29,9 @@ public class RootManager implements Observer {
 		stage.setResizable(startScreen.isResizable());
 	}
 
+	/**
+	 * Runs a particular controller
+	 */
 	public void run() {
 		try {
 			currentController.play();
@@ -38,6 +41,9 @@ public class RootManager implements Observer {
 		}
 	}
 
+	/**
+	 * Updates by adding to the current controller this as an observable
+	 */
 	@Override
 	public void update(Observable arg0, Object controller) {
 		// TODO Auto-generated method stub

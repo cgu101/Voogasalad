@@ -14,8 +14,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import view.actor.ActorCell;
+import view.level.Workspace;
 import view.screen.AbstractScreenInterface;
-
+/**
+ * @author David
+ * 
+ * A double list view element class that allows the user to see the level's current actor types.
+ * Also allows for drag and drop placement of new actor instances
+ * 
+ */
 public class ActorBrowser extends AbstractDockElement {
 
 	private ListView<String> rightlist;

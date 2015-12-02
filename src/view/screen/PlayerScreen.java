@@ -11,13 +11,13 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import player.PlayerController;
+import player.controller.PlayerController;
 import util.FileChooserUtility;
 import view.controlbar.ControlBarPlayer;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.ActorMonitor;
-import view.element.Workspace;
+import view.level.Workspace;
 
 public class PlayerScreen extends AbstractScreen {
 
@@ -37,7 +37,9 @@ public class PlayerScreen extends AbstractScreen {
 		makeScene();
 	}
 
-	//TODO: Throw NullGameException when Game hasn't been loaded yet
+	/**
+	 * Causes the PlayerControllers game loop to be resumed. 
+	 */
  	public void resume() {
 		try{
 			playerController.resume();
@@ -46,7 +48,9 @@ public class PlayerScreen extends AbstractScreen {
 		}
  	}
  
- 	//TODO: Throw NullGameException when Game hasn't been loaded yet
+ 	/**
+	 * Causes the PlayerControllers game loop to be paused. 
+	 */
  	public void pause() {
 		try{
 			playerController.pause();
@@ -91,6 +95,9 @@ public class PlayerScreen extends AbstractScreen {
 	
 	// TODO: David: need a stage eventually for the line: fileChooser.showOpenDialog(null);
 	// You want to force the user to choose
+	/**
+	 * Method that allows for a game to be loaded. Brings up a file selector using 'FileChooser' class 
+	 */
 	public void loadGame() {
 		System.out.println("Testing");
 		FileChooser fileChooser = new FileChooser();
@@ -105,13 +112,17 @@ public class PlayerScreen extends AbstractScreen {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EngineException ee) {
-			// TODO Auto-generated catch block
-			ee.printStackTrace();
+//			ee.printStackTrace();
+			System.err.println("Level exception!");
 		}
 		monitor.initializePane();
+		monitor.refresh();
 		t.initializeComponents();
 	}
 
+	/**
+	 * Method that calls for the player to save the game state. 
+	 */
 	public void saveState () {
 		System.out.println("Testing saving game state ");
 
@@ -125,6 +136,9 @@ public class PlayerScreen extends AbstractScreen {
 		}
 	}
 
+	/**
+	 * Method that calls for the player to load a game state. 
+	 */
 	public void loadState () {
 		//TODO: do gui stuff
 		File loadFile = FileChooserUtility.load(scene.getWindow());

@@ -14,6 +14,13 @@ public interface IActor {
 	 * @return Property<?> with the specified identifier
 	 */
 	public Property<?> getProperty(String identifier);
+
+	/**
+	 * Sets the value of the property specified by the identifier equal to value 
+	 * @param identifier 
+	 * @param value
+	 */
+	void setProperty(String identifier, Object value);
 	
 	/**
 	 * @param property Property that you want to add to the actor
