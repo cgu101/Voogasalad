@@ -21,7 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
-import view.element.Workspace;
+import view.level.Workspace;
 import view.screen.CreatorScreen;
 import view.screen.StartScreen;
 
@@ -58,65 +58,70 @@ public class ControlBarCreator extends ControlBar {
 		Button addButton = makeButton("add", e -> workspace.addLevel());
 		Button leftButton = makeButton("left", e -> workspace.moveLevelLeft(true));
 		Button rightButton = makeButton("right", e -> workspace.moveLevelLeft(false));
+		Button splashButton = makeButton("splash", e -> workspace.addSplash());
 		Button newActor = makeButton("new", e -> addActor());
-		toolBar.getItems().addAll(backButton, new Separator(), leftButton, rightButton, addButton, new Separator(),
-				newActor);
+		toolBar.getItems().addAll(backButton, new Separator(), leftButton, rightButton, addButton, splashButton,
+				new Separator(), newActor);
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
 		MenuItem load = makeMenuItem(myResources.getString("load"), e -> screen.loadGame());
 		MenuItem save = makeMenuItem(myResources.getString("save"), e -> screen.saveGame());
-		MenuItem exit = makeMenuItem(myResources.getString("exit"), e -> Platform.exit(), KeyCode.E, KeyCombination.CONTROL_DOWN);
+		MenuItem exit = makeMenuItem(myResources.getString("exit"), e -> Platform.exit(), KeyCode.E,
+				KeyCombination.CONTROL_DOWN);
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save, exit);
 
-		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> workspace.addLevel(), KeyCode.T, KeyCombination.CONTROL_DOWN);
-		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(), KeyCode.N, KeyCombination.CONTROL_DOWN);
-		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addLevel, addActor);
+		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> workspace.addLevel(), KeyCode.T,
+				KeyCombination.CONTROL_DOWN);
+		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> workspace.addSplash(), KeyCode.R,
+				KeyCombination.CONTROL_DOWN);
+		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(),
+				KeyCode.N, KeyCombination.CONTROL_DOWN);
+		MenuItem changeBackground = makeMenuItem(myResources.getString("background"), e -> updateBackground());
+		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addLevel, addSplash, addActor, changeBackground);
 
 		CheckMenuItem toolbar = new CheckMenuItem(myResources.getString("toolbar"));
 		toolbar.selectedProperty().setValue(true);
 		toolbar.selectedProperty().addListener(e -> toggleToolbar(toolbar.selectedProperty().getValue()));
-		
+
 		Menu hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar);
 		makeComponentCheckMenus(hideAndShow);
-	
+
 		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
 		fullscreen.setAccelerator(new KeyCodeCombination(KeyCode.F6));
 		fullscreen.selectedProperty().bindBidirectional(screen.getFullscreenProperty());
 
 		CheckMenuItem doubleLists = new CheckMenuItem(myResources.getString("dualactors"));
 		doubleLists.selectedProperty().bindBidirectional(findActorBrowser().getDoubleListsProperty());
-		
-		MenuItem changeBackground = makeMenuItem(myResources.getString("background"), e -> updateBackground()); 
-		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow, doubleLists, changeBackground);
+
+		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow, doubleLists);
 		makeMenuBar(mainMenu, file, edit, window);
 	}
 
 	private void addActor() {
 		findActorBrowser().addNewActor();
-		if (!findActorBrowser().getShowingProperty().getValue()){
+		if (!findActorBrowser().getShowingProperty().getValue()) {
 			findActorBrowser().getShowingProperty().setValue(true);
 		}
 	}
-	
- 	private void updateBackground() {
+
+	private void updateBackground() {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(myResources.getString("background"));
-		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("JPG", "*.jpg"),
-				new FileChooser.ExtensionFilter("PNG", "*.png")
-				);
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+				new FileChooser.ExtensionFilter("PNG", "*.png"));
 
 		File file = fileChooser.showOpenDialog(null);
 
 		try {
 			Image backgroundImage = new Image(file.toURI().toURL().toExternalForm(), 60, 0, true, false);
 			workspace.getCurrentLevel().updateBackground(backgroundImage);
-		} catch(IOException ex) {
-//			Alert fail = new Alert(AlertType.ERROR, "Unable to Load Image", ButtonType.OK);
-//			fail.showAndWait();
+		} catch (IOException ex) {
+			// Alert fail = new Alert(AlertType.ERROR, "Unable to Load Image",
+			// ButtonType.OK);
+			// fail.showAndWait();
 		}
-		
+
 	}
 
 	private void toggleToolbar(Boolean value) {
@@ -134,7 +139,7 @@ public class ControlBarCreator extends ControlBar {
 			addToMenu(window, item);
 		}
 	}
-	
+
 	private ActorBrowser findActorBrowser() {
 		for (AbstractDockElement c : screen.getComponents()) {
 			if (c instanceof ActorBrowser) {

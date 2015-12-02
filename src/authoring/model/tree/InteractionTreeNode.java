@@ -64,4 +64,9 @@ public class InteractionTreeNode {
 			child.printGraph();
 		}
 	}
+
+	public String getIdentifier() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

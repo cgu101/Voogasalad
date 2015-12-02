@@ -18,8 +18,12 @@ import view.controlbar.ControlBarCreator;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.ActorEditor;
-import view.element.Workspace;
-
+import view.level.Workspace;
+/**
+ * Screen for authoring environment
+ * @author David
+ *
+ */
 public class CreatorScreen extends AbstractScreen {
 
 	private ControlBarCreator t;
