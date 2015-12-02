@@ -2,9 +2,9 @@ package authoring.controller;
 
 import java.util.List;
 
-import authoring.controller.constructor.AuthoringActorConstructor;
-import authoring.controller.constructor.ConstructorFactory;
-import authoring.controller.constructor.LevelConstructor;
+import authoring.controller.constructor.configreader.AuthoringActorConstructor;
+import authoring.controller.constructor.levelwriter.LevelConstructor;
+import authoring.controller.constructor.other.ConstructorFactory;
 import authoring.model.game.Game;
 import data.XMLManager;
 import exceptions.data.GameFileException;

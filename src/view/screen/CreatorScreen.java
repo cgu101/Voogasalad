@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import authoring.controller.AuthoringController;
-import authoring.controller.constructor.LevelConstructor;
+import authoring.controller.constructor.levelwriter.LevelConstructor;
 import authoring.model.game.Game;
 import data.XMLManager;
 import exceptions.data.GameFileException;
@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import network.test.GameWindow;
 import util.FileChooserUtility;
 import view.controlbar.ControlBarCreator;
 import view.element.AbstractDockElement;
@@ -29,6 +30,10 @@ import view.level.Workspace;
  */
 public class CreatorScreen extends AbstractScreen {
 
+	//TODO take this out
+	private GameWindow g = null;
+	
+	
 	private ControlBarCreator t;
 	private Workspace w;
 	private ArrayList<GridPane> dockPanes;
@@ -46,7 +51,7 @@ public class CreatorScreen extends AbstractScreen {
 
 	@Override
 	public void run() {
-
+		System.out.println("test run");
 	}
 
 	@Override
@@ -109,5 +114,17 @@ public class CreatorScreen extends AbstractScreen {
 	// TODO
 	public void loadGame() {
 		System.out.println("Testing loading game ");
+	}
+	
+	public ControlBarCreator getControls () {
+		return t;
+	}
+	
+	public void setGameWindow(GameWindow g) {
+		this.g = g;
+	}
+	
+	public GameWindow getGameWindow() {
+		return g;
 	}
 }
