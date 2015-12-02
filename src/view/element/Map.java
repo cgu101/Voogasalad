@@ -137,8 +137,12 @@ public class Map extends AbstractElement {
 		opacitySliderArea.createTheSlider();
 	}
 
-	public GridPane getSlider() {
+	public GridPane getZoomSlider() {
 		return zoomSliderArea.getSliderWithCaptions();
+	}
+	
+	public GridPane getOpacitySlider() {
+		return opacitySliderArea.getSliderWithCaptions();
 	}
 
 	/**
@@ -172,6 +176,7 @@ public class Map extends AbstractElement {
 		}
 		theMiniMap.getMiniMap().setTranslateY(300);
 		mapArea.getChildren().add(theMiniMap.getMiniMap());
+		System.out.println("The minimap's bounds are: " + theMiniMap.getMiniMap().getBoundsInParent());
 	}
 
 	private void createMapScrollPane() {

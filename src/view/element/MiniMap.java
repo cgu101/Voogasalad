@@ -2,9 +2,11 @@ package view.element;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -23,8 +25,14 @@ public class MiniMap {
 	private Rectangle currentRectangle;
 	private double currentRectangleXPos;
 	private double currentRectangleYPos;
+	
+	private double mouseAnchorX;
+	private double mouseAnchorY;
+	private double initialTranslateX;
+	private double initialTranslateY;
+	
 
-	public MiniMap(ImageView background, ScrollPane mapArea) {
+	public MiniMap(ImageView background, ScrollPane mapArea){
 		theMiniMap = new StackPane();
 		theBackground = background;
 		theMapArea = mapArea;
@@ -64,6 +72,7 @@ public class MiniMap {
 
 		createMiniMapRectangle(miniMapWidth, miniMapHeight, currentScale, currentOpacity);
 		addMiniMapRectangle(currentRectangleXPos, currentRectangleYPos);
+		setUpDragFilters();
 	}
 	
 	private void createMiniMapRectangle(double width, double height, double scale, double opacity) {
@@ -82,6 +91,30 @@ public class MiniMap {
 		currentRectangle.setTranslateX(xPos);
 		currentRectangle.setTranslateY(yPos);
 		theMiniMap.getChildren().add(currentRectangle);
+	}
+	
+	private void setUpDragFilters() {
+		theMiniMap.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				mouseAnchorX = mouseEvent.getX();
+				mouseAnchorY = mouseEvent.getY();
+				initialTranslateX = theMiniMap.getTranslateX();
+				initialTranslateY = theMiniMap.getTranslateY();
+			}
+			
+		});
+		
+		theMiniMap.addEventFilter(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				theMiniMap.setTranslateX(initialTranslateX + mouseEvent.getX() - mouseAnchorX);
+				theMiniMap.setTranslateY(initialTranslateY + mouseEvent.getY() - mouseAnchorY);
+			}
+			
+		});
 	}
 
 	public void updateMiniMapRectangleOnHorizontalPan(double new_value) {
