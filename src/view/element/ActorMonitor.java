@@ -103,7 +103,7 @@ public class ActorMonitor extends AbstractDockElement {
 	//Call to reload the properties for every actor
 	private void update() {
 		pane.getChildren().remove(observableIndividualActorList);
-		
+		addLabelPane();
 		if (!showing.getValue()) {
 			showing.setValue(true);
 		}
@@ -116,7 +116,7 @@ public class ActorMonitor extends AbstractDockElement {
 		
 		observableIndividualActorList = new ListView<String>(individualActorList);
 		configure(observableIndividualActorList);
-		pane.getChildren().add(observableIndividualActorList);
+		pane.add(observableIndividualActorList, 0, 1);
 
 	}
 	
