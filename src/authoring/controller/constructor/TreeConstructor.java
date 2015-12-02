@@ -3,7 +3,10 @@ package authoring.controller.constructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import authoring.model.tree.ActorTreeNode;
 import authoring.model.tree.InteractionTreeNode;
+import authoring.model.tree.TriggerTreeNode;
+import voogasalad.util.reflection.Reflection;
 
 public class TreeConstructor implements ITreeConstructor {
 
@@ -23,21 +26,22 @@ public class TreeConstructor implements ITreeConstructor {
 	
 	@Override
 	public void addTreeNode(List<String> actors, List<String> triggers, List<String> actions) {
-		executeBaseNode(actors, triggers, actions, false, (node, values)->{
+		executeBaseNode(actors, triggers, actions, true, (node, values)->{
 			for(String action : actions) {
 				if(node.getChildWithValue(action) == null) {
 					node.addChild(new InteractionTreeNode(action));
 				}
 			}
 			return actions;
-		});		
+		});
+		rootTree.printGraph();
 	}
 	
 	@Override
 	public void deleteTreeNode(List<String> actors, List<String> triggers, List<String> actions) {
 		executeBaseNode(actors, triggers, actions, false, (node, values)->{
 			if(actions == null) {
-				List<InteractionTreeNode> children = node.children();
+				List<InteractionTreeNode> children = new ArrayList<InteractionTreeNode>(node.children());
 				for(InteractionTreeNode child : children) {
 					node.remove(child);
 				}
@@ -47,13 +51,14 @@ public class TreeConstructor implements ITreeConstructor {
 				}
 			}
 			return null;
-		});
+		});	
+		rootTree.printGraph();
 	}
 
 	@Override
 	public List<String> getActionList(List<String> actors, List<String> triggers) {
 		return executeBaseNode(actors, triggers, null, false, (node, values)->{
-			List<InteractionTreeNode> children = node.children();
+			List<InteractionTreeNode> children = new ArrayList<InteractionTreeNode>(node.children());
 			List<String> ret = new ArrayList<String>();
 			for(InteractionTreeNode child : children) {
 				ret.add(child.getValue());
@@ -63,22 +68,24 @@ public class TreeConstructor implements ITreeConstructor {
 	}
 	
 	private List<String> executeBaseNode(List<String> actors, List<String> triggers, List<String> actions, Boolean createNew, NodeExecuter executer) {
-		InteractionTreeNode node = getBaseNode(rootTree, actors, createNew);		
+		InteractionTreeNode node = getBaseNode(rootTree, actors, createNew, ActorTreeNode.class.getName());		
 		if(node != null) {
-			node = getBaseNode(node, triggers, createNew); 
+			node = getBaseNode(node, triggers, createNew, TriggerTreeNode.class.getName()); 
 		}
 		return node != null ? executer.executeNode(node, actions) : null;
 	}
 	
-	private InteractionTreeNode getBaseNode(InteractionTreeNode root, List<String> childNodes, Boolean createNew) {
+	private InteractionTreeNode getBaseNode(InteractionTreeNode root, List<String> childNodes, Boolean createNew, String clazz) {
 		InteractionTreeNode iterator = root;
 		for(String node : childNodes) {
 			if(iterator.getChildWithValue(node) != null) {
 				iterator = iterator.getChildWithValue(node);
-			} else if(createNew) {
-				iterator = iterator.addChild(new InteractionTreeNode(node));
 			} else {
-				return null;
+				if(createNew) {
+					iterator = iterator.addChild((InteractionTreeNode) Reflection.createInstance(clazz, node));
+				} else {
+					return null;
+				}
 			}
 		}	
 		return iterator;
