@@ -26,7 +26,7 @@ public class FileChooserUtility {
 		FileChooser fileChooser = initializeFileChooser(LOAD_MESSAGE, DEFAULT_DIRECTORY);
 		File file = fileChooser.showOpenDialog(stage);
 		
-		if (!isValid(file)) { throw new GameFileException(); }
+		if (file == null) { throw new GameFileException(); }
 		
 		return file;
 	}
@@ -47,17 +47,9 @@ public class FileChooserUtility {
 		
 		File saveFile = fileChooser.showSaveDialog(stage);
 		
-		if (!isValid(saveFile)) { throw new GameFileException(); }
+		if (saveFile == null) { throw new GameFileException(); }
 		
 		return saveFile;
-	}
-	
-	private static boolean isValid (File file) {
-		if (file == null ) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 	
 	private static FileChooser initializeFileChooser (String title, String initialDirectory) {
