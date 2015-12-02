@@ -24,6 +24,7 @@ import javafx.util.Duration;
 import player.IPlayer;
 import player.InputManager;
 import player.SpriteManager;
+import view.element.ActorMonitor;
 
 public class PlayerController implements IPlayer {
 
@@ -34,7 +35,9 @@ public class PlayerController implements IPlayer {
 	private Timeline myGameLoop;
 	private SpriteManager mySpriteManager;
 	private InputManager myInputManager;
+	private ActorMonitor actorMonitor;
 	private static int fps = 10;
+	private int refreshComponentRate;
 
 	/**
 	 * Player Controller Constructor
@@ -47,6 +50,7 @@ public class PlayerController implements IPlayer {
 		myScene = s;
 		myInputManager = new InputManager();
 		myEngine = new GameEngine(myInputManager);
+		refreshComponentRate = 0;
 		attachInputs(s);
 	}
 
@@ -110,12 +114,14 @@ public class PlayerController implements IPlayer {
 		try {
 			myEngine.play().call(this);
 			mySpriteManager.updateSprites(getIndividualActorsList(), this.myScene);
-			
+			refreshPlayerComponents();
+			actorMonitor.refresh();	
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
 
 	/**
 	 * This method grabs a list of all current actors from the Game Engine.
@@ -237,5 +243,18 @@ public class PlayerController implements IPlayer {
 			throw new GameFileException(e.getMessage());
 		}
 		resume();
+	}
+
+	public void addMonitor(ActorMonitor monitor) {
+		this.actorMonitor = monitor;
+		
+	}
+
+	private void refreshPlayerComponents() {
+		refreshComponentRate++;
+		if(refreshComponentRate > 20){
+			actorMonitor.refresh();
+			refreshComponentRate = 0;
+		}
 	}
 }

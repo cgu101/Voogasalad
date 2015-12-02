@@ -84,6 +84,7 @@ public class ActorMonitor extends AbstractDockElement {
 	private void configure(ListView<String> list) {
 		observableIndividualActorList.setFocusTraversable(false);
 		observableIndividualActorList.setMaxWidth(Double.parseDouble(myResources.getString("width")));
+		observableIndividualActorList.setPrefWidth(Double.parseDouble(myResources.getString("width")));
 		observableIndividualActorList.setFocusTraversable(false);
 		observableIndividualActorList.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
@@ -96,6 +97,7 @@ public class ActorMonitor extends AbstractDockElement {
 
 	private void addLabelPane() {
 		GridPane labelPane = makeLabelPane();
+		labelPane.setAlignment(Pos.CENTER);
 		pane.add(labelPane, 0, 0);
 		//GridPane.setColumnSpan(labelPane, 2);
 	}
@@ -104,9 +106,9 @@ public class ActorMonitor extends AbstractDockElement {
 	private void update() {
 		pane.getChildren().remove(observableIndividualActorList);
 		addLabelPane();
-		if (!showing.getValue()) {
-			showing.setValue(true);
-		}
+		//if (!showing.getValue()) {
+	//		showing.setValue(true);
+		//}
 		
 		individualActorList = FXCollections.observableArrayList(new ArrayList<String>());
 		

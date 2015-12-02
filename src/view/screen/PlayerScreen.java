@@ -87,6 +87,7 @@ public class PlayerScreen extends AbstractScreen {
 		components = new ArrayList<AbstractDockElement>(); //No components yet! 
 		monitor = new ActorMonitor(dockPanes.get(0), homePanes.get(0),
 				myResources.getString("monitorname"), this, playerController);
+		playerController.addMonitor(monitor);
 		components.add(monitor);
 	}
 

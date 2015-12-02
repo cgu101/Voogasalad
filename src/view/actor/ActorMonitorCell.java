@@ -47,8 +47,6 @@ public class ActorMonitorCell extends AbstractListCell {
 	
 	@Override
 	protected void makeCell(String item) {
-		System.out.println(item);
-		//item is the actor "name" (Group name?)
 		HBox box = new HBox(5);
 		box.setAlignment(Pos.CENTER_LEFT);
 		
