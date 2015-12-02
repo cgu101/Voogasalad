@@ -2,10 +2,7 @@ package authoring.model.actions;
 
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
-<<<<<<< HEAD
-=======
 import authoring.model.tree.Parameters;
->>>>>>> 27802045563a11f9e6637745de2cbdb3e2121331
 
 /**
  * @author Inan

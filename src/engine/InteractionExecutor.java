@@ -131,7 +131,7 @@ public class InteractionExecutor {
 		});
 		lambdaMap.put(TRIGGER_IDENTIFIER, (node, list) -> {
 			ITriggerEvent triggerEvent = triggerMap.get(node.getValue());
-			if (triggerEvent.condition(inputMap, (Actor[]) list.toArray())) {
+			if (triggerEvent.condition(null, inputMap, (Actor[]) list.toArray())) {
 				for (InteractionTreeNode child : node.children()) {
 					lambdaMap.get(child.getIdentifier()).apply(child, list);
 				}
@@ -142,7 +142,7 @@ public class InteractionExecutor {
 			Actor[] actors = ((List<Actor>) list).stream().map(a -> {
 				return nextActorMap.getGroup(a.getGroupName()).get(a.getUniqueID());
 			}).toArray(Actor[]::new);
-			action.run(nextActorMap, actors);
+			action.run(null, nextActorMap, actors);
 		});
 	}
 	private <T> List<T> cloneListAndAdd (List<T> list, T value) {
