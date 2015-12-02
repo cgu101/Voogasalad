@@ -4,12 +4,13 @@ import authoring.model.actions.AActionOneActor;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
+import authoring.model.tree.Parameters;
 
 public class RotateCounterclockwise extends AActionOneActor{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run(ActorGroups actorGroup, Actor actor) {
+	public void run(Parameters parameters, ActorGroups actorGroup, Actor actor) {
 
 		Double rotation = 1.0;
 		
