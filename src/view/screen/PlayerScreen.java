@@ -1,6 +1,5 @@
 package view.screen;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -15,9 +14,7 @@ import player.controller.PlayerController;
 import util.FileChooserUtility;
 import view.controlbar.ControlBarPlayer;
 import view.element.AbstractDockElement;
-import view.element.ActorBrowser;
 import view.element.ActorMonitor;
-import view.level.Workspace;
 
 public class PlayerScreen extends AbstractScreen {
 
@@ -26,53 +23,53 @@ public class PlayerScreen extends AbstractScreen {
 	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
 	private ActorMonitor monitor;
-//	private Workspace w;
+	//	private Workspace w;
 
 	public PlayerScreen() {
 		findResources();
 		WIDTH = Integer.parseInt(myResources.getString("width"));
 		HEIGHT = Integer.parseInt(myResources.getString("height"));
 		this.title = myResources.getString("title");
-		
+
 		makeScene();
 	}
 
 	/**
 	 * Causes the PlayerControllers game loop to be resumed. 
 	 */
- 	public void resume() {
+	public void resume() {
 		try{
 			playerController.resume();
 		} catch (GameFileException e){
 			showWarning("Resume Game Error", "No game has been loaded yet!");
 		}
- 	}
- 
- 	/**
+	}
+
+	/**
 	 * Causes the PlayerControllers game loop to be paused. 
 	 */
- 	public void pause() {
+	public void pause() {
 		try{
 			playerController.pause();
 		} catch (GameFileException e){
 			showWarning("Pause Game Error", "No game has been loaded yet!");
 		}
- 	}
-	
+	}
+
 	@Override
 	protected void makeScene() {
 		BorderPane r = new BorderPane();
 		makePanes(2);
 		t = new ControlBarPlayer(myPanes.get(0), this, WIDTH);
 		r.setTop(myPanes.get(0));
-//		w = new Workspace(myPanes.get(1), this);
+		//		w = new Workspace(myPanes.get(1), this);
 		r.setCenter(myPanes.get(1));
 		root = r;
 		r.setTop(myPanes.get(0));
 		r.setCenter(myPanes.get(1));
 		scene = new Scene(root, WIDTH, HEIGHT);
 		this.playerController = new PlayerController(scene);
-		
+
 		dockPanes = new ArrayList<GridPane>();
 		homePanes = new ArrayList<GridPane>();
 		for (int i = 0; i < 3; i++) {
@@ -92,7 +89,7 @@ public class PlayerScreen extends AbstractScreen {
 				myResources.getString("monitorname"), this, playerController);
 		components.add(monitor);
 	}
-	
+
 	// TODO: David: need a stage eventually for the line: fileChooser.showOpenDialog(null);
 	// You want to force the user to choose
 	/**
@@ -105,14 +102,14 @@ public class PlayerScreen extends AbstractScreen {
 		fileChooser.setInitialDirectory(new File("."));
 		System.out.println(playerController);
 		File file = fileChooser.showOpenDialog(null);
-		
+
 		try {
 			playerController.loadGame(file.getAbsolutePath());
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EngineException ee) {
-//			ee.printStackTrace();
+			//			ee.printStackTrace();
 			System.err.println("Level exception!");
 		}
 		monitor.initializePane();
@@ -126,13 +123,11 @@ public class PlayerScreen extends AbstractScreen {
 	public void saveState () {
 		System.out.println("Testing saving game state ");
 
-		//TODO: do gui stuff
-		File saveFile = FileChooserUtility.save(scene.getWindow());
 		try {
+			File saveFile = FileChooserUtility.save(scene.getWindow());
 			playerController.saveState(saveFile.getAbsolutePath());
 		} catch (GameFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Unable to save game state");
 		}
 	}
 
@@ -141,12 +136,11 @@ public class PlayerScreen extends AbstractScreen {
 	 */
 	public void loadState () {
 		//TODO: do gui stuff
-		File loadFile = FileChooserUtility.load(scene.getWindow());
 		try {
+			File loadFile = FileChooserUtility.load(scene.getWindow());
 			playerController.loadState(loadFile.getPath());
 		} catch (GameFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Unable to load game state");
 		}
 	}
 
@@ -154,7 +148,7 @@ public class PlayerScreen extends AbstractScreen {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
