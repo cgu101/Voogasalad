@@ -39,7 +39,9 @@ public class MapSliders extends AbstractDockElement {
 	protected void makePane() {
 		GridPane labelPane = makeLabelPane();
 		pane.add(labelPane, 0, 0);
-		pane.add(map.getSlider(), 1, 0);
+		GridPane.setRowSpan(labelPane, 2);
+		pane.add(map.getZoomSlider(), 1, 0);
+		pane.add(map.getOpacitySlider(), 1, 1);
 	}
 
 }
