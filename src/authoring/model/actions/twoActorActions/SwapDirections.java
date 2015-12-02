@@ -23,8 +23,7 @@ public class SwapDirections extends AActionTwoActors {
 		a_angleP.setValue(b_angleP.getValue());
 		b_angleP.setValue(temp);
 
-		MoveActorsToAvoidCollisions adjust = new MoveActorsToAvoidCollisions();
-		adjust.run(actorGroup, a, b);
+		new MoveActorsToAvoidCollisions().run(actorGroup, a, b);;
 		
 		CircleCollision collision = new CircleCollision();
 		if (collision.condition(null, new Actor[]{ a , b})) {

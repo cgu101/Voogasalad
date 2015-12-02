@@ -6,6 +6,10 @@ import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
 import authoring.model.triggers.externalconditions.CircleCollision;
 
+/**
+ * @author Tyler
+ *
+ */
 public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 
 	@Override

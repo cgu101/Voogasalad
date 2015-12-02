@@ -30,8 +30,7 @@ public class SplitAndReduceSize extends AActionOneActor{
 		((Property<Double>)futureActor1.getProperty("angle")).setValue(angle+45);
 		((Property<Double>)futureActor2.getProperty("angle")).setValue(angle-45);
 		
-		MoveActorsToAvoidCollisions adjust = new MoveActorsToAvoidCollisions();
-		adjust.move(futureActor1, futureActor2, size);
+		new MoveActorsToAvoidCollisions().move(futureActor1, futureActor2, size);
 		
 //		System.out.println("Change implementation to change the ID of the new children. "
 //							+ "And change some property so that the children are not the exact same (change size and angle?)");
@@ -42,5 +41,9 @@ public class SplitAndReduceSize extends AActionOneActor{
 		actorGroup.addActor(futureActor1);
 		actorGroup.addActor(futureActor2);
 		
+		
+		actorGroup.killActor(actor);
+		actorGroup.createActor(futureActor1);
+		actorGroup.createActor(futureActor2);
 	}
 }
