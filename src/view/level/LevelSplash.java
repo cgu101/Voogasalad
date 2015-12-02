@@ -55,6 +55,7 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 		pane.getChildren().clear();
 		ImageView image = new ImageView(i);
 		image.fitWidthProperty().bind(screen.getScene().widthProperty());
+		image.fitHeightProperty().bind(screen.getScene().widthProperty());
 		image.setPreserveRatio(true);
 		pane.add(image, 0, 0);
 	}

@@ -1,9 +1,9 @@
-package authoring.tests;
+package authoring.events;
 
 import java.util.function.BiPredicate;
 import java.util.function.BooleanSupplier;
 
-import authoring.tests.interfaces.ICondition;
+import authoring.events.interfaces.ICondition;
 
 public class Condition<S, T> implements ICondition {
 
