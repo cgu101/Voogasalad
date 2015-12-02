@@ -1,10 +1,10 @@
 package authoring.model.actions.twoActorActions;
 
 import authoring.model.actions.AActionTwoActors;
+import authoring.model.actions.ActionTriggerHelper;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
-import authoring.model.triggers.externalconditions.CircleCollision;
 
 /**
  * @author Inan
@@ -25,8 +25,7 @@ public class SwapDirections extends AActionTwoActors {
 
 		new MoveActorsToAvoidCollisions().run(actorGroup, a, b);
 		
-		CircleCollision collision = new CircleCollision();
-		if (collision.condition(null, new Actor[]{ a , b})) {
+		if (ActionTriggerHelper.collision(a, b)) {
 			System.out.println("STILL COLLIDING AFTER ADJUSTMENT");
 		}
 		

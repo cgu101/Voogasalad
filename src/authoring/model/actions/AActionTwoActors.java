@@ -2,7 +2,6 @@ package authoring.model.actions;
 
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
-import authoring.model.properties.Property;
 
 /**
  * @author Inan
