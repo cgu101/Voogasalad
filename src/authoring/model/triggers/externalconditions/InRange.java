@@ -3,6 +3,7 @@ package authoring.model.triggers.externalconditions;
 import authoring.model.actions.ActionTriggerHelper;
 import authoring.model.actors.Actor;
 import authoring.model.properties.Property;
+import authoring.model.tree.Parameters;
 import authoring.model.triggers.selftriggers.ASelfTrigger;
 import player.InputManager;
 
@@ -10,7 +11,7 @@ public class InRange extends ASelfTrigger {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean condition(InputManager inputManager, Actor... actors) {
+	public boolean condition(Parameters parameters, InputManager inputManager, Actor... actors) {
 
 		Actor actorA = actors[0];
 		Actor actorB = actors[1];
