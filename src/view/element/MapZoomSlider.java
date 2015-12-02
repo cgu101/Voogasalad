@@ -78,7 +78,7 @@ public class MapZoomSlider extends AbstractVisual {
 				//Update the text of the label accordingly
 				scaleValue.setText(String.format("%.2f", new_val));
 				
-				theMiniMap.updateMiniMapRectangle(convertedScaleValue);
+				theMiniMap.updateMiniMapRectangleOnZoom(convertedScaleValue);
 			}
 		});
 	}

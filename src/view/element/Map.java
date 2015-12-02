@@ -2,6 +2,8 @@ package view.element;
 
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -35,7 +37,7 @@ public class Map extends AbstractElement {
 	protected ScrollPane mapScrollableArea;
 	private MapZoomSlider zoomSliderArea;
 	private MapOpacitySlider opacitySliderArea;
-	private MiniMap miniMapNode;
+	private MiniMap theMiniMap;
 	private MapActorManager actorManager;
 	protected ImageView background;
 
@@ -111,11 +113,11 @@ public class Map extends AbstractElement {
 
 		// The slider needs access to the zoomGroup so it can resize it when it
 		// gets dragged
-		zoomSliderArea = new MapZoomSlider(zoomGroup, miniMapNode, 
+		zoomSliderArea = new MapZoomSlider(zoomGroup, theMiniMap, 
 				Double.valueOf(myResources.getString("sliderwidth")));
 		zoomSliderArea.createTheSlider();
 		
-		opacitySliderArea = new MapOpacitySlider(miniMapNode, 
+		opacitySliderArea = new MapOpacitySlider(theMiniMap, 
 				Double.valueOf(myResources.getString("sliderwidth")));
 		opacitySliderArea.createTheSlider();
 	}
@@ -138,13 +140,13 @@ public class Map extends AbstractElement {
 		// Creates the ScrollPane where all the map elements will be displayed
 		createGroups();
 		createMapScrollPane();
+		createPanListeners();
 		createMiniMap();
-		//contentGroup.getChildren().add(miniMapNode.getMiniMap());
 		if(!mapArea.getChildren().contains(mapScrollableArea)) {
 			mapArea.getChildren().add(mapScrollableArea);
 		}
-		miniMapNode.getMiniMap().setTranslateY(300);
-		mapArea.getChildren().add(miniMapNode.getMiniMap());
+		theMiniMap.getMiniMap().setTranslateY(300);
+		mapArea.getChildren().add(theMiniMap.getMiniMap());
 	}
 	
 	private void createMapScrollPane() {
@@ -154,13 +156,6 @@ public class Map extends AbstractElement {
 		mapScrollableArea.setPannable(true);
 		
 		mapScrollableArea.setContent(contentGroup);
-		
-		/*TODO: This section is causing an issue with the width running over the other components
-		 * Change to...
-		 * mapScrollableArea.setPrefWidth(Resource file size);
-		 * mapScrollableArea.setPrefViewportWidth(Resource file size);
-		 * 
-		 */
 
 //		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
 //		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
@@ -185,17 +180,9 @@ public class Map extends AbstractElement {
 	}
 	
 	private void createMiniMap() {
-		miniMapNode = new MiniMap(background, mapScrollableArea);
+		theMiniMap = new MiniMap(background, mapScrollableArea);
 	}
 	
-	/** 
-	 * Scales all the Nodes within the zoomGroup by the given Scale.
-	 * @param scaleTransform
-	 */
-	public void setMapTransform(Scale scaleTransform) {
-		zoomGroup.getTransforms().clear();
-		zoomGroup.getTransforms().add(scaleTransform);
-	}
 
 	private void addEventFilters() {
 		mapScrollableArea.addEventFilter(KeyEvent.ANY, e -> {
@@ -203,6 +190,26 @@ public class Map extends AbstractElement {
 		});
 		zoomSliderArea.getSliderWithCaptions().addEventFilter(KeyEvent.ANY, e -> {
 			e.consume();
+		});
+	}
+	
+	private void createPanListeners() {
+		mapScrollableArea.vvalueProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
+				theMiniMap.updateMiniMapRectangleOnVerticalPan(new_val.doubleValue());
+			}
+
+		});
+
+		mapScrollableArea.hvalueProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
+				theMiniMap.updateMiniMapRectangleOnHorizontalPan(new_val.doubleValue());
+			}
+
 		});
 	}
 
