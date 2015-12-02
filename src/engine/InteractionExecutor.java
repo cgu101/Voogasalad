@@ -76,8 +76,8 @@ public class InteractionExecutor {
 	 */
 	public EngineHeartbeat run () {
 		nextActorMap = new ActorGroups(currentActorMap);
-//		runSelfTriggers();
-//		runExternalTriggers();
+		//		runSelfTriggers();
+		//		runExternalTriggers();
 		try {
 			runTriggers();
 		} catch (Exception e) {
@@ -94,49 +94,49 @@ public class InteractionExecutor {
 		}
 	}
 
-//	private void runSelfTriggers () {
-//		//		System.out.println(selfTriggerTree.children());
-//		for (InteractionTreeNode actorA : selfTriggerTree.children()) {
-//			List<InteractionTreeNode> triggerNodes = actorA.children();
-//			//			System.out.println(currentActorMap + " InteractionExecutor 67");
-//			//			System.out.println(currentActorMap.getMap().keySet() + " InteractionExecutor 68");
-//			//			System.out.println(actorA.getValue() + " InteractionExecutor 69");
-//			for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
-//				for (InteractionTreeNode trigger : triggerNodes) {
-//					List<InteractionTreeNode> actionNodes = trigger.children();
-//					ITriggerEvent selfTriggerEvent = triggerMap.get(trigger.getValue());
-//					if (selfTriggerEvent.condition(inputMap, (Actor) uniqueA.getCopy())) {
-//						performActions(parseActions(actionNodes), nextActorMap, (Actor) uniqueA.getCopy());
-//					}
-//				}
-//			}
-//		}	
-//	}
-//	private void runExternalTriggers () {
-//		for (InteractionTreeNode actorA : externalTriggerTree.children()) {
-//			List<InteractionTreeNode> actorBNodes = actorA.children();
-//			for (InteractionTreeNode actorB : actorBNodes) {
-//				List<InteractionTreeNode> triggerNodes = actorB.children();
-//				for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
-//					for (Actor uniqueB : currentActorMap.getGroup(actorB.getValue())) {
-//						for (InteractionTreeNode trigger : triggerNodes) {
-//							List<InteractionTreeNode> actionNodes = trigger.children();
-//							ITriggerEvent triggerEvent = triggerMap.get(trigger.getValue());
-//							if (triggerEvent.condition(inputMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy())) {
-//								performActions(parseActions(actionNodes), nextActorMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy());
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
+	//	private void runSelfTriggers () {
+	//		//		System.out.println(selfTriggerTree.children());
+	//		for (InteractionTreeNode actorA : selfTriggerTree.children()) {
+	//			List<InteractionTreeNode> triggerNodes = actorA.children();
+	//			//			System.out.println(currentActorMap + " InteractionExecutor 67");
+	//			//			System.out.println(currentActorMap.getMap().keySet() + " InteractionExecutor 68");
+	//			//			System.out.println(actorA.getValue() + " InteractionExecutor 69");
+	//			for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
+	//				for (InteractionTreeNode trigger : triggerNodes) {
+	//					List<InteractionTreeNode> actionNodes = trigger.children();
+	//					ITriggerEvent selfTriggerEvent = triggerMap.get(trigger.getValue());
+	//					if (selfTriggerEvent.condition(inputMap, (Actor) uniqueA.getCopy())) {
+	//						performActions(parseActions(actionNodes), nextActorMap, (Actor) uniqueA.getCopy());
+	//					}
+	//				}
+	//			}
+	//		}	
+	//	}
+	//	private void runExternalTriggers () {
+	//		for (InteractionTreeNode actorA : externalTriggerTree.children()) {
+	//			List<InteractionTreeNode> actorBNodes = actorA.children();
+	//			for (InteractionTreeNode actorB : actorBNodes) {
+	//				List<InteractionTreeNode> triggerNodes = actorB.children();
+	//				for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
+	//					for (Actor uniqueB : currentActorMap.getGroup(actorB.getValue())) {
+	//						for (InteractionTreeNode trigger : triggerNodes) {
+	//							List<InteractionTreeNode> actionNodes = trigger.children();
+	//							ITriggerEvent triggerEvent = triggerMap.get(trigger.getValue());
+	//							if (triggerEvent.condition(inputMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy())) {
+	//								performActions(parseActions(actionNodes), nextActorMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy());
+	//							}
+	//						}
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
 
-//	private List<IAction> parseActions(List<InteractionTreeNode> actionNodes) {
-//		return actionNodes.stream()
-//				.map(k -> { return actionMap.get(k.getValue());})
-//				.collect(Collectors.toList());
-//	}
+	//	private List<IAction> parseActions(List<InteractionTreeNode> actionNodes) {
+	//		return actionNodes.stream()
+	//				.map(k -> { return actionMap.get(k.getValue());})
+	//				.collect(Collectors.toList());
+	//	}
 
 	public ActorGroups getActors () {
 		//System.out.println(currentActorMap.getMap() + " InteractionExecutor");
@@ -153,13 +153,13 @@ public class InteractionExecutor {
 		return currentLevelIdentifier;
 	}
 
-//	public boolean performActions(List<IAction> actions, ActorGroups actorGroup, Actor... actors) {
-//		Iterator<IAction> iterator = actions.iterator();
-//		while (iterator.hasNext()) {
-//			iterator.next().run(actorGroup, actors);
-//		}
-//		return actions.size() > 0;
-//	}
+	//	public boolean performActions(List<IAction> actions, ActorGroups actorGroup, Actor... actors) {
+	//		Iterator<IAction> iterator = actions.iterator();
+	//		while (iterator.hasNext()) {
+	//			iterator.next().run(actorGroup, actors);
+	//		}
+	//		return actions.size() > 0;
+	//	}
 
 	@SuppressWarnings("unchecked")
 	private void initLambdaMap () {
@@ -187,7 +187,10 @@ public class InteractionExecutor {
 		});
 		lambdaMap.put(ACTION_IDENTIFIER, (node, list) -> {
 			IAction action = actionMap.get(node.getValue());
-			action.run(nextActorMap, (Actor[]) list.toArray());
+			Actor[] actors = ((List<Actor>) list).stream().map(a -> {
+				return nextActorMap.getGroup(a.getGroupName()).get(a.getUniqueID());
+			}).toArray(Actor[]::new);
+			action.run(nextActorMap, actors);
 		});
 	}
 	private <T> List<T> cloneListAndAdd (List<T> list, T value) {
@@ -203,7 +206,7 @@ public class InteractionExecutor {
 		}
 		Bundle<Actor> currentGroup = currentActorMap.getGroup(groups.get(depth));
 		for(Actor a : currentGroup) {
-			generateActorCombinations(groups, uniques, cloneListAndAdd(current, (Actor) a.getCopy()));
+			generateActorCombinations(groups, uniques, cloneListAndAdd(current, a));
 		}
 	}
 	@FunctionalInterface
