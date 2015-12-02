@@ -3,6 +3,7 @@ package authoring.controller.constructor.levelwriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import authoring.controller.constructor.levelwriter.interfaces.ITreeConstructor;
 import authoring.model.tree.ActorTreeNode;
 import authoring.model.tree.InteractionTreeNode;
 import authoring.model.tree.TriggerTreeNode;

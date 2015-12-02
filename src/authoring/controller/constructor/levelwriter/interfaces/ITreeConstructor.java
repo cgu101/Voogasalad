@@ -1,4 +1,4 @@
-package authoring.controller.constructor.levelwriter;
+package authoring.controller.constructor.levelwriter.interfaces;
 
 import java.util.List;
 

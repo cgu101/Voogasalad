@@ -1,5 +1,6 @@
 package authoring.controller.constructor.levelwriter;
 
+import authoring.controller.constructor.levelwriter.interfaces.ITreeConstructor;
 import authoring.model.level.Level;
 
 public class LevelConstructor {
