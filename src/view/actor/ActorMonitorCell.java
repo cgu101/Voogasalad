@@ -52,9 +52,9 @@ public class ActorMonitorCell extends AbstractListCell {
 		HBox box = new HBox(5);
 		box.setAlignment(Pos.CENTER_LEFT);
 		
-//		Map<String, String> propertyStringMap = controller.getPropertyStringMapFromActorString(item);
-//		box.getChildren().add(makeImage(propertyStringMap.get("image"), item));
-//		box.getChildren().add(makePropertiesVBox(propertyStringMap));
+		Map<String, String> propertyStringMap = controller.getPropertyStringMapFromActorString(item);
+		box.getChildren().add(makeImage(propertyStringMap.get("image"), item));
+		box.getChildren().add(makePropertiesVBox(propertyStringMap));
 		
 		setGraphic(box);
 	} 	

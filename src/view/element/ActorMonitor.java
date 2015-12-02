@@ -97,13 +97,13 @@ public class ActorMonitor extends AbstractDockElement {
 	private void addLabelPane() {
 		GridPane labelPane = makeLabelPane();
 		pane.add(labelPane, 0, 0);
-		GridPane.setColumnSpan(labelPane, 2);
+		//GridPane.setColumnSpan(labelPane, 2);
 	}
 	
 	//Call to reload the properties for every actor
 	private void update() {
-		pane.getChildren().clear();
-		addLabelPane();
+		pane.getChildren().remove(observableIndividualActorList);
+		
 		if (!showing.getValue()) {
 			showing.setValue(true);
 		}
