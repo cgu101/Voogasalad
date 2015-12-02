@@ -13,7 +13,6 @@ import authoring.model.bundles.Bundle;
 public class ActorGroups {
 	private Map<String,Bundle<Actor>> actorMap;
 	
-	
 	private Map<String,Bundle<Actor>> newActors;
 	private Map<String,Bundle<Actor>> deadActors;
 

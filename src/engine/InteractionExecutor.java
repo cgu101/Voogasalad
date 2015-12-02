@@ -3,10 +3,8 @@ package engine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
@@ -16,8 +14,10 @@ import authoring.model.level.Level;
 import authoring.model.tree.InteractionTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 import exceptions.EngineException;
-import player.InputManager;
+import exceptions.engine.InteractionTreeException;
 import player.IPlayer;
+import player.InputManager;
+import player.InputManager;
 
 /**
  * The InteractionExecutor runs a single level for the engine.
@@ -46,6 +46,7 @@ public class InteractionExecutor {
 		this.currentLevelIdentifier = null;
 		this.selfTriggerTree = new InteractionTreeNode();
 		this.externalTriggerTree = new InteractionTreeNode();
+		this.triggerTree = new InteractionTreeNode();
 		this.currentActorMap = new ActorGroups();
 		this.inputMap = new InputManager();
 		this.triggerMap = new HashMap<>();
@@ -62,6 +63,8 @@ public class InteractionExecutor {
 			this.currentLevelIdentifier = level.getUniqueID();
 			this.selfTriggerTree = level.getSelfTriggerTree();
 			this.externalTriggerTree = level.getInteractionTree();
+			//TODO
+//			this.triggerTree = level.getTriggerTree();
 			this.currentActorMap = level.getActorGroups();
 
 			this.triggerMap = level.getTriggerMap();
@@ -73,15 +76,16 @@ public class InteractionExecutor {
 	/**
 	 * Runs a single step of the level. Resolves all self-triggers before external triggers.
 	 * @return A {@link EngineHeartbeat} that allows the engine to communicate with the player controller.
+	 * @throws EngineException 
 	 */
-	public EngineHeartbeat run () {
+	public EngineHeartbeat run () throws EngineException {
 		nextActorMap = new ActorGroups(currentActorMap);
-//		runSelfTriggers();
-//		runExternalTriggers();
+		//		runSelfTriggers();
+		//		runExternalTriggers();
 		try {
 			runTriggers();
 		} catch (Exception e) {
-			// TODO: throw an exception about the tree
+			throw new InteractionTreeException("Error in interaction tree", null);
 		}
 		currentActorMap = nextActorMap;
 		//		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
@@ -93,50 +97,6 @@ public class InteractionExecutor {
 			lambdaMap.get(node.getIdentifier()).apply(node, Arrays.asList(node.getValue()));;
 		}
 	}
-
-//	private void runSelfTriggers () {
-//		//		System.out.println(selfTriggerTree.children());
-//		for (InteractionTreeNode actorA : selfTriggerTree.children()) {
-//			List<InteractionTreeNode> triggerNodes = actorA.children();
-//			//			System.out.println(currentActorMap + " InteractionExecutor 67");
-//			//			System.out.println(currentActorMap.getMap().keySet() + " InteractionExecutor 68");
-//			//			System.out.println(actorA.getValue() + " InteractionExecutor 69");
-//			for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
-//				for (InteractionTreeNode trigger : triggerNodes) {
-//					List<InteractionTreeNode> actionNodes = trigger.children();
-//					ITriggerEvent selfTriggerEvent = triggerMap.get(trigger.getValue());
-//					if (selfTriggerEvent.condition(inputMap, (Actor) uniqueA.getCopy())) {
-//						performActions(parseActions(actionNodes), nextActorMap, (Actor) uniqueA.getCopy());
-//					}
-//				}
-//			}
-//		}	
-//	}
-//	private void runExternalTriggers () {
-//		for (InteractionTreeNode actorA : externalTriggerTree.children()) {
-//			List<InteractionTreeNode> actorBNodes = actorA.children();
-//			for (InteractionTreeNode actorB : actorBNodes) {
-//				List<InteractionTreeNode> triggerNodes = actorB.children();
-//				for (Actor uniqueA : currentActorMap.getGroup(actorA.getValue())){
-//					for (Actor uniqueB : currentActorMap.getGroup(actorB.getValue())) {
-//						for (InteractionTreeNode trigger : triggerNodes) {
-//							List<InteractionTreeNode> actionNodes = trigger.children();
-//							ITriggerEvent triggerEvent = triggerMap.get(trigger.getValue());
-//							if (triggerEvent.condition(inputMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy())) {
-//								performActions(parseActions(actionNodes), nextActorMap, (Actor) uniqueA.getCopy(), (Actor) uniqueB.getCopy());
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
-
-//	private List<IAction> parseActions(List<InteractionTreeNode> actionNodes) {
-//		return actionNodes.stream()
-//				.map(k -> { return actionMap.get(k.getValue());})
-//				.collect(Collectors.toList());
-//	}
 
 	public ActorGroups getActors () {
 		//System.out.println(currentActorMap.getMap() + " InteractionExecutor");
@@ -153,14 +113,6 @@ public class InteractionExecutor {
 		return currentLevelIdentifier;
 	}
 
-//	public boolean performActions(List<IAction> actions, ActorGroups actorGroup, Actor... actors) {
-//		Iterator<IAction> iterator = actions.iterator();
-//		while (iterator.hasNext()) {
-//			iterator.next().run(actorGroup, actors);
-//		}
-//		return actions.size() > 0;
-//	}
-
 	@SuppressWarnings("unchecked")
 	private void initLambdaMap () {
 		lambdaMap = new HashMap<String,NodeLambda<InteractionTreeNode,List>>();
@@ -170,7 +122,7 @@ public class InteractionExecutor {
 					lambdaMap.get(child.getIdentifier()).apply(child, cloneListAndAdd(list, child.getValue()));
 				} else {
 					List<List<Actor>> comboList = new ArrayList<List<Actor>>();
-					generateActorCombinations(list, comboList, new ArrayList<Actor>());
+					generateActorCombinations(list, comboList);
 					for (List<Actor> combo : comboList) {
 						lambdaMap.get(child.getIdentifier()).apply(child, combo);
 					}
@@ -187,7 +139,10 @@ public class InteractionExecutor {
 		});
 		lambdaMap.put(ACTION_IDENTIFIER, (node, list) -> {
 			IAction action = actionMap.get(node.getValue());
-			action.run(nextActorMap, (Actor[]) list.toArray());
+			Actor[] actors = ((List<Actor>) list).stream().map(a -> {
+				return nextActorMap.getGroup(a.getGroupName()).get(a.getUniqueID());
+			}).toArray(Actor[]::new);
+			action.run(nextActorMap, actors);
 		});
 	}
 	private <T> List<T> cloneListAndAdd (List<T> list, T value) {
@@ -195,6 +150,11 @@ public class InteractionExecutor {
 		actorList.add(value);
 		return actorList;
 	}
+	
+	private void generateActorCombinations(List<String> groups, List<List<Actor>> uniques){
+		generateActorCombinations (groups, uniques, new ArrayList<Actor>());
+	}
+	
 	private void generateActorCombinations (List<String> groups, List<List<Actor>> uniques, List<Actor> current) {
 		int depth = current.size();
 		if (depth == groups.size()) {
@@ -203,7 +163,7 @@ public class InteractionExecutor {
 		}
 		Bundle<Actor> currentGroup = currentActorMap.getGroup(groups.get(depth));
 		for(Actor a : currentGroup) {
-			generateActorCombinations(groups, uniques, cloneListAndAdd(current, (Actor) a.getCopy()));
+			generateActorCombinations(groups, uniques, cloneListAndAdd(current, a));
 		}
 	}
 	@FunctionalInterface

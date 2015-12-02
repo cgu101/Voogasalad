@@ -1,6 +1,7 @@
 package authoring.model.actions.twoActorActions;
 
 import authoring.model.actions.AActionTwoActors;
+import authoring.model.actions.ActionTriggerHelper;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
@@ -19,7 +20,7 @@ public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 		if (checkIfCollided(actorGroup, a, b)) {
 			Double sizeA = ((Property<Double>) a.getProperties().getComponents().get("size")).getValue();
 			Double sizeB = ((Property<Double>) b.getProperties().getComponents().get("size")).getValue();
-			Double difference = (sizeA + sizeB) - distance(a, b);
+			Double difference = (sizeA + sizeB) - ActionTriggerHelper.distance(a, b);
 			move(a, b, difference);
 		}
 
