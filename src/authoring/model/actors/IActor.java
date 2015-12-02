@@ -31,4 +31,9 @@ public interface IActor {
 	 * @param property Properties that you want to add to the actor
 	 */
 	<T> void setProperty(Property<T>... property);
+	
+	/**
+	 * @return String of the groupName of the Actor
+	 */
+	public String getGroupName();
 }

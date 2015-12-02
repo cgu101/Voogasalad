@@ -5,15 +5,24 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import authoring.model.bundles.Bundle;
-import authoring.model.properties.Property;
 
+/**
+ * @author Inan and Sung
+ *
+ */
 public class ActorGroups {
 	private Map<String,Bundle<Actor>> actorMap;
+	
+	
+	private Map<String,Bundle<Actor>> newActors;
+	private Map<String,Bundle<Actor>> deadActors;
 
 	public ActorGroups () {
 		actorMap = new HashMap<String,Bundle<Actor>>();
+		newActors = new HashMap<String,Bundle<Actor>>();
+		deadActors = new HashMap<String,Bundle<Actor>>();
 	}
-	
+
 	public ActorGroups (ActorGroups oldActorMap) {
 		this.actorMap = new HashMap<String, Bundle<Actor>>();
 		for (Entry<String, Bundle<Actor>> k : oldActorMap.getMap().entrySet()) {
@@ -21,34 +30,52 @@ public class ActorGroups {
 		}
 	}
 	
-	public Bundle<Actor> getGroup (String groupName) {
-		return actorMap.get(groupName);
-	}
-
-	@SuppressWarnings("unchecked")
-	public void addActor (Actor actor) {
-		String groupName = ((Property<String>) actor.getProperties().getComponents().get("groupID")).getValue();
-		if(actorMap.containsKey(groupName)){
-			getGroup(groupName).add(actor);
+	private void addActorToMap(Actor actor, Map<String, Bundle<Actor>> map){
+		String groupName = actor.getGroupName();
+		if(map.containsKey(groupName)){
+			getGroupFromMap(groupName, map).add(actor);
 		}else{
-			addGroup(groupName).add(actor);
+			addGroupToMap(groupName, map).add(actor);
 		}
 	}
+
+	private Bundle<Actor> getGroupFromMap (String groupName, Map<String, Bundle<Actor>> map) {
+		return map.get(groupName);
+	}
 	
-	@SuppressWarnings("unchecked")
+	private Bundle<Actor> addGroupToMap (String groupName, Map <String, Bundle<Actor>> map) {
+		if(!map.containsKey(groupName)) {
+			map.put(groupName, new Bundle<Actor>());
+		}
+		return map.get(groupName);
+	}
+	
+	public void killActor(Actor actor){
+		addActorToMap(actor, deadActors);
+	}
+	
+	public void createActor(Actor actor){
+		addActorToMap(actor, newActors);
+	}
+	
+	public void addActor (Actor actor) {
+		addActorToMap(actor, actorMap);
+	}
+	
 	public void removeActor (Actor actor) {
-		String groupName = ((Property<String>) actor.getProperties().getComponents().get("groupID")).getValue();
-		getGroup(groupName).remove(actor.getUniqueID());
+		String groupName = actor.getGroupName();
+		getGroupFromMap(groupName, actorMap).remove(actor.getUniqueID());
 	}
 	
 	public Map<String,Bundle<Actor>> getMap () {
 		return actorMap;
 	}
+	
+	public Bundle<Actor> addGroup(String groupName){
+		return addGroupToMap(groupName, actorMap);
+	}
 
-	public Bundle<Actor> addGroup (String groupName) {
-		if(!actorMap.containsKey(groupName)) {
-			actorMap.put(groupName, new Bundle<Actor>());
-		}
-		return actorMap.get(groupName);
+	public Bundle<Actor> getGroup(String groupName) {
+		return getGroupFromMap(groupName, actorMap);
 	}
 }
