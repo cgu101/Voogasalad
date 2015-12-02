@@ -3,10 +3,8 @@ package engine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
@@ -17,8 +15,9 @@ import authoring.model.tree.InteractionTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 import exceptions.EngineException;
 import exceptions.engine.InteractionTreeException;
-import player.InputManager;
 import player.IPlayer;
+import player.InputManager;
+import player.InputManager;
 
 /**
  * The InteractionExecutor runs a single level for the engine.
@@ -123,7 +122,7 @@ public class InteractionExecutor {
 					lambdaMap.get(child.getIdentifier()).apply(child, cloneListAndAdd((List<String>) list, child.getValue()));
 				} else {
 					List<List<Actor>> comboList = new ArrayList<List<Actor>>();
-					generateActorCombinations((List<String>) list, comboList, new ArrayList<Actor>());
+					generateActorCombinations((List<String>) list, comboList);
 					for (List<Actor> combo : comboList) {
 						lambdaMap.get(child.getIdentifier()).apply(child, combo);
 					}
@@ -132,7 +131,7 @@ public class InteractionExecutor {
 		});
 		lambdaMap.put(TRIGGER_IDENTIFIER, (node, list) -> {
 			ITriggerEvent triggerEvent = triggerMap.get(node.getValue());
-			if (triggerEvent.condition(inputMap, (Actor[]) list.toArray())) {
+			if (triggerEvent.condition(null, inputMap, (Actor[]) list.toArray())) {
 				for (InteractionTreeNode child : node.children()) {
 					lambdaMap.get(child.getIdentifier()).apply(child, list);
 				}
@@ -143,7 +142,7 @@ public class InteractionExecutor {
 			Actor[] actors = ((List<Actor>) list).stream().map(a -> {
 				return nextActorMap.getGroup(a.getGroupName()).get(a.getUniqueID());
 			}).toArray(Actor[]::new);
-			action.run(nextActorMap, actors);
+			action.run(null, nextActorMap, actors);
 		});
 	}
 	private <T> List<T> cloneListAndAdd (List<T> list, T value) {
@@ -151,6 +150,11 @@ public class InteractionExecutor {
 		actorList.add(value);
 		return actorList;
 	}
+	
+	private void generateActorCombinations(List<String> groups, List<List<Actor>> uniques){
+		generateActorCombinations (groups, uniques, new ArrayList<Actor>());
+	}
+	
 	private void generateActorCombinations (List<String> groups, List<List<Actor>> uniques, List<Actor> current) {
 		int depth = current.size();
 		if (depth == groups.size()) {

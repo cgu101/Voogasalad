@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import authoring.controller.AuthoringController;
-import authoring.controller.constructor.LevelConstructor;
+import authoring.controller.constructor.levelwriter.LevelConstructor;
 import authoring.model.game.Game;
 import data.XMLManager;
 import exceptions.data.GameFileException;

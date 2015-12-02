@@ -1,11 +1,10 @@
-package authoring.controller.constructor;
+package authoring.controller.constructor.configreader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import authoring.controller.AuthoringConfigManager;
 import authoring.model.actors.ActorPropertyMap;
 
 public class AuthoringActorConstructor {
@@ -13,7 +12,7 @@ public class AuthoringActorConstructor {
 	private Map<String, ActorObject> actorMap;
 	private static final String ALT = "b";
 
-	AuthoringActorConstructor() {
+	public AuthoringActorConstructor() {
 		actorMap = new HashMap<String, ActorObject>();
 		load();
 	}

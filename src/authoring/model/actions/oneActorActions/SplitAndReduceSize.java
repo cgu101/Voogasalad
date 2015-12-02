@@ -5,6 +5,7 @@ import authoring.model.actions.twoActorActions.MoveActorsToAvoidCollisions;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
+import authoring.model.tree.Parameters;
 
 /**
  * @author Inan
@@ -14,7 +15,7 @@ public class SplitAndReduceSize extends AActionOneActor{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run(ActorGroups actorGroup, Actor actor) {
+	public void run(Parameters parameters, ActorGroups actorGroup, Actor actor) {
 //		Create a copy of the property Bundle and create 2 new actors with these properties
 		Double size = ((Property<Double>)actor.getProperty("size")).getValue();
 		Double health = ((Property<Double>)actor.getProperty("health")).getValue();
