@@ -8,7 +8,7 @@ import player.InputManager;
 public class LeftArrowKey extends ASelfTrigger {
 
 	@Override
-	public boolean condition(Parameters parameters, InputManager inputManager, Actor... actors) {
+	public boolean condition(Parameters parameters, InputManager inputManager, Actor actor) {
 
 		if (inputManager.getValue("LEFT")) {
 			return true;

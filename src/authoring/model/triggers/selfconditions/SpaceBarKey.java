@@ -8,7 +8,7 @@ import player.InputManager;
 public class SpaceBarKey extends ASelfTrigger {
 
 	@Override
-	public boolean condition(Parameters parameters, InputManager inputManager, Actor... actors) {
+	public boolean condition(Parameters parameters, InputManager inputManager, Actor actor) {
 
 		if (inputManager.getValue("SPACE")) {
 			return true;

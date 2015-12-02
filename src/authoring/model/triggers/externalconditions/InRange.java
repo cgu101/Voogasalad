@@ -4,10 +4,10 @@ import authoring.model.actions.ActionTriggerHelper;
 import authoring.model.actors.Actor;
 import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
-import authoring.model.triggers.selftriggers.ASelfTrigger;
+import authoring.model.triggers.externaltriggers.AExternalTrigger;
 import player.InputManager;
 
-public class InRange extends ASelfTrigger {
+public class InRange extends AExternalTrigger {
 
 	@SuppressWarnings("unchecked")
 	@Override

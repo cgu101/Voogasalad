@@ -8,7 +8,7 @@ import player.InputManager;
 public class DownArrowKey extends ASelfTrigger {
 
 	@Override
-	public boolean condition(Parameters parameters, InputManager inputManager, Actor... actors) {
+	public boolean condition(Parameters parameters, InputManager inputManager, Actor actor) {
 
 		if (inputManager.getValue("DOWN")) {
 			return true;
