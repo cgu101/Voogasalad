@@ -1,5 +1,6 @@
 package authoring.model.triggers.externalconditions;
 
+import authoring.model.actions.ActionTriggerHelper;
 import authoring.model.actors.Actor;
 import authoring.model.properties.Property;
 import authoring.model.triggers.selftriggers.ASelfTrigger;
@@ -18,7 +19,7 @@ public class CircleCollision extends ASelfTrigger {
 		Double sizeB = ((Property<Double>) actorB.getProperties().getComponents().get("size")).getValue();
 
 		double radiusSum = sizeA + sizeB;
-		double distance = distance(actorA, actorB);
+		double distance = ActionTriggerHelper.distance(actorA, actorB);
 
 		if (Double.compare(distance, radiusSum) <= 0) {
 			return true;

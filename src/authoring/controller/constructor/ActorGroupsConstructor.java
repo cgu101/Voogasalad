@@ -11,6 +11,10 @@ import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;
 import voogasalad.util.reflection.Reflection;
 
+/**
+ * @author Chris
+ *
+ */
 public class ActorGroupsConstructor {
 	
 	private ActorGroups actorGroups;
