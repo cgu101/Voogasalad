@@ -41,7 +41,7 @@ public class InteractionExecutor {
 	private Map<String,IAction> actionMap;
 
 	private InteractionTreeNode triggerTree;
-	private Map<String, NodeLambda<InteractionTreeNode,List>> lambdaMap;
+	private Map<String, NodeLambda<InteractionTreeNode,List<?>>> lambdaMap;
 
 	public InteractionExecutor () {
 		this.currentLevelIdentifier = null;
@@ -116,14 +116,14 @@ public class InteractionExecutor {
 
 	@SuppressWarnings("unchecked")
 	private void initLambdaMap () {
-		lambdaMap = new HashMap<String,NodeLambda<InteractionTreeNode,List>>();
+		lambdaMap = new HashMap<String,NodeLambda<InteractionTreeNode,List<?>>>();
 		lambdaMap.put(ACTOR_IDENTIFIER, (node, list) -> {
 			for(InteractionTreeNode child : node.children()){
 				if (child.getIdentifier() == ACTOR_IDENTIFIER) {
-					lambdaMap.get(child.getIdentifier()).apply(child, cloneListAndAdd(list, child.getValue()));
+					lambdaMap.get(child.getIdentifier()).apply(child, cloneListAndAdd((List<String>) list, child.getValue()));
 				} else {
 					List<List<Actor>> comboList = new ArrayList<List<Actor>>();
-					generateActorCombinations(list, comboList, new ArrayList<Actor>());
+					generateActorCombinations((List<String>) list, comboList, new ArrayList<Actor>());
 					for (List<Actor> combo : comboList) {
 						lambdaMap.get(child.getIdentifier()).apply(child, combo);
 					}
