@@ -2,11 +2,12 @@ package authoring.model.triggers;
 
 import authoring.model.actors.Actor;
 import authoring.model.properties.Property;
+import authoring.model.tree.Parameters;
 import player.InputManager;
 
 public abstract class ATriggerEvent implements ITriggerEvent {
 
-	public abstract boolean condition(InputManager inputManager, Actor... actors);
+	public abstract boolean condition(Parameters parameters, InputManager inputManager, Actor... actors);
 
 	@SuppressWarnings("unchecked")
 	protected double distance(Actor actorA, Actor actorB) {
