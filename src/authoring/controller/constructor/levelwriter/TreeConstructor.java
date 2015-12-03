@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import authoring.controller.constructor.levelwriter.interfaces.ITreeConstructor;
+import authoring.model.tree.ActionTreeNode;
 import authoring.model.tree.ActorTreeNode;
 import authoring.model.tree.InteractionTreeNode;
 import authoring.model.tree.TriggerTreeNode;
@@ -16,7 +17,7 @@ public class TreeConstructor implements ITreeConstructor {
 	/**
 	 * Empty constructor for TreeConstructor.
 	 */
-	TreeConstructor() {
+	public TreeConstructor() {
 		rootTree = new InteractionTreeNode();
 	}
 	
