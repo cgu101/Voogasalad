@@ -12,10 +12,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.RotateEvent;
 import javafx.scene.layout.HBox;
@@ -23,7 +24,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import util.Sprite;
 import view.visual.AbstractVisual;
 
 /**
@@ -33,8 +33,6 @@ import view.visual.AbstractVisual;
  *
  */
 public class ActorHandler extends AbstractVisual {
-	private Actor currActor;
-	private Node currNode;
 	private AuthoringController myController;
 	private MapViewManager viewManager;
 	private ToolBar myToolbar;
@@ -43,8 +41,6 @@ public class ActorHandler extends AbstractVisual {
 	public ActorHandler(Group layout, AuthoringController ac, ToolBar tb) {
 		myController = ac;
 		viewManager = new MapViewManager(layout);
-		currActor = null;
-		currNode = null;
 		myToolbar = tb;
 		findResources();
 		defaultLabel = makeLabel(myResources.getString("defaultPrompt"));
@@ -52,34 +48,32 @@ public class ActorHandler extends AbstractVisual {
 	}
 	
 	public void addActor(Actor a, double x, double y) {
-		currActor = a;
-		Image image = getImageFromActor(a);
-		Sprite sp = new Sprite(image);
-		currNode = sp;
-		ContextMenu cm = makeContextMenu();
-		sp.setOnContextMenuRequested(e -> {
-			currActor = a;
-			currNode = sp;
-			cm.show(sp, e.getScreenX(), e.getScreenY());
+		ActorView av = new ActorView(a, x, y);
+		addActor(av, x, y);
+	}
+	
+	public void addActor(ActorView av, double x, double y) {
+//		currActor = av;
+		ImageView image = av.getImageView();
+		ContextMenu cm = makeContextMenu(av);
+		image.setOnContextMenuRequested(e -> {
+//			currActor = av;
+			cm.show(image, e.getScreenX(), e.getScreenY());
 		});
-		viewManager.addActor(sp, x, y, image.getWidth(), image.getHeight());
+		viewManager.addElements(image);
 	}
 	
-	private Image getImageFromActor(Actor a) {
-		String img = (String) currActor.getProperties().getComponents().get("image").getValue();
-		return new Image(getClass().getClassLoader().getResourceAsStream(img));
-	}
-	
-	private ContextMenu makeContextMenu() {
+	private ContextMenu makeContextMenu(ActorView a) {
 		ContextMenu cm = new ContextMenu();
-		MenuItem moveActor = makeMenuItem("Move Actor", event -> moveActor(currNode.getTranslateX(), currNode.getTranslateY()));
-		MenuItem copyActor = makeMenuItem("Copy Actor", event -> copyActor());
-		MenuItem rotateActor = makeMenuItem("Rotate Actor", event -> rotateActor());
-		MenuItem deleteActor = makeMenuItem("Delete Actor", event -> removeActor());
+		MenuItem moveActor = makeMenuItem("Move Actor", event -> moveActorFilter(a));
+		MenuItem copyActor = makeMenuItem("Copy Actor", event -> copyActor(a));
+		MenuItem rotateActor = makeMenuItem("Rotate Actor", event -> rotateActor(a));
+		MenuItem resizeActor = makeMenuItem("Resize Actor", event -> resizeActor(a));
+		MenuItem deleteActor = makeMenuItem("Delete Actor", event -> removeActor(a));
 		MenuItem editParam = makeMenuItem("Edit Parameters", event -> editParams());
 		MenuItem editShip = makeMenuItem("Edit Relationship with Another Actor", event -> editShip());
 
-		cm.getItems().addAll(moveActor, copyActor, rotateActor, deleteActor, editParam, editShip);
+		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, deleteActor, editParam, editShip);
 
 		return cm;
 	}
@@ -90,61 +84,64 @@ public class ActorHandler extends AbstractVisual {
 		return res;
 	}
 
-	private void moveActor(double origX, double origY) {
-		Rectangle r = makeFilterRectangle(e -> dragDrop(e));
-		Button undo = makeButton("Return to original position", e -> moveActorWithoutOffset(origX, origY));
+	private void moveActorFilter(ActorView a) {	
+		double origX = a.getXCoor();
+		double origY = a.getYCoor();
+		// create the filter
+		Rectangle r = makeFilterRectangle(e -> dragDrop(a, e));
+		Button undo = makeButton("Return to original position", e -> a.restoreXY(origX, origY));
 		Pane spacer = makeSpacer();
 		Button finish = makeFinishButton(r); 
 		replaceToolbar(makeLabel("Click on new location for actor"), spacer, undo, finish);
 	}
 	
-	private void dragDrop(MouseEvent e) {
-		Image image = getImageFromActor(currActor);
-		viewManager.setOnGraphWithOffset(currNode, e.getX(), e.getY(), image.getWidth()/2, image.getHeight()/2);
-		currActor.setProperty("xLocation", "" + (e.getX()));
-		currActor.setProperty("yLocation", "" + (e.getY()));
+	private void dragDrop(ActorView a, MouseEvent e) {
+		a.setXCoor(e.getX());
+		a.setYCoor(e.getY());
 	}
 	
-	private void moveActorWithoutOffset(double x, double y) {
-		Image image = getImageFromActor(currActor);
-		viewManager.setOnGraph(currNode, x, y);
-		currActor.setProperty("xLocation", "" + (x + image.getWidth()/2));
-		currActor.setProperty("yLocation", "" + (y + image.getHeight()/2));
+	private void copyActor(ActorView a) {
+		ActorView aCopy = new ActorView(a);
+		addActor(aCopy, aCopy.getWidth()/2, aCopy.getHeight()/2);
+		moveActorFilter(aCopy);
 	}
 	
-	private void copyActor() {
-		Actor a = new Actor(currActor);
-		Image image = getImageFromActor(a);
-		addActor(a, image.getWidth()/2, image.getHeight()/2);
-		moveActor(0, 0);
-	}
-	
-	private void rotateActor() {
+	private void rotateActor(ActorView a) {
+		Node currNode = a.getImageView();
 		double heading = currNode.getRotate();
-		currNode.setOnRotate(e -> rotateActor(e));
-		Button enterVal = makeButton("Actual Degree", e -> rotateDialog(true));
-		Button enterVal2 = makeButton("Relative Degree", e -> rotateDialog(false));
-		Button reset = makeButton("Return to original", e -> currNode.setRotate(heading));
+//		TODO: currNode.setOnRotate(e -> rotateActor(e));
+		
+		// makeFilter
+		Button enterVal = makeButton("Actual Degree", e -> rotateDialog(a, true));
+		Button enterVal2 = makeButton("Relative Degree", e -> rotateDialog(a, false));
+		Separator s = new Separator();
+		Button left = makeButton("<-", e -> rotateRight(a, -10)); //TODO: replace arrows
+		Button right = makeButton("->", e -> rotateRight(a, 10));
+		Button reset = makeButton("Return to original", e -> a.setRotation(heading));
 		Button finish = makeFinishButton();
 		Pane spacer = makeSpacer();
 //		EventHandler<ActionEvent> finishHandle = event -> { TODO:?
 //			viewManager.removeElements(hello); 
 //			currNode.removeEventHandler(RotateEvent.ANY, e -> rotateActor(e));
 //		};
-		replaceToolbar(makeLabel("Scroll or input"), enterVal, enterVal2, spacer, reset, finish);
+		replaceToolbar(makeLabel("Scroll or input"), enterVal, enterVal2, s, left, right, spacer, reset, finish);
 	}
 	
-	private void rotateActor(RotateEvent r) {
-		// TODO:
-		double initialHeading = currNode.getRotate();
-		viewManager.rotateActor(currNode, initialHeading + r.getAngle()); 
+	private void rotateRight(ActorView a, double i) {
+		a.setRotation(a.getRotation() + i);
 	}
 
-	private void rotateDialog(boolean absolute) {
+	private void rotateActor(ActorView a, RotateEvent r) {
+		// TODO:
+		double initialHeading = a.getImageView().getRotate();
+		a.setRotation(initialHeading + r.getAngle()); 
+	}
+
+	private void rotateDialog(ActorView a, boolean absolute) {
 		double initialHeading = 0;
 
 		if (!absolute) {
-			initialHeading = viewManager.getRotation(currNode);
+			initialHeading = a.getRotation();
 		}
 
 		TextInputDialog popup = new TextInputDialog();
@@ -155,25 +152,34 @@ public class ActorHandler extends AbstractVisual {
 		String newVal = popup.getEditor().getText();
 		try {
 			double degrees = Double.parseDouble(newVal);
-			System.out.println("OK");
-			viewManager.rotateActor(currNode, degrees + initialHeading);
-//			currActor.setProperty("Rotation", "" + (degrees + initialHeading));
+			a.setRotation(degrees + initialHeading);
 		} catch (Exception e) {
-			e.printStackTrace();
 			Alert error = new Alert(AlertType.ERROR, "You did not input a valid number", ButtonType.OK);
 			error.showAndWait();
 		}
 	}
 	
-	private void removeActor() {
-		// TODO: tell backend
-		removeActor(currNode);
-		currNode = null;
-		currActor = null;
+	private void resizeActor(ActorView a) {
+		Label instru = makeLabel("Increase or decrease size of actor");
+		Button plus = makeButton("+", e -> increaseActorSize(a, 10));
+		Button minus = makeButton("-", e -> increaseActorSize(a, -10));
+		Pane spacer = makeSpacer();
+		Button finish = makeFinishButton();
+		
+		replaceToolbar(instru, plus, minus, spacer, finish);
 	}
 	
-	protected void removeActor(Node node) {
-		viewManager.removeActor(node); // TODO: 
+	private void increaseActorSize(ActorView a, double increase) {
+		a.addDimensions(increase);
+	}
+
+	protected void removeActor(ActorView a) {
+		viewManager.removeElements(a.getImageView()); // TODO: 
+	}
+	
+	// TODO: ...
+	protected void removeActor(Node element) {
+		viewManager.removeElements(element);
 	}
 	
 	private void editParams() {
