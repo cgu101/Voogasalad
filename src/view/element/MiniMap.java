@@ -48,6 +48,7 @@ public class MiniMap {
 	}
 
 	public void updateMiniMapOpacity(double opacity) {
+		currentOpacity = opacity;
 		miniMapImageView.setOpacity(opacity);
 		currentRectangle.setStroke(Color.rgb(255, 0, 0, opacity));;
 	}
