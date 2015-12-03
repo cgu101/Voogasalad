@@ -20,6 +20,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import network.test.GameWindow.GameClient;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.level.Workspace;

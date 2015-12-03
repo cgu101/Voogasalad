@@ -51,7 +51,7 @@ public class CreatorScreen extends AbstractScreen {
 
 	@Override
 	public void run() {
-//		System.out.println("test run");
+		//System.out.println("test run");
 	}
 
 	@Override
@@ -122,6 +122,7 @@ public class CreatorScreen extends AbstractScreen {
 	
 	public void setGameWindow(GameWindow g) {
 		this.g = g;
+		w.setGameWindow(g);
 	}
 	
 	public GameWindow getGameWindow() {
