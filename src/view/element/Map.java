@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -38,7 +39,8 @@ public class Map extends AbstractElement {
 	protected ScrollPane mapScrollableArea;
 	private MapZoomSlider sliderArea;
 	private MiniMap miniMapNode;
-	private MapActorManager actorManager;
+	private ToolBar editToolbar;
+	private ActorHandler actorHandler;
 	protected ImageView background;
 
 	/**
@@ -63,11 +65,12 @@ public class Map extends AbstractElement {
 		layout = new Group();
 		mapScrollableArea = new ScrollPane();
 		mapArea = new Group();
-
+		
 		// The actorManager needs access to the layout so it can place actors on
 		// it
 		controller = new AuthoringController();
-		actorManager = new MapActorManager(layout, controller);
+		editToolbar = new ToolBar();
+		actorHandler = new ActorHandler(layout, controller, editToolbar);
 
 		makePane();
 	}
@@ -84,7 +87,7 @@ public class Map extends AbstractElement {
 	 */
 	public void addActor(Actor element, double x, double y) {
 		// Use this method to add an actor to the StackPane.
-		actorManager.addActor(element, x, y);
+		actorHandler.addActor(element, x, y);
 	}
 
 	/**
@@ -94,7 +97,7 @@ public class Map extends AbstractElement {
 	 *            - the Node to be removed
 	 */
 	public void removeActor(Node element) {
-		actorManager.removeActor(element);
+		actorHandler.removeActor(element);
 	}
 
 	/**
@@ -107,7 +110,7 @@ public class Map extends AbstractElement {
 		background = new ImageView(bg);
 		background.fitWidthProperty().bind(pane.widthProperty());
 		background.setPreserveRatio(true);
-		actorManager.updateBackground(background);
+		actorHandler.updateBackground(background);
 	}
 
 	public Group getGroup() {
@@ -130,6 +133,10 @@ public class Map extends AbstractElement {
 
 	public GridPane getSlider() {
 		return sliderArea.getSliderWithCaptions();
+	}
+	
+	public ToolBar getToolbar() {
+		return editToolbar;
 	}
 
 	/**

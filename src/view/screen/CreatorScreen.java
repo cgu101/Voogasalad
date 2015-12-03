@@ -18,6 +18,7 @@ import view.controlbar.ControlBarCreator;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.ActorEditor;
+import view.element.ActorHandlerToolbar;
 import view.element.MapSliders;
 import view.level.Workspace;
 
@@ -85,6 +86,8 @@ public class CreatorScreen extends AbstractScreen {
 		MapSliders slider = new MapSliders(dockPanes.get(3), homePanes.get(3), myResources.getString("slidername"),
 				this, w);
 		components.add(slider);
+		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(2), homePanes.get(2), "", this, w);
+		components.add(aet);
 		t = new ControlBarCreator(myPanes.get(0), this, w);
 	}
 
