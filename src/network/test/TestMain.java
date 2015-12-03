@@ -15,7 +15,7 @@ public class TestMain extends Application {
 //		if (host == null || host.trim().length() == 0)
 //			return;
 		
-		GameWindow window = new GameWindow("localhost");
+		GameWindow window = new GameWindow("52.21.160.171");
 		
 		primaryStage.setScene(window.getScreen().getScene());
 		primaryStage.show();

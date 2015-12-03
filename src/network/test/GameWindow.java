@@ -7,7 +7,7 @@ import network.core.ForwardedMessage;
 import view.screen.CreatorScreen;
 
 public class GameWindow {
-	private final static int PORT = 37818;
+	private final static int PORT = 6969;
 
 	public class GameClient extends Client {
 
