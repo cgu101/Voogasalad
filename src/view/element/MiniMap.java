@@ -1,12 +1,16 @@
 package view.element;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -25,11 +29,6 @@ public class MiniMap {
 	private Rectangle currentRectangle;
 	private double currentRectangleXPos;
 	private double currentRectangleYPos;
-	
-	private double mouseAnchorX;
-	private double mouseAnchorY;
-	private double initialTranslateX;
-	private double initialTranslateY;
 	
 
 	public MiniMap(ImageView background, ScrollPane mapArea){
@@ -94,14 +93,20 @@ public class MiniMap {
 	}
 	
 	private void setUpDragFilters() {
+//		theMiniMap.setOnDragDetected(e -> this.drag(e));
+//		theMiniMap.setOnDragDone(e -> this.dragDone(e));
+		final DragContext dragContext = new DragContext();
+		final Group wrapGroup = new Group(theMiniMap);
+		
 		theMiniMap.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				mouseAnchorX = mouseEvent.getX();
-				mouseAnchorY = mouseEvent.getY();
-				initialTranslateX = theMiniMap.getTranslateX();
-				initialTranslateY = theMiniMap.getTranslateY();
+				// TODO Auto-generated method stub
+				dragContext.orgSceneX = mouseEvent.getSceneX();
+				dragContext.orgSceneY = mouseEvent.getSceneY();
+				dragContext.initialTranslateX = ((StackPane)mouseEvent.getSource()).getTranslateX();
+				dragContext.initialTranslateY = ((StackPane)mouseEvent.getSource()).getTranslateY();
 			}
 			
 		});
@@ -110,11 +115,25 @@ public class MiniMap {
 
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				theMiniMap.setTranslateX(initialTranslateX + mouseEvent.getX() - mouseAnchorX);
-				theMiniMap.setTranslateY(initialTranslateY + mouseEvent.getY() - mouseAnchorY);
+				double offsetX = mouseEvent.getSceneX() - dragContext.orgSceneX;
+				double offsetY = mouseEvent.getSceneY() - dragContext.orgSceneY;
+				theMiniMap.setTranslateX(dragContext.initialTranslateX + offsetX);;
+				theMiniMap.setTranslateY(dragContext.initialTranslateY + offsetY);
 			}
 			
 		});
+	}
+	
+	private void drag(MouseEvent e) {
+		Dragboard db = theMiniMap.startDragAndDrop(TransferMode.ANY);
+        ClipboardContent content = new ClipboardContent();
+        content.putString("Hello!");
+        db.setContent(content);
+        e.consume();
+	}
+	
+	private void dragDone(DragEvent e) {
+		e.consume();
 	}
 
 	public void updateMiniMapRectangleOnHorizontalPan(double new_value) {
@@ -133,5 +152,14 @@ public class MiniMap {
 
 	public StackPane getMiniMap() {
 		return theMiniMap;
+	}
+	
+	private static final class DragContext {
+		public double mouseAnchorX;
+		public double mouseAnchorY;
+		public double orgSceneX;
+		public double orgSceneY;
+		public double initialTranslateX;
+		public double initialTranslateY;
 	}
 }
