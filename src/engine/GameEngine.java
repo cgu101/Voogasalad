@@ -104,4 +104,18 @@ public class GameEngine implements IEngine {
 			throw new EngineStateException("Wrong game", null);
 		}
 	}
+
+	@Override
+	public void nextLevel() throws EngineException {
+		Level iLevel = makeLevel(game);
+		// TODO STATE into InteractionExecutor
+		levelExecutor = new InteractionExecutor(iLevel, inputManager, null);
+		
+	}
+
+	@Override
+	public void replayLevel() throws EngineException {
+		// TODO Auto-generated method stub
+		
+	}
 }
