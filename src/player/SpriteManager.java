@@ -30,7 +30,7 @@ public class SpriteManager {
 		//bp.setCenter(group);
 		GridPane gp = new GridPane();
 		myCamera = new view.element.Map(gp);
-		myCamera.createTheMap();
+//		myCamera.createTheMap();
 		bp.setCenter(gp);
 	}
 	

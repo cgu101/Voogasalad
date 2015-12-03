@@ -108,7 +108,7 @@ public class Map extends AbstractElement {
 	 */
 	public void updateBackground(Image bg) {
 		background = new ImageView(bg);
-		background.fitWidthProperty().bind(pane.widthProperty());
+		background.setFitWidth(700);
 		background.setPreserveRatio(true);
 		actorHandler.updateBackground(background);
 	}
@@ -174,10 +174,8 @@ public class Map extends AbstractElement {
 		createMapScrollPane();
 		createPanListeners();
 		createMiniMap();
-		if (!mapArea.getChildren().contains(mapScrollableArea)) {
-
-			mapArea.getChildren().add(mapScrollableArea);
-		}
+		
+		mapArea.getChildren().add(mapScrollableArea);
 		theMiniMap.getMiniMap().setTranslateY(300);
 		mapArea.getChildren().add(theMiniMap.getMiniMap());
 		System.out.println("The minimap's bounds are: " + theMiniMap.getMiniMap().getBoundsInParent());
