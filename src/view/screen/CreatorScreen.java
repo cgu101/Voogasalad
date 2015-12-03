@@ -122,6 +122,7 @@ public class CreatorScreen extends AbstractScreen {
 	
 	public void setGameWindow(GameWindow g) {
 		this.g = g;
+		w.setGameWindow(g);
 	}
 	
 	public GameWindow getGameWindow() {
