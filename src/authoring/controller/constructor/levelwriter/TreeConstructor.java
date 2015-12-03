@@ -17,7 +17,7 @@ public class TreeConstructor implements ITreeConstructor {
 	/**
 	 * Empty constructor for TreeConstructor.
 	 */
-	TreeConstructor() {
+	public TreeConstructor() {
 		rootTree = new InteractionTreeNode();
 	}
 	

@@ -80,6 +80,7 @@ public class InteractionExecutor {
 		try {
 			runTriggers();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new InteractionTreeException("Error in interaction tree", null);
 		}
 		currentState = nextState;
@@ -125,10 +126,12 @@ public class InteractionExecutor {
 			}
 		});
 		lambdaMap.put(TRIGGER_IDENTIFIER, (node, list) -> {
+//			System.out.println(triggerMap.values());
 			ITriggerEvent triggerEvent = triggerMap.get(node.getValue());
 			// TODO: incorporate Parameters
-			if (triggerEvent.condition(null, inputMap, (Actor[]) list.toArray())) {
+			if (triggerEvent.condition(null, inputMap, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
 				for (InteractionTreeNode child : node.children()) {
+//					System.out.println(child.getIdentifier());
 					lambdaMap.get(child.getIdentifier()).apply(child, list);
 				}
 			}
