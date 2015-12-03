@@ -3,14 +3,9 @@ package view.element;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -59,7 +54,7 @@ public class MiniMap {
 	}
 
 	private void createMiniMap() {
-		createMiniMapImageView(200); //hardcoded for now
+		createMiniMapImageView(200); //width is hardcoded for now
 		addMiniMapImageView();
 
 		createMiniMapRectangle(miniMapWidth, miniMapHeight, currentScale, currentOpacity);
