@@ -33,8 +33,10 @@ public class InteractionExecutor {
 	private static final String ACTION_IDENTIFIER = ActionTreeNode.class.getSimpleName();
 
 	private String currentLevelIdentifier;
-	private ActorGroups currentActorMap;
-	private ActorGroups nextActorMap;
+	
+	private State currentState;
+	private State nextState;
+	
 	private InputManager inputMap;
 	private Map<String,ITriggerEvent> triggerMap;
 	private Map<String,IAction> actionMap;
@@ -45,27 +47,27 @@ public class InteractionExecutor {
 	public InteractionExecutor () {
 		this.currentLevelIdentifier = null;
 		this.triggerTree = new InteractionTreeNode();
-		this.currentActorMap = new ActorGroups();
 		this.inputMap = new InputManager();
 		this.triggerMap = new HashMap<>();
 		this.actionMap = new HashMap<>();
-		this.nextActorMap = new ActorGroups();
+		
 		initLambdaMap();
 	}
 
-	public InteractionExecutor (Level level, InputManager inputMap) {
+	public InteractionExecutor (Level level, InputManager inputMap, State state) {
 		this();
 		this.inputMap = inputMap;
 
 		if (level != null) {
 			this.currentLevelIdentifier = level.getUniqueID();
 			this.triggerTree = level.getRootTree();
-			this.currentActorMap = level.getActorGroups();
-
+			this.currentState = state;
+			currentState.setActorMap(level.getActorGroups());
+			
 			this.triggerMap = level.getTriggerMap();
 			this.actionMap = level.getActionMap();
 
-			this.nextActorMap = new ActorGroups(currentActorMap);
+			nextState = new State(currentState);
 		}
 	}
 	/**
@@ -74,13 +76,13 @@ public class InteractionExecutor {
 	 * @throws EngineException 
 	 */
 	public EngineHeartbeat run () throws EngineException {
-		nextActorMap = new ActorGroups(currentActorMap);
+		nextState = new State(currentState);
 		try {
 			runTriggers();
 		} catch (Exception e) {
 			throw new InteractionTreeException("Error in interaction tree", null);
 		}
-		currentActorMap = nextActorMap;
+		currentState = nextState;
 		//		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
 		return new EngineHeartbeat((IPlayer p) -> {});
 	}
@@ -93,10 +95,10 @@ public class InteractionExecutor {
 
 	public ActorGroups getActors () {
 		//System.out.println(currentActorMap.getMap() + " InteractionExecutor");
-		return currentActorMap;
+		return currentState.getActorMap();
 	}
 	public void setActors (ActorGroups actors) {
-		this.currentActorMap = actors;
+		this.currentState.setActorMap(actors);
 	}
 	/**
 	 * 
@@ -134,10 +136,10 @@ public class InteractionExecutor {
 		lambdaMap.put(ACTION_IDENTIFIER, (node, list) -> {
 			IAction action = actionMap.get(node.getValue());
 			Actor[] actors = ((List<Actor>) list).stream().map(a -> {
-				return nextActorMap.getGroup(a.getGroupName()).get(a.getUniqueID());
+				return nextState.getActorMap().getGroup(a.getGroupName()).get(a.getUniqueID());
 			}).toArray(Actor[]::new);
 			// TODO: incorporate Parameters
-			action.run(null, nextActorMap, actors);
+			action.run(null, nextState, actors);
 		});
 	}
 	private <T> List<T> cloneListAndAdd (List<T> list, T value) {
@@ -156,7 +158,7 @@ public class InteractionExecutor {
 			uniques.add(current);
 			return;
 		}
-		Bundle<Actor> currentGroup = currentActorMap.getGroup(groups.get(depth));
+		Bundle<Actor> currentGroup = currentState.getActorMap().getGroup(groups.get(depth));
 		for(Actor a : currentGroup) {
 			generateActorCombinations(groups, uniques, cloneListAndAdd(current, a));
 		}

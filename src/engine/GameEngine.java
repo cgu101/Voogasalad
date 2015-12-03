@@ -37,9 +37,13 @@ public class GameEngine implements IEngine {
 	@Override
 	public void init(Game game) {
 		this.game = game;
-		
+
+		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
+		propertyBundle.add(new Property<String>(LEVEL_ID_KEY, levelExecutor.getLevelID()));
+		propertyBundle.add(new Property<String>(GAME_ID_KEY, (String) game.getProperty(GAME_ID_KEY).getValue()));
 		Level initialLevel = makeLevel(game);
-		levelExecutor = new InteractionExecutor(initialLevel, inputManager);
+		levelExecutor = new InteractionExecutor(initialLevel, inputManager, new State(propertyBundle, null));
+
 	}
 	
 	private Level makeLevel(Game myGame) {
@@ -56,8 +60,7 @@ public class GameEngine implements IEngine {
 	 */
 	@Override
 	public void reset() throws EngineException {
-		Level iLevel = makeLevel(game);
-		levelExecutor = new InteractionExecutor(iLevel, inputManager);
+		init(game);
 	}
 	
 	/**
@@ -77,6 +80,7 @@ public class GameEngine implements IEngine {
 		return levelExecutor.getActors().getMap();
 	}
 	
+	// TODO: rewrite save/load state
 	/**
 	 * @return A {@link State} to be saved.
 	 */
@@ -94,7 +98,7 @@ public class GameEngine implements IEngine {
 	public void loadState (State state) throws EngineException {
 		if (state.getProperty(GAME_ID_KEY).getValue().equals(game.getProperty(GAME_ID_KEY).getValue())) {
 			Level level = game.getLevel((String) state.getProperty(LEVEL_ID_KEY).getValue());
-			levelExecutor = new InteractionExecutor(level, inputManager);
+			levelExecutor = new InteractionExecutor(level, inputManager, state);
 			levelExecutor.setActors(state.getActorMap());
 		} else {
 			throw new EngineStateException("Wrong game", null);
