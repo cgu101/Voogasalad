@@ -7,6 +7,7 @@ import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import authoring.model.triggers.externalconditions.CircleCollision;
+import engine.State;
 
 /**
  * @author Tyler
@@ -16,8 +17,8 @@ public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void run(Parameters parameters, ActorGroups actorGroup, Actor a, Actor b) {
-
+	public void run(Parameters parameters, State state, Actor a, Actor b) {
+		ActorGroups actorGroup = state.getActorMap();
 		if (checkIfCollided(actorGroup, a, b)) {
 			Double sizeA = ((Property<Double>) a.getProperties().getComponents().get("size")).getValue();
 			Double sizeB = ((Property<Double>) b.getProperties().getComponents().get("size")).getValue();

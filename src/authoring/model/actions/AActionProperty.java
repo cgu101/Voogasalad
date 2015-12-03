@@ -1,12 +1,12 @@
-package authoring.model.actions.oneActorActions;
+package authoring.model.actions;
 
-import authoring.model.actions.AActionOneActor;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
+import engine.State;
 
-public abstract class AChangeProperty extends AActionOneActor {
+public abstract class AActionProperty extends AActionOneActor {
 	private static final int PROPERTY_INDEX = 0;
 	private static final int VALUE_INDEX = 0;
 	private static final String STRING_LIST = "string";
@@ -14,11 +14,13 @@ public abstract class AChangeProperty extends AActionOneActor {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run(Parameters parameters, ActorGroups actorGroup, Actor actor) {
+	public void run(Parameters parameters, State state, Actor actor) {
 		String propertyName = (String) parameters.getParameterList(STRING_LIST).get(PROPERTY_INDEX);
 		Double value = (Double) parameters.getParameterList(DOUBLE_LIST).get(VALUE_INDEX);
 		Property<Double> property = (Property<Double>) actor.getProperty(propertyName);
 		ExecuteOperation(value, property);
+		
+		ActorGroups actorGroup = state.getActorMap();
 		actorGroup.addActor(actor);
 	}
 

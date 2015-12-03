@@ -136,8 +136,11 @@ public class InteractionExecutor {
 			Actor[] actors = ((List<Actor>) list).stream().map(a -> {
 				return nextActorMap.getGroup(a.getGroupName()).get(a.getUniqueID());
 			}).toArray(Actor[]::new);
-			// TODO: incorporate Parameters
-			action.run(null, nextActorMap, actors);
+			
+			
+			// TODO: incorporate Parameters and State
+			action.run(null, null, actors);
+		
 		});
 	}
 	private <T> List<T> cloneListAndAdd (List<T> list, T value) {
