@@ -24,6 +24,7 @@ import javafx.util.Duration;
 import player.IPlayer;
 import player.InputManager;
 import player.SpriteManager;
+import view.element.ActorMonitor;
 
 public class PlayerController implements IPlayer {
 
@@ -34,7 +35,9 @@ public class PlayerController implements IPlayer {
 	private Timeline myGameLoop;
 	private SpriteManager mySpriteManager;
 	private InputManager myInputManager;
+	private ActorMonitor actorMonitor;
 	private static int fps = 10;
+	private int refreshComponentRate;
 
 	/**
 	 * Player Controller Constructor
@@ -47,6 +50,7 @@ public class PlayerController implements IPlayer {
 		myScene = s;
 		myInputManager = new InputManager();
 		myEngine = new GameEngine(myInputManager);
+		refreshComponentRate = 0;
 		attachInputs(s);
 	}
 
@@ -109,20 +113,22 @@ public class PlayerController implements IPlayer {
 	private void run() {
 		try {
 			myEngine.play().call(this);
-			mySpriteManager.updateSprites(getActorList(), this.myScene);
-			
+			mySpriteManager.updateSprites(getIndividualActorsList(), this.myScene);
+			refreshPlayerComponents();
+			actorMonitor.refresh();	
 		} catch (EngineException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+
 	/**
 	 * This method grabs a list of all current actors from the Game Engine.
 	 *
 	 * @return the list of Actors.
 	 */
-	public ArrayList<Actor> getActorList() {
+	public ArrayList<Actor> getIndividualActorsList() {
 		ArrayList<Actor> actors = new ArrayList<Actor>();
 		for (Bundle<Actor> b : myEngine.getActors().values()) {
 			actors.addAll(b.getComponents().values());
@@ -147,7 +153,8 @@ public class PlayerController implements IPlayer {
 	
 	/**
 	 * This method grabs the the Actor Map from the Game Engine.
-	 *
+	 * The string correlates to the actor group name.
+	 * 
 	 * @return The map of Actors.
 	 */
 	public Map<String, Bundle<Actor>> getActorMap() {
@@ -170,6 +177,39 @@ public class PlayerController implements IPlayer {
 			propertyMap.put(identifier, value);
 		}
 		return propertyMap;
+	}
+	
+	/**
+	 * This method creates a Map the actor's Property Identifier to it's value
+	 * The map is in <String, String> format to allow for easy GUI display.
+	 *
+	 * @param a The Actor you would like to retrieve the properties for.
+	 * @param group The group classification of the Actor you're looking for.
+	 * 
+	 * @return The map of properties identifier -> value casted to Strings.
+	 */
+	public Map<String, String> getPropertyStringMapFromActorString(String a){
+		Actor match = null;
+		for(Actor actor : getIndividualActorsList()){
+			if(actor.getUniqueID().equals(a)){
+				match = actor;	
+				break;
+			}
+		}
+		if(match != null){
+			return getPropertyStringMap(match);
+		}
+		return null;
+	}
+	
+	public Actor getActorFromString(String a){
+		ArrayList<Actor> actorList = getIndividualActorsList();
+		for(Actor curr : actorList){
+			if(curr.getUniqueID().equals(a)){
+				return curr;
+			}
+		}
+		return null;
 	}
 	
 	/**
@@ -203,5 +243,18 @@ public class PlayerController implements IPlayer {
 			throw new GameFileException(e.getMessage());
 		}
 		resume();
+	}
+
+	public void addMonitor(ActorMonitor monitor) {
+		this.actorMonitor = monitor;
+		
+	}
+
+	private void refreshPlayerComponents() {
+		refreshComponentRate++;
+		if(refreshComponentRate > 20){
+			actorMonitor.refresh();
+			refreshComponentRate = 0;
+		}
 	}
 }

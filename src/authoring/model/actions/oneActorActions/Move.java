@@ -4,6 +4,7 @@ import authoring.model.actions.AActionOneActor;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
+import authoring.model.tree.Parameters;
 
 /**
  * @author Inan
@@ -13,7 +14,7 @@ public class Move extends AActionOneActor{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run(ActorGroups actorGroup, Actor actor) {
+	public void run(Parameters parameters, ActorGroups actorGroup, Actor actor) {
 
 		Double angle = ((Property<Double>) actor.getProperty("angle")).getValue();
 		Double speed = ((Property<Double>) actor.getProperty("speed")).getValue();

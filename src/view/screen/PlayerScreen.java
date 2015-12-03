@@ -18,7 +18,7 @@ import view.element.ActorMonitor;
 
 public class PlayerScreen extends AbstractScreen {
 
-	private ControlBarPlayer t;
+	private ControlBarPlayer controlBarPlayer;
 	private PlayerController playerController;
 	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
@@ -60,7 +60,7 @@ public class PlayerScreen extends AbstractScreen {
 	protected void makeScene() {
 		BorderPane r = new BorderPane();
 		makePanes(2);
-		t = new ControlBarPlayer(myPanes.get(0), this, WIDTH);
+		controlBarPlayer = new ControlBarPlayer(myPanes.get(0), this, WIDTH);
 		r.setTop(myPanes.get(0));
 		//		w = new Workspace(myPanes.get(1), this);
 		r.setCenter(myPanes.get(1));
@@ -87,6 +87,7 @@ public class PlayerScreen extends AbstractScreen {
 		components = new ArrayList<AbstractDockElement>(); //No components yet! 
 		monitor = new ActorMonitor(dockPanes.get(0), homePanes.get(0),
 				myResources.getString("monitorname"), this, playerController);
+		playerController.addMonitor(monitor);
 		components.add(monitor);
 	}
 
@@ -114,7 +115,7 @@ public class PlayerScreen extends AbstractScreen {
 		}
 		monitor.initializePane();
 		monitor.refresh();
-		t.initializeComponents();
+		controlBarPlayer.initializeComponents();
 	}
 
 	/**

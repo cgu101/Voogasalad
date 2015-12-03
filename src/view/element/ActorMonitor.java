@@ -1,8 +1,10 @@
 package view.element;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map.Entry;
 
+import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;
@@ -27,8 +29,9 @@ import view.screen.AbstractScreenInterface;
 
 public class ActorMonitor extends AbstractDockElement {
 
-	private ObservableList<String> actors;
+	private ObservableList<String> individualActorList;
 	private PlayerController controller; 
+	private ListView<String> observableIndividualActorList;
 	
 	/**
 	 * Actor Monitor Constructor
@@ -49,50 +52,73 @@ public class ActorMonitor extends AbstractDockElement {
 	@Override
 	protected void makePane() {
 		addLabelPane();
-		actors = FXCollections.observableArrayList(new ArrayList<String>());
+		individualActorList = FXCollections.observableArrayList(new ArrayList<String>());
 		
 		//Actor's keyset = List<String> 
-		actors.addAll(controller.getActorMap().keySet());
+		for(Actor a : controller.getIndividualActorsList()){
+			individualActorList.add(a.getUniqueID());
+		}
+		
+		observableIndividualActorList = new ListView<String>(individualActorList);
+		pane.add(observableIndividualActorList, 0, 1);
 		pane.prefHeightProperty().bind(screen.getScene().heightProperty());
 		pane.setFocusTraversable(false);
 		pane.setAlignment(Pos.TOP_CENTER);
 		pane.setMaxWidth(Double.parseDouble(myResources.getString("width")));
+		configure(observableIndividualActorList);
+		load();
 	}
 		
+	public void load() {
+		individualActorList = FXCollections.observableArrayList(new ArrayList<String>());
+		observableIndividualActorList.setItems(individualActorList);
+		if (controller != null) {
+			for(Actor a : controller.getIndividualActorsList()){
+				individualActorList.add(a.getUniqueID());
+			}
+			configure(observableIndividualActorList);
+		}
+	}
+	
 	//Creates the Hbox of Properties for a single actor
-	private ListView<String> makeProperties(Actor a) {
-		ObservableList<String> properties = FXCollections.observableArrayList(new ArrayList<String>());
-		properties.addAll(controller.getActorMap().keySet());
-		ListView<String> list = new ListView<String>(properties);
-		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+	private void configure(ListView<String> list) {
+		observableIndividualActorList.setFocusTraversable(false);
+		observableIndividualActorList.setMaxWidth(Double.parseDouble(myResources.getString("width")));
+		observableIndividualActorList.setPrefWidth(Double.parseDouble(myResources.getString("width")));
+		observableIndividualActorList.setFocusTraversable(false);
+		observableIndividualActorList.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {
-				return new ActorMonitorCell(controller, a);
+				return new ActorMonitorCell(controller);
 			}
 		});
-		list.setFocusTraversable(false);
-		return list;
+		
 	}
 
 	private void addLabelPane() {
 		GridPane labelPane = makeLabelPane();
+		labelPane.setAlignment(Pos.CENTER);
 		pane.add(labelPane, 0, 0);
-		GridPane.setColumnSpan(labelPane, 2);
+		//GridPane.setColumnSpan(labelPane, 2);
 	}
 	
 	//Call to reload the properties for every actor
 	private void update() {
-		pane.getChildren().clear();
+		pane.getChildren().remove(observableIndividualActorList);
 		addLabelPane();
-		if (!showing.getValue()) {
-			showing.setValue(true);
+		//if (!showing.getValue()) {
+	//		showing.setValue(true);
+		//}
+		
+		individualActorList = FXCollections.observableArrayList(new ArrayList<String>());
+		
+		for(Actor a : controller.getIndividualActorsList()){
+			individualActorList.add(a.getUniqueID());
 		}
 		
-		int i = 0;
-		for(Actor a : controller.getActorList()){
-			pane.add(makeProperties(a), i, 1);
-			i++;
-		}
+		observableIndividualActorList = new ListView<String>(individualActorList);
+		configure(observableIndividualActorList);
+		pane.add(observableIndividualActorList, 0, 1);
 
 	}
 	

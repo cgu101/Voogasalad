@@ -5,6 +5,7 @@ import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;
+import authoring.model.tree.Parameters;
 
 /**
  * @author Inan
@@ -14,13 +15,17 @@ public class ShootBullet extends AActionOneActor{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run(ActorGroups actorGroup, Actor actor) {
+	public void run(Parameters parameters, ActorGroups actorGroup, Actor actor) {
 		Property<Double> angle = (Property<Double>) actor.getProperties().getComponents().get("angle");
 		Property<Double> x = (Property<Double>) actor.getProperties().getComponents().get("xLocation");
 		Property<Double> y = (Property<Double>) actor.getProperties().getComponents().get("yLocation");
 
 		Actor bullet = createBullet(angle, x, y);
 		actorGroup.addActor(bullet);
+		
+		
+		actorGroup.createActor(bullet);
+		
 		//actorGroup.addActor(actor);
 		//^I think we need to add this line.  If this is the only action called on this actor, 
 		// then the actor will disappear and only the bullet will persist in the next iteration
