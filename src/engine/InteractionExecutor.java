@@ -14,6 +14,7 @@ import authoring.model.level.Level;
 import authoring.model.tree.ActionTreeNode;
 import authoring.model.tree.ActorTreeNode;
 import authoring.model.tree.InteractionTreeNode;
+import authoring.model.tree.ParameterTreeNode;
 import authoring.model.tree.TriggerTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 import exceptions.EngineException;
@@ -128,8 +129,7 @@ public class InteractionExecutor {
 		lambdaMap.put(TRIGGER_IDENTIFIER, (node, list) -> {
 //			System.out.println(triggerMap.values());
 			ITriggerEvent triggerEvent = triggerMap.get(node.getValue());
-			// TODO: incorporate Parameters
-			if (triggerEvent.condition(null, inputMap, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
+			if (triggerEvent.condition(((ParameterTreeNode) node).getParameters(), inputMap, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
 				for (InteractionTreeNode child : node.children()) {
 //					System.out.println(child.getIdentifier());
 					lambdaMap.get(child.getIdentifier()).apply(child, list);
@@ -141,8 +141,7 @@ public class InteractionExecutor {
 			Actor[] actors = ((List<Actor>) list).stream().map(a -> {
 				return nextState.getActorMap().getGroup(a.getGroupName()).get(a.getUniqueID());
 			}).toArray(Actor[]::new);
-			// TODO: incorporate Parameters
-			action.run(null, nextState, actors);
+			action.run(((ParameterTreeNode) node).getParameters(), nextState, actors);
 
 		});
 	}

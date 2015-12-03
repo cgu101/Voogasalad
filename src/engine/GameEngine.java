@@ -42,6 +42,7 @@ public class GameEngine implements IEngine {
 
 		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
 		propertyBundle.add(new Property<String>(LEVEL_ID_KEY, levelID));
+		// TODO: force game to have a name
 		propertyBundle.add(new Property<String>(GAME_ID_KEY, (String) game.getProperty(GAME_ID_KEY).getValue()));
 		levelExecutor = new InteractionExecutor(initialLevel, inputManager, new State(propertyBundle, null));
 
