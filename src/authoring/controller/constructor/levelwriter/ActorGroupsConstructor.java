@@ -24,7 +24,7 @@ public class ActorGroupsConstructor {
 	/**
 	 * Empty contructor for ActorGroupsConstructor
 	 */
-	ActorGroupsConstructor() {
+	public ActorGroupsConstructor() {
 		actorGroups = new ActorGroups();
 	}
 	

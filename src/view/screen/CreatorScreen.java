@@ -51,7 +51,7 @@ public class CreatorScreen extends AbstractScreen {
 
 	@Override
 	public void run() {
-		System.out.println("test run");
+		//System.out.println("test run");
 	}
 
 	@Override

@@ -42,6 +42,20 @@ public interface IEngine {
 	public EngineHeartbeat play() throws EngineException;
 	
 	/**
+	 * Switches the Level
+	 * 
+	 * @throws EngineException
+	 */
+	public void nextLevel() throws EngineException;
+	
+	/**
+	 * Replays the Level
+	 * 
+	 * @throws EngineException
+	 */
+	public void replayLevel() throws EngineException;
+	
+	/**
 	 * Returns the actors corresponding to a game
 	 * @return Map <String, Bundle<Actor>>
 	 */

@@ -1,7 +1,6 @@
 package authoring.model.triggers;
 
 import authoring.model.actors.Actor;
-import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import player.InputManager;
 
