@@ -12,6 +12,10 @@ public class State {
 	private ActorGroups myActorMap;
 	private Bundle<Property<?>> myPropertyBundle;
 	
+	public State () {
+		myPropertyBundle = new Bundle<Property<?>>();
+		myActorMap = new ActorGroups();
+	}
 	public State (Bundle<Property<?>> propertyBundle, ActorGroups actorMap) {
 		myPropertyBundle = propertyBundle;
 		myActorMap = actorMap;
