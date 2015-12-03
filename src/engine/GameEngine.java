@@ -1,5 +1,6 @@
 package engine;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
@@ -100,4 +101,19 @@ public class GameEngine implements IEngine {
 			throw new EngineStateException("Wrong game", null);
 		}
 	}
+
+	/**
+	 * @return The property map of the current game.
+	 */
+	@Override
+	public Bundle<Property<?>> getProperties() {
+		return game.getProperties();
+	}
+	
+//	ArrayList<Property<?>> properties = new ArrayList<Property<?>>();
+//	Bundle<Property<?>> propBundle = game.getProperties();
+//	for(Property<?> b : propBundle){
+//		properties.add((Property<?>) b.getValue());
+//	}
+//	return properties;
 }

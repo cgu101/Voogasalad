@@ -1,10 +1,12 @@
 package engine;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
+import authoring.model.properties.Property;
 import exceptions.EngineException;
 import exceptions.engine.EngineStateException;
 
@@ -62,4 +64,10 @@ public interface IEngine {
 	 * @throws EngineException
 	 */
 	public void loadState (State state) throws EngineException;
+	
+	/**
+	 * Returns the properties corresponding to a game
+	 * @return Map <String, Bundle<Property>>
+	 */
+	public Bundle<Property<?>> getProperties();
 }

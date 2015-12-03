@@ -137,6 +137,21 @@ public class PlayerController implements IPlayer {
 	}
 	
 	/**
+	 * This method grabs the the Game Properties from the Game Engine.
+	 * The keys are the property type, and the values are the property values.
+	 * 
+	 * @return The map of Properties.
+	 */
+	public Map<String, String> getGameProperties(){
+		Map<String, String> properties = new HashMap<String, String>();
+		Bundle<Property<?>> propBundle = myEngine.getProperties();
+		for(Property<?> b : propBundle){
+			properties.put(b.getUniqueID(), b.getValue().toString());
+		}
+		return properties;
+	}
+
+	/**
 	 * This method grabs a list of properties of the specified Actor 'a'.
 	 *
 	 * @param a The Actor you would like to retrieve the properties for.
