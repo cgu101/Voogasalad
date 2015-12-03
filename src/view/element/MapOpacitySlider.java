@@ -22,6 +22,7 @@ public class MapOpacitySlider extends AbstractVisual {
 		sliderElements = new GridPane();
 		theSlider = new Slider();
 		theSlider.setPrefWidth(sliderSize);
+		findResources();
 	}
 	
 	public void createTheSlider() {
@@ -67,8 +68,9 @@ public class MapOpacitySlider extends AbstractVisual {
 	
 	private void fillGridPane() {
 		//Set the horizontal gap between grid elements, and the outside padding of the GridPane
-		sliderElements.setHgap(30);
-		sliderElements.setPadding(new Insets(10, 10, 10, 10));
+		sliderElements.setHgap(Double.valueOf(myResources.getString("elementspacing")));
+		double paddingValue = Double.valueOf(myResources.getString("padding"));
+		sliderElements.setPadding(new Insets(paddingValue, paddingValue, paddingValue, paddingValue));
 		
 		//Set the positions of the different GridPane elements
 		GridPane.setConstraints(opacityCaption, 0, 0);
