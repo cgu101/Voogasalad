@@ -12,10 +12,10 @@
                 <children>
                   <authoring.model.tree.TriggerTreeNode>
                     <children>
-                      <authoring.model.tree.InteractionTreeNode>
+                      <authoring.model.tree.ActionTreeNode>
                         <children/>
                         <value>authoring.model.actions.oneActorActions.Move</value>
-                      </authoring.model.tree.InteractionTreeNode>
+                      </authoring.model.tree.ActionTreeNode>
                     </children>
                     <value>authoring.model.triggers.selfconditions.UpArrowKey</value>
                   </authoring.model.tree.TriggerTreeNode>
@@ -26,10 +26,10 @@
                 <children>
                   <authoring.model.tree.TriggerTreeNode>
                     <children>
-                      <authoring.model.tree.InteractionTreeNode>
+                      <authoring.model.tree.ActionTreeNode>
                         <children/>
                         <value>authoring.model.actions.oneActorActions.Move</value>
-                      </authoring.model.tree.InteractionTreeNode>
+                      </authoring.model.tree.ActionTreeNode>
                     </children>
                     <value>authoring.model.triggers.selfconditions.LeftArrowKey</value>
                   </authoring.model.tree.TriggerTreeNode>
@@ -289,6 +289,14 @@
   <myPropertyBundle>
     <changed>false</changed>
     <obs/>
-    <components/>
+    <components>
+      <entry>
+        <string>name</string>
+        <authoring.model.properties.Property>
+          <myValue class="string">Awesome Game</myValue>
+          <identifier>name</identifier>
+        </authoring.model.properties.Property>
+      </entry>
+    </components>
   </myPropertyBundle>
 </authoring.model.game.Game>

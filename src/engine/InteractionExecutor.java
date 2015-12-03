@@ -131,7 +131,7 @@ public class InteractionExecutor {
 			// TODO: incorporate Parameters
 			if (triggerEvent.condition(null, inputMap, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
 				for (InteractionTreeNode child : node.children()) {
-					System.out.println(child.getIdentifier());
+//					System.out.println(child.getIdentifier());
 					lambdaMap.get(child.getIdentifier()).apply(child, list);
 				}
 			}

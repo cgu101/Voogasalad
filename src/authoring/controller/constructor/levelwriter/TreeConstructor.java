@@ -31,7 +31,7 @@ public class TreeConstructor implements ITreeConstructor {
 		executeBaseNode(actors, triggers, actions, true, (node, values)->{
 			for(String action : actions) {
 				if(node.getChildWithValue(action) == null) {
-					node.addChild(new InteractionTreeNode(action));
+					node.addChild(new ActionTreeNode(action));
 				}
 			}
 			return actions;

@@ -10,6 +10,7 @@ import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
+import authoring.model.properties.Property;
 import authoring.model.triggers.ITriggerEvent;
 import controller.RootManager;
 import data.XMLManager;
@@ -78,6 +79,9 @@ public class Main extends Application {
 		Game testGame = new Game();
 		Level testLevel = new Level("0");
 		TreeConstructor tc = new TreeConstructor();  //Changed constructor from none to public
+		
+		Property p = new Property("name", "Awesome Game");
+		testGame.addProperty(p);
 		
 		ActorGroupsConstructor ac = new ActorGroupsConstructor();	// Changed constructor from nothing to public
 		ActorPropertyMap apm = new ActorPropertyMap();
