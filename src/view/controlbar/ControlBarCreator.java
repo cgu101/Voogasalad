@@ -57,13 +57,14 @@ public class ControlBarCreator extends ControlBar {
 
 	private void makeTools(ToolBar toolBar) {
 		Button backButton = makeButton("back", e -> screen.setNextScreen(new StartScreen()));
-//		Button backButton = makeButton("back", e -> {if (screen.getGameWindow() != null) {screen.getGameWindow().getClient().send("33");}});
-		
 		Button addButton = makeButton("add", e -> workspace.addLevel());
 		Button leftButton = makeButton("left", e -> workspace.moveLevelLeft(true));
 		Button rightButton = makeButton("right", e -> workspace.moveLevelLeft(false));
 		Button splashButton = makeButton("splash", e -> workspace.addSplash());
-		Button newActor = makeButton("new", e -> addActor());
+//		Button newActor = makeButton("new", e -> addActor());
+		
+		Button newActor = makeButton("new", e -> {addActor(); if (screen.getGameWindow() != null) {screen.getGameWindow().getClient().send("33");}});
+		
 		toolBar.getItems().addAll(backButton, new Separator(), leftButton, rightButton, addButton, splashButton,
 				new Separator(), newActor);
 	}

@@ -26,6 +26,12 @@ public class Workspace extends AbstractElement {
 		this.screen = screen;
 		makePane();
 	}
+	
+//	public Workspace (SGameState gs) {
+//		buildWorkspace(gs);
+//	}
+	
+//	public SGameState buildGameState(Workspace w);
 
 	@Override
 	protected void makePane() {
