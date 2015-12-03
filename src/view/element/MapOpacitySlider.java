@@ -38,7 +38,7 @@ public class MapOpacitySlider extends AbstractVisual {
 	}
 	
 	private void initializeSlider() {
-		theSlider.setMin(0);
+		theSlider.setMin(10);
 		theSlider.setMax(100);
 		theSlider.setValue(50);
 		theSlider.setShowTickLabels(true);

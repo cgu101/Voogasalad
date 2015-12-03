@@ -19,7 +19,6 @@ public class MiniMap {
 	private StackPane theMiniMap;
 	private ImageView theBackground;
 	private ImageView miniMapImageView;
-	private ScrollPane theMapArea;
 	
 	private double miniMapWidth;
 	private double miniMapHeight;
@@ -34,7 +33,6 @@ public class MiniMap {
 	public MiniMap(ImageView background, ScrollPane mapArea){
 		theMiniMap = new StackPane();
 		theBackground = background;
-		theMapArea = mapArea;
 		currentScale = 1.0;
 		currentOpacity = 0.5;
 		currentRectangleXPos = 0;
@@ -60,18 +58,26 @@ public class MiniMap {
 	}
 
 	private void createMiniMap() {
-		miniMapImageView = new ImageView(theBackground.getImage());
-		miniMapImageView.setOpacity(currentOpacity);
-		miniMapImageView.setFitWidth(200);
-		miniMapImageView.setPreserveRatio(true);
-		StackPane.setAlignment(miniMapImageView, Pos.BOTTOM_RIGHT);
-		theMiniMap.getChildren().add(miniMapImageView);
-		miniMapWidth = (double) miniMapImageView.getBoundsInParent().getWidth();
-		miniMapHeight = (double) miniMapImageView.getBoundsInParent().getHeight();
+		createMiniMapImageView(200); //hardcoded for now
+		addMiniMapImageView();
 
 		createMiniMapRectangle(miniMapWidth, miniMapHeight, currentScale, currentOpacity);
 		addMiniMapRectangle(currentRectangleXPos, currentRectangleYPos);
+		
 		setUpDragFilters();
+	}
+	
+	private void createMiniMapImageView(double width) {
+		miniMapImageView = new ImageView(theBackground.getImage());
+		miniMapImageView.setOpacity(currentOpacity);
+		miniMapImageView.setFitWidth(width);
+		miniMapImageView.setPreserveRatio(true);
+	}
+	
+	private void addMiniMapImageView() {
+		theMiniMap.getChildren().add(miniMapImageView);
+		miniMapWidth = (double) miniMapImageView.getBoundsInParent().getWidth();
+		miniMapHeight = (double) miniMapImageView.getBoundsInParent().getHeight();
 	}
 	
 	private void createMiniMapRectangle(double width, double height, double scale, double opacity) {
@@ -93,18 +99,15 @@ public class MiniMap {
 	}
 	
 	private void setUpDragFilters() {
-//		theMiniMap.setOnDragDetected(e -> this.drag(e));
-//		theMiniMap.setOnDragDone(e -> this.dragDone(e));
 		final DragContext dragContext = new DragContext();
-		final Group wrapGroup = new Group(theMiniMap);
 		
 		theMiniMap.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent mouseEvent) {
 				// TODO Auto-generated method stub
-				dragContext.orgSceneX = mouseEvent.getSceneX();
-				dragContext.orgSceneY = mouseEvent.getSceneY();
+				dragContext.mouseAnchorX = mouseEvent.getSceneX();
+				dragContext.mouseAnchorY = mouseEvent.getSceneY();
 				dragContext.initialTranslateX = ((StackPane)mouseEvent.getSource()).getTranslateX();
 				dragContext.initialTranslateY = ((StackPane)mouseEvent.getSource()).getTranslateY();
 			}
@@ -115,25 +118,13 @@ public class MiniMap {
 
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				double offsetX = mouseEvent.getSceneX() - dragContext.orgSceneX;
-				double offsetY = mouseEvent.getSceneY() - dragContext.orgSceneY;
+				double offsetX = mouseEvent.getSceneX() - dragContext.mouseAnchorX;
+				double offsetY = mouseEvent.getSceneY() - dragContext.mouseAnchorY;
 				theMiniMap.setTranslateX(dragContext.initialTranslateX + offsetX);;
 				theMiniMap.setTranslateY(dragContext.initialTranslateY + offsetY);
 			}
 			
 		});
-	}
-	
-	private void drag(MouseEvent e) {
-		Dragboard db = theMiniMap.startDragAndDrop(TransferMode.ANY);
-        ClipboardContent content = new ClipboardContent();
-        content.putString("Hello!");
-        db.setContent(content);
-        e.consume();
-	}
-	
-	private void dragDone(DragEvent e) {
-		e.consume();
 	}
 
 	public void updateMiniMapRectangleOnHorizontalPan(double new_value) {
@@ -157,8 +148,6 @@ public class MiniMap {
 	private static final class DragContext {
 		public double mouseAnchorX;
 		public double mouseAnchorY;
-		public double orgSceneX;
-		public double orgSceneY;
 		public double initialTranslateX;
 		public double initialTranslateY;
 	}
