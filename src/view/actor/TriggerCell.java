@@ -1,5 +1,7 @@
 package view.actor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.controlsfx.control.CheckComboBox;
@@ -59,8 +61,19 @@ public class TriggerCell extends AbstractListCell {
 			selector.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 				public void onChanged(ListChangeListener.Change<? extends String> c) {
 					List<String> actions = selector.getCheckModel().getCheckedItems();
-					controller.getLevelConstructor().getTreeConstructor().removeSelfTrigger(actor, item);
-					controller.getLevelConstructor().getTreeConstructor().addSelfTriggerActions(actor, item, actions);
+					
+					controller.getLevelConstructor().getTreeConstructor().deleteTreeNode(
+							new ArrayList<String>(Arrays.asList(new String[] {actor})),
+							new ArrayList<String>(Arrays.asList(new String[] {item})),
+									null);
+					
+					controller.getLevelConstructor().getTreeConstructor().addTreeNode(
+							new ArrayList<String>(Arrays.asList(new String[] {actor})),
+							new ArrayList<String>(Arrays.asList(new String[] {item})),
+									actions);
+					
+//					controller.getLevelConstructor().getTreeConstructor().removeSelfTrigger(actor, item);
+//					controller.getLevelConstructor().getTreeConstructor().addSelfTriggerActions(actor, item, actions);
 				}
 			});
 		} else {
@@ -68,9 +81,20 @@ public class TriggerCell extends AbstractListCell {
 			selector.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 				public void onChanged(ListChangeListener.Change<? extends String> c) {
 					List<String> actions = selector.getCheckModel().getCheckedItems();
-					controller.getLevelConstructor().getTreeConstructor().removeEventTrigger(actor, other, item);
-					controller.getLevelConstructor().getTreeConstructor().addEventTriggerActions(actor, other, item,
-							actions);
+					
+					controller.getLevelConstructor().getTreeConstructor().deleteTreeNode(
+							new ArrayList<String>(Arrays.asList(new String[] {actor, other})),
+							new ArrayList<String>(Arrays.asList(new String[] {item})),
+									null);
+					
+					controller.getLevelConstructor().getTreeConstructor().addTreeNode(
+							new ArrayList<String>(Arrays.asList(new String[] {actor, other})),
+							new ArrayList<String>(Arrays.asList(new String[] {item})),
+									actions);
+					
+//					controller.getLevelConstructor().getTreeConstructor().removeEventTrigger(actor, other, item);
+//					controller.getLevelConstructor().getTreeConstructor().addEventTriggerActions(actor, other, item,
+//							actions);
 				}
 			});
 		}

@@ -1,9 +1,9 @@
-package authoring.controller.constructor;
+package authoring.controller.constructor.levelwriter;
 
 import java.util.Arrays;
 import java.util.List;
 
-import authoring.controller.AuthoringConfigManager;
+import authoring.controller.constructor.configreader.AuthoringConfigManager;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.actors.ActorPropertyMap;
@@ -11,6 +11,10 @@ import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;
 import voogasalad.util.reflection.Reflection;
 
+/**
+ * @author Chris
+ *
+ */
 public class ActorGroupsConstructor {
 	
 	private ActorGroups actorGroups;
@@ -20,7 +24,7 @@ public class ActorGroupsConstructor {
 	/**
 	 * Empty contructor for ActorGroupsConstructor
 	 */
-	public ActorGroupsConstructor() {
+	ActorGroupsConstructor() {
 		actorGroups = new ActorGroups();
 	}
 	

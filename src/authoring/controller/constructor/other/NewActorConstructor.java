@@ -1,4 +1,4 @@
-package authoring.controller.constructor;
+package authoring.controller.constructor.other;
 
 public class NewActorConstructor {
 	

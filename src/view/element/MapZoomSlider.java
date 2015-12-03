@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.transform.Scale;
+import view.visual.AbstractVisual;
 
 /**
  * The MapZoomSlider class creates a Slider associated with a Map class, and allows for zooming
@@ -18,7 +19,7 @@ import javafx.scene.transform.Scale;
  *
  */
 
-public class MapZoomSlider {
+public class MapZoomSlider extends AbstractVisual {
 
 	private GridPane sliderElements;
 	private Slider theSlider;
@@ -77,7 +78,7 @@ public class MapZoomSlider {
 				//Update the text of the label accordingly
 				scaleValue.setText(String.format("%.2f", new_val));
 				
-				theMiniMap.updateMiniMapRectangle(convertedScaleValue);
+				theMiniMap.updateMiniMapRectangleOnZoom(convertedScaleValue);
 			}
 		});
 	}

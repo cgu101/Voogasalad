@@ -43,8 +43,9 @@ public class InteractionTreeNode {
 		return null;
 	}
 
-	public void addChild (InteractionTreeNode n) {
+	public InteractionTreeNode addChild (InteractionTreeNode n) {
 		children.add(n);
+		return n;
 	}
 	public void remove(int index) {
 		children.remove(index);
@@ -63,5 +64,9 @@ public class InteractionTreeNode {
 		for(InteractionTreeNode child: children) {
 			child.printGraph();
 		}
+	}
+
+	public String getIdentifier() {
+		return getClass().getSimpleName();
 	}
 }
