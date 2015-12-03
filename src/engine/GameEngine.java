@@ -37,8 +37,8 @@ public class GameEngine implements IEngine {
 	@Override
 	public void init(Game game) {
 		this.game = game;
-		String levelID = getLevelID(game);
-		Level initialLevel = makeLevel(levelID);
+		String levelID = getFirstLevelName(game);
+		Level initialLevel = makeLevel(game, levelID);
 
 		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
 		propertyBundle.add(new Property<String>(LEVEL_ID_KEY, levelID));
@@ -46,13 +46,16 @@ public class GameEngine implements IEngine {
 		levelExecutor = new InteractionExecutor(initialLevel, inputManager, new State(propertyBundle, null));
 
 	}
-	private String getLevelID (Game g) {
+	private String getFirstLevelName (Game g) {
 		Object levelProperty = g.getProperty(INITIAL_LEVEL_KEY);
 		String levelID = INITIAL_LEVEL;
 		if (levelProperty != null) {
 			levelID = levelProperty.toString();
 		}
 		return levelID;
+	}
+	private Level makeLevel(Game g, String levelID) {
+		return g.getLevel(levelID);
 	}
 	private Level makeLevel(String levelID) {
 		return game.getLevel(levelID);
