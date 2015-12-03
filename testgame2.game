@@ -14,10 +14,83 @@
                     <children>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
-                        <value>authoring.model.actions.oneActorActions.Move</value>
+                        <value>authoring.model.actions.oneActorActions.IncreaseSpeed</value>
+                        <parameters>
+                          <map/>
+                        </parameters>
                       </authoring.model.tree.ActionTreeNode>
                     </children>
                     <value>authoring.model.triggers.selfconditions.UpArrowKey</value>
+                    <parameters>
+                      <map/>
+                    </parameters>
+                  </authoring.model.tree.TriggerTreeNode>
+                  <authoring.model.tree.TriggerTreeNode>
+                    <children>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>authoring.model.actions.oneActorActions.RotateCounterclockwise</value>
+                        <parameters>
+                          <map/>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                    </children>
+                    <value>authoring.model.triggers.selfconditions.RightArrowKey</value>
+                    <parameters>
+                      <map/>
+                    </parameters>
+                  </authoring.model.tree.TriggerTreeNode>
+                  <authoring.model.tree.TriggerTreeNode>
+                    <children>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>authoring.model.actions.oneActorActions.RotateClockwise</value>
+                        <parameters>
+                          <map/>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                    </children>
+                    <value>authoring.model.triggers.selfconditions.LeftArrowKey</value>
+                    <parameters>
+                      <map/>
+                    </parameters>
+                  </authoring.model.tree.TriggerTreeNode>
+                  <authoring.model.tree.TriggerTreeNode>
+                    <children>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>authoring.model.actions.oneActorActions.ShootBullet</value>
+                        <parameters>
+                          <map/>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                    </children>
+                    <value>authoring.model.triggers.selfconditions.SpaceBarKey</value>
+                    <parameters>
+                      <map/>
+                    </parameters>
+                  </authoring.model.tree.TriggerTreeNode>
+                  <authoring.model.tree.TriggerTreeNode>
+                    <children>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>authoring.model.actions.oneActorActions.DecreaseSpeed</value>
+                        <parameters>
+                          <map/>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>authoring.model.actions.oneActorActions.Move</value>
+                        <parameters>
+                          <map/>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                    </children>
+                    <value>authoring.model.triggers.selfconditions.TrueSelfTrigger</value>
+                    <parameters>
+                      <map/>
+                    </parameters>
                   </authoring.model.tree.TriggerTreeNode>
                 </children>
                 <value>player</value>
@@ -29,17 +102,51 @@
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
                         <value>authoring.model.actions.oneActorActions.Move</value>
+                        <parameters>
+                          <map/>
+                        </parameters>
                       </authoring.model.tree.ActionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.LeftArrowKey</value>
+                    <value>authoring.model.triggers.selfconditions.DownArrowKey</value>
+                    <parameters>
+                      <map/>
+                    </parameters>
                   </authoring.model.tree.TriggerTreeNode>
                 </children>
                 <value>asteroid</value>
+              </authoring.model.tree.ActorTreeNode>
+              <authoring.model.tree.ActorTreeNode>
+                <children>
+                  <authoring.model.tree.TriggerTreeNode>
+                    <children>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>authoring.model.actions.oneActorActions.Move</value>
+                        <parameters>
+                          <map/>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                    </children>
+                    <value>authoring.model.triggers.selfconditions.TrueSelfTrigger</value>
+                    <parameters>
+                      <map/>
+                    </parameters>
+                  </authoring.model.tree.TriggerTreeNode>
+                </children>
+                <value>bullet</value>
               </authoring.model.tree.ActorTreeNode>
             </children>
           </rootTree>
           <actorGroups>
             <actorMap>
+              <entry>
+                <string>bullet</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
               <entry>
                 <string>asteroid</string>
                 <authoring.model.bundles.Bundle>
@@ -189,7 +296,7 @@
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">15.0</myValue>
+                                <myValue class="double">0.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -244,6 +351,10 @@
             </entry>
           </triggerMap>
           <actionMap>
+            <entry>
+              <string>authoring.model.actions.oneActorActions.DecreaseSpeed</string>
+              <authoring.model.actions.oneActorActions.DecreaseSpeed/>
+            </entry>
             <entry>
               <string>authoring.model.actions.oneActorActions.RotateCounterclockwise</string>
               <authoring.model.actions.oneActorActions.RotateCounterclockwise/>

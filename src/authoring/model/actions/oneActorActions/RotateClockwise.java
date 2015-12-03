@@ -13,7 +13,7 @@ public class RotateClockwise extends AActionOneActor{
 	@Override
 	public void run(Parameters parameters, State state, Actor actor) {
 
-		Double rotation = 1.0;
+		Double rotation = 20.0;
 		
 		Property<Double> angle = (Property<Double>) actor.getProperty("angle");
 		angle.setValue((angle.getValue() - rotation) % 360);

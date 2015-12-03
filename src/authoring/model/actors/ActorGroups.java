@@ -27,6 +27,8 @@ public class ActorGroups {
 		for (Entry<String, Bundle<Actor>> k : oldActorMap.getMap().entrySet()) {
 			this.actorMap.put(k.getKey(), new Bundle<Actor>(k.getValue()));
 		}
+		newActors = new HashMap<String,Bundle<Actor>>();
+		deadActors = new HashMap<String,Bundle<Actor>>();
 	}
 	
 	private void addActorToMap(Actor actor, Map<String, Bundle<Actor>> map){
