@@ -10,6 +10,7 @@ import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -17,6 +18,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -32,6 +34,7 @@ public class ActorMonitor extends AbstractDockElement {
 	private ObservableList<String> individualActorList;
 	private PlayerController controller; 
 	private ListView<String> observableIndividualActorList;
+	private boolean canUpdate;
 	
 	/**
 	 * Actor Monitor Constructor
@@ -47,6 +50,7 @@ public class ActorMonitor extends AbstractDockElement {
 		super(pane, home, title, screen);
 		findResources();
 		this.controller = controller;
+		canUpdate = true;
 	}
 
 	@Override
@@ -92,7 +96,16 @@ public class ActorMonitor extends AbstractDockElement {
 				return new ActorMonitorCell(controller);
 			}
 		});
-		
+		observableIndividualActorList.setOnMouseEntered(new EventHandler<MouseEvent>() {
+		      public void handle(MouseEvent me) {
+		    	  canUpdate = false;
+		        }
+		      });
+		observableIndividualActorList.setOnMouseExited(new EventHandler<MouseEvent>() {
+		      public void handle(MouseEvent me) {
+		    	  canUpdate = true;
+		        }
+		      });
 	}
 
 	private void addLabelPane() {
@@ -134,7 +147,9 @@ public class ActorMonitor extends AbstractDockElement {
 	 * This method allows properties of Actor's to be refreshed.
 	 */
 	public void refresh(){
-		update();
+		if(canUpdate){
+			update();
+		}
 	}
 		
 
