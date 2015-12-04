@@ -15,18 +15,21 @@ public class MiniMap extends AbstractVisual {
 	private StackPane theMiniMap;
 	private ImageView theBackground;
 	private ImageView miniMapImageView;
-	
+
 	private double miniMapWidth;
 	private double miniMapHeight;
 	
+	private double theMapWidth;
+	private double theMapHeight;
+
 	private double currentScale;
 	private double currentOpacity;
 	private Rectangle currentRectangle;
 	private double currentRectangleXPos;
 	private double currentRectangleYPos;
-	
 
-	public MiniMap(ImageView background, ScrollPane mapArea){
+
+	public MiniMap(ImageView background, ScrollPane mapArea, double mapWidth, double mapHeight){
 		findResources();
 		theMiniMap = new StackPane();
 		theBackground = background;
@@ -34,6 +37,8 @@ public class MiniMap extends AbstractVisual {
 		currentOpacity = Double.valueOf(myResources.getString("startingopacity"));
 		currentRectangleXPos = Double.valueOf(myResources.getString("startingrectx"));
 		currentRectangleYPos = Double.valueOf(myResources.getString("startingrecty"));;
+		theMapWidth = mapWidth;
+		theMapHeight = mapHeight;
 		createMiniMap();
 	}
 
@@ -53,7 +58,7 @@ public class MiniMap extends AbstractVisual {
 				Integer.valueOf(myResources.getString("rectbvalue")), 
 				opacity));;
 	}
-	
+
 	public void updateMiniMapBackground(ImageView background) {
 		//Not sure if this will properly update it
 		miniMapImageView = background;
@@ -65,23 +70,23 @@ public class MiniMap extends AbstractVisual {
 
 		createMiniMapRectangle(miniMapWidth, miniMapHeight, currentScale, currentOpacity);
 		addMiniMapRectangle(currentRectangleXPos, currentRectangleYPos);
-		
+
 		setUpDragFilters();
 	}
-	
+
 	private void createMiniMapImageView(double width) {
 		miniMapImageView = new ImageView(theBackground.getImage());
 		miniMapImageView.setOpacity(currentOpacity);
 		miniMapImageView.setFitWidth(width);
 		miniMapImageView.setPreserveRatio(true);
 	}
-	
+
 	private void addMiniMapImageView() {
 		theMiniMap.getChildren().add(miniMapImageView);
 		miniMapWidth = (double) miniMapImageView.getBoundsInParent().getWidth();
 		miniMapHeight = (double) miniMapImageView.getBoundsInParent().getHeight();
 	}
-	
+
 	private void createMiniMapRectangle(double width, double height, double scale, double opacity) {
 		Rectangle rect = new Rectangle(width * scale, height * scale);
 		rect.setFill(Color.TRANSPARENT);
@@ -94,7 +99,7 @@ public class MiniMap extends AbstractVisual {
 		StackPane.setAlignment(rect, Pos.TOP_LEFT);
 		currentRectangle = rect;
 	}
-	
+
 	private void addMiniMapRectangle(double xPos, double yPos) {
 		if(theMiniMap.getChildren().size() > 1) {
 			theMiniMap.getChildren().remove(1);
@@ -103,10 +108,10 @@ public class MiniMap extends AbstractVisual {
 		currentRectangle.setTranslateY(yPos);
 		theMiniMap.getChildren().add(currentRectangle);
 	}
-	
+
 	private void setUpDragFilters() {
 		final DragContext dragContext = new DragContext();
-		
+
 		theMiniMap.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -117,27 +122,38 @@ public class MiniMap extends AbstractVisual {
 				dragContext.initialTranslateX = ((StackPane)mouseEvent.getSource()).getTranslateX();
 				dragContext.initialTranslateY = ((StackPane)mouseEvent.getSource()).getTranslateY();
 			}
-			
+
 		});
-		
+
 		theMiniMap.addEventFilter(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent mouseEvent) {
 				double offsetX = mouseEvent.getSceneX() - dragContext.mouseAnchorX;
 				double offsetY = mouseEvent.getSceneY() - dragContext.mouseAnchorY;
-				theMiniMap.setTranslateX(dragContext.initialTranslateX + offsetX);;
-				theMiniMap.setTranslateY(dragContext.initialTranslateY + offsetY);
+				double newX = dragContext.initialTranslateX + offsetX;
+				double newY = dragContext.initialTranslateY + offsetY;
+				if(!isMiniMapDragWithinMapBounds(newX, newY)) {
+					theMiniMap.setTranslateX(newX);;
+					theMiniMap.setTranslateY(newY);
+				}
 			}
-			
+
 		});
+	}
+	
+	private boolean isMiniMapDragWithinMapBounds(double newX, double newY) {
+		return (newX < 0 || 
+				newX > theMapWidth - miniMapWidth || 
+				newY < 0 || 
+				newY > theMapHeight - miniMapHeight);
 	}
 
 	public void updateMiniMapRectangleOnHorizontalPan(double new_value) {
-		 double maxHorizontalMovement = miniMapWidth * (1 - currentScale);
-		 double newRectangleXPos = new_value * maxHorizontalMovement;
-		 currentRectangleXPos = newRectangleXPos;
-		 addMiniMapRectangle(currentRectangleXPos, currentRectangleYPos);
+		double maxHorizontalMovement = miniMapWidth * (1 - currentScale);
+		double newRectangleXPos = new_value * maxHorizontalMovement;
+		currentRectangleXPos = newRectangleXPos;
+		addMiniMapRectangle(currentRectangleXPos, currentRectangleYPos);
 	}
 
 	public void updateMiniMapRectangleOnVerticalPan(double new_value) {
@@ -150,7 +166,7 @@ public class MiniMap extends AbstractVisual {
 	public StackPane getMiniMap() {
 		return theMiniMap;
 	}
-	
+
 	private static final class DragContext {
 		public double mouseAnchorX;
 		public double mouseAnchorY;

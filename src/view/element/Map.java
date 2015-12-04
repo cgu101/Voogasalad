@@ -39,9 +39,14 @@ public class Map extends AbstractElement {
 	private MapZoomSlider zoomSliderArea;
 	private MapOpacitySlider opacitySliderArea;
 	private MiniMap theMiniMap;
+	protected ImageView background;
+
+	private double mapRegularWidth;
+	private double mapRegularHeight;
+	private boolean preserveMapRatio;
+	
 	private ToolBar editToolbar;
 	private ActorHandler actorHandler;
-	protected ImageView background;
 
 	/**
 	 * Creates a Map for the visual representation of the game map on the GUI,
@@ -57,14 +62,14 @@ public class Map extends AbstractElement {
 	public Map(GridPane pane) {
 		super(pane);
 		findResources();
-		// Use a StackPane so we can layer things on top of one another, like an
-		// actor
-		// over a background tile. Note that you can probably use something else
-		// if a
-		// StackPane is not appropriate, such as a Canvas.
+
 		layout = new Group();
 		mapScrollableArea = new ScrollPane();
 		mapArea = new Group();
+		
+		mapRegularWidth = Double.valueOf(myResources.getString("regularmapwidth"));
+		mapRegularHeight = Double.valueOf(myResources.getString("regularmapheight"));
+		preserveMapRatio = Boolean.valueOf(myResources.getString("preservemapratio"));
 		
 		// The actorManager needs access to the layout so it can place actors on
 		// it
@@ -108,9 +113,31 @@ public class Map extends AbstractElement {
 	 */
 	public void updateBackground(Image bg) {
 		background = new ImageView(bg);
-		background.setFitWidth(700);
+		background.setFitWidth(mapRegularWidth);
+		background.setSmooth(true);
+		background.setCache(true);
+		if(!preserveMapRatio) {
+			background.setPreserveRatio(false);
+			background.setFitHeight(mapRegularHeight);
+		}
 		background.setPreserveRatio(true);
 		actorHandler.updateBackground(background);
+	}
+	
+	public void setMapWidth(double width) {
+		
+	}
+	
+	public void setMapHeight(double height) {
+		
+	}
+	
+	public void preserveRatio(boolean preserve) {
+		
+	}
+	
+	public void setPanEnabled(boolean enable) {
+		mapScrollableArea.setPannable(enable);
 	}
 
 	public Group getGroup() {
@@ -192,13 +219,14 @@ public class Map extends AbstractElement {
 
 //		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
 //		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
-		mapScrollableArea.setPrefWidth(700);
-		mapScrollableArea.setPrefViewportWidth(700);
+		mapScrollableArea.setPrefWidth(mapRegularWidth);
+		mapScrollableArea.setPrefViewportWidth(mapRegularWidth);
 
 		
 		//mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());
-		mapScrollableArea.setPrefHeight(550);
+		mapScrollableArea.setPrefHeight(mapRegularHeight);
 	}
+	
 
 	private void createGroups() {
 		// Groups all the nodes that will appear on the map and allows them to
@@ -213,7 +241,7 @@ public class Map extends AbstractElement {
 	}
 
 	private void createMiniMap() {
-		theMiniMap = new MiniMap(background, mapScrollableArea);
+		theMiniMap = new MiniMap(background, mapScrollableArea, mapRegularWidth, mapRegularHeight);
 	}
 
 
@@ -267,7 +295,7 @@ public class Map extends AbstractElement {
 
 		// Add the map to the GridPane
 		addMapToPane(pane);
-		System.out.println(layout.getBoundsInParent());
+		System.out.println("The background bounds are: " + background.getBoundsInParent());
 		// System.out.println(mapScrollableArea.getHvalue());
 		// System.out.println(mapScrollableArea.getVvalue());
 	}
