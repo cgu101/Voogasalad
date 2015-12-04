@@ -5,12 +5,11 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
 import engine.State;
 
 public abstract class AParameterAction<V> implements IAction<V> {
-
-	public abstract void run(Property<?> property, V value, Actor a);
 	
 	@Override
 	public final void run(Map<String, V> parameters_values, State state, Actor... a){
@@ -24,5 +23,9 @@ public abstract class AParameterAction<V> implements IAction<V> {
 				run(prop, entry.getValue(), actor);
 			}
 		}
+		ActorGroups actorGroups = state.getActorMap();
+		actorGroups.addActor(a);
 	}
+
+	public abstract void run(Property<?> property, V value, Actor a);
 }
