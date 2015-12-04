@@ -107,7 +107,7 @@ public class InteractionExecutor {
 		lambdaMap = new HashMap<String,NodeLambda<InteractionTreeNode,List<?>>>();
 		lambdaMap.put(ACTOR_IDENTIFIER, (node, list) -> {
 			for(InteractionTreeNode child : node.children()){
-				if (child.getIdentifier() == ACTOR_IDENTIFIER) {
+				if (child.getIdentifier().equals(ACTOR_IDENTIFIER)) {
 					lambdaMap.get(child.getIdentifier()).apply(child, cloneListAndAdd((List<String>) list, child.getValue()));
 				} else {
 					List<List<Actor>> comboList = new ArrayList<List<Actor>>();
