@@ -1,5 +1,7 @@
 package engine;
 
+import java.util.Observable;
+
 import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;
@@ -8,7 +10,7 @@ import authoring.model.properties.Property;
  * Contains a property bundle for metadata and a ActorGroups containing the state of actors.
  * @author Austin
  */
-public class State {
+public class State extends Observable {
 	private ActorGroups myActorMap;
 	private Bundle<Property<?>> myPropertyBundle;
 	
@@ -45,5 +47,12 @@ public class State {
 	protected void merge(State nextState) {
 		this.myPropertyBundle = nextState.getPropertyBundle();
 		this.myActorMap = nextState.getActorMap();
+	}
+	
+	public void areThereNewOrDeadActors(){
+		if(myActorMap.areThereNewOrDeadActors()){
+			setChanged();
+			notifyObservers();
+		}
 	}
 }

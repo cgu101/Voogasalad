@@ -11,7 +11,7 @@ import authoring.model.bundles.Bundle;
  * @author Inan and Sung
  *
  */
-public class ActorGroups implements Serializable {
+public class ActorGroups implements Serializable{
 	private Map<String,Bundle<Actor>> actorMap;
 	
 	private Map<String,Bundle<Actor>> newActors;
@@ -106,11 +106,7 @@ public class ActorGroups implements Serializable {
 		}
 	}
 	
-	public Map<String,Bundle<Actor>> getNewActors() {
-		return newActors;
-	}
-	
-	public Map<String,Bundle<Actor>> getDeadActors() {
-		return deadActors;
+	public boolean areThereNewOrDeadActors(){
+		return (!newActors.isEmpty() || !deadActors.isEmpty());
 	}
 }
