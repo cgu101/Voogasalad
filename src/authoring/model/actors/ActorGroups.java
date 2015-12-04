@@ -1,5 +1,6 @@
 package authoring.model.actors;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,7 +11,7 @@ import authoring.model.bundles.Bundle;
  * @author Inan and Sung
  *
  */
-public class ActorGroups {
+public class ActorGroups implements Serializable {
 	private Map<String,Bundle<Actor>> actorMap;
 	
 	private Map<String,Bundle<Actor>> newActors;

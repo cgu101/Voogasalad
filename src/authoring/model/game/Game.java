@@ -1,12 +1,18 @@
 package authoring.model.game;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
 import authoring.model.bundles.Bundle;
 import authoring.model.level.Level;
 import authoring.model.properties.Property;
 
-public class Game {
+/**
+ * 
+ * @author Austin
+ *
+ */
+
+public class Game implements Serializable {
 	private Bundle<Level> myLevelBundle;
 	private Bundle<Property<?>> myPropertyBundle;
 	

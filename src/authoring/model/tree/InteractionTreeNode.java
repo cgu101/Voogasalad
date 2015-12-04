@@ -1,5 +1,6 @@
 package authoring.model.tree;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +11,7 @@ import voogasalad.util.reflection.Reflection;
  * Contains a String representing an Actor, Trigger, or Action.
  *
  */
-public class InteractionTreeNode {
+public class InteractionTreeNode implements Serializable {
 	
 	private List<InteractionTreeNode> children;
 	private String value;
