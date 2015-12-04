@@ -112,7 +112,7 @@ public class Map extends AbstractElement {
 		background = new ImageView(bg);
 		background.fitWidthProperty().bind(pane.widthProperty());
 		background.setPreserveRatio(true);
-		actorHandler.updateBackground(background);
+		actorHandler.updateBackground(bg, background);
 	}
 
 	public Group getGroup() {

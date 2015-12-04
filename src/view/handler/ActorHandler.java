@@ -40,6 +40,7 @@ public class ActorHandler extends AbstractVisual {
 	private MapViewManager viewManager;
 	private ToolBar myToolbar;
 	private Label defaultLabel;
+	private Image myBackground; // TODO: this should be the map size once that is implemented
 	
 	public ActorHandler(Group layout, AuthoringController ac, ToolBar tb) {
 		myController = ac;
@@ -57,11 +58,17 @@ public class ActorHandler extends AbstractVisual {
 	
 	public void addActor(ActorView av, double x, double y) {
 		ImageView image = av.getImageView();
-		ContextMenu cm = makeContextMenu(av);
-		image.setOnContextMenuRequested(e -> {
-			cm.show(image, e.getScreenX(), e.getScreenY());
-		});
-		viewManager.addElements(image);
+		if (((x - av.getWidth()/2) < 0) || ((x + av.getWidth()/2) > myBackground.getWidth()) || 
+				((y - av.getHeight()/2) < 0) || ((y + av.getHeight()/2) > myBackground.getHeight())) {
+			Alert error = new Alert(AlertType.ERROR, myResources.getString("outofboundserror"), ButtonType.OK);
+			error.showAndWait();
+		} else {
+			ContextMenu cm = makeContextMenu(av);
+			image.setOnContextMenuRequested(e -> {
+				cm.show(image, e.getScreenX(), e.getScreenY());
+			});
+			viewManager.addElements(image);
+		}
 	}
 	
 	private ContextMenu makeContextMenu(ActorView a) {
@@ -97,8 +104,16 @@ public class ActorHandler extends AbstractVisual {
 	}
 	
 	private void dragDrop(ActorView a, MouseEvent e) {
-		a.setXCoor(e.getX());
-		a.setYCoor(e.getY());
+		double x = e.getX();
+		double y = e.getY();
+		
+		if (((x - a.getWidth()/2) < 0) || ((x + a.getWidth()/2) > myBackground.getWidth()) || 
+				((y - a.getHeight()/2) < 0) || ((y + a.getHeight()/2) > myBackground.getHeight())) {
+			Alert error = new Alert(AlertType.ERROR, myResources.getString("outofboundserror"), ButtonType.OK);
+			error.showAndWait();
+		} else {
+			a.restoreXY(x, y);
+		}
 	}
 	
 	private void copyActor(ActorView a) {
@@ -277,7 +292,8 @@ public class ActorHandler extends AbstractVisual {
 //			return rect;
 //		}
 
-	public void updateBackground(Node n) {
+	public void updateBackground(Image m, ImageView n) {
+		myBackground = m;
 		viewManager.updateBackground(n);
 	}
 }

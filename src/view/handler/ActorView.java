@@ -91,7 +91,6 @@ public class ActorView extends AbstractVisual {
 		myNode.setTranslateY(myYCoor - getHeight()/2); 
 	}
 	
-	// call when we have the coordinates for the top left corner of the node, not the center
 	protected void restoreXY(double xCoor, double yCoor) {
 		setXCoor(xCoor);
 		setYCoor(yCoor);
