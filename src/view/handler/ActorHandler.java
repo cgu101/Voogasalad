@@ -1,4 +1,4 @@
-package view.element;
+package view.handler;
 
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;

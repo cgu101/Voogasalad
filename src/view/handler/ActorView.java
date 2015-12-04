@@ -1,4 +1,4 @@
-package view.element;
+package view.handler;
 
 import authoring.model.actors.Actor;
 import javafx.scene.image.Image;

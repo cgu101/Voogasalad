@@ -15,7 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import view.element.AbstractElement;
-import view.element.ActorHandler;
+import view.handler.ActorHandler;
 import view.screen.AbstractScreen;
 
 /**
