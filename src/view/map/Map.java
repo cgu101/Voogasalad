@@ -39,6 +39,7 @@ public class Map extends AbstractElement {
 	protected ScrollPane mapScrollableArea;
 	private MapZoomSlider zoomSliderArea;
 	private MapOpacitySlider opacitySliderArea;
+	private MinimapResizerSlider resizerSliderArea;
 	private MiniMap theMiniMap;
 	private ToolBar editToolbar;
 	private ActorHandler actorHandler;
@@ -66,14 +67,15 @@ public class Map extends AbstractElement {
 		layout = new Group();
 		mapScrollableArea = new ScrollPane();
 		mapArea = new Group();
-		
+
 		// The actorManager needs access to the layout so it can place actors on
 		// it
 		controller = new AuthoringController();
 		editToolbar = new ToolBar();
 		actorHandler = new ActorHandler(layout, controller, editToolbar);
-//		TODO: actorHandler = new ActorHandler(layout, zoomSliderArea, controller, editToolbar);
-		
+		// TODO: actorHandler = new ActorHandler(layout, zoomSliderArea,
+		// controller, editToolbar);
+
 		makePane();
 	}
 
@@ -130,23 +132,27 @@ public class Map extends AbstractElement {
 		// The slider needs access to the zoomGroup so it can resize it when it
 		// gets dragged
 
-		zoomSliderArea = new MapZoomSlider(zoomGroup, theMiniMap, 
-				Double.valueOf(myResources.getString("sliderwidth")));
+		zoomSliderArea = new MapZoomSlider(zoomGroup, theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
 		zoomSliderArea.createTheSlider();
-		
-		opacitySliderArea = new MapOpacitySlider(theMiniMap, 
-				Double.valueOf(myResources.getString("sliderwidth")));
+
+		opacitySliderArea = new MapOpacitySlider(theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
 		opacitySliderArea.createTheSlider();
+		resizerSliderArea = new MinimapResizerSlider(theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
+		resizerSliderArea.createTheSlider();
 	}
 
 	public GridPane getZoomSlider() {
 		return zoomSliderArea.getSliderWithCaptions();
 	}
-	
+
 	public GridPane getOpacitySlider() {
 		return opacitySliderArea.getSliderWithCaptions();
 	}
-	
+
+	public GridPane getResizerSlider() {
+		return resizerSliderArea.getSliderWithCaptions();
+	}
+
 	public ToolBar getToolbar() {
 		return editToolbar;
 	}
@@ -161,8 +167,8 @@ public class Map extends AbstractElement {
 	private void addMapToPane(GridPane pane) {
 		pane.add(mapArea, 0, 0);
 
-//		pane.add(zoomSliderArea.getSliderWithCaptions(), 0, 1);
-//		pane.add(opacitySliderArea.getSliderWithCaptions(), 0, 2);
+		// pane.add(zoomSliderArea.getSliderWithCaptions(), 0, 1);
+		// pane.add(opacitySliderArea.getSliderWithCaptions(), 0, 2);
 
 	}
 
@@ -193,14 +199,12 @@ public class Map extends AbstractElement {
 
 		mapScrollableArea.setContent(contentGroup);
 
-
-//		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
-//		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
+		// mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
+		// mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
 		mapScrollableArea.setPrefWidth(700);
 		mapScrollableArea.setPrefViewportWidth(700);
 
-		
-		//mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());
+		// mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());
 		mapScrollableArea.setPrefHeight(550);
 	}
 
@@ -220,7 +224,6 @@ public class Map extends AbstractElement {
 		theMiniMap = new MiniMap(background, mapScrollableArea);
 	}
 
-
 	private void addEventFilters() {
 		mapScrollableArea.addEventFilter(KeyEvent.ANY, e -> {
 			e.consume();
@@ -229,7 +232,7 @@ public class Map extends AbstractElement {
 			e.consume();
 		});
 	}
-	
+
 	private void createPanListeners() {
 		mapScrollableArea.vvalueProperty().addListener(new ChangeListener<Number>() {
 
