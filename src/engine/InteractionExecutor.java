@@ -84,6 +84,7 @@ public class InteractionExecutor {
 			e.printStackTrace();
 			throw new InteractionTreeException("Error in interaction tree", null);
 		}
+		nextState.getActorMap().cleanUpActors();
 		currentState = nextState;
 		//		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
 		return new EngineHeartbeat((IPlayer p) -> {}, currentState);

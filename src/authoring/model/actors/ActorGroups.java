@@ -39,7 +39,7 @@ public class ActorGroups {
 			addGroupToMap(groupName, map).add(actor);
 		}
 	}
-
+	
 	private Bundle<Actor> getGroupFromMap (String groupName, Map<String, Bundle<Actor>> map) {
 		return map.get(groupName);
 	}
@@ -78,5 +78,26 @@ public class ActorGroups {
 
 	public Bundle<Actor> getGroup(String groupName) {
 		return getGroupFromMap(groupName, actorMap);
+	}
+	
+	public void cleanUpActors() {
+		addActorsToActorMap(newActors);
+		removeActorsFromActorMap(deadActors);
+	}
+
+	private void addActorsToActorMap(Map<String, Bundle<Actor>> map) {
+		for (String key : map.keySet()) {
+			for (Actor actor : map.get(key)) {
+				addActor(actor);
+			}
+		}
+	}
+	
+	private void removeActorsFromActorMap(Map<String, Bundle<Actor>> map) {
+		for (String key : map.keySet()) {
+			for (Actor actor : map.get(key)) {
+				removeActor(actor);
+			}
+		}
 	}
 }
