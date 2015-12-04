@@ -4,6 +4,7 @@ import javafx.scene.layout.GridPane;
 import view.level.LevelInterface;
 import view.level.LevelMap;
 import view.level.Workspace;
+import view.map.Map;
 import view.screen.AbstractScreenInterface;
 
 public class ActorHandlerToolbar extends AbstractDockElement {

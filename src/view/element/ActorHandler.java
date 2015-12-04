@@ -25,6 +25,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import view.map.MapViewManager;
 import view.visual.AbstractVisual;
 
 /**
@@ -180,7 +181,7 @@ public class ActorHandler extends AbstractVisual {
 	}
 	
 	// TODO: ...
-	protected void removeActor(Node element) {
+	public void removeActor(Node element) {
 		viewManager.removeElements(element);
 	}
 	
@@ -276,7 +277,7 @@ public class ActorHandler extends AbstractVisual {
 //			return rect;
 //		}
 
-	protected void updateBackground(Node n) {
+	public void updateBackground(Node n) {
 		viewManager.updateBackground(n);
 	}
 }

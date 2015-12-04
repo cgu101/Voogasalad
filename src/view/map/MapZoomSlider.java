@@ -1,4 +1,4 @@
-package view.element;
+package view.map;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;

@@ -20,8 +20,8 @@ import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.ActorEditor;
 import view.element.ActorHandlerToolbar;
-import view.element.MapSliders;
 import view.level.Workspace;
+import view.map.MapSliders;
 
 /**
  * Screen for authoring environment

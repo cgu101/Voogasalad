@@ -19,7 +19,7 @@ public class SpriteManager {
 	private ResourceBundle myResources;
 	private Map<String, Boolean> stillAlive;
 	//private Group group;
-	private view.element.Map myCamera;
+	private view.map.Map myCamera;
 	
 	public SpriteManager(Scene s){
 		sprites = new HashMap<String, Sprite>();
@@ -29,7 +29,7 @@ public class SpriteManager {
 		//group = new Group();
 		//bp.setCenter(group);
 		GridPane gp = new GridPane();
-		myCamera = new view.element.Map(gp);
+		myCamera = new view.map.Map(gp);
 		myCamera.createTheMap();
 		bp.setCenter(gp);
 	}
