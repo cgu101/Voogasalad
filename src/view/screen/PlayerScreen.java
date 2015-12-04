@@ -115,6 +115,7 @@ public class PlayerScreen extends AbstractScreen {
 		}
 		monitor.initializePane();
 		monitor.refresh();
+		configureObserverRelationships();
 		controlBarPlayer.initializeComponents();
 	}
 
@@ -150,6 +151,10 @@ public class PlayerScreen extends AbstractScreen {
 	public void run() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	private void configureObserverRelationships() {
+		playerController.getState().addObserver(monitor);
 	}
 
 }

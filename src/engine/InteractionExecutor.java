@@ -8,7 +8,6 @@ import java.util.Map;
 
 import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
-import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
 import authoring.model.level.Level;
 import authoring.model.tree.ActionTreeNode;
@@ -19,7 +18,6 @@ import authoring.model.tree.TriggerTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 import exceptions.EngineException;
 import exceptions.engine.InteractionTreeException;
-import player.IPlayer;
 import player.InputManager;
 
 /**
@@ -76,7 +74,7 @@ public class InteractionExecutor {
 	 * @return A {@link EngineHeartbeat} that allows the engine to communicate with the player controller.
 	 * @throws EngineException 
 	 */
-	public EngineHeartbeat run () throws EngineException {
+	public State run () throws EngineException {
 		nextState = new State(currentState);
 		try {
 			runTriggers();
@@ -85,9 +83,9 @@ public class InteractionExecutor {
 			throw new InteractionTreeException("Error in interaction tree", null);
 		}
 		nextState.getActorMap().cleanUpActors();
-		currentState = nextState;
+		currentState.merge(nextState);
 		//		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
-		return new EngineHeartbeat((IPlayer p) -> {}, currentState);
+		return currentState;
 	}
 
 	private void runTriggers () {
@@ -96,13 +94,6 @@ public class InteractionExecutor {
 		}
 	}
 
-	public ActorGroups getActors () {
-		//System.out.println(currentActorMap.getMap() + " InteractionExecutor");
-		return currentState.getActorMap();
-	}
-	public void setActors (ActorGroups actors) {
-		this.currentState.setActorMap(actors);
-	}
 	/**
 	 * 
 	 * @return The ID of the current level as a String.
@@ -170,5 +161,9 @@ public class InteractionExecutor {
 	@FunctionalInterface
 	interface NodeLambda <A, B> { 
 		public void apply (A a, B b);
+	}
+	protected State getCurrentState() {
+		// TODO Auto-generated method stub
+		return currentState;
 	}
 }
