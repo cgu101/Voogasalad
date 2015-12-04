@@ -38,8 +38,6 @@ public class PlayerController implements IPlayer {
 	private static int fps = 10;
 	private int refreshComponentRate;
 	
-	// TODO: TEMP
-	private State currentState;
 
 	/**
 	 * Player Controller Constructor
@@ -65,8 +63,7 @@ public class PlayerController implements IPlayer {
 	public void loadGame(String fileName) throws GameFileException, EngineException {
 		System.out.println("PlayController.loadGame(" + fileName + ")");
 		Game game = XMLManager.loadGame(fileName);
-		// TODO: holy crap fix this
-		currentState = myEngine.init(game);
+		myEngine.init(game);
 		start();
 	}
 
@@ -116,7 +113,7 @@ public class PlayerController implements IPlayer {
 	private void run() {
 		try {
 			// TODO: myEngine.play() returns a State
-			currentState = myEngine.play();
+			myEngine.play();
 			mySpriteManager.updateSprites(getIndividualActorsList(), this.myScene);
 			refreshPlayerComponents();
 			actorMonitor.refresh();	

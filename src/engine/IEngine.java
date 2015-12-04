@@ -24,7 +24,7 @@ public interface IEngine {
 	 * @return 
 	 * @throws EngineException
 	 */
-	public State init(Game gameData);
+	public void init(Game gameData);
 	
 	/**
 	 * Resets the entire game to its initial load state
