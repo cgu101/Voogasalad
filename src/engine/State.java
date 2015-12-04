@@ -12,13 +12,24 @@ public class State {
 	private ActorGroups myActorMap;
 	private Bundle<Property<?>> myPropertyBundle;
 	
+	public State () {
+		myPropertyBundle = new Bundle<Property<?>>();
+		myActorMap = new ActorGroups();
+	}
 	public State (Bundle<Property<?>> propertyBundle, ActorGroups actorMap) {
 		myPropertyBundle = propertyBundle;
 		myActorMap = actorMap;
 	}
-	
+	public State(State state) {
+		myPropertyBundle = new Bundle<Property<?>>(state.getPropertyBundle());
+		myActorMap = new ActorGroups(state.getActorMap());
+	}
+
 	public ActorGroups getActorMap() {
 		return myActorMap;
+	}
+	protected void setActorMap(ActorGroups map) {
+		this.myActorMap = map;
 	}
 	
 	/**
@@ -27,5 +38,8 @@ public class State {
 	 */
 	public Property<?> getProperty (String key) {
 		return myPropertyBundle.get(key);
+	}
+	public Bundle<Property<?>> getPropertyBundle () {
+		return myPropertyBundle;
 	}
 }

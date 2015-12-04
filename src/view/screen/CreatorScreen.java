@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import authoring.controller.AuthoringController;
-import authoring.controller.constructor.LevelConstructor;
+import authoring.controller.constructor.levelwriter.LevelConstructor;
 import authoring.model.game.Game;
 import data.XMLManager;
 import exceptions.data.GameFileException;
@@ -13,11 +13,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import network.test.GameWindow;
 import util.FileChooserUtility;
 import view.controlbar.ControlBarCreator;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.ActorEditor;
+import view.element.ActorHandlerToolbar;
 import view.element.MapSliders;
 import view.level.Workspace;
 
@@ -29,6 +31,10 @@ import view.level.Workspace;
  */
 public class CreatorScreen extends AbstractScreen {
 
+	//TODO take this out
+	private GameWindow g = null;
+	
+	
 	private ControlBarCreator t;
 	private Workspace w;
 	private ArrayList<GridPane> dockPanes;
@@ -46,7 +52,7 @@ public class CreatorScreen extends AbstractScreen {
 
 	@Override
 	public void run() {
-
+		//System.out.println("test run");
 	}
 
 	@Override
@@ -82,9 +88,11 @@ public class CreatorScreen extends AbstractScreen {
 		ActorEditor editor = new ActorEditor(dockPanes.get(1), homePanes.get(1), myResources.getString("editorname"),
 				this, browser, w);
 		components.add(editor);
-		MapSliders slider = new MapSliders(dockPanes.get(3), homePanes.get(3), myResources.getString("slidername"),
+		MapSliders slider = new MapSliders(dockPanes.get(2), homePanes.get(2), myResources.getString("slidername"),
 				this, w);
 		components.add(slider);
+		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3), myResources.getString("toolbarname"), this, w);
+		components.add(aet);
 		t = new ControlBarCreator(myPanes.get(0), this, w);
 	}
 
@@ -109,5 +117,18 @@ public class CreatorScreen extends AbstractScreen {
 	// TODO
 	public void loadGame() {
 		System.out.println("Testing loading game ");
+	}
+	
+	public ControlBarCreator getControls () {
+		return t;
+	}
+	
+	public void setGameWindow(GameWindow g) {
+		this.g = g;
+		w.setGameWindow(g);
+	}
+	
+	public GameWindow getGameWindow() {
+		return g;
 	}
 }

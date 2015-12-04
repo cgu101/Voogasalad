@@ -12,6 +12,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import network.test.GameWindow;
 import view.element.Map;
 import view.screen.AbstractScreen;
 
@@ -19,6 +20,7 @@ public class LevelMap extends Map implements LevelInterface {
 	private Tab myTab;
 	private ScrollPane sp;
 	private String myString;
+	private GameWindow gameWindow;
 
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
 		super(pane);
@@ -34,14 +36,6 @@ public class LevelMap extends Map implements LevelInterface {
 
 		mapScrollableArea.setOnDragOver(event -> dragAroundMap(event));
 		mapScrollableArea.setOnDragDropped(event -> dragFinished(event));
-
-		// mapArea.addEventHandler(MouseEvent.DRAG_DETECTED, event -> {
-		// System.out.println("Here");
-		// Dragboard db = mapArea.startDragAndDrop(TransferMode.ANY);
-		// db.setDragView(new Image("rcd.jpg")); // <- method only works in drag
-		// detected event??
-		// // so won't work on dragOver. :(
-		// });
 	}
 
 	private void dragFinished(DragEvent event) {
@@ -53,9 +47,8 @@ public class LevelMap extends Map implements LevelInterface {
 			ActorPropertyMap map = controller.getAuthoringActorConstructor().getActorPropertyMap(actor);
 
 			map.addProperty("xLocation", "" + (event.getX()));
-			map.addProperty("yLocation", "" + (event.getY())); // TODO Change
-																// this
-
+			map.addProperty("yLocation", "" + (event.getY())); 
+			
 			String uniqueID = new Date().toString();
 			controller.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, map);
 			Actor a = controller.getLevelConstructor().getActorGroupsConstructor().getActor(actor, uniqueID);
@@ -63,11 +56,19 @@ public class LevelMap extends Map implements LevelInterface {
 			addActor(a, (double) a.getProperties().getComponents().get("xLocation").getValue(),
 					(double) a.getProperties().getComponents().get("yLocation").getValue());
 			success = true;
+			gameWindow.getClient().send("New Drop Event");
 		}
 		event.setDropCompleted(success);
 		event.consume();
 		System.out.println(myTab.getTabPane().getBoundsInParent());
 
+	}
+	
+	private void createMap(ActorPropertyMap apm) {
+		// TODO? 
+		apm.addProperty("xLocation", "0.0");
+		apm.addProperty("yLocation", "0.0");
+		apm.addProperty("Rotation", "0.0");
 	}
 
 	private void startDrag(DragEvent event) {
@@ -102,5 +103,9 @@ public class LevelMap extends Map implements LevelInterface {
 	@Override
 	public String makeTitle(int i) {
 		return myString + (i + 1);
+	}
+
+	public void setGameWindow(GameWindow g) {
+		this.gameWindow = g;
 	}
 }

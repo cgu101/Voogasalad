@@ -56,4 +56,10 @@ public class Actor implements Identifiable, IActor {
 			setProperty(prop);
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String getGroupName() {
+		return ((Property<String>) myPropertyBundle.getComponents().get("groupID")).getValue();
+	}
 }

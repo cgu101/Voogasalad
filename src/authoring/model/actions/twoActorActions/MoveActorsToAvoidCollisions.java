@@ -1,21 +1,28 @@
 package authoring.model.actions.twoActorActions;
 
 import authoring.model.actions.AActionTwoActors;
+import authoring.model.actions.ActionTriggerHelper;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
+import authoring.model.tree.Parameters;
 import authoring.model.triggers.externalconditions.CircleCollision;
+import engine.State;
 
+/**
+ * @author Tyler
+ *
+ */
 public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void run(ActorGroups actorGroup, Actor a, Actor b) {
-
+	public void run(Parameters parameters, State state, Actor a, Actor b) {
+		ActorGroups actorGroup = state.getActorMap();
 		if (checkIfCollided(actorGroup, a, b)) {
 			Double sizeA = ((Property<Double>) a.getProperties().getComponents().get("size")).getValue();
 			Double sizeB = ((Property<Double>) b.getProperties().getComponents().get("size")).getValue();
-			Double difference = (sizeA + sizeB) - distance(a, b);
+			Double difference = (sizeA + sizeB) - ActionTriggerHelper.distance(a, b);
 			move(a, b, difference);
 		}
 
@@ -70,6 +77,6 @@ public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 
 	private boolean checkIfCollided(ActorGroups actorGroup, Actor a, Actor b) {
 		CircleCollision circleCollision = new CircleCollision();
-		return circleCollision.condition(null, new Actor[] { a, b });
+		return circleCollision.condition(null, null, new Actor[] { a, b });
 	}
 }

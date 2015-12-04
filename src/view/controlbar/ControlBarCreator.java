@@ -3,6 +3,7 @@ package view.controlbar;
 import java.io.File;
 import java.io.IOException;
 
+import authoring.model.level.Level;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
@@ -12,13 +13,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import network.test.GameWindow.GameClient;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.level.Workspace;
@@ -59,7 +60,10 @@ public class ControlBarCreator extends ControlBar {
 		Button leftButton = makeButton("left", e -> workspace.moveLevelLeft(true));
 		Button rightButton = makeButton("right", e -> workspace.moveLevelLeft(false));
 		Button splashButton = makeButton("splash", e -> workspace.addSplash());
-		Button newActor = makeButton("new", e -> addActor());
+//		Button newActor = makeButton("new", e -> addActor());
+		
+		Button newActor = makeButton("new", e -> {addActor(); if (screen.getGameWindow() != null) {screen.getGameWindow().getClient().send("33");}});
+		
 		toolBar.getItems().addAll(backButton, new Separator(), leftButton, rightButton, addButton, splashButton,
 				new Separator(), newActor);
 	}

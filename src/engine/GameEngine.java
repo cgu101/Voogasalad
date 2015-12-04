@@ -38,18 +38,29 @@ public class GameEngine implements IEngine {
 	@Override
 	public void init(Game game) {
 		this.game = game;
-		
-		Level initialLevel = makeLevel(game);
-		levelExecutor = new InteractionExecutor(initialLevel, inputManager);
+		String levelID = getFirstLevelName(game);
+		Level initialLevel = makeLevel(game, levelID);
+
+		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
+		propertyBundle.add(new Property<String>(LEVEL_ID_KEY, levelID));
+		// TODO: force game to have a name
+		propertyBundle.add(new Property<String>(GAME_ID_KEY, (String) game.getProperty(GAME_ID_KEY).getValue()));
+		levelExecutor = new InteractionExecutor(initialLevel, inputManager, new State(propertyBundle, null));
+
 	}
-	
-	private Level makeLevel(Game myGame) {
-		Object levelProperty = myGame.getProperty(INITIAL_LEVEL_KEY);
-		String iLevel = INITIAL_LEVEL;
+	private String getFirstLevelName (Game g) {
+		Object levelProperty = g.getProperty(INITIAL_LEVEL_KEY);
+		String levelID = INITIAL_LEVEL;
 		if (levelProperty != null) {
-			iLevel = levelProperty.toString();
+			levelID = levelProperty.toString();
 		}
-		return myGame.getLevel(iLevel);
+		return levelID;
+	}
+	private Level makeLevel(Game g, String levelID) {
+		return g.getLevel(levelID);
+	}
+	private Level makeLevel(String levelID) {
+		return game.getLevel(levelID);
 	}
 
 	/**
@@ -57,8 +68,7 @@ public class GameEngine implements IEngine {
 	 */
 	@Override
 	public void reset() throws EngineException {
-		Level iLevel = makeLevel(game);
-		levelExecutor = new InteractionExecutor(iLevel, inputManager);
+		init(game);
 	}
 	
 	/**
@@ -78,6 +88,7 @@ public class GameEngine implements IEngine {
 		return levelExecutor.getActors().getMap();
 	}
 	
+	// TODO: rewrite save/load state
 	/**
 	 * @return A {@link State} to be saved.
 	 */
@@ -95,11 +106,26 @@ public class GameEngine implements IEngine {
 	public void loadState (State state) throws EngineException {
 		if (state.getProperty(GAME_ID_KEY).getValue().equals(game.getProperty(GAME_ID_KEY).getValue())) {
 			Level level = game.getLevel((String) state.getProperty(LEVEL_ID_KEY).getValue());
-			levelExecutor = new InteractionExecutor(level, inputManager);
+			levelExecutor = new InteractionExecutor(level, inputManager, state);
 			levelExecutor.setActors(state.getActorMap());
 		} else {
 			throw new EngineStateException("Wrong game", null);
 		}
+	}
+
+	@Override
+	public void nextLevel() throws EngineException {
+		// TODO: get the id of the next level
+		Level iLevel = makeLevel(INITIAL_LEVEL);
+		// TODO STATE into InteractionExecutor
+		levelExecutor = new InteractionExecutor(iLevel, inputManager, null);
+		
+	}
+
+	@Override
+	public void replayLevel() throws EngineException {
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**

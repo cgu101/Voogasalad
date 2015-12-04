@@ -4,12 +4,14 @@ import authoring.model.actions.AActionOneActor;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
+import authoring.model.tree.Parameters;
+import engine.State;
 
 public class MoveBackwards extends AActionOneActor{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run(ActorGroups actorGroup, Actor actor) {
+	public void run(Parameters parameters, State state, Actor actor) {
 
 		Double angle = ((Property<Double>) actor.getProperty("angle")).getValue();
 		Double speed = ((Property<Double>) actor.getProperty("speed")).getValue();
@@ -21,6 +23,7 @@ public class MoveBackwards extends AActionOneActor{
 
 		((Property<Double>)actor.getProperty("xLocation")).setValue(x);
 		((Property<Double>)actor.getProperty("yLocation")).setValue(y);
+		ActorGroups actorGroup = state.getActorMap();
 		actorGroup.addActor(actor);
 	}
 }

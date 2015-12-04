@@ -3,12 +3,13 @@ package view.level;
 import java.util.ArrayList;
 import java.util.List;
 
-import authoring.controller.constructor.LevelConstructor;
+import authoring.controller.constructor.levelwriter.LevelConstructor;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Side;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
+import network.test.GameWindow;
 import view.element.AbstractDockElement;
 import view.element.AbstractElement;
 import view.screen.AbstractScreen;
@@ -18,12 +19,19 @@ public class Workspace extends AbstractElement {
 	private ArrayList<LevelInterface> levels;
 	private LevelInterface currentLevel;
 	private AbstractScreen screen;
+	private GameWindow gameWindow;
 
 	public Workspace(GridPane pane, AbstractScreen screen) {
 		super(pane);
 		this.screen = screen;
 		makePane();
 	}
+	
+//	public Workspace (SGameState gs) {
+//		buildWorkspace(gs);
+//	}
+	
+//	public SGameState buildGameState(Workspace w);
 
 	@Override
 	protected void makePane() {
@@ -52,6 +60,7 @@ public class Workspace extends AbstractElement {
 			}
 		}
 		LevelMap newLevel = new LevelMap(new GridPane(), levels.size(), screen);
+		newLevel.setGameWindow(gameWindow);
 		return configureTab(newLevel);
 	}
 
@@ -120,6 +129,10 @@ public class Workspace extends AbstractElement {
 
 	public LevelInterface getCurrentLevel() {
 		return currentLevel;
+	}
+
+	public void setGameWindow(GameWindow g) {
+		this.gameWindow = g;
 	}
 
 }
