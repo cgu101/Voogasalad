@@ -5,6 +5,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import view.visual.AbstractVisual;
 
+/**
+ * This class is responsible for actually manipulating the imageview of an actor. It also contains up-to-date
+ * instances of each actor and its appearance-related properties.
+ * 
+ * @author Bridget
+ *
+ */
 public class ActorView extends AbstractVisual {
 	private Actor myActor;
 	private ImageView myNode;
@@ -99,18 +106,16 @@ public class ActorView extends AbstractVisual {
 	}
 	
 	protected void scaleDimensions(double percent) {
-		double oldFW = myFitWidth;
 		myFitWidth *= percent;
-		preserveCenter(oldFW);
+		preserveCenter();
 	}
 	
 	protected void addDimensions(double increase) {
-		double oldFW = myFitWidth;
 		myFitWidth += increase;
-		preserveCenter(oldFW);
+		preserveCenter();
 	}
 	
-	private void preserveCenter(double origFitWidth) {
+	private void preserveCenter() {
 		myNode.setFitWidth(myFitWidth);
 		myNode.setPreserveRatio(true);
 		restoreXY(myXCoor, myYCoor);
