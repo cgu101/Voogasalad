@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.transform.Scale;
+import view.map.MiniMap;
 import view.visual.AbstractVisual;
 
 /**
@@ -35,6 +36,7 @@ public class MapZoomSlider extends AbstractVisual {
 		theSlider.setPrefWidth(sliderSize); //The size of the slider is set inside the resource file
 		mapZoomGroup = zoomGroup;
 		theMiniMap = minimap;
+		findResources();
 	}
 	
 	public void createTheSlider() {
@@ -50,14 +52,14 @@ public class MapZoomSlider extends AbstractVisual {
 		scaleValue = new Label(Double.toString(theSlider.getValue()));
 	}
 	
-	private void initializeSlider() {
-		theSlider.setMin(0); //Can modify the minimum display size of map, just needs to be > 0
-		theSlider.setMax(100);
-		theSlider.setValue(0);
+	private void initializeSlider() {		
+		theSlider.setMin(Double.valueOf(myResources.getString("slidermin")));
+		theSlider.setMax(Double.valueOf(myResources.getString("slidermax")));
+		theSlider.setValue(Double.valueOf(myResources.getString("startingvalue")));
 		theSlider.setShowTickLabels(true);
 		theSlider.setShowTickMarks(true);
-		theSlider.setMajorTickUnit(25);
-		theSlider.setMinorTickCount(4);
+		theSlider.setMajorTickUnit(Double.valueOf(myResources.getString("majortickunit")));
+		theSlider.setMinorTickCount(Integer.valueOf(myResources.getString("minortickcount")));
 	}
 	
 	private void setUpSliderListener() {
@@ -85,8 +87,9 @@ public class MapZoomSlider extends AbstractVisual {
 	
 	private void fillGridPane() {
 		//Set the horizontal gap between grid elements, and the outside padding of the GridPane
-		sliderElements.setHgap(30);
-		sliderElements.setPadding(new Insets(10, 10, 10, 10));
+		sliderElements.setHgap(Double.valueOf(myResources.getString("elementspacing")));
+		double paddingValue = Double.valueOf(myResources.getString("padding"));
+		sliderElements.setPadding(new Insets(paddingValue, paddingValue, paddingValue, paddingValue));
 		
 		//Set the positions of the different GridPane elements
 		GridPane.setConstraints(scaleCaption, 0, 0);

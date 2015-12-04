@@ -11,10 +11,11 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
+
 /**
  * @author David
  * 
- * This class is designed to be used with the ActorBrowser
+ *         This class is designed to be used with the ActorBrowser
  * 
  */
 public class ActorCell extends AbstractListCell {
@@ -22,14 +23,16 @@ public class ActorCell extends AbstractListCell {
 	private AuthoringController controller;
 	private boolean deselect;
 	private String actor;
+	private Image image;
 
 	public ActorCell(AuthoringController controller) {
 		this.controller = controller;
 	}
 
 	private ImageView makeImage(String item) {
-		ImageView output = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(
-				controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image"))));
+		image = new Image(getClass().getClassLoader()
+				.getResourceAsStream(controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image")));
+		ImageView output = new ImageView(image);
 		this.actor = item;
 		output.setFitHeight(25);
 		output.setPreserveRatio(true);
@@ -54,6 +57,7 @@ public class ActorCell extends AbstractListCell {
 		ClipboardContent content = new ClipboardContent();
 		content.putString(this.actor);
 		db.setContent(content);
+		db.setDragView(image, image.getWidth() / 2, image.getHeight() / 2);
 	}
 
 	@Override
@@ -68,7 +72,6 @@ public class ActorCell extends AbstractListCell {
 	}
 
 	public void dragDone(DragEvent e) {
-		// TODO Auto-generated method stub
 		e.consume();
 	}
 }
