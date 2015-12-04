@@ -23,8 +23,8 @@ public abstract class AbstractMapSlider extends AbstractVisual {
 	private void fillGridPane() {
 		// Set the horizontal gap between grid elements, and the outside padding
 		// of the GridPane
-		sliderElements.setHgap(30);
-		sliderElements.setPadding(new Insets(10, 10, 10, 10));
+		sliderElements.setHgap(Double.parseDouble(myResources.getString("elementspacing")));
+		sliderElements.setPadding(createSliderInsets(Double.parseDouble(myResources.getString("padding"))));
 
 		// Set the positions of the different GridPane elements
 		GridPane.setConstraints(caption, 0, 0);
@@ -33,6 +33,10 @@ public abstract class AbstractMapSlider extends AbstractVisual {
 
 		// Add all the elements to the GridPane
 		sliderElements.getChildren().addAll(caption, value, theSlider);
+	}
+	
+	private Insets createSliderInsets(double spacing) {
+		return new Insets(spacing, spacing, spacing, spacing);
 	}
 
 	private void createLabels() {
@@ -50,13 +54,13 @@ public abstract class AbstractMapSlider extends AbstractVisual {
 	}
 
 	private void initializeSlider() {
-		theSlider.setMin(Double.parseDouble(myResources.getString("min")));
-		theSlider.setMax(Double.parseDouble(myResources.getString("max")));
-		theSlider.setValue(Double.parseDouble(myResources.getString("value")));
+		theSlider.setMin(Double.parseDouble(myResources.getString("slidermin")));
+		theSlider.setMax(Double.parseDouble(myResources.getString("slidermax")));
+		theSlider.setValue(Double.parseDouble(myResources.getString("startingvalue")));
 		theSlider.setShowTickLabels(true);
 		theSlider.setShowTickMarks(true);
-		theSlider.setMajorTickUnit(Double.parseDouble(myResources.getString("tick")));
-		theSlider.setMinorTickCount(Integer.parseInt(myResources.getString("count")));
+		theSlider.setMajorTickUnit(Double.parseDouble(myResources.getString("majortickunit")));
+		theSlider.setMinorTickCount(Integer.parseInt(myResources.getString("minortickcount")));
 	}
 
 	protected abstract void setUpSliderListener();

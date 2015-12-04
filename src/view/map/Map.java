@@ -39,7 +39,7 @@ public class Map extends AbstractElement {
 	protected ScrollPane mapScrollableArea;
 	private MapZoomSlider zoomSliderArea;
 	private MapOpacitySlider opacitySliderArea;
-	private MinimapResizerSlider resizerSliderArea;
+	private MinimapResizerSlider miniMapResizerSliderArea;
 	private MiniMap theMiniMap;
 	protected ImageView background;
 
@@ -164,8 +164,9 @@ public class Map extends AbstractElement {
 
 		opacitySliderArea = new MapOpacitySlider(theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
 		opacitySliderArea.createTheSlider();
-		resizerSliderArea = new MinimapResizerSlider(theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
-		resizerSliderArea.createTheSlider();
+		
+		miniMapResizerSliderArea = new MinimapResizerSlider(theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
+		miniMapResizerSliderArea.createTheSlider();
 	}
 
 	public GridPane getZoomSlider() {
@@ -177,7 +178,7 @@ public class Map extends AbstractElement {
 	}
 
 	public GridPane getResizerSlider() {
-		return resizerSliderArea.getSliderWithCaptions();
+		return miniMapResizerSliderArea.getSliderWithCaptions();
 	}
 
 	public ToolBar getToolbar() {
@@ -280,16 +281,9 @@ public class Map extends AbstractElement {
 
 	@Override
 	protected void makePane() {
-		// Image backgroundImage = new
-		// Image(myResources.getString("backgroundURL"));
-		Image backgroundImage = new Image(myResources.getString("backgroundURL"));
-
-		// Test white rectangle
-		Rectangle test = new Rectangle(700, 724);
-		test.setFill(Color.RED);
-
+		//Image backgroundImage = new Image(myResources.getString("backgroundURL"));
+		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
 		updateBackground(backgroundImage);
-		// addActor(test, 0, 0);
 
 		// Create the map after adding elements you want
 		createTheMap();

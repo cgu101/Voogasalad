@@ -65,7 +65,6 @@ public class MiniMap extends AbstractVisual {
 	private void createMiniMap() {
 		createMiniMapImageView(Double.valueOf(myResources.getString("minimapwidth")));
 		addMiniMapImageView();
-
 		createMiniMapRectangle(miniMapWidth, miniMapHeight, currentScale, currentOpacity);
 		addMiniMapRectangle(currentRectangleXPos, currentRectangleYPos);
 
@@ -76,12 +75,19 @@ public class MiniMap extends AbstractVisual {
 	public void updateMiniMapSize(double width) {
 		miniMapImageView.setFitWidth(width);
 		miniMapImageView.setPreserveRatio(true);
+		
+		createMiniMapRectangle(miniMapWidth, miniMapHeight, currentScale, currentOpacity);
+		addMiniMapRectangle(currentRectangleXPos, currentRectangleYPos);
+		
+		miniMapWidth = (double) miniMapImageView.getBoundsInParent().getWidth();
+		miniMapHeight = (double) miniMapImageView.getBoundsInParent().getHeight();
 	}
 
 	private void createMiniMapImageView(double width) {
 		miniMapImageView = new ImageView(theBackground.getImage());
 		miniMapImageView.setOpacity(currentOpacity);
-		updateMiniMapSize(width);
+		miniMapImageView.setFitWidth(width);
+		miniMapImageView.setPreserveRatio(true);
 	}
 
 	private void addMiniMapImageView() {

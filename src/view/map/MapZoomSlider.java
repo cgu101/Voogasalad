@@ -25,8 +25,7 @@ public class MapZoomSlider extends AbstractMapSlider {
 		findResources();
 		sliderElements = new GridPane();
 		theSlider = new Slider();
-		theSlider.setPrefWidth(sliderSize); // The size of the slider is set
-											// inside the resource file
+		theSlider.setPrefWidth(sliderSize);
 		mapZoomGroup = zoomGroup;
 		theMiniMap = minimap;
 	}
