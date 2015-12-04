@@ -77,9 +77,18 @@ public class GameEngine implements IEngine {
 	 */
 	@Override
 	public EngineHeartbeat play () throws EngineException {
-		return levelExecutor.run();
+		EngineHeartbeat heartbeat = levelExecutor.run();
+		processState(heartbeat.getState());
+		return heartbeat;
 	}
 	
+	private void processState(State state) {
+		if (!state.getProperty(LEVEL_ID_KEY).equals(levelExecutor.getLevelID())) {
+			// TODO: SWITCH LEVEL
+		}
+		
+	}
+
 	/**
 	 * @return The current actor map of the level executor.
 	 */

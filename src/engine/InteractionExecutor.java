@@ -86,7 +86,7 @@ public class InteractionExecutor {
 		}
 		currentState = nextState;
 		//		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
-		return new EngineHeartbeat((IPlayer p) -> {});
+		return new EngineHeartbeat((IPlayer p) -> {}, currentState);
 	}
 
 	private void runTriggers () {
