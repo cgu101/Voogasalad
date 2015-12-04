@@ -27,37 +27,39 @@ public class ActorMonitorCell extends AbstractListCell {
 	 * @param  actor The Actor that will have its properties displayed.
 	 * @param  controller The PlayerController which allows the ActorMonitorCell to grab the actors' properties
 	 */
-	public ActorMonitorCell(PlayerController controller, Actor actor) {
+	public ActorMonitorCell(PlayerController controller) {
 		findResources();
 		this.controller = controller;
 	}
 
 	//TODO: Make a non-default image
-	private ImageView makeImage(String pic) {
+	private VBox makeImage(String pic, String name) {
+		VBox v = new VBox();
 		ImageView image = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(pic)));
 		image.setFitHeight(Double.parseDouble(myResources.getString("imagesize")));
 		image.setPreserveRatio(true);
 		image.setSmooth(true);
 		image.setCache(true);
-		GridPane.setRowSpan(image, 2);
-		return image;
+		GridPane.setRowSpan(image, 1);
+		v.getChildren().addAll(new Label(name), image);
+		return v;
 	}
 	
 	@Override
 	protected void makeCell(String item) {
 		HBox box = new HBox(5);
 		box.setAlignment(Pos.CENTER_LEFT);
-		List<Actor> actorList = controller.getActorList();
-		for(Actor a : actorList){
-			Map<String, String> propertyStringMap = controller.getPropertyStringMap(a);
-			box.getChildren().add(makeImage(propertyStringMap.get("image")));
-			box.getChildren().add(makePropertiesVBox(controller.getPropertyStringMap(a)));
-		}
+		
+		Map<String, String> propertyStringMap = controller.getPropertyStringMapFromActorString(item);
+		box.getChildren().add(makeImage(propertyStringMap.get("image"), item));
+		box.getChildren().add(makePropertiesVBox(propertyStringMap));
+		
 		setGraphic(box);
-	}
+	} 	
 	
 	protected VBox makePropertiesVBox(Map<String, String> propertyStringMap) {
 		VBox props = new VBox();
+		//props.getChildren().add(new Label(String.valueOf(derp) + ":" + actor.getUniqueID()));
 		for(String s: propertyStringMap.keySet()){
 			props.getChildren().add(new Label(s + " : " + propertyStringMap.get(s)));
 		}

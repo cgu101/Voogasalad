@@ -245,6 +245,8 @@
                 </authoring.model.bundles.Bundle>
               </entry>
             </actorMap>
+            <newActors/>
+            <deadActors/>
           </actorGroups>
           <triggerMap>
             <entry>

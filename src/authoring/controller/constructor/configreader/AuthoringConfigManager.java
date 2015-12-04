@@ -1,4 +1,4 @@
-package authoring.controller;
+package authoring.controller.constructor.configreader;
 
 import java.util.ArrayList;
 import java.util.Arrays;

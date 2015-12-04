@@ -4,19 +4,17 @@ import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import javafx.scene.transform.Scale;
 import view.screen.AbstractScreen;
 
 /**
@@ -41,7 +39,8 @@ public class Map extends AbstractElement {
 	private MapZoomSlider zoomSliderArea;
 	private MapOpacitySlider opacitySliderArea;
 	private MiniMap theMiniMap;
-	private MapActorManager actorManager;
+	private ToolBar editToolbar;
+	private ActorHandler actorHandler;
 	protected ImageView background;
 
 	/**
@@ -66,11 +65,12 @@ public class Map extends AbstractElement {
 		layout = new Group();
 		mapScrollableArea = new ScrollPane();
 		mapArea = new Group();
-
+		
 		// The actorManager needs access to the layout so it can place actors on
 		// it
 		controller = new AuthoringController();
-		actorManager = new MapActorManager(layout, controller);
+		editToolbar = new ToolBar();
+		actorHandler = new ActorHandler(layout, controller, editToolbar);
 
 		makePane();
 	}
@@ -87,7 +87,7 @@ public class Map extends AbstractElement {
 	 */
 	public void addActor(Actor element, double x, double y) {
 		// Use this method to add an actor to the StackPane.
-		actorManager.addActor(element, x, y);
+		actorHandler.addActor(element, x, y);
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class Map extends AbstractElement {
 	 *            - the Node to be removed
 	 */
 	public void removeActor(Node element) {
-		actorManager.removeActor(element);
+		actorHandler.removeActor(element);
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class Map extends AbstractElement {
 		background = new ImageView(bg);
 		background.fitWidthProperty().bind(pane.widthProperty());
 		background.setPreserveRatio(true);
-		actorManager.updateBackground(background);
+		actorHandler.updateBackground(background);
 	}
 
 	public Group getGroup() {
@@ -137,8 +137,16 @@ public class Map extends AbstractElement {
 		opacitySliderArea.createTheSlider();
 	}
 
-	public GridPane getSlider() {
+	public GridPane getZoomSlider() {
 		return zoomSliderArea.getSliderWithCaptions();
+	}
+	
+	public GridPane getOpacitySlider() {
+		return opacitySliderArea.getSliderWithCaptions();
+	}
+	
+	public ToolBar getToolbar() {
+		return editToolbar;
 	}
 
 	/**
@@ -172,6 +180,7 @@ public class Map extends AbstractElement {
 		}
 		theMiniMap.getMiniMap().setTranslateY(300);
 		mapArea.getChildren().add(theMiniMap.getMiniMap());
+		System.out.println("The minimap's bounds are: " + theMiniMap.getMiniMap().getBoundsInParent());
 	}
 
 	private void createMapScrollPane() {

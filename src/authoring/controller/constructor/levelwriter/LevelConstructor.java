@@ -1,15 +1,18 @@
-package authoring.controller.constructor;
+package authoring.controller.constructor.levelwriter;
 
+import authoring.controller.constructor.levelwriter.interfaces.ITreeConstructor;
 import authoring.model.level.Level;
 
 public class LevelConstructor {
 	
 	private ActorGroupsConstructor actorConstructor;
-	private TreeConstructor treeConstructor;
+	private ITreeConstructor treeConstructor;
+	private MapConstructor mapConstructor;
 	
-	LevelConstructor() {
+	public LevelConstructor() {
 		actorConstructor = new ActorGroupsConstructor();
 		treeConstructor = new TreeConstructor();
+		mapConstructor = new MapConstructor();
 	}
 	
 	/**
@@ -26,7 +29,7 @@ public class LevelConstructor {
 	 * 
 	 * @return TreeConstructor
 	 */
-	public TreeConstructor getTreeConstructor() {
+	public ITreeConstructor getTreeConstructor() {
 		return treeConstructor;
 	}
 	
@@ -41,6 +44,7 @@ public class LevelConstructor {
 		Level ret = new Level(level);
 		ret.setActorGroupsValues(actorConstructor);
 		ret.setTreeConstructorValues(treeConstructor);
+		ret.setMapConstructorValues(mapConstructor);
 		return ret;
 	}
 

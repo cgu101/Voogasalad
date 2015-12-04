@@ -3,6 +3,7 @@ package view.controlbar;
 import java.io.File;
 import java.io.IOException;
 
+import authoring.model.level.Level;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
@@ -12,7 +13,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -55,6 +55,8 @@ public class ControlBarCreator extends ControlBar {
 
 	private void makeTools(ToolBar toolBar) {
 		Button backButton = makeButton("back", e -> screen.setNextScreen(new StartScreen()));
+//		Button backButton = makeButton("back", e -> {if (screen.getGameWindow() != null) {screen.getGameWindow().getClient().send("33");}});
+		
 		Button addButton = makeButton("add", e -> workspace.addLevel());
 		Button leftButton = makeButton("left", e -> workspace.moveLevelLeft(true));
 		Button rightButton = makeButton("right", e -> workspace.moveLevelLeft(false));
