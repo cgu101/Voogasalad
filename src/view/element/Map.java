@@ -71,7 +71,8 @@ public class Map extends AbstractElement {
 		controller = new AuthoringController();
 		editToolbar = new ToolBar();
 		actorHandler = new ActorHandler(layout, controller, editToolbar);
-
+//		TODO: actorHandler = new ActorHandler(layout, zoomSliderArea, controller, editToolbar);
+		
 		makePane();
 	}
 
@@ -252,7 +253,7 @@ public class Map extends AbstractElement {
 	protected void makePane() {
 		// Image backgroundImage = new
 		// Image(myResources.getString("backgroundURL"));
-		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
+		Image backgroundImage = new Image(myResources.getString("backgroundURL"));
 
 		// Test white rectangle
 		Rectangle test = new Rectangle(700, 724);
