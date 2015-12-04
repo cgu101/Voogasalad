@@ -179,15 +179,15 @@ public class Main extends Application {
 //		actionList.add("authoring.model.actions.oneActorActions.SplitAndReduceSize");
 //		tc.addTreeNode(actorList, triggerList, actionList);
 		
-//		// External Triggers
-//		actorList.clear();
-//		actorList.add("asteroid");
-//		actorList.add("bullet");
-//		triggerList.clear();
-//		triggerList.add("authoring.model.triggers.externalconditions.CircleCollision");
-//		actionList.clear();
-//		actionList.add("authoring.model.actions.oneActorActions.Move");
-//		tc.addTreeNode(actorList, triggerList, actionList);
+		// External Triggers
+		actorList.clear();
+		actorList.add("asteroid");
+		actorList.add("player");
+		triggerList.clear();
+		triggerList.add("authoring.model.triggers.externalconditions.CircleCollision");
+		actionList.clear();
+		actionList.add("authoring.model.actions.oneActorActions.Move");
+		tc.addTreeNode(actorList, triggerList, actionList);
 		
 		
 		

@@ -8,7 +8,6 @@ import java.util.Map;
 
 import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
-import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
 import authoring.model.level.Level;
 import authoring.model.tree.ActionTreeNode;
@@ -19,7 +18,6 @@ import authoring.model.tree.TriggerTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 import exceptions.EngineException;
 import exceptions.engine.InteractionTreeException;
-import player.IPlayer;
 import player.InputManager;
 
 /**
@@ -76,7 +74,7 @@ public class InteractionExecutor {
 	 * @return A {@link EngineHeartbeat} that allows the engine to communicate with the player controller.
 	 * @throws EngineException 
 	 */
-	public EngineHeartbeat run () throws EngineException {
+	public State run () throws EngineException {
 		nextState = new State(currentState);
 		try {
 			runTriggers();
@@ -84,9 +82,10 @@ public class InteractionExecutor {
 			e.printStackTrace();
 			throw new InteractionTreeException("Error in interaction tree", null);
 		}
-		currentState = nextState;
+		nextState.getActorMap().cleanUpActors();
+		currentState.merge(nextState);
 		//		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
-		return new EngineHeartbeat((IPlayer p) -> {}, currentState);
+		return currentState;
 	}
 
 	private void runTriggers () {
@@ -95,13 +94,6 @@ public class InteractionExecutor {
 		}
 	}
 
-	public ActorGroups getActors () {
-		//System.out.println(currentActorMap.getMap() + " InteractionExecutor");
-		return currentState.getActorMap();
-	}
-	public void setActors (ActorGroups actors) {
-		this.currentState.setActorMap(actors);
-	}
 	/**
 	 * 
 	 * @return The ID of the current level as a String.
@@ -115,7 +107,7 @@ public class InteractionExecutor {
 		lambdaMap = new HashMap<String,NodeLambda<InteractionTreeNode,List<?>>>();
 		lambdaMap.put(ACTOR_IDENTIFIER, (node, list) -> {
 			for(InteractionTreeNode child : node.children()){
-				if (child.getIdentifier() == ACTOR_IDENTIFIER) {
+				if (child.getIdentifier().equals(ACTOR_IDENTIFIER)) {
 					lambdaMap.get(child.getIdentifier()).apply(child, cloneListAndAdd((List<String>) list, child.getValue()));
 				} else {
 					List<List<Actor>> comboList = new ArrayList<List<Actor>>();
@@ -170,5 +162,9 @@ public class InteractionExecutor {
 	@FunctionalInterface
 	interface NodeLambda <A, B> { 
 		public void apply (A a, B b);
+	}
+	protected State getCurrentState() {
+		// TODO Auto-generated method stub
+		return currentState;
 	}
 }

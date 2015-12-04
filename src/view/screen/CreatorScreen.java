@@ -19,9 +19,9 @@ import view.controlbar.ControlBarCreator;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.ActorEditor;
-import view.element.ActorHandlerToolbar;
-import view.element.MapSliders;
+import view.handler.ActorHandlerToolbar;
 import view.level.Workspace;
+import view.map.MapSliders;
 
 /**
  * Screen for authoring environment
@@ -33,7 +33,6 @@ public class CreatorScreen extends AbstractScreen {
 
 	//TODO take this out
 	private GameWindow g = null;
-	
 	
 	private ControlBarCreator t;
 	private Workspace w;

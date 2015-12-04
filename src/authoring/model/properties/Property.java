@@ -1,5 +1,7 @@
 package authoring.model.properties;
 
+import java.io.Serializable;
+
 import authoring.model.bundles.Identifiable;
 
 /**
@@ -7,7 +9,7 @@ import authoring.model.bundles.Identifiable;
  *
  * @param <T> Generic property values (either String or Double. Can be states in the future)
  */
-public class Property<T> implements Identifiable, IProperty<T> {
+public class Property<T> implements Identifiable, IProperty<T>, Serializable {
 
 	private T myValue;
 	private String identifier;

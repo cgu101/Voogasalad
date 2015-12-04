@@ -1,8 +1,5 @@
 package engine;
 
-import java.util.Map;
-
-import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
@@ -22,6 +19,7 @@ public class GameEngine implements IEngine {
 	private String gameKey = PropertyKeyResource.getKey(PropertyKey.GAME_ID_KEY);
 	private String levelKey = PropertyKeyResource.getKey(PropertyKey.LEVEL_ID_KEY);
 	private String initialLevelKey = PropertyKeyResource.getKey(PropertyKey.INITIAL_LEVEL_KEY);
+	private String levelCountKey = PropertyKeyResource.getKey(PropertyKey.GAME_LEVEL_COUNT_KEY);
 	
 	private Game game;
 	private InteractionExecutor levelExecutor;
@@ -42,7 +40,7 @@ public class GameEngine implements IEngine {
 		String levelID = getFirstLevelName(game);
 		Level initialLevel = makeLevel(game, levelID);
 
-		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
+		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>(game.getProperties());
 		propertyBundle.add(new Property<String>(levelKey, levelID));
 		// TODO: force game to have a name
 		propertyBundle.add(new Property<String>(gameKey, (String) game.getProperty(gameKey).getValue()));
@@ -61,12 +59,23 @@ public class GameEngine implements IEngine {
 		return g.getLevel(levelID);
 	}
 	private Level makeLevel(String levelID) {
+		if (Integer.parseInt(levelID) < 0) {
+			return makeDefaultNextLevel(levelExecutor.getLevelID());
+		}
 		return game.getLevel(levelID);
+	}
+	private Level makeDefaultNextLevel (String currentLevelID) {
+		int nextLevelID = Integer.parseInt(currentLevelID) + 1;
+		if (nextLevelID >= Integer.parseInt((String)game.getProperty(levelCountKey).getValue())) {
+			return null;
+		}
+		String nextLevelName = Integer.toString(nextLevelID);
+		return game.getLevel(nextLevelName);
 	}
 	private void setExecutor(Level level, State state) {
 		levelExecutor = new InteractionExecutor(level, inputManager, state);
 	}
-
+	
 	/**
 	 * Loads the first level of the game (level with ID "0")
 	 */
@@ -80,9 +89,9 @@ public class GameEngine implements IEngine {
 	 * @return A {@link EngineHeartbeat} for the player controller to call.
 	 */
 	@Override
-	public EngineHeartbeat play () throws EngineException {
-		EngineHeartbeat heartbeat = levelExecutor.run();
-		processState(heartbeat.getState());
+	public State play () throws EngineException {
+		State heartbeat = levelExecutor.run();
+		processState(heartbeat);
 		return heartbeat;
 	}
 	
@@ -94,14 +103,17 @@ public class GameEngine implements IEngine {
 		}
 		
 	}
+	
+	/**
+	 * Return the current State of the game (Actor and Properties)
+	 */
+	public State getState(){
+		return levelExecutor.getCurrentState();
+	}
 
 	/**
 	 * @return The current actor map of the level executor.
 	 */
-	@Override
-	public Map<String, Bundle<Actor>> getActors() {
-		return levelExecutor.getActors().getMap();
-	}
 	
 	// TODO: rewrite save/load state
 	/**
@@ -109,10 +121,7 @@ public class GameEngine implements IEngine {
 	 */
 	@Override
 	public State saveState () throws EngineStateException {
-		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
-		propertyBundle.add(new Property<String>(levelKey, levelExecutor.getLevelID()));
-		propertyBundle.add(new Property<String>(gameKey, (String) game.getProperty(gameKey).getValue()));
-		return new State(propertyBundle, levelExecutor.getActors());
+		return new State(levelExecutor.getCurrentState());
 	}
 	/**
 	 * Loads a save state into the engine. If the state does not match the current game, a {@link EngineStateException} is thrown.
@@ -122,18 +131,15 @@ public class GameEngine implements IEngine {
 		if (state.getProperty(gameKey).getValue().equals(game.getProperty(gameKey).getValue())) {
 			Level level = game.getLevel((String) state.getProperty(levelKey).getValue());
 			levelExecutor = new InteractionExecutor(level, inputManager, state);
-			levelExecutor.setActors(state.getActorMap());
 		} else {
 			throw new EngineStateException("Wrong game", null);
 		}
 	}
 
+	// This method shouldn't really be used
 	@Override
 	public void nextLevel() throws EngineException {
-		// TODO: get the id of the next level
-		Level iLevel = makeLevel(INITIAL_LEVEL);
-		// TODO STATE into InteractionExecutor
-		levelExecutor = new InteractionExecutor(iLevel, inputManager, null);
+		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID()),levelExecutor.getCurrentState());
 		
 	}
 
@@ -141,14 +147,6 @@ public class GameEngine implements IEngine {
 	public void replayLevel() throws EngineException {
 		// TODO Auto-generated method stub
 		
-	}
-
-	/**
-	 * @return The property map of the current game.
-	 */
-	@Override
-	public Bundle<Property<?>> getProperties() {
-		return game.getProperties();
 	}
 	
 //	ArrayList<Property<?>> properties = new ArrayList<Property<?>>();

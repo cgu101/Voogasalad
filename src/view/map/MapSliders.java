@@ -1,6 +1,7 @@
-package view.element;
+package view.map;
 
 import javafx.scene.layout.GridPane;
+import view.element.AbstractDockElement;
 import view.level.LevelInterface;
 import view.level.LevelMap;
 import view.level.Workspace;
@@ -39,9 +40,10 @@ public class MapSliders extends AbstractDockElement {
 	protected void makePane() {
 		GridPane labelPane = makeLabelPane();
 		pane.add(labelPane, 0, 0);
-		GridPane.setRowSpan(labelPane, 2);
+		GridPane.setRowSpan(labelPane, 3);
 		pane.add(map.getZoomSlider(), 1, 0);
-		pane.add(map.getOpacitySlider(), 1, 1);
+		pane.add(map.getResizerSlider(), 1, 1);
+		pane.add(map.getOpacitySlider(), 1, 2);
 	}
 
 }

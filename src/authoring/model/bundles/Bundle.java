@@ -1,5 +1,6 @@
 package authoring.model.bundles;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.Map.Entry;
  * @param <V>
  */
 
-public class Bundle<V extends Identifiable> extends Observable implements Iterable<V> {
+public class Bundle<V extends Identifiable> extends Observable implements Iterable<V>, Serializable {
 	private Map<String, V> components;
 
 	public Bundle() {

@@ -3,7 +3,6 @@ package view.controlbar;
 import java.io.File;
 import java.io.IOException;
 
-import authoring.model.level.Level;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;

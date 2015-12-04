@@ -13,7 +13,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import network.test.GameWindow;
-import view.element.Map;
+import view.map.Map;
 import view.screen.AbstractScreen;
 
 public class LevelMap extends Map implements LevelInterface {

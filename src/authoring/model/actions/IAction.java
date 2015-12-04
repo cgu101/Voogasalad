@@ -1,5 +1,6 @@
 package authoring.model.actions;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
@@ -10,8 +11,8 @@ import engine.State;
  * @param <V>
  *
  */
-public interface IAction<V> {
 	
+public interface IAction<V> extends Serializable {
 	/**
 	 * @param parameters_values Map of actor Parameters and the Values that you want to use in the action
 	 * @param state State object

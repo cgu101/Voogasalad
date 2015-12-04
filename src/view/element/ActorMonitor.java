@@ -3,6 +3,8 @@ package view.element;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Observable;
+import java.util.Observer;
 
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
@@ -29,7 +31,7 @@ import view.actor.PropertyCell;
 import view.element.AbstractDockElement;
 import view.screen.AbstractScreenInterface;
 
-public class ActorMonitor extends AbstractDockElement {
+public class ActorMonitor extends AbstractDockElement implements Observer{
 
 	private ObservableList<String> individualActorList;
 	private PlayerController controller; 
@@ -147,9 +149,12 @@ public class ActorMonitor extends AbstractDockElement {
 	 * This method allows properties of Actor's to be refreshed.
 	 */
 	public void refresh(){
-		if(canUpdate){
-			update();
-		}
+		observableIndividualActorList.refresh();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		update();
 	}
 		
 
