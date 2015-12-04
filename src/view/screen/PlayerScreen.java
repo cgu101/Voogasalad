@@ -161,8 +161,12 @@ public class PlayerScreen extends AbstractScreen {
 		try {
 			playerController.resetGame();
 			//TODO: Needs to reset the map as well
+		} catch (NullPointerException e) {
+			showWarning("Game Reset Error", "No Game Laoded!");
 		} catch (GameFileException e) {
-			showWarning("Reset Game", "Unable to reset Game!");
+			// TODO Auto-generated catch block
+			showWarning("Game Reset Error", "Unable to reset Game!");
+			e.printStackTrace();
 		}
 	}
 
