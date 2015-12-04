@@ -76,7 +76,7 @@ public class GameEngine implements IEngine {
 	private void setExecutor(Level level, State state) {
 		levelExecutor = new InteractionExecutor(level, inputManager, state);
 	}
-
+	
 	/**
 	 * Loads the first level of the game (level with ID "0")
 	 */
@@ -103,6 +103,13 @@ public class GameEngine implements IEngine {
 			setExecutor(makeLevel(levelID), state);
 		}
 		
+	}
+	
+	/**
+	 * Return the current State of the game (Actor and Properties)
+	 */
+	public State getState(){
+		return levelExecutor.getCurrentState();
 	}
 
 	/**
@@ -141,14 +148,6 @@ public class GameEngine implements IEngine {
 	public void replayLevel() throws EngineException {
 		// TODO Auto-generated method stub
 		
-	}
-
-	/**
-	 * @return The property map of the current game.
-	 */
-	@Override
-	public Bundle<Property<?>> getProperties() {
-		return game.getProperties();
 	}
 	
 //	ArrayList<Property<?>> properties = new ArrayList<Property<?>>();

@@ -71,8 +71,8 @@ public interface IEngine {
 	public void loadState (State state) throws EngineException;
 	
 	/**
-	 * Returns the properties corresponding to a game
-	 * @return Map <String, Bundle<Property>>
+	 * Returns the current game State.
+	 * @return State
 	 */
-	public Bundle<Property<?>> getProperties();
+	public State getState();
 }
