@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.transform.Scale;
+import view.map.MiniMap;
 import view.visual.AbstractVisual;
 
 public class MapOpacitySlider extends AbstractVisual {

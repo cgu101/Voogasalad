@@ -1,5 +1,4 @@
-package view.element;
-
+package view.map;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -27,7 +26,6 @@ public class MiniMap extends AbstractVisual {
 	private Rectangle currentRectangle;
 	private double currentRectangleXPos;
 	private double currentRectangleYPos;
-
 
 	public MiniMap(ImageView background, ScrollPane mapArea, double mapWidth, double mapHeight){
 		findResources();
@@ -60,7 +58,7 @@ public class MiniMap extends AbstractVisual {
 	}
 
 	public void updateMiniMapBackground(ImageView background) {
-		//Not sure if this will properly update it
+		// Not sure if this will properly update it
 		miniMapImageView = background;
 	}
 
@@ -74,11 +72,16 @@ public class MiniMap extends AbstractVisual {
 		setUpDragFilters();
 	}
 
+
+	public void updateMiniMapSize(double width) {
+		miniMapImageView.setFitWidth(width);
+		miniMapImageView.setPreserveRatio(true);
+	}
+
 	private void createMiniMapImageView(double width) {
 		miniMapImageView = new ImageView(theBackground.getImage());
 		miniMapImageView.setOpacity(currentOpacity);
-		miniMapImageView.setFitWidth(width);
-		miniMapImageView.setPreserveRatio(true);
+		updateMiniMapSize(width);
 	}
 
 	private void addMiniMapImageView() {
@@ -101,7 +104,7 @@ public class MiniMap extends AbstractVisual {
 	}
 
 	private void addMiniMapRectangle(double xPos, double yPos) {
-		if(theMiniMap.getChildren().size() > 1) {
+		if (theMiniMap.getChildren().size() > 1) {
 			theMiniMap.getChildren().remove(1);
 		}
 		currentRectangle.setTranslateX(xPos);
@@ -119,8 +122,8 @@ public class MiniMap extends AbstractVisual {
 				// TODO Auto-generated method stub
 				dragContext.mouseAnchorX = mouseEvent.getSceneX();
 				dragContext.mouseAnchorY = mouseEvent.getSceneY();
-				dragContext.initialTranslateX = ((StackPane)mouseEvent.getSource()).getTranslateX();
-				dragContext.initialTranslateY = ((StackPane)mouseEvent.getSource()).getTranslateY();
+				dragContext.initialTranslateX = ((StackPane) mouseEvent.getSource()).getTranslateX();
+				dragContext.initialTranslateY = ((StackPane) mouseEvent.getSource()).getTranslateY();
 			}
 
 		});
