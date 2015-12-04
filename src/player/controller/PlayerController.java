@@ -2,7 +2,6 @@ package player.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
@@ -38,6 +37,9 @@ public class PlayerController implements IPlayer {
 	private ActorMonitor actorMonitor;
 	private static int fps = 10;
 	private int refreshComponentRate;
+	
+	// TODO: TEMP
+	private State currentState;
 
 	/**
 	 * Player Controller Constructor
@@ -112,7 +114,8 @@ public class PlayerController implements IPlayer {
 
 	private void run() {
 		try {
-			myEngine.play().call(this);
+			// TODO: myEngine.play() returns a State
+			currentState = myEngine.play();
 			mySpriteManager.updateSprites(getIndividualActorsList(), this.myScene);
 			refreshPlayerComponents();
 			actorMonitor.refresh();	
@@ -124,13 +127,13 @@ public class PlayerController implements IPlayer {
 
 
 	/**
-	 * This method grabs a list of all current actors from the Game Engine.
+	 * This method grabs the actors from the state returned by the engine.
 	 *
 	 * @return the list of Actors.
 	 */
 	public ArrayList<Actor> getIndividualActorsList() {
 		ArrayList<Actor> actors = new ArrayList<Actor>();
-		for (Bundle<Actor> b : myEngine.getActors().values()) {
+		for (Bundle<Actor> b : currentState.getActorMap().getMap().values()) {
 			actors.addAll(b.getComponents().values());
 		}
 		return actors;
@@ -164,16 +167,6 @@ public class PlayerController implements IPlayer {
 			properties.add((Property<?>) b.getValue());
 		}
 		return properties;
-	}
-	
-	/**
-	 * This method grabs the the Actor Map from the Game Engine.
-	 * The string correlates to the actor group name.
-	 * 
-	 * @return The map of Actors.
-	 */
-	public Map<String, Bundle<Actor>> getActorMap() {
-		return myEngine.getActors();
 	}
 
 	/**

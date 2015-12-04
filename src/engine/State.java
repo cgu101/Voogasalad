@@ -42,4 +42,8 @@ public class State {
 	public Bundle<Property<?>> getPropertyBundle () {
 		return myPropertyBundle;
 	}
+	protected void merge(State nextState) {
+		this.myPropertyBundle = nextState.getPropertyBundle();
+		this.myActorMap = nextState.getActorMap();
+	}
 }
