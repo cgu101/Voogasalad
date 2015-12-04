@@ -35,12 +35,12 @@ public class ActorView extends AbstractVisual {
 	public ActorView(ActorView copy) {
 		this.myActor = new Actor(copy.getActor());
 		findResources();
-		myFitWidth = Double.parseDouble(myResources.getString("defaultWidth"));
-		myRotation = Double.parseDouble(myResources.getString("defaultRotation"));
+		myFitWidth = copy.getWidth();
+		myRotation = copy.getRotation();
 		myNode = createImage();
 		
-		myXCoor = getWidth()/2;
-		myYCoor = getHeight()/2;
+		myXCoor = copy.getWidth()/2; // TODO: NOT NECESSARILY!!!!!!!! 
+		myYCoor = copy.getHeight()/2;
 		
 		setupNode();
 	}

@@ -58,11 +58,7 @@ public class ActorHandler extends AbstractVisual {
 	
 	public void addActor(ActorView av, double x, double y) {
 		ImageView image = av.getImageView();
-		if (((x - av.getWidth()/2) < 0) || ((x + av.getWidth()/2) > myBackground.getWidth()) || 
-				((y - av.getHeight()/2) < 0) || ((y + av.getHeight()/2) > myBackground.getHeight())) {
-			Alert error = new Alert(AlertType.ERROR, myResources.getString("outofboundserror"), ButtonType.OK);
-			error.showAndWait();
-		} else {
+		if (!checkOutOfBounds(av, x, y)) {
 			ContextMenu cm = makeContextMenu(av);
 			image.setOnContextMenuRequested(e -> {
 				cm.show(image, e.getScreenX(), e.getScreenY());
@@ -107,11 +103,7 @@ public class ActorHandler extends AbstractVisual {
 		double x = e.getX();
 		double y = e.getY();
 		
-		if (((x - a.getWidth()/2) < 0) || ((x + a.getWidth()/2) > myBackground.getWidth()) || 
-				((y - a.getHeight()/2) < 0) || ((y + a.getHeight()/2) > myBackground.getHeight())) {
-			Alert error = new Alert(AlertType.ERROR, myResources.getString("outofboundserror"), ButtonType.OK);
-			error.showAndWait();
-		} else {
+		if (!checkOutOfBounds(a, x, y)) {
 			a.restoreXY(x, y);
 		}
 	}
@@ -150,7 +142,6 @@ public class ActorHandler extends AbstractVisual {
 	}
 
 	private void rotateActor(ActorView a, RotateEvent r) {
-		// TODO:
 		double initialHeading = a.getImageView().getRotate();
 		a.setRotation(initialHeading + r.getAngle()); 
 	}
@@ -189,6 +180,9 @@ public class ActorHandler extends AbstractVisual {
 	
 	private void increaseActorSize(ActorView a, double increase) {
 		a.addDimensions(increase);
+		if (checkOutOfBounds(a, a.getXCoor(), a.getYCoor())) {
+			a.addDimensions(-1*increase);
+		}
 	}
 
 	protected void removeActor(ActorView a) {
@@ -281,6 +275,16 @@ public class ActorHandler extends AbstractVisual {
 		myToolbar.getItems().add(defaultLabel);
 	}
 
+	private boolean checkOutOfBounds(ActorView av, double x, double y) {
+		if (((x - av.getWidth()/2) < 0) || ((x + av.getWidth()/2) > myBackground.getWidth()) || 
+				((y - av.getHeight()/2) < 0) || ((y + av.getHeight()/2) > myBackground.getHeight())) {
+			Alert error = new Alert(AlertType.ERROR, myResources.getString("outofboundserror"), ButtonType.OK);
+			error.showAndWait();
+			return true; 
+		} 
+		return false;
+	}
+	
 	// TODO:
 		// input is rgb color code
 		// idea is to highlight an actor when an actor is selected - through a double click method?
