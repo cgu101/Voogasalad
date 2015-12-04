@@ -1,7 +1,6 @@
 package view.element;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
@@ -15,7 +14,6 @@ public class MiniMap {
 	private StackPane theMiniMap;
 	private ImageView theBackground;
 	private ImageView miniMapImageView;
-	private ScrollPane theMapArea;
 	
 	private double miniMapWidth;
 	private double miniMapHeight;
@@ -26,16 +24,10 @@ public class MiniMap {
 	private double currentRectangleXPos;
 	private double currentRectangleYPos;
 	
-	private double mouseAnchorX;
-	private double mouseAnchorY;
-	private double initialTranslateX;
-	private double initialTranslateY;
-	
 
 	public MiniMap(ImageView background, ScrollPane mapArea){
 		theMiniMap = new StackPane();
 		theBackground = background;
-		theMapArea = mapArea;
 		currentScale = 1.0;
 		currentOpacity = 0.5;
 		currentRectangleXPos = 0;
@@ -51,6 +43,7 @@ public class MiniMap {
 	}
 
 	public void updateMiniMapOpacity(double opacity) {
+		currentOpacity = opacity;
 		miniMapImageView.setOpacity(opacity);
 		currentRectangle.setStroke(Color.rgb(255, 0, 0, opacity));;
 	}
@@ -61,18 +54,26 @@ public class MiniMap {
 	}
 
 	private void createMiniMap() {
-		miniMapImageView = new ImageView(theBackground.getImage());
-		miniMapImageView.setOpacity(currentOpacity);
-		miniMapImageView.setFitWidth(200);
-		miniMapImageView.setPreserveRatio(true);
-		StackPane.setAlignment(miniMapImageView, Pos.BOTTOM_RIGHT);
-		theMiniMap.getChildren().add(miniMapImageView);
-		miniMapWidth = (double) miniMapImageView.getBoundsInParent().getWidth();
-		miniMapHeight = (double) miniMapImageView.getBoundsInParent().getHeight();
+		createMiniMapImageView(200); //width is hardcoded for now
+		addMiniMapImageView();
 
 		createMiniMapRectangle(miniMapWidth, miniMapHeight, currentScale, currentOpacity);
 		addMiniMapRectangle(currentRectangleXPos, currentRectangleYPos);
+		
 		setUpDragFilters();
+	}
+	
+	private void createMiniMapImageView(double width) {
+		miniMapImageView = new ImageView(theBackground.getImage());
+		miniMapImageView.setOpacity(currentOpacity);
+		miniMapImageView.setFitWidth(width);
+		miniMapImageView.setPreserveRatio(true);
+	}
+	
+	private void addMiniMapImageView() {
+		theMiniMap.getChildren().add(miniMapImageView);
+		miniMapWidth = (double) miniMapImageView.getBoundsInParent().getWidth();
+		miniMapHeight = (double) miniMapImageView.getBoundsInParent().getHeight();
 	}
 	
 	private void createMiniMapRectangle(double width, double height, double scale, double opacity) {
@@ -94,14 +95,17 @@ public class MiniMap {
 	}
 	
 	private void setUpDragFilters() {
+		final DragContext dragContext = new DragContext();
+		
 		theMiniMap.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				mouseAnchorX = mouseEvent.getX();
-				mouseAnchorY = mouseEvent.getY();
-				initialTranslateX = theMiniMap.getTranslateX();
-				initialTranslateY = theMiniMap.getTranslateY();
+				// TODO Auto-generated method stub
+				dragContext.mouseAnchorX = mouseEvent.getSceneX();
+				dragContext.mouseAnchorY = mouseEvent.getSceneY();
+				dragContext.initialTranslateX = ((StackPane)mouseEvent.getSource()).getTranslateX();
+				dragContext.initialTranslateY = ((StackPane)mouseEvent.getSource()).getTranslateY();
 			}
 			
 		});
@@ -110,8 +114,10 @@ public class MiniMap {
 
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				theMiniMap.setTranslateX(initialTranslateX + mouseEvent.getX() - mouseAnchorX);
-				theMiniMap.setTranslateY(initialTranslateY + mouseEvent.getY() - mouseAnchorY);
+				double offsetX = mouseEvent.getSceneX() - dragContext.mouseAnchorX;
+				double offsetY = mouseEvent.getSceneY() - dragContext.mouseAnchorY;
+				theMiniMap.setTranslateX(dragContext.initialTranslateX + offsetX);;
+				theMiniMap.setTranslateY(dragContext.initialTranslateY + offsetY);
 			}
 			
 		});
@@ -133,5 +139,12 @@ public class MiniMap {
 
 	public StackPane getMiniMap() {
 		return theMiniMap;
+	}
+	
+	private static final class DragContext {
+		public double mouseAnchorX;
+		public double mouseAnchorY;
+		public double initialTranslateX;
+		public double initialTranslateY;
 	}
 }
