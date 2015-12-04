@@ -1,6 +1,5 @@
 package engine;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
@@ -11,17 +10,20 @@ import authoring.model.properties.Property;
 import exceptions.EngineException;
 import exceptions.engine.EngineStateException;
 import player.InputManager;
+import resources.keys.PropertyKey;
+import resources.keys.PropertyKeyResource;
 
 /**
  * The game engine, which handles loading single levels and level transitions.
  */
 
 public class GameEngine implements IEngine {
-	private static final String LEVEL_ID_KEY = "level";
-	private static final String GAME_ID_KEY = "name";
 	private static final String INITIAL_LEVEL = "0";
-	private static final String INITIAL_LEVEL_KEY = "Initial Level";
 
+	private String gameKey = PropertyKeyResource.getKey(PropertyKey.GAME_ID_KEY);
+	private String levelKey = PropertyKeyResource.getKey(PropertyKey.LEVEL_ID_KEY);
+	private String initialLevelKey = PropertyKeyResource.getKey(PropertyKey.INITIAL_LEVEL_KEY);
+	
 	private Game game;
 	private InteractionExecutor levelExecutor;
 	private InputManager inputManager;
@@ -42,14 +44,14 @@ public class GameEngine implements IEngine {
 		Level initialLevel = makeLevel(game, levelID);
 
 		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
-		propertyBundle.add(new Property<String>(LEVEL_ID_KEY, levelID));
+		propertyBundle.add(new Property<String>(levelKey, levelID));
 		// TODO: force game to have a name
-		propertyBundle.add(new Property<String>(GAME_ID_KEY, (String) game.getProperty(GAME_ID_KEY).getValue()));
-		levelExecutor = new InteractionExecutor(initialLevel, inputManager, new State(propertyBundle, null));
+		propertyBundle.add(new Property<String>(gameKey, (String) game.getProperty(gameKey).getValue()));
+		setExecutor(initialLevel, new State(propertyBundle,null));
 
 	}
 	private String getFirstLevelName (Game g) {
-		Object levelProperty = g.getProperty(INITIAL_LEVEL_KEY);
+		Object levelProperty = g.getProperty(initialLevelKey);
 		String levelID = INITIAL_LEVEL;
 		if (levelProperty != null) {
 			levelID = levelProperty.toString();
@@ -61,6 +63,9 @@ public class GameEngine implements IEngine {
 	}
 	private Level makeLevel(String levelID) {
 		return game.getLevel(levelID);
+	}
+	private void setExecutor(Level level, State state) {
+		levelExecutor = new InteractionExecutor(level, inputManager, state);
 	}
 
 	/**
@@ -83,8 +88,10 @@ public class GameEngine implements IEngine {
 	}
 	
 	private void processState(State state) {
-		if (!state.getProperty(LEVEL_ID_KEY).equals(levelExecutor.getLevelID())) {
-			// TODO: SWITCH LEVEL
+		String levelID = (String) state.getProperty(levelKey).getValue();
+		if (!levelID.equals(levelExecutor.getLevelID())) {
+			// SWITCH LEVEL
+			setExecutor(makeLevel(levelID), state);
 		}
 		
 	}
@@ -104,8 +111,8 @@ public class GameEngine implements IEngine {
 	@Override
 	public State saveState () throws EngineStateException {
 		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
-		propertyBundle.add(new Property<String>(LEVEL_ID_KEY, levelExecutor.getLevelID()));
-		propertyBundle.add(new Property<String>(GAME_ID_KEY, (String) game.getProperty(GAME_ID_KEY).getValue()));
+		propertyBundle.add(new Property<String>(levelKey, levelExecutor.getLevelID()));
+		propertyBundle.add(new Property<String>(gameKey, (String) game.getProperty(gameKey).getValue()));
 		return new State(propertyBundle, levelExecutor.getActors());
 	}
 	/**
@@ -113,8 +120,8 @@ public class GameEngine implements IEngine {
 	 */
 	@Override
 	public void loadState (State state) throws EngineException {
-		if (state.getProperty(GAME_ID_KEY).getValue().equals(game.getProperty(GAME_ID_KEY).getValue())) {
-			Level level = game.getLevel((String) state.getProperty(LEVEL_ID_KEY).getValue());
+		if (state.getProperty(gameKey).getValue().equals(game.getProperty(gameKey).getValue())) {
+			Level level = game.getLevel((String) state.getProperty(levelKey).getValue());
 			levelExecutor = new InteractionExecutor(level, inputManager, state);
 			levelExecutor.setActors(state.getActorMap());
 		} else {
