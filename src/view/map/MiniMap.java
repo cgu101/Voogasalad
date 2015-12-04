@@ -8,14 +8,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import view.visual.AbstractVisual;
 
-public class MiniMap {
+public class MiniMap extends AbstractVisual {
 	private StackPane theMiniMap;
 	private ImageView theBackground;
 	private ImageView miniMapImageView;
 
 	private double miniMapWidth;
 	private double miniMapHeight;
+	
+	private double theMapWidth;
+	private double theMapHeight;
 
 	private double currentScale;
 	private double currentOpacity;
@@ -23,13 +27,16 @@ public class MiniMap {
 	private double currentRectangleXPos;
 	private double currentRectangleYPos;
 
-	public MiniMap(ImageView background, ScrollPane mapArea) {
+	public MiniMap(ImageView background, ScrollPane mapArea, double mapWidth, double mapHeight){
+		findResources();
 		theMiniMap = new StackPane();
 		theBackground = background;
-		currentScale = 1.0;
-		currentOpacity = 0.5;
-		currentRectangleXPos = 0;
-		currentRectangleYPos = 0;
+		currentScale = Double.valueOf(myResources.getString("startingscale"));
+		currentOpacity = Double.valueOf(myResources.getString("startingopacity"));
+		currentRectangleXPos = Double.valueOf(myResources.getString("startingrectx"));
+		currentRectangleYPos = Double.valueOf(myResources.getString("startingrecty"));;
+		theMapWidth = mapWidth;
+		theMapHeight = mapHeight;
 		createMiniMap();
 	}
 
@@ -43,8 +50,11 @@ public class MiniMap {
 	public void updateMiniMapOpacity(double opacity) {
 		currentOpacity = opacity;
 		miniMapImageView.setOpacity(opacity);
-		currentRectangle.setStroke(Color.rgb(255, 0, 0, opacity));
-		;
+		currentRectangle.setStroke(Color.rgb(
+				Integer.valueOf(myResources.getString("rectrvalue")), 
+				Integer.valueOf(myResources.getString("rectgvalue")),
+				Integer.valueOf(myResources.getString("rectbvalue")), 
+				opacity));;
 	}
 
 	public void updateMiniMapBackground(ImageView background) {
@@ -53,7 +63,7 @@ public class MiniMap {
 	}
 
 	private void createMiniMap() {
-		createMiniMapImageView(150); // width is hardcoded for now
+		createMiniMapImageView(Double.valueOf(myResources.getString("minimapwidth")));
 		addMiniMapImageView();
 
 		createMiniMapRectangle(miniMapWidth, miniMapHeight, currentScale, currentOpacity);
@@ -61,6 +71,7 @@ public class MiniMap {
 
 		setUpDragFilters();
 	}
+
 
 	public void updateMiniMapSize(double width) {
 		miniMapImageView.setFitWidth(width);
@@ -82,8 +93,12 @@ public class MiniMap {
 	private void createMiniMapRectangle(double width, double height, double scale, double opacity) {
 		Rectangle rect = new Rectangle(width * scale, height * scale);
 		rect.setFill(Color.TRANSPARENT);
-		rect.setStroke(Color.rgb(255, 0, 0, opacity));
-		rect.setStrokeWidth(3);
+		rect.setStroke(Color.rgb(
+				Integer.valueOf(myResources.getString("rectrvalue")), 
+				Integer.valueOf(myResources.getString("rectgvalue")),
+				Integer.valueOf(myResources.getString("rectbvalue")), 
+				opacity));
+		rect.setStrokeWidth(Double.valueOf(myResources.getString("rectedgewidth")));
 		StackPane.setAlignment(rect, Pos.TOP_LEFT);
 		currentRectangle = rect;
 	}
@@ -119,12 +134,22 @@ public class MiniMap {
 			public void handle(MouseEvent mouseEvent) {
 				double offsetX = mouseEvent.getSceneX() - dragContext.mouseAnchorX;
 				double offsetY = mouseEvent.getSceneY() - dragContext.mouseAnchorY;
-				theMiniMap.setTranslateX(dragContext.initialTranslateX + offsetX);
-				;
-				theMiniMap.setTranslateY(dragContext.initialTranslateY + offsetY);
+				double newX = dragContext.initialTranslateX + offsetX;
+				double newY = dragContext.initialTranslateY + offsetY;
+				if(!isMiniMapDragWithinMapBounds(newX, newY)) {
+					theMiniMap.setTranslateX(newX);;
+					theMiniMap.setTranslateY(newY);
+				}
 			}
 
 		});
+	}
+	
+	private boolean isMiniMapDragWithinMapBounds(double newX, double newY) {
+		return (newX < 0 || 
+				newX > theMapWidth - miniMapWidth || 
+				newY < 0 || 
+				newY > theMapHeight - miniMapHeight);
 	}
 
 	public void updateMiniMapRectangleOnHorizontalPan(double new_value) {

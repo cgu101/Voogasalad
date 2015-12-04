@@ -29,8 +29,10 @@ public class SpriteManager {
 		//group = new Group();
 		//bp.setCenter(group);
 		GridPane gp = new GridPane();
+
 		myCamera = new view.map.Map(gp);
-		myCamera.createTheMap();
+//		myCamera.createTheMap(); this should not be called because it gets called in the constructor
+
 		bp.setCenter(gp);
 	}
 	
