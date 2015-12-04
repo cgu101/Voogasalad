@@ -12,8 +12,6 @@ import authoring.model.actors.ActorGroups;
  *
  */
 public abstract class AOneActorAction<V> extends AActorActions<V> {
-
-
 	@Override
 	public final void run(Map<String, V> parameters_values, ActorGroups actorGroups, Actor... a){
 		if(a.length>1){
