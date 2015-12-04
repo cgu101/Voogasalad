@@ -36,7 +36,7 @@ public class GameEngine implements IEngine {
 	 * Loads a game into the engine and loads the first level (level with ID "0").
 	 */
 	@Override
-	public void init(Game game) {
+	public State init(Game game) {
 		this.game = game;
 		String levelID = getFirstLevelName(game);
 		Level initialLevel = makeLevel(game, levelID);
@@ -46,6 +46,7 @@ public class GameEngine implements IEngine {
 		// TODO: force game to have a name
 		propertyBundle.add(new Property<String>(gameKey, (String) game.getProperty(gameKey).getValue()));
 		setExecutor(initialLevel, new State(propertyBundle,null));
+		return levelExecutor.getCurrentState();
 
 	}
 	private String getFirstLevelName (Game g) {

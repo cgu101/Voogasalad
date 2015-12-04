@@ -21,9 +21,10 @@ public interface IEngine {
 	/**
 	 * Initializes a game based on a Game class
 	 * @param gameData
+	 * @return 
 	 * @throws EngineException
 	 */
-	public void init(Game gameData);
+	public State init(Game gameData);
 	
 	/**
 	 * Resets the entire game to its initial load state

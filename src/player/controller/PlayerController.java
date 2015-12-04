@@ -65,7 +65,8 @@ public class PlayerController implements IPlayer {
 	public void loadGame(String fileName) throws GameFileException, EngineException {
 		System.out.println("PlayController.loadGame(" + fileName + ")");
 		Game game = XMLManager.loadGame(fileName);
-		myEngine.init(game);
+		// TODO: holy crap fix this
+		currentState = myEngine.init(game);
 		start();
 	}
 
