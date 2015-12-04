@@ -1,38 +1,33 @@
-package authoring.model.actions.oneActorActions;
+package authoring.model.actions.actorActions.oneActorActions;
 
-import authoring.model.actions.AActionOneActor;
-import authoring.model.actions.twoActorActions.MoveActorsToAvoidCollisions;
+import java.util.Map;
+
+import authoring.model.actions.actorActions.AOneActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;
-import authoring.model.tree.Parameters;
-import engine.State;
 
 /**
- * @author Inan
+ * @author Inan and Tyler
  *
  */
-public class ShootBullet extends AActionOneActor{
+public class ShootBullet<V> extends AOneActorAction<V>{
 	private static int bulletCount = 0;
+
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
+	public void run(Map<String, V> parameters_values, ActorGroups actorGroups, Actor actor) {
 		Property<Double> angle = (Property<Double>) actor.getProperties().getComponents().get("angle");
 		Property<Double> x = (Property<Double>) actor.getProperties().getComponents().get("xLocation");
 		Property<Double> y = (Property<Double>) actor.getProperties().getComponents().get("yLocation");
 		Property<Double> size = (Property<Double>) actor.getProperties().getComponents().get("size");
 
 		Actor bullet = createBullet(angle, x, y, size);
-		ActorGroups actorGroup = state.getActorMap();
-		
-		actorGroup.addActor(bullet);
-		actorGroup.addActor(actor);
-		
-		actorGroup.createActor(bullet);
-		
+		actorGroups.createActor(bullet);
 	}
+
 
 	private Actor createBullet(Property<Double> angle, Property<Double> x, Property<Double> y, Property<Double> size) {
 		Property<Double> sizeB = new Property<Double>("size", 1.0);
@@ -60,4 +55,5 @@ public class ShootBullet extends AActionOneActor{
 		Actor bullet = new Actor(propBundle, "bullet" + bulletCount++);
 		return bullet;
 	}
+
 }

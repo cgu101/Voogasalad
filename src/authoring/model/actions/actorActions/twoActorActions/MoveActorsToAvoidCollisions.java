@@ -1,35 +1,31 @@
-package authoring.model.actions.twoActorActions;
+package authoring.model.actions.actorActions.twoActorActions;
 
-import authoring.model.actions.AActionTwoActors;
+import java.util.Map;
+
 import authoring.model.actions.ActionTriggerHelper;
+import authoring.model.actions.actorActions.ATwoActorActions;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
-import authoring.model.tree.Parameters;
 import authoring.model.triggers.externalconditions.CircleCollision;
-import engine.State;
 
 /**
  * @author Tyler
  *
  */
-public class MoveActorsToAvoidCollisions extends AActionTwoActors {
+public class MoveActorsToAvoidCollisions<V> extends ATwoActorActions<V> {
 
-	@Override
 	@SuppressWarnings("unchecked")
-	public void run(Parameters parameters, State state, Actor a, Actor b) {
-		ActorGroups actorGroup = state.getActorMap();
-		if (checkIfCollided(actorGroup, a, b)) {
+	@Override
+	public void run(Map<String, V> parameters_values, ActorGroups actorGroups, Actor a, Actor b) {
+		if (checkIfCollided(actorGroups, a, b)) {
 			Double sizeA = ((Property<Double>) a.getProperties().getComponents().get("size")).getValue();
 			Double sizeB = ((Property<Double>) b.getProperties().getComponents().get("size")).getValue();
 			Double difference = (sizeA + sizeB) - ActionTriggerHelper.distance(a, b);
 			move(a, b, difference);
 		}
-
-		actorGroup.addActor(a);
-		actorGroup.addActor(b);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public void move(Actor a, Actor b, Double difference) {
 		Double xA = ((Property<Double>) a.getProperties().getComponents().get("xLocation")).getValue();
@@ -79,4 +75,5 @@ public class MoveActorsToAvoidCollisions extends AActionTwoActors {
 		CircleCollision circleCollision = new CircleCollision();
 		return circleCollision.condition(null, null, new Actor[] { a, b });
 	}
+
 }

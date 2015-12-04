@@ -16,7 +16,6 @@ import resources.keys.PropertyKeyResource;
 /**
  * The game engine, which handles loading single levels and level transitions.
  */
-
 public class GameEngine implements IEngine {
 	private static final String INITIAL_LEVEL = "0";
 

@@ -37,7 +37,7 @@ public class Bundle<V extends Identifiable> extends Observable implements Iterab
 		update(components);
 	}
 
-	public void add(Map<String, V> otherComponents) {
+	public void addAll(Map<String, V> otherComponents) {
 		components.putAll(otherComponents);
 		update(components);
 	}
