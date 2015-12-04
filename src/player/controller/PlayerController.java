@@ -134,7 +134,7 @@ public class PlayerController implements IPlayer {
 	 */
 	public ArrayList<Actor> getIndividualActorsList() {
 		ArrayList<Actor> actors = new ArrayList<Actor>();
-		for (Bundle<Actor> b : currentState.getActorMap().getMap().values()) {
+		for (Bundle<Actor> b : myEngine.getState().getActorMap().getMap().values()) {
 			actors.addAll(b.getComponents().values());
 		}
 		return actors;
@@ -148,7 +148,7 @@ public class PlayerController implements IPlayer {
 	 */
 	public Map<String, String> getGameProperties(){
 		Map<String, String> properties = new HashMap<String, String>();
-		Bundle<Property<?>> propBundle = myEngine.getProperties();
+		Bundle<Property<?>> propBundle = myEngine.getState().getPropertyBundle();
 		for(Property<?> b : propBundle){
 			properties.put(b.getUniqueID(), b.getValue().toString());
 		}
