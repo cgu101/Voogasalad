@@ -2,11 +2,16 @@ package view.screen;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import exceptions.EngineException;
 import exceptions.data.GameFileException;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -157,16 +162,35 @@ public class PlayerScreen extends AbstractScreen {
 		playerController.getState().addObserver(monitor);
 	}
 
-	public void reset() {
+	public void resetOrReplay(String type) {
 		try {
-			playerController.resetGame();
+		     switch (type) {
+		         case "Replay Level":  playerController.replayLevel();;
+		         	break;
+		         case "Reset Game": playerController.restartGame();;
+		         	break;
+		     }
 			//TODO: Needs to reset the map as well
 		} catch (NullPointerException e) {
 			showWarning("Game Reset Error", "No Game Laoded!");
 		} catch (GameFileException e) {
-			// TODO Auto-generated catch block
-			showWarning("Game Reset Error", "Unable to reset Game!");
+			showWarning("Game Reset Error", "Unable to " + type);
 			e.printStackTrace();
+		}
+	}
+	
+	public void confirmRestartOrReplay(String type){
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation");
+		alert.setHeaderText(type);
+		alert.setContentText("Are you sure you'd like to?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK){
+		    alert.hide();
+		    resetOrReplay(type);
+		} else {
+		    alert.hide();
 		}
 	}
 

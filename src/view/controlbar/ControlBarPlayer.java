@@ -1,9 +1,15 @@
 package view.controlbar;
 
+import java.util.Optional;
+
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -86,8 +92,9 @@ public class ControlBarPlayer extends ControlBar {
 		Button pauseButton = makeButton("pause", e -> currentScreen.pause());
 		Button saveButton = makeButton("save", e -> currentScreen.saveState()); //TODO
 		Button loadButton = makeButton("load", e -> currentScreen.loadState()); // TODO
-		Button resetButton = makeButton("reset", e -> confirmReset());
-		toolBar.getItems().addAll(backButton, playButton, pauseButton, saveButton, loadButton, resetButton);
+		Button replayButton = makeButton("replay", e -> currentScreen.confirmRestartOrReplay("Replay Level"));
+		Button resetButton = makeButton("reset", e -> currentScreen.confirmRestartOrReplay("Reset Game"));
+		toolBar.getItems().addAll(backButton, playButton, pauseButton, saveButton, loadButton, replayButton, resetButton);
 	}
 	
 	private void toggleToolbar(Boolean value) {
@@ -113,28 +120,5 @@ public class ControlBarPlayer extends ControlBar {
 			}
 		}
 		
-	}
-	
-	public void confirmReset(){
-//		currentScreen.pause();
-		Stage dialogStage = new Stage();
-		dialogStage.initModality(Modality.WINDOW_MODAL);
-		dialogStage.setTitle("Just Checking!");
-		Button gameReset = new Button("Reset Game");
-		gameReset.setOnMouseClicked(e -> currentScreen.reset());
-		Button levelReset = new Button("Reset Level");
-		levelReset.setOnMouseClicked(e -> currentScreen.reset());
-		Button cancelButton = new Button("Cancel");
-		cancelButton.setOnMouseClicked(e -> dialogStage.close());
-		
-		HBox buttons = new HBox(10);
-		buttons.setPadding(new Insets(50,50,50,50));
-		buttons.getChildren().addAll(gameReset, levelReset, cancelButton);
-		dialogStage.setScene(new Scene(buttons));
-//		
-//		dialogStage.setScene(new Scene(VBoxBuilder.create().
-//		    children(new Text("Hi"), new Button("Ok.")).
-//		    alignment(Pos.CENTER).padding(new Insets(5)).build()));
-		dialogStage.show();
 	}
 }

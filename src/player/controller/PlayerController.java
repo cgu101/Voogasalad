@@ -290,4 +290,13 @@ public class PlayerController implements IPlayer {
 			throw new GameFileException(e.getMessage());
 		}
 	}
+	
+	public void replayLevel() throws GameFileException{
+		try {
+			myEngine.replayLevel();
+			actorMonitor.resetData();
+		} catch (EngineException e) {
+			throw new GameFileException(e.getMessage());
+		}
+	}
 }
