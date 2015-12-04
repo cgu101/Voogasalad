@@ -1,7 +1,8 @@
 package authoring.model.actions.oneActorActions;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import authoring.model.actions.AActionOneActor;
-import authoring.model.actions.twoActorActions.MoveActorsToAvoidCollisions;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
@@ -14,8 +15,6 @@ import engine.State;
  *
  */
 public class ShootBullet extends AActionOneActor{
-	private static int bulletCount = 0;
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run(Parameters parameters, State state, Actor actor) {
@@ -56,8 +55,10 @@ public class ShootBullet extends AActionOneActor{
 		propBundle.add(speedB);
 		propBundle.add(sizeB);
 		propBundle.add(groupIDB);
-
-		Actor bullet = new Actor(propBundle, "bullet" + bulletCount++);
+		
+		Timestamp currentTimeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
+		String timeString = currentTimeStamp.toString();
+		Actor bullet = new Actor(propBundle, "bullet" + timeString);
 		return bullet;
 	}
 }
