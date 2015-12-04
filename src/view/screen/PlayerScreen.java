@@ -157,4 +157,13 @@ public class PlayerScreen extends AbstractScreen {
 		playerController.getState().addObserver(monitor);
 	}
 
+	public void reset() {
+		try {
+			playerController.resetGame();
+			//TODO: Needs to reset the map as well
+		} catch (GameFileException e) {
+			showWarning("Reset Game", "Unable to reset Game!");
+		}
+	}
+
 }

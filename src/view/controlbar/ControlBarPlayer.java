@@ -78,7 +78,8 @@ public class ControlBarPlayer extends ControlBar {
 		Button pauseButton = makeButton("pause", e -> currentScreen.pause());
 		Button saveButton = makeButton("save", e -> currentScreen.saveState()); //TODO
 		Button loadButton = makeButton("load", e -> currentScreen.loadState()); // TODO
-		toolBar.getItems().addAll(backButton, playButton, pauseButton, saveButton, loadButton);
+		Button resetButton = makeButton("reset", e -> currentScreen.reset());
+		toolBar.getItems().addAll(backButton, playButton, pauseButton, saveButton, loadButton, resetButton);
 	}
 	
 	private void toggleToolbar(Boolean value) {

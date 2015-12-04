@@ -1,6 +1,8 @@
 package view.element;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -122,7 +124,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 		checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 			public void onChanged(ListChangeListener.Change<? extends String> c) {
 				currentlySelected = checkComboBox.getCheckModel().getCheckedItems();
-				update();
+				resetData();
 			}
 		});
 
@@ -130,7 +132,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 	}
 
 	//Call to reload the properties for every actor
-	private void update() {
+	public void resetData() {
 		pane.getChildren().remove(observableIndividualActorList);
 		pane.getChildren().remove(checkComboBox);
 
@@ -165,7 +167,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		update();
+		resetData();
 	}
 
 
