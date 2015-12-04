@@ -23,6 +23,10 @@ public class ActorGroups implements Serializable {
 		deadActors = new HashMap<String,Bundle<Actor>>();
 	}
 
+	/**
+	 * Doesn't copy newActors and deadActors
+	 * @param oldActorMap
+	 */
 	public ActorGroups (ActorGroups oldActorMap) {
 		this.actorMap = new HashMap<String, Bundle<Actor>>();
 		for (Entry<String, Bundle<Actor>> k : oldActorMap.getMap().entrySet()) {
@@ -100,5 +104,13 @@ public class ActorGroups implements Serializable {
 				removeActor(actor);
 			}
 		}
+	}
+	
+	public Map<String,Bundle<Actor>> getNewActors() {
+		return newActors;
+	}
+	
+	public Map<String,Bundle<Actor>> getDeadActors() {
+		return deadActors;
 	}
 }
