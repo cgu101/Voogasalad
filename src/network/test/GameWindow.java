@@ -7,7 +7,7 @@ import network.core.ForwardedMessage;
 import view.screen.CreatorScreen;
 
 public class GameWindow {
-	private final static int PORT = 37818;
+	private final static int PORT = 6969;
 
 	public class GameClient extends Client {
 
@@ -16,9 +16,10 @@ public class GameWindow {
 		}
 
 		protected void messageReceived(Object message) {
-			if (message instanceof ForwardedMessage) {  // (no other message types are expected)
+			if (message instanceof ForwardedMessage) {
 				ForwardedMessage bm = (ForwardedMessage)message;
-				addToTranscript("I HAVE RECEIVED! Sender ID is: " + bm.senderID + " and says:  " + bm.message);
+				addToTranscript("I HAVE RECEIVED! Sender ID is: " + bm.senderID + " and says:  " + bm.message.getClass());
+				myCreatorScreen.getScene().getRoot().setTranslateX(myCreatorScreen.getScene().getRoot().getTranslateX()+50);
 			}
 		}
 
@@ -29,11 +30,11 @@ public class GameWindow {
 		}
 
 		protected void playerConnected(int newPlayerID) {
-			addToTranscript("Someone new has joined the chat room, with ID number " + newPlayerID);
+			addToTranscript("Someone new has joined the authoring environment, with ID number " + newPlayerID);
 		}
 
 		protected void playerDisconnected(int departingPlayerID) {
-			addToTranscript("The person with ID number " + departingPlayerID + " has left the chat room");
+			addToTranscript("The person with ID number " + departingPlayerID + " has left the authoring environment");
 		}
 
 	}

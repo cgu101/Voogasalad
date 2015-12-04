@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project voogasalad_IllegalTeamNameException">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <!--define folder properties-->
+    <property name="dir.buildfile" value="."/>
+    <property name="dir.workspace" value="${dir.buildfile}/.."/>
+    <property name="dir.jarfile" value="${dir.buildfile}/build"/>
+    <target name="create_run_jar">
+        <jar destfile="${dir.jarfile}/GameHub.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="network.test.GameHub"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="${dir.buildfile}/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/groovy-all-2.4.5-indy.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/groovy-doc.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/groovy-src.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/xstream-1.4.8.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/xstream-doc.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/xstream-src.jar"/>
+            <fileset dir="${dir.buildfile}/data"/>
+            <fileset dir="${dir.buildfile}/images"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/lib/controlsfx-8.40.9.jar"/>
+        </jar>
+    </target>
+</project>

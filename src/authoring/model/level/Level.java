@@ -1,5 +1,6 @@
 package authoring.model.level;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import authoring.controller.constructor.levelwriter.ActorGroupsConstructor;
@@ -11,13 +12,9 @@ import authoring.model.bundles.Identifiable;
 import authoring.model.tree.InteractionTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 
-public class Level implements Identifiable {
+public class Level implements Identifiable, Serializable {
 	
 	private static final String ERROR_COPY = "Cannot copy levels";
-	
-	// TODO replace these with: 
-	private InteractionTreeNode interactionTree;
-	private InteractionTreeNode selfTriggerTree;
 	
 	// TODO this
 	private InteractionTreeNode rootTree;
@@ -42,16 +39,6 @@ public class Level implements Identifiable {
 	
 	public void setActorGroupsValues(ActorGroupsConstructor actors) {
 		this.actorGroups = actors.getActorGroups();
-	}
-	
-	
-	// TODO replace the below with
-	public InteractionTreeNode getInteractionTree() {
-		return interactionTree;
-	}
-	
-	public InteractionTreeNode getSelfTriggerTree() {
-		return selfTriggerTree;
 	}
 	
 	// TODO this

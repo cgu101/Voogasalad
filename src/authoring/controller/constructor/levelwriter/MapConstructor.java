@@ -17,7 +17,7 @@ public class MapConstructor {
 	private Map<String, ITriggerEvent> triggerMap;
 	private Map<String, IAction> actionMap;
 	
-	MapConstructor() {
+	public MapConstructor() {
 		initializeTriggerMap();
 		initializeActionMap();
 	}
@@ -81,5 +81,11 @@ public class MapConstructor {
 				actionMap.put(s, (IAction) Reflection.createInstance(s));
 			}
 		}
-	}	
+	}
+	
+	public void addActionsToMap(String action) {
+		if (!actionMap.containsKey(action)) {
+			actionMap.put(action, (IAction) Reflection.createInstance(action));
+		}
+	}
 }

@@ -34,7 +34,6 @@ public class CreatorScreen extends AbstractScreen {
 	//TODO take this out
 	private GameWindow g = null;
 	
-	
 	private ControlBarCreator t;
 	private Workspace w;
 	private ArrayList<GridPane> dockPanes;
@@ -125,6 +124,7 @@ public class CreatorScreen extends AbstractScreen {
 	
 	public void setGameWindow(GameWindow g) {
 		this.g = g;
+		w.setGameWindow(g);
 	}
 	
 	public GameWindow getGameWindow() {

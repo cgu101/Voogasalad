@@ -1,10 +1,12 @@
 package authoring.model.actors;
 
+import java.io.Serializable;
+
 import authoring.model.bundles.Bundle;
 import authoring.model.bundles.Identifiable;
 import authoring.model.properties.Property;
 
-public class Actor implements Identifiable, IActor {
+public class Actor implements Identifiable, IActor, Serializable {
 
 	private Bundle<Property<?>> myPropertyBundle;
 	private String identifier;

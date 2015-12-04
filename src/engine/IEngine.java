@@ -1,10 +1,8 @@
 package engine;
 
-import java.util.Map;
-
-import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
+import authoring.model.properties.Property;
 import exceptions.EngineException;
 import exceptions.engine.EngineStateException;
 
@@ -23,6 +21,7 @@ public interface IEngine {
 	/**
 	 * Initializes a game based on a Game class
 	 * @param gameData
+	 * @return 
 	 * @throws EngineException
 	 */
 	public void init(Game gameData);
@@ -33,19 +32,27 @@ public interface IEngine {
 	public void reset () throws EngineException;
 	
 	/**
-	 * Plays the game and returns an EngineHeartbeat object representing functionality for
+	 * Plays the game and returns an State object representing functionality for
 	 * a single iteration
 	 * 
-	 * @return EngineHeartbeat
+	 * @return State
 	 * @throws EngineException
 	 */
-	public EngineHeartbeat play() throws EngineException;
+	public State play() throws EngineException;
 	
 	/**
-	 * Returns the actors corresponding to a game
-	 * @return Map <String, Bundle<Actor>>
+	 * Switches the Level
+	 * 
+	 * @throws EngineException
 	 */
-	public Map<String, Bundle<Actor>> getActors();
+	public void nextLevel() throws EngineException;
+	
+	/**
+	 * Replays the Level
+	 * 
+	 * @throws EngineException
+	 */
+	public void replayLevel() throws EngineException;
 	
 	/**
 	 * Ejects a state
@@ -62,4 +69,10 @@ public interface IEngine {
 	 * @throws EngineException
 	 */
 	public void loadState (State state) throws EngineException;
+	
+	/**
+	 * Returns the current game State.
+	 * @return State
+	 */
+	public State getState();
 }

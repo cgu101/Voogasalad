@@ -10,12 +10,12 @@ public class TestMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		String host = JOptionPane.showInputDialog(
-				"Enter the host name of the \n computer conneting to Vogasalad");
-		if (host == null || host.trim().length() == 0)
-			return;
+//		String host = JOptionPane.showInputDialog(
+//				"Enter the host name of the \n computer conneting to Vogasalad");
+//		if (host == null || host.trim().length() == 0)
+//			return;
 		
-		GameWindow window = new GameWindow(host);
+		GameWindow window = new GameWindow("52.21.160.171");
 		
 		primaryStage.setScene(window.getScreen().getScene());
 		primaryStage.show();

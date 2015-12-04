@@ -2,10 +2,10 @@ package player.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.properties.Property;
@@ -38,6 +38,7 @@ public class PlayerController implements IPlayer {
 	private ActorMonitor actorMonitor;
 	private static int fps = 10;
 	private int refreshComponentRate;
+	
 
 	/**
 	 * Player Controller Constructor
@@ -112,8 +113,10 @@ public class PlayerController implements IPlayer {
 
 	private void run() {
 		try {
-			myEngine.play().call(this);
+			// TODO: myEngine.play() returns a State
+			myEngine.play();
 			mySpriteManager.updateSprites(getIndividualActorsList(), this.myScene);
+			myEngine.getState().areThereNewOrDeadActors();
 			refreshPlayerComponents();
 			actorMonitor.refresh();	
 		} catch (EngineException e) {
@@ -124,18 +127,46 @@ public class PlayerController implements IPlayer {
 
 
 	/**
-	 * This method grabs a list of all current actors from the Game Engine.
+	 * This method grabs the actors from the state returned by the engine.
 	 *
 	 * @return the list of Actors.
 	 */
 	public ArrayList<Actor> getIndividualActorsList() {
 		ArrayList<Actor> actors = new ArrayList<Actor>();
-		for (Bundle<Actor> b : myEngine.getActors().values()) {
+		for (Bundle<Actor> b : myEngine.getState().getActorMap().getMap().values()) {
 			actors.addAll(b.getComponents().values());
 		}
 		return actors;
 	}
 	
+	/**
+	 * This method grabs the list of Actor Groups from the state returned by the engine.
+	 *
+	 * @return the list of Actor Groups.
+	 */
+	public ArrayList<String> getActorGroups() {
+		ArrayList<String> actorGroups = new ArrayList<String>();
+		for(String s :myEngine.getState().getActorMap().getMap().keySet()){
+			actorGroups.add(s);
+		}
+		return actorGroups;
+	}
+	
+	/**
+	 * This method grabs the the Game Properties from the Game Engine.
+	 * The keys are the property type, and the values are the property values.
+	 * 
+	 * @return The map of Properties.
+	 */
+	public Map<String, String> getGameProperties(){
+		Map<String, String> properties = new HashMap<String, String>();
+		Bundle<Property<?>> propBundle = myEngine.getState().getPropertyBundle();
+		for(Property<?> b : propBundle){
+			properties.put(b.getUniqueID(), b.getValue().toString());
+		}
+		return properties;
+	}
+
 	/**
 	 * This method grabs a list of properties of the specified Actor 'a'.
 	 *
@@ -149,16 +180,6 @@ public class PlayerController implements IPlayer {
 			properties.add((Property<?>) b.getValue());
 		}
 		return properties;
-	}
-	
-	/**
-	 * This method grabs the the Actor Map from the Game Engine.
-	 * The string correlates to the actor group name.
-	 * 
-	 * @return The map of Actors.
-	 */
-	public Map<String, Bundle<Actor>> getActorMap() {
-		return myEngine.getActors();
 	}
 
 	/**
@@ -184,7 +205,6 @@ public class PlayerController implements IPlayer {
 	 * The map is in <String, String> format to allow for easy GUI display.
 	 *
 	 * @param a The Actor you would like to retrieve the properties for.
-	 * @param group The group classification of the Actor you're looking for.
 	 * 
 	 * @return The map of properties identifier -> value casted to Strings.
 	 */
@@ -256,5 +276,9 @@ public class PlayerController implements IPlayer {
 			actorMonitor.refresh();
 			refreshComponentRate = 0;
 		}
+	}
+	
+	public State getState(){
+		return myEngine.getState();
 	}
 }

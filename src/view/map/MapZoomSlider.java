@@ -1,15 +1,11 @@
 package view.map;
 
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.transform.Scale;
-import view.visual.AbstractVisual;
 
 /**
  * The MapZoomSlider class creates a Slider associated with a Map class, and
@@ -29,8 +25,7 @@ public class MapZoomSlider extends AbstractMapSlider {
 		findResources();
 		sliderElements = new GridPane();
 		theSlider = new Slider();
-		theSlider.setPrefWidth(sliderSize); // The size of the slider is set
-											// inside the resource file
+		theSlider.setPrefWidth(sliderSize);
 		mapZoomGroup = zoomGroup;
 		theMiniMap = minimap;
 	}

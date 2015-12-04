@@ -12,11 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import view.element.AbstractElement;
 import view.handler.ActorHandler;
-import view.screen.AbstractScreen;
 
 /**
  * The Map class allows for a visual representation of the game map. Includes a
@@ -32,20 +29,20 @@ public class Map extends AbstractElement {
 	private Group contentGroup;
 	private Group zoomGroup;
 	private Group layout;
-	private AbstractScreen screen;
 	protected AuthoringController controller;
 
 	private Group mapArea;
 	protected ScrollPane mapScrollableArea;
 	private MapZoomSlider zoomSliderArea;
 	private MapOpacitySlider opacitySliderArea;
+	private MinimapResizerSlider miniMapResizerSliderArea;
 	private MiniMap theMiniMap;
 	protected ImageView background;
 
 	private double mapRegularWidth;
 	private double mapRegularHeight;
 	private boolean preserveMapRatio;
-	
+
 	private ToolBar editToolbar;
 	private ActorHandler actorHandler;
 
@@ -67,18 +64,19 @@ public class Map extends AbstractElement {
 		layout = new Group();
 		mapScrollableArea = new ScrollPane();
 		mapArea = new Group();
-		
+
 		mapRegularWidth = Double.valueOf(myResources.getString("regularmapwidth"));
 		mapRegularHeight = Double.valueOf(myResources.getString("regularmapheight"));
 		preserveMapRatio = Boolean.valueOf(myResources.getString("preservemapratio"));
-		
+
 		// The actorManager needs access to the layout so it can place actors on
 		// it
 		controller = new AuthoringController();
 		editToolbar = new ToolBar();
 		actorHandler = new ActorHandler(layout, controller, editToolbar);
-//		TODO: actorHandler = new ActorHandler(layout, zoomSliderArea, controller, editToolbar);
-		
+		// TODO: actorHandler = new ActorHandler(layout, zoomSliderArea,
+		// controller, editToolbar);
+
 		makePane();
 	}
 
@@ -118,26 +116,14 @@ public class Map extends AbstractElement {
 		background.setFitWidth(mapRegularWidth);
 		background.setSmooth(true);
 		background.setCache(true);
-		if(!preserveMapRatio) {
+		if (!preserveMapRatio) {
 			background.setPreserveRatio(false);
 			background.setFitHeight(mapRegularHeight);
 		}
 		background.setPreserveRatio(true);
 		actorHandler.updateBackground(bg, background);
 	}
-	
-	public void setMapWidth(double width) {
-		
-	}
-	
-	public void setMapHeight(double height) {
-		
-	}
-	
-	public void preserveRatio(boolean preserve) {
-		
-	}
-	
+
 	public void setPanEnabled(boolean enable) {
 		mapScrollableArea.setPannable(enable);
 	}
@@ -157,23 +143,28 @@ public class Map extends AbstractElement {
 		// The slider needs access to the zoomGroup so it can resize it when it
 		// gets dragged
 
-		zoomSliderArea = new MapZoomSlider(zoomGroup, theMiniMap, 
-				Double.valueOf(myResources.getString("sliderwidth")));
+		zoomSliderArea = new MapZoomSlider(zoomGroup, theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
 		zoomSliderArea.createTheSlider();
-		
-		opacitySliderArea = new MapOpacitySlider(theMiniMap, 
-				Double.valueOf(myResources.getString("sliderwidth")));
+
+		opacitySliderArea = new MapOpacitySlider(theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
 		opacitySliderArea.createTheSlider();
+		
+		miniMapResizerSliderArea = new MinimapResizerSlider(theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
+		miniMapResizerSliderArea.createTheSlider();
 	}
 
 	public GridPane getZoomSlider() {
 		return zoomSliderArea.getSliderWithCaptions();
 	}
-	
+
 	public GridPane getOpacitySlider() {
 		return opacitySliderArea.getSliderWithCaptions();
 	}
-	
+
+	public GridPane getResizerSlider() {
+		return miniMapResizerSliderArea.getSliderWithCaptions();
+	}
+
 	public ToolBar getToolbar() {
 		return editToolbar;
 	}
@@ -188,8 +179,8 @@ public class Map extends AbstractElement {
 	private void addMapToPane(GridPane pane) {
 		pane.add(mapArea, 0, 0);
 
-//		pane.add(zoomSliderArea.getSliderWithCaptions(), 0, 1);
-//		pane.add(opacitySliderArea.getSliderWithCaptions(), 0, 2);
+		// pane.add(zoomSliderArea.getSliderWithCaptions(), 0, 1);
+		// pane.add(opacitySliderArea.getSliderWithCaptions(), 0, 2);
 
 	}
 
@@ -203,9 +194,8 @@ public class Map extends AbstractElement {
 		createMapScrollPane();
 		createPanListeners();
 		createMiniMap();
-		
+
 		mapArea.getChildren().add(mapScrollableArea);
-		theMiniMap.getMiniMap().setTranslateY(300);
 		mapArea.getChildren().add(theMiniMap.getMiniMap());
 		System.out.println("The minimap's bounds are: " + theMiniMap.getMiniMap().getBoundsInParent());
 	}
@@ -218,17 +208,14 @@ public class Map extends AbstractElement {
 
 		mapScrollableArea.setContent(contentGroup);
 
-
-//		mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
-//		mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
+		// mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
+		// mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
 		mapScrollableArea.setPrefWidth(mapRegularWidth);
 		mapScrollableArea.setPrefViewportWidth(mapRegularWidth);
 
-		
-		//mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());
+		// mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());
 		mapScrollableArea.setPrefHeight(mapRegularHeight);
 	}
-	
 
 	private void createGroups() {
 		// Groups all the nodes that will appear on the map and allows them to
@@ -246,7 +233,6 @@ public class Map extends AbstractElement {
 		theMiniMap = new MiniMap(background, mapScrollableArea, mapRegularWidth, mapRegularHeight);
 	}
 
-
 	private void addEventFilters() {
 		mapScrollableArea.addEventFilter(KeyEvent.ANY, e -> {
 			e.consume();
@@ -255,7 +241,7 @@ public class Map extends AbstractElement {
 			e.consume();
 		});
 	}
-	
+
 	private void createPanListeners() {
 		mapScrollableArea.vvalueProperty().addListener(new ChangeListener<Number>() {
 
@@ -278,16 +264,9 @@ public class Map extends AbstractElement {
 
 	@Override
 	protected void makePane() {
-		// Image backgroundImage = new
-		// Image(myResources.getString("backgroundURL"));
-		Image backgroundImage = new Image(myResources.getString("backgroundURL"));
-
-		// Test white rectangle
-		Rectangle test = new Rectangle(700, 724);
-		test.setFill(Color.RED);
-
+		//Image backgroundImage = new Image(myResources.getString("backgroundURL"));
+		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
 		updateBackground(backgroundImage);
-		// addActor(test, 0, 0);
 
 		// Create the map after adding elements you want
 		createTheMap();

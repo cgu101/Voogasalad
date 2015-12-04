@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import authoring.controller.constructor.levelwriter.interfaces.ITreeConstructor;
+import authoring.model.tree.ActionTreeNode;
 import authoring.model.tree.ActorTreeNode;
 import authoring.model.tree.InteractionTreeNode;
 import authoring.model.tree.TriggerTreeNode;
@@ -16,7 +17,7 @@ public class TreeConstructor implements ITreeConstructor {
 	/**
 	 * Empty constructor for TreeConstructor.
 	 */
-	TreeConstructor() {
+	public TreeConstructor() {
 		rootTree = new InteractionTreeNode();
 	}
 	
@@ -25,12 +26,13 @@ public class TreeConstructor implements ITreeConstructor {
 		return rootTree;
 	}
 	
+	// TODO: Add support for parameters for triggers and actions
 	@Override
 	public void addTreeNode(List<String> actors, List<String> triggers, List<String> actions) {
 		executeBaseNode(actors, triggers, actions, true, (node, values)->{
 			for(String action : actions) {
 				if(node.getChildWithValue(action) == null) {
-					node.addChild(new InteractionTreeNode(action));
+					node.addChild(new ActionTreeNode(action));
 				}
 			}
 			return actions;
