@@ -159,10 +159,16 @@ public class Main extends Application {
 		// Asteroid Self Triggers
 		actorList.clear();
 		actorList.add("asteroid");
+//		triggerList.clear();
+//		triggerList.add("authoring.model.triggers.selfconditions.DownArrowKey");
+//		actionList.clear();
+//		actionList.add("authoring.model.actions.oneActorActions.Move");
+//		tc.addTreeNode(actorList, triggerList, actionList);
+		
 		triggerList.clear();
 		triggerList.add("authoring.model.triggers.selfconditions.DownArrowKey");
 		actionList.clear();
-		actionList.add("authoring.model.actions.oneActorActions.Move");
+		actionList.add("authoring.model.actions.oneActorActions.RemoveActor");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
 		// Bullet Self Triggers

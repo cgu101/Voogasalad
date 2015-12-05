@@ -101,7 +101,7 @@
                     <children>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
-                        <value>authoring.model.actions.oneActorActions.Move</value>
+                        <value>authoring.model.actions.oneActorActions.RemoveActor</value>
                         <parameters>
                           <map/>
                         </parameters>
@@ -112,6 +112,26 @@
                       <map/>
                     </parameters>
                   </authoring.model.tree.TriggerTreeNode>
+                  <authoring.model.tree.ActorTreeNode>
+                    <children>
+                      <authoring.model.tree.TriggerTreeNode>
+                        <children>
+                          <authoring.model.tree.ActionTreeNode>
+                            <children/>
+                            <value>authoring.model.actions.oneActorActions.RemoveActor</value>
+                            <parameters>
+                              <map/>
+                            </parameters>
+                          </authoring.model.tree.ActionTreeNode>
+                        </children>
+                        <value>authoring.model.triggers.externalconditions.CircleCollision</value>
+                        <parameters>
+                          <map/>
+                        </parameters>
+                      </authoring.model.tree.TriggerTreeNode>
+                    </children>
+                    <value>player</value>
+                  </authoring.model.tree.ActorTreeNode>
                 </children>
                 <value>asteroid</value>
               </authoring.model.tree.ActorTreeNode>
@@ -374,6 +394,10 @@
             <entry>
               <string>authoring.model.actions.oneActorActions.DamageHealth</string>
               <authoring.model.actions.oneActorActions.DamageHealth/>
+            </entry>
+            <entry>
+              <string>authoring.model.actions.oneActorActions.RemoveActor</string>
+              <authoring.model.actions.oneActorActions.RemoveActor/>
             </entry>
             <entry>
               <string>authoring.model.actions.oneActorActions.SplitAndReduceSize</string>
