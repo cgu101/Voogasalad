@@ -9,6 +9,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import authoring.controller.constructor.levelwriter.LevelConstructor;
+import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
 import javafx.beans.value.ChangeListener;
@@ -30,6 +31,11 @@ public class Workspace extends AbstractElement implements Observer {
 	private Game myGame;
 	private GameWindow myNetworkGame;
 
+	public Workspace (GridPane pane, AbstractScreen screen, GameWindow w) {
+		this(pane, screen);
+		myNetworkGame = w;
+	}
+	
 	public Workspace(GridPane pane, AbstractScreen screen) {
 		super(pane);
 		this.screen = screen;
@@ -46,6 +52,11 @@ public class Workspace extends AbstractElement implements Observer {
 //	public SGameState buildGameState(Workspace w);
 	
 	public void updateVisual (GameWindow w, Game g) {
+		myNetworkGame = w;
+		myGame = g;
+		
+		System.out.println("A new level is registered");
+		
 		Collection<Level> myLevels = g.getLevels();
 		Map<String, LevelInterface> myLevelMap = new HashMap<>();
 		
@@ -54,10 +65,24 @@ public class Workspace extends AbstractElement implements Observer {
 		}
 		
 		for (Level modelLevel : myLevels) {
-			if (myLevelMap.get(modelLevel.getActionMap()) == null) {
+			if (myLevelMap.get(modelLevel.getUniqueID()) == null) {
+				LevelInterface newLevelInterface = new LevelMap(new GridPane(), modelLevel, screen);
 				
+				myLevelMap.put(modelLevel.getUniqueID(), newLevelInterface);
+				addLevel(modelLevel);
+
+				System.out.println(myNetworkGame);
+				System.out.println((myGame).getLevels().isEmpty());
+				
+				myGame = buildGame();
+				
+				myNetworkGame.send(myGame);
+				
+				System.out.println("TESTING");
+			} else {
+				LevelInterface levelToBeModified = myLevelMap.get(modelLevel.getUniqueID());
+				levelToBeModified.redraw(modelLevel);
 			}
-			
 		}
 	}
 
@@ -88,6 +113,16 @@ public class Workspace extends AbstractElement implements Observer {
 			}
 		}
 		LevelMap newLevel = new LevelMap(new GridPane(), levels.size(), screen);
+		return configureTab(newLevel);
+	}
+	
+	public Tab addLevel (Level l) {
+		if (levels.size() == 0) {
+			for (AbstractDockElement c : screen.getComponents()) {
+				c.getShowingProperty().setValue(true);
+			}
+		}
+		LevelMap newLevel = new LevelMap(new GridPane(), l, screen);
 		return configureTab(newLevel);
 	}
 
@@ -160,10 +195,35 @@ public class Workspace extends AbstractElement implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		myNetworkGame = (GameWindow) o;
+		
+		if (arg == null) {return;}
+		
 		Game myChangedGame = buildGame();
+		
+		System.out.println(myNetworkGame);
+		System.out.println(o);
+		
+//		((GameWindow) o).send(myChangedGame);
 	}
 	
 	private Game buildGame () {
-		return null;
+		Game changeGame = new Game();
+		changeGame.addAllProperties(myGame.getProperties());
+		
+		Bundle<Level> changedLevelBundle = new Bundle<Level>();
+		
+		for (LevelInterface l : levels) {
+			Level newLevel = l.buildLevel();
+			changedLevelBundle.add(newLevel);
+		}
+		
+		changeGame.addAllLevels(changedLevelBundle);
+		
+		return changeGame;
+	}
+	
+	public void addNetwork (GameWindow gw) {
+		this.myNetworkGame = gw;
 	}
 }

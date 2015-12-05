@@ -53,6 +53,11 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		root.prefWidthProperty().bind(scene.widthProperty());
 		this.title = myResources.getString("title");
 	}
+	
+	public CreatorScreen (Game game, GameWindow gw) {
+		this(game);
+		w.addNetwork(gw);
+	}
 
 	@Override
 	public void run() {
@@ -77,14 +82,12 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 			homePanes.add(new GridPane());
 		}
 		mapPane.add(homePanes.get(3), 0, 0);
+		mapPane.add(homePanes.get(2), 0, 2);
 		GridPane rightPane = new GridPane();
 		rightPane.add(homePanes.get(0), 0, 0);
 		rightPane.add(homePanes.get(1), 0, 1);
 		rightPane.setAlignment(Pos.CENTER);
 		r.setRight(rightPane);
-		GridPane bottomPane = new GridPane();
-		bottomPane.add(homePanes.get(2), 0, 0);
-		r.setBottom(bottomPane);
 		components = new ArrayList<AbstractDockElement>();
 		ActorBrowser browser = new ActorBrowser(dockPanes.get(0), homePanes.get(0),
 				myResources.getString("browsername"), this, w);
@@ -134,6 +137,8 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		System.out.println("OBserver update");
+		
 		Game receivedGame = (Game) arg;
 		w.updateVisual((GameWindow) o, (Game) arg);
 	}
