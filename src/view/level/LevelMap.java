@@ -102,7 +102,7 @@ public class LevelMap extends Map implements LevelInterface {
 
 	@Override
 	public String makeTitle(int i) {
-		return myString + (i + 1);
+		return (i + 1) + myString;
 	}
 
 	public void setGameWindow(GameWindow g) {

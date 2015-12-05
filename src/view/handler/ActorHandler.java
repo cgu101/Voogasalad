@@ -180,9 +180,9 @@ public class ActorHandler extends AbstractVisual {
 	
 	private void increaseActorSize(ActorView a, double increase) {
 		a.addDimensions(increase);
-		if (checkOutOfBounds(a, a.getXCoor(), a.getYCoor())) {
+		if (checkOutOfBounds(a, a.getXCoor(), a.getYCoor()) || a.getWidth() <= 0) {
 			a.addDimensions(-1*increase);
-		}
+		} 
 	}
 
 	protected void removeActor(ActorView a) {
