@@ -6,7 +6,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import authoring.model.game.Game;
-import authoring.model.level.Level;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -53,11 +52,18 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		this.gameWindow = new GameWindow(DEFAULT_IP);
 		this.screen = screen;
 		this.screen.getWorkspace().addNetwork(gameWindow);
-		this.gameData = gameWindow.getGameData();
+		this.gameData = new Game();
 		
+		initializeObservers();
+		makePane();
+	}
+
+	/**
+	 * 
+	 */
+	private void initializeObservers() {
 		gameWindow.addObserver(this.screen);
 		gameWindow.addObserver(this);
-		makePane();
 	}
 
 	@Override
@@ -74,11 +80,11 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	}
 
 	private void makeTools(ToolBar toolBar) {
-		Button backButton = makeButton("back", e -> screen.setNextScreen(new StartScreen()));
-		Button addButton = makeButton("add", e -> screen.getWorkspace().addLevel());
-		Button leftButton = makeButton("left", e -> screen.getWorkspace().moveLevelLeft(true));
-		Button rightButton = makeButton("right", e -> screen.getWorkspace().moveLevelLeft(false));
-		Button splashButton = makeButton("splash", e -> screen.getWorkspace().addSplash());
+		Button backButton = makeButton("back", e -> {screen.setNextScreen(new StartScreen()); System.out.println("BRIIIIINGIT");});
+		Button addButton = makeButton("add", e -> {gameData.addLevel(); screen.getWorkspace().updateVisual(gameWindow, gameData); });
+		Button leftButton = makeButton("left", e -> screen.getWorkspace().moveLevel(true));
+		Button rightButton = makeButton("right", e -> screen.getWorkspace().moveLevel(false));
+		Button splashButton = makeButton("splash", e -> screen.getWorkspace().addSplashScreen());
 		Button newActor = makeButton("new", e -> addActor());
 
 		toolBar.getItems().addAll(backButton, new Separator(), leftButton, rightButton, addButton, splashButton,
@@ -95,7 +101,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), 
 				e -> {gameData.addLevel(); screen.getWorkspace().updateVisual(gameWindow, gameData); }, 
 				KeyCode.T, KeyCombination.CONTROL_DOWN);
-		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> screen.getWorkspace().addSplash(), KeyCode.R,
+		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> screen.getWorkspace().addSplashScreen(), KeyCode.R,
 				KeyCombination.CONTROL_DOWN);
 		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(),
 				KeyCode.N, KeyCombination.CONTROL_DOWN);

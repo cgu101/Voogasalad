@@ -7,6 +7,8 @@ import authoring.model.game.Game;
 import javafx.application.Platform;
 import network.core.Client;
 import network.core.ForwardedMessage;
+import network.core.Hub.Message;
+import network.framework.Mail;
 
 public class GameWindow extends Observable {
 	private final static int PORT = 6969;
@@ -23,9 +25,6 @@ public class GameWindow extends Observable {
 				addToTranscript("I HAVE RECEIVED! Sender ID is: " + bm.senderID + " and says:  " + bm.message.getClass());
 				
 				if (bm.message instanceof Game && bm.senderID != this.getID()) {
-					System.out.println(this.getID());
-					
-					System.out.println(((Game) bm.message).getLevels().isEmpty());
 					Platform.runLater(new Runnable() {
 					    @Override
 					    public void run() {
@@ -33,7 +32,20 @@ public class GameWindow extends Observable {
 					    }
 					});
 				}
+				
+//				if (isMessageValid(bm)) {
+//					Platform.runLater(new Runnable() {
+//					    @Override
+//					    public void run() {
+//					    	updateObservers((Mail) bm.message);
+//					    }
+//					});
+//				}
 			}
+		}
+		
+		private boolean isMessageValid (ForwardedMessage m) {
+			return (m.message instanceof Mail && m.senderID != this.getID());
 		}
 
 		protected void connectionClosedByError(String message) {
@@ -55,7 +67,7 @@ public class GameWindow extends Observable {
 	private GameClient connection; 
 	private volatile boolean connected;
 	
-	private Game gameData;
+	private Game gameData; //Require this for local builds
 
 	public GameWindow(final String host) {
 
@@ -81,8 +93,10 @@ public class GameWindow extends Observable {
 		
 		gameData = new Game();
 	}
-
-
+	
+	public Game requestServerObject () {
+		return gameData;
+	}
 
 	private void addToTranscript (String message) {
 		System.out.println(message);
@@ -97,11 +111,7 @@ public class GameWindow extends Observable {
 		connection.send(message);
 	}
 	
-	public Game getGameData () {
-		return gameData;
-	}
-	
-	public void setGameData (Game game) {
-		gameData = game;
+	public boolean isConnected () {
+		return connected;
 	}
 }

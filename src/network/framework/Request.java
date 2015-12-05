@@ -1,17 +1,18 @@
 package network.framework;
 
 public enum Request {
-	NEW_GAME("New Game"), 
-	LOAD_GAME("Load Game");
+	ADD("Add"), 
+	DELETE("Delete"), 
+	MODIFY("Modify");
 	
-	private final String name;
+	private final String requestType;
 	
-	Request (String name) {
-		this.name = name;
+	Request (String request) {
+		this.requestType = request;
 	}
 	
 	@Override
 	public String toString () {
-		return name;
+		return requestType;
 	}
 }

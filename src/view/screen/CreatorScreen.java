@@ -2,12 +2,9 @@ package view.screen;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import authoring.controller.AuthoringController;
-import authoring.controller.constructor.levelwriter.LevelConstructor;
 import authoring.model.game.Game;
 import data.XMLManager;
 import exceptions.data.GameFileException;
@@ -108,10 +105,8 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	public void saveGame() {
 		System.out.println("Testing saving game ");
 
-		List<LevelConstructor> levelConstructors = w.getLevels();
-
 		try {
-			Game game = AuthoringController.getGameWithLevels(levelConstructors);
+			Game game = this.game;
 			File saveFile = FileChooserUtility.save(scene.getWindow());
 
 			String fileLocation = saveFile.getAbsolutePath();
@@ -137,7 +132,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("OBserver update");
+		System.out.println("Observer update");
 		
 		Game receivedGame = (Game) arg;
 		w.updateVisual((GameWindow) o, (Game) arg);

@@ -2,7 +2,6 @@ package authoring.model.game;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import authoring.model.bundles.Bundle;
@@ -16,6 +15,11 @@ import authoring.model.properties.Property;
  */
 
 public class Game implements Serializable {
+	/**
+	 * Generated Serializable ID 
+	 */
+	private static final long serialVersionUID = 1433330690305157644L;
+	
 	private Bundle<Level> myLevelBundle;
 	private Bundle<Property<?>> myPropertyBundle;
 	

@@ -5,6 +5,10 @@ import authoring.model.level.Level;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 
+/**
+ * 
+ * @author Austin
+ */
 public interface LevelInterface {
 	public Tab getTab();
 
