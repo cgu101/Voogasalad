@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
  * This allows for modification of properties
  * 
  */
-public class PropertyCell extends AbstractListCell {
+public class PropertyCell extends AbstractListCell<String> {
 	private AuthoringController controller;
 	private ListView<String> list;
 	private String actor;

@@ -3,6 +3,8 @@ package authoring.controller.constructor.levelwriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import authoring.controller.constructor.configreader.AuthoringConfigManager;
+import authoring.controller.constructor.configreader.ResourceType;
 import authoring.controller.constructor.levelwriter.interfaces.ITreeConstructor;
 import authoring.model.tree.ActionTreeNode;
 import authoring.model.tree.ActorTreeNode;
@@ -11,7 +13,9 @@ import authoring.model.tree.TriggerTreeNode;
 import voogasalad.util.reflection.Reflection;
 
 public class TreeConstructor implements ITreeConstructor {
-
+	
+	// TODO delete empty leaf nodes
+	
 	private InteractionTreeNode rootTree;
 
 	/**
@@ -26,7 +30,6 @@ public class TreeConstructor implements ITreeConstructor {
 		return rootTree;
 	}
 	
-	// TODO: Add support for parameters for triggers and actions
 	@Override
 	public void addTreeNode(List<String> actors, List<String> triggers, List<String> actions) {
 		executeBaseNode(actors, triggers, actions, true, (node, values)->{

@@ -99,7 +99,6 @@ public class ActorGroupsConstructor {
 		Bundle<Property<?>> ret = new Bundle<Property<?>>();
 		for(String p : propertyMap.getPropertyList()) {
 			String type = AuthoringConfigManager.getInstance().getPropertyType(p);
-			System.out.println(type);
 			Object newObject = Reflection.createInstance(type, propertyMap.getPropertyValue(p));
 			ret.add(new Property(p, newObject));
 		}
