@@ -1,14 +1,17 @@
 package authoring.model.tree;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import voogasalad.util.reflection.Reflection;
 /**
  * A node in the interaction trees (the self-trigger and external trigger trees).
  * Contains a String representing an Actor, Trigger, or Action.
  *
  */
-public class InteractionTreeNode {
+public class InteractionTreeNode implements Serializable {
 	
 	private List<InteractionTreeNode> children;
 	private String value;
@@ -69,4 +72,13 @@ public class InteractionTreeNode {
 	public String getIdentifier() {
 		return getClass().getSimpleName();
 	}
+	
+//	public static void main(String...args) {
+//		
+//		InteractionTreeNode a = (InteractionTreeNode) Reflection.createInstance(ActorTreeNode.class.getName(), "a");
+//		
+////		InteractionTreeNode a = new ActorTreeNode("hey");
+//		System.out.println(a.getIdentifier());
+//		
+//	}
 }

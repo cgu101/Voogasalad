@@ -3,17 +3,16 @@ package engine;
 import player.IPlayer;
 
 public class EngineHeartbeat {
-//	private InteractionExecutor myGameState;
 	private PlayerCaller myPlayerCaller;
+	private State myGameState;
 	
 	public EngineHeartbeat (PlayerCaller p) {
-		myPlayerCaller = p;
+		this(p, null);
 	}
-	
-//	public EngineHeartbeat(InteractionExecutor ref, PlayerCaller p){
-//		myGameState = ref;
-//		myPlayerCaller = p;
-//	}
+	public EngineHeartbeat (PlayerCaller p, State state) {
+		this.myPlayerCaller = p;
+		this.myGameState = state;
+	}
 	
 	/**
 	 * Calls the PlayerCaller class
@@ -21,5 +20,8 @@ public class EngineHeartbeat {
 	 */
 	public void call(IPlayer p){
 		myPlayerCaller.call(p);
+	}
+	public State getState() {
+		return myGameState;
 	}
 }

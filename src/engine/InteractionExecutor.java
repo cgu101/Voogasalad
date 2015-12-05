@@ -8,17 +8,16 @@ import java.util.Map;
 
 import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
-import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
 import authoring.model.level.Level;
 import authoring.model.tree.ActionTreeNode;
 import authoring.model.tree.ActorTreeNode;
 import authoring.model.tree.InteractionTreeNode;
+import authoring.model.tree.ParameterTreeNode;
 import authoring.model.tree.TriggerTreeNode;
 import authoring.model.triggers.ITriggerEvent;
 import exceptions.EngineException;
 import exceptions.engine.InteractionTreeException;
-import player.IPlayer;
 import player.InputManager;
 
 /**
@@ -33,8 +32,10 @@ public class InteractionExecutor {
 	private static final String ACTION_IDENTIFIER = ActionTreeNode.class.getSimpleName();
 
 	private String currentLevelIdentifier;
-	private ActorGroups currentActorMap;
-	private ActorGroups nextActorMap;
+	
+	private State currentState;
+	private State nextState;
+	
 	private InputManager inputMap;
 	private Map<String,ITriggerEvent> triggerMap;
 	private Map<String,IAction> actionMap;
@@ -45,27 +46,27 @@ public class InteractionExecutor {
 	public InteractionExecutor () {
 		this.currentLevelIdentifier = null;
 		this.triggerTree = new InteractionTreeNode();
-		this.currentActorMap = new ActorGroups();
 		this.inputMap = new InputManager();
 		this.triggerMap = new HashMap<>();
 		this.actionMap = new HashMap<>();
-		this.nextActorMap = new ActorGroups();
+		
 		initLambdaMap();
 	}
 
-	public InteractionExecutor (Level level, InputManager inputMap) {
+	public InteractionExecutor (Level level, InputManager inputMap, State state) {
 		this();
 		this.inputMap = inputMap;
 
 		if (level != null) {
 			this.currentLevelIdentifier = level.getUniqueID();
 			this.triggerTree = level.getRootTree();
-			this.currentActorMap = level.getActorGroups();
-
+			this.currentState = state;
+			currentState.setActorMap(level.getActorGroups());
+			
 			this.triggerMap = level.getTriggerMap();
 			this.actionMap = level.getActionMap();
 
-			this.nextActorMap = new ActorGroups(currentActorMap);
+			nextState = new State(currentState);
 		}
 	}
 	/**
@@ -73,16 +74,18 @@ public class InteractionExecutor {
 	 * @return A {@link EngineHeartbeat} that allows the engine to communicate with the player controller.
 	 * @throws EngineException 
 	 */
-	public EngineHeartbeat run () throws EngineException {
-		nextActorMap = new ActorGroups(currentActorMap);
+	public State run () throws EngineException {
+		nextState = new State(currentState);
 		try {
 			runTriggers();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new InteractionTreeException("Error in interaction tree", null);
 		}
-		currentActorMap = nextActorMap;
+		nextState.getActorMap().cleanUpActors();
+		currentState.merge(nextState);
 		//		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
-		return new EngineHeartbeat((IPlayer p) -> {});
+		return currentState;
 	}
 
 	private void runTriggers () {
@@ -91,13 +94,6 @@ public class InteractionExecutor {
 		}
 	}
 
-	public ActorGroups getActors () {
-		//System.out.println(currentActorMap.getMap() + " InteractionExecutor");
-		return currentActorMap;
-	}
-	public void setActors (ActorGroups actors) {
-		this.currentActorMap = actors;
-	}
 	/**
 	 * 
 	 * @return The ID of the current level as a String.
@@ -123,10 +119,11 @@ public class InteractionExecutor {
 			}
 		});
 		lambdaMap.put(TRIGGER_IDENTIFIER, (node, list) -> {
+//			System.out.println(triggerMap.values());
 			ITriggerEvent triggerEvent = triggerMap.get(node.getValue());
-			// TODO: incorporate Parameters
-			if (triggerEvent.condition(null, inputMap, (Actor[]) list.toArray())) {
+			if (triggerEvent.condition(((ParameterTreeNode) node).getParameters(), inputMap, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
 				for (InteractionTreeNode child : node.children()) {
+//					System.out.println(child.getIdentifier());
 					lambdaMap.get(child.getIdentifier()).apply(child, list);
 				}
 			}
@@ -134,10 +131,10 @@ public class InteractionExecutor {
 		lambdaMap.put(ACTION_IDENTIFIER, (node, list) -> {
 			IAction action = actionMap.get(node.getValue());
 			Actor[] actors = ((List<Actor>) list).stream().map(a -> {
-				return nextActorMap.getGroup(a.getGroupName()).get(a.getUniqueID());
+				return nextState.getActorMap().getGroup(a.getGroupName()).get(a.getUniqueID());
 			}).toArray(Actor[]::new);
-			// TODO: incorporate Parameters
-			action.run(null, nextActorMap, actors);
+			action.run(((ParameterTreeNode) node).getParameters(), nextState, actors);
+
 		});
 	}
 	private <T> List<T> cloneListAndAdd (List<T> list, T value) {
@@ -156,7 +153,7 @@ public class InteractionExecutor {
 			uniques.add(current);
 			return;
 		}
-		Bundle<Actor> currentGroup = currentActorMap.getGroup(groups.get(depth));
+		Bundle<Actor> currentGroup = currentState.getActorMap().getGroup(groups.get(depth));
 		for(Actor a : currentGroup) {
 			generateActorCombinations(groups, uniques, cloneListAndAdd(current, a));
 		}
@@ -164,5 +161,9 @@ public class InteractionExecutor {
 	@FunctionalInterface
 	interface NodeLambda <A, B> { 
 		public void apply (A a, B b);
+	}
+	protected State getCurrentState() {
+		// TODO Auto-generated method stub
+		return currentState;
 	}
 }

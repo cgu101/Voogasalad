@@ -12,6 +12,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import network.test.GameWindow;
 import view.map.Map;
 import view.screen.AbstractScreen;
 
@@ -19,6 +20,7 @@ public class LevelMap extends Map implements LevelInterface {
 	private Tab myTab;
 	private ScrollPane sp;
 	private String myString;
+	private GameWindow gameWindow;
 
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
 		super(pane);
@@ -54,6 +56,7 @@ public class LevelMap extends Map implements LevelInterface {
 			addActor(a, (double) a.getProperties().getComponents().get("xLocation").getValue(),
 					(double) a.getProperties().getComponents().get("yLocation").getValue());
 			success = true;
+			gameWindow.getClient().send("New Drop Event");
 		}
 		event.setDropCompleted(success);
 		event.consume();
@@ -100,5 +103,9 @@ public class LevelMap extends Map implements LevelInterface {
 	@Override
 	public String makeTitle(int i) {
 		return myString + (i + 1);
+	}
+
+	public void setGameWindow(GameWindow g) {
+		this.gameWindow = g;
 	}
 }

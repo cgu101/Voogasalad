@@ -1,10 +1,18 @@
 package authoring.model.game;
 
+import java.io.Serializable;
+
 import authoring.model.bundles.Bundle;
 import authoring.model.level.Level;
 import authoring.model.properties.Property;
 
-public class Game {
+/**
+ * 
+ * @author Austin
+ *
+ */
+
+public class Game implements Serializable {
 	private Bundle<Level> myLevelBundle;
 	private Bundle<Property<?>> myPropertyBundle;
 	
@@ -27,5 +35,9 @@ public class Game {
 	
 	public Property<?> getProperty (String propertyName) {
 		return myPropertyBundle.get(propertyName);
+	}
+	
+	public Bundle<Property<?>> getProperties(){
+		return myPropertyBundle;
 	}
 }

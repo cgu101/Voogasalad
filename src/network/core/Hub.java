@@ -3,6 +3,7 @@ package network.core;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -82,6 +83,7 @@ public class Hub {
     
     private ServerSocket serverSocket;  // Listens for connections.
     private Thread serverThread;        // Accepts connections on serverSocket
+    private Thread messageHandlerThread; // Accepts messages and handles them
     volatile private boolean shutdown;  // Set to true when the Hub is not listening.
     
     private int nextClientID = 1;  // The id number that will be assigned to
@@ -100,22 +102,9 @@ public class Hub {
         System.out.println("Listening for client connections on port " + port);
         serverThread = new ServerThread();
         serverThread.start();
-        Thread readerThread = new Thread(){
-            public void run() {
-               while (true) {
-                   try {
-                       Message msg = incomingMessages.take();
-                       messageReceived(msg.playerConnection, msg.message);
-                   }
-                   catch (Exception e) {
-                       System.out.println("Exception while handling received message:");
-                       e.printStackTrace();
-                   }
-               }
-           }
-        };
-        readerThread.setDaemon(true);
-        readerThread.start();
+        messageHandlerThread = new MessageHandlerThread();
+        messageHandlerThread.setDaemon(true);
+        messageHandlerThread.start();
     }
     
     
@@ -352,9 +341,38 @@ public class Hub {
         }
     }
     
-    private class Message {
+    public class Message {
         ConnectionToClient playerConnection;
         Object message;
+    }
+    
+    private class MessageHandlerThread extends Thread {
+    	
+    	private MessageController msgController;
+    	
+    	public MessageHandlerThread() {
+    		msgController = new MessageController();
+    	}
+    	
+    	public void run() {
+            while (true) {
+                try {
+                    Message msg = incomingMessages.take();              
+                    Map<Integer, Message> returnMessages = msgController.handleMessage(msg);
+                    sendMessages(returnMessages);
+                }
+                catch (Exception e) {
+                    System.out.println("Exception while handling received message:");
+                    e.printStackTrace();
+                }
+            }
+    	}
+    	
+    	private void sendMessages(Map<Integer, Message> returnMessages) { 		
+    		for(Integer i : returnMessages.keySet()) {
+    			sendToOne(i, returnMessages.get(i));
+    		}	
+    	}
     }
     
     private class ServerThread extends Thread {  // Listens for connection requests from clients.
