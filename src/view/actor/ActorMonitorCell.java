@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import player.controller.PlayerController;
 
 public class ActorMonitorCell extends AbstractListCell {
@@ -41,7 +42,9 @@ public class ActorMonitorCell extends AbstractListCell {
 		image.setSmooth(true);
 		image.setCache(true);
 		GridPane.setRowSpan(image, 1);
-		v.getChildren().addAll(new Label(name), image);
+		Label label = new Label(name);
+		label.setTextFill(Color.web("#0076a3"));
+		v.getChildren().addAll(label, image);
 		return v;
 	}
 	
@@ -61,8 +64,11 @@ public class ActorMonitorCell extends AbstractListCell {
 		VBox props = new VBox();
 		//props.getChildren().add(new Label(String.valueOf(derp) + ":" + actor.getUniqueID()));
 		for(String s: propertyStringMap.keySet()){
-			props.getChildren().add(new Label(s + " : " + propertyStringMap.get(s)));
+			Label l = new Label(s + " : " + propertyStringMap.get(s));
+			l.setAlignment(Pos.CENTER_RIGHT);
+			props.getChildren().add(l);
 		}
+		props.setAlignment(Pos.CENTER_RIGHT);
 		return props;
 	}
  
