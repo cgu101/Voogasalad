@@ -59,4 +59,10 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 		image.setPreserveRatio(true);
 		pane.add(image, 0, 0);
 	}
+
+	@Override
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
