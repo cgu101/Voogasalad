@@ -1,24 +1,20 @@
 package network.test;
 
-import javax.swing.JOptionPane;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
+import view.controlbar.ControlBarCreator;
+import view.screen.CreatorScreen;
 
 public class TestMain extends Application {
 
 
 	@Override
 	public void start(Stage primaryStage) {
-//		String host = JOptionPane.showInputDialog(
-//				"Enter the host name of the \n computer conneting to Vogasalad");
-//		if (host == null || host.trim().length() == 0)
-//			return;
+		ControlBarCreator myCreatorController = new ControlBarCreator(new CreatorScreen());
 		
-		GameWindow window = new GameWindow("52.21.160.171");
-		
-		primaryStage.setScene(window.getScreen().getScene());
+		primaryStage.setScene(myCreatorController.getVisual());
 		primaryStage.show();
+
 	}
 
 	public static void main(String[] args) {

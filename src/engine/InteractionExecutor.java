@@ -103,7 +103,7 @@ public class InteractionExecutor {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void initLambdaMap () {
+	private <V> void initLambdaMap () {
 		lambdaMap = new HashMap<String,NodeLambda<InteractionTreeNode,List<?>>>();
 		lambdaMap.put(ACTOR_IDENTIFIER, (node, list) -> {
 			for(InteractionTreeNode child : node.children()){
@@ -133,8 +133,9 @@ public class InteractionExecutor {
 			Actor[] actors = ((List<Actor>) list).stream().map(a -> {
 				return nextState.getActorMap().getGroup(a.getGroupName()).get(a.getUniqueID());
 			}).toArray(Actor[]::new);
-			action.run(((ParameterTreeNode) node).getParameters(), nextState, actors);
-
+			
+//			action.run(((ParameterTreeNode) node).getParameters(), nextState, actors);
+			action.run(new HashMap<String, V>(), nextState, actors);
 		});
 	}
 	private <T> List<T> cloneListAndAdd (List<T> list, T value) {

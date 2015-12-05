@@ -12,4 +12,6 @@ public interface LevelInterface {
 	public String makeTitle(int i);
 
 	public void updateBackground(Image backgroundImage);
+	
+	public String getTitle ();
 }

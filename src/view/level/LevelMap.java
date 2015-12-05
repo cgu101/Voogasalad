@@ -21,12 +21,15 @@ public class LevelMap extends Map implements LevelInterface {
 	private ScrollPane sp;
 	private String myString;
 	private GameWindow gameWindow;
+	
+	private String myTitle;
 
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
 		super(pane);
 		findResources();
 		myString = myResources.getString("tabName");
 		myTab = new Tab(makeTitle(i));
+		myTitle = myString + (i + 1);
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));
 
@@ -56,7 +59,7 @@ public class LevelMap extends Map implements LevelInterface {
 			addActor(a, (double) a.getProperties().getComponents().get("xLocation").getValue(),
 					(double) a.getProperties().getComponents().get("yLocation").getValue());
 			success = true;
-			gameWindow.getClient().send("New Drop Event");
+//			gameWindow.getClient().send("New Drop Event");
 		}
 		event.setDropCompleted(success);
 		event.consume();
@@ -107,5 +110,10 @@ public class LevelMap extends Map implements LevelInterface {
 
 	public void setGameWindow(GameWindow g) {
 		this.gameWindow = g;
+	}
+
+	@Override
+	public String getTitle() {
+		return myTitle;
 	}
 }

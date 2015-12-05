@@ -1,6 +1,9 @@
 package authoring.model.game;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import authoring.model.bundles.Bundle;
 import authoring.model.level.Level;
@@ -39,5 +42,11 @@ public class Game implements Serializable {
 	
 	public Bundle<Property<?>> getProperties(){
 		return myPropertyBundle;
+	}
+	
+	public Collection<Level> getLevels () {
+		Map<String, Level> myLevelMap = myLevelBundle.getComponents();
+		Collection<Level> myLevels = myLevelMap.values();
+		return myLevels;
 	}
 }
