@@ -162,7 +162,7 @@ public class Main extends Application {
 		triggerList.clear();
 		triggerList.add("authoring.model.triggers.selfconditions.DownArrowKey");
 		actionList.clear();
-		actionList.add("authoring.model.actions.actorActions.oneActorActions.Move");
+		actionList.add("authoring.model.actions.actorActions.oneActorActions.RemoveActor");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
 		// Bullet Self Triggers
