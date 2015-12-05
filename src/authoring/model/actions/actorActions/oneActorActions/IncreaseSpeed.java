@@ -15,9 +15,9 @@ public class IncreaseSpeed<V> extends AOneActorAction<V> {
 		Property<Double> speed = (Property<Double>) a.getProperty("speed");
 		speed.setValue(speed.getValue() + increment);
 		
-		double minSpeed = 0;
-		if (speed.getValue() < minSpeed) {
-			speed.setValue(minSpeed);
+		double maxSpeed = 30;
+		if (speed.getValue() > maxSpeed) {
+			speed.setValue(maxSpeed);
 		}
 	}
 }
