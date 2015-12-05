@@ -3,5 +3,4 @@
 * Sprites do not animate properly; they appear to alternate between the first two images of their animation, rather than cycling through all the images.
 * Sprites are not centered over their location.  Instead, the location is the top left corner of the sprite.
 
-
 #Resolved
