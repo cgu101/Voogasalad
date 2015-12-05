@@ -28,8 +28,13 @@ public class Game implements Serializable {
 		myLevelBundle.add(level);
 	}
 	
+	public void addLevel () {
+		int size = myLevelBundle.getSize();
+		myLevelBundle.add(new Level(Integer.toString(size)));
+	}
+	
 	public void addAllLevels (Bundle<Level> bundle) {
-		for (Level l : myLevelBundle) {
+		for (Level l : bundle) {
 			myLevelBundle.add(l);
 		}
 	}

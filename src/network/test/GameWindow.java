@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Observable;
 
 import authoring.model.game.Game;
+import javafx.application.Platform;
 import network.core.Client;
 import network.core.ForwardedMessage;
 
@@ -20,6 +21,18 @@ public class GameWindow extends Observable {
 			if (message instanceof ForwardedMessage) {
 				ForwardedMessage bm = (ForwardedMessage)message;
 				addToTranscript("I HAVE RECEIVED! Sender ID is: " + bm.senderID + " and says:  " + bm.message.getClass());
+				
+				if (bm.message instanceof Game && bm.senderID != this.getID()) {
+					System.out.println(this.getID());
+					
+					System.out.println(((Game) bm.message).getLevels().isEmpty());
+					Platform.runLater(new Runnable() {
+					    @Override
+					    public void run() {
+					    	updateObservers((Game) bm.message);
+					    }
+					});
+				}
 			}
 		}
 

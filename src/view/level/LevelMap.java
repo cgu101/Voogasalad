@@ -24,6 +24,7 @@ public class LevelMap extends Map implements LevelInterface {
 	private GameWindow gameWindow;
 	
 	private String myTitle;
+	private Level myLevel;
 
 	public LevelMap(GridPane pane, Level l, AbstractScreen screen) {
 		super(pane);
@@ -40,8 +41,7 @@ public class LevelMap extends Map implements LevelInterface {
 
 		mapScrollableArea.setOnDragOver(event -> dragAroundMap(event));
 		mapScrollableArea.setOnDragDropped(event -> dragFinished(event));
-		
-		System.out.println("A new level is registered");
+		myLevel = l;
 	}
 	
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
@@ -59,6 +59,8 @@ public class LevelMap extends Map implements LevelInterface {
 
 		mapScrollableArea.setOnDragOver(event -> dragAroundMap(event));
 		mapScrollableArea.setOnDragDropped(event -> dragFinished(event));
+		
+		myLevel = null;
 	}
 
 	private void dragFinished(DragEvent event) {
@@ -146,6 +148,6 @@ public class LevelMap extends Map implements LevelInterface {
 	@Override
 	public Level buildLevel() {
 		// TODO Auto-generated method stub
-		return null;
+		return myLevel;
 	}
 }

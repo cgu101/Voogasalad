@@ -10,7 +10,7 @@ public class GameHub {
     
     public static void main(String[] args) {
         try {
-            new TempHub(PORT);
+            new TempHub(PORT); 
         }
         catch (IOException e) {
             System.out.println("Can't create listening socket.  Shutting down.");
