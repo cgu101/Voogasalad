@@ -110,7 +110,6 @@ public class AuthoringActorConstructor {
 	 * @param otherActors
 	 * @return
 	 */
-	
 	public List<String> getActionList(String actor, String...otherActors) {
 		return getListForEverything(ResourceType.ACTIONS, actor, otherActors);
 	}
@@ -125,18 +124,20 @@ public class AuthoringActorConstructor {
 		List<String> toRemove = new ArrayList<String>();
 		
 		for(String action : actions) {
-			Integer val = new Integer(AuthoringConfigManager.getInstance().getTypeInfo(type, action, ResourceType.NUM_ACTORS));
-			if(val != otherActors.length) {
-				toRemove.add(action);
-			} else {
-				Integer count = 0;
-				for(String actor : otherActors) {
-					List<String> requiredProperties = AuthoringConfigManager.getInstance()
-							.getRequiredPropertyList(type, String.format("%s.%s", ResourceType.ACTORS, count++));
-					List<String> actorProperties = getPropertyList(actor);
-					if(!requiredProperties.isEmpty() && !actorProperties.containsAll(requiredProperties)) {
-						toRemove.add(action);
-						break;
+			String num = AuthoringConfigManager.getInstance().getTypeInfo(type, action, ResourceType.NUM_ACTORS);
+			if(!num.equals("")) {
+				Integer val = new Integer(num);				
+				if(val > otherActors.length) {
+					toRemove.add(action);
+				} else {
+					for(int i=1; i <= val; i++) {
+						List<String> requiredProperties = AuthoringConfigManager.getInstance()
+								.getRequiredPropertyList(type, otherActors[i], String.format("%s.%s", ResourceType.ACTORS, i));
+						List<String> actorProperties = getPropertyList(otherActors[i-1]);
+						if(!requiredProperties.isEmpty() && !actorProperties.containsAll(requiredProperties)) {
+							toRemove.add(action);
+							break;
+						}
 					}
 				}
 			}

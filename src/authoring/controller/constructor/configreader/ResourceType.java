@@ -7,6 +7,9 @@ public interface ResourceType {
 	String PROPERTIES = "properties";
 	String PARAMETERS = "parameters";
 	String ACTIONS = "actions";
-	String NUM_ACTORS = "numActors";
 	
+	String NUM_ACTORS = "numActors";
+	String TYPE = "type";	
+	String GENERAL = "general";	
+	String CLASS_NAME = "className";
 }

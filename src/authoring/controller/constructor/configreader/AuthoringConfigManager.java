@@ -19,10 +19,6 @@ public class AuthoringConfigManager {
 	private static final String DIRECTORY_FORMAT = "%s/%s";
 	private static final String REG_EX = ",";
 	
-	private static final String TYPE = "type";	
-	private static final String GENERAL = "general";
-	private static final String REQUIRED_PROPERTIES = "requiredProperties";
-	
 	private static final AuthoringConfigManager myManager = new AuthoringConfigManager();
 	
 	private AuthoringConfigManager() {
@@ -32,7 +28,8 @@ public class AuthoringConfigManager {
 	private void load() {
 		myConfiguration = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, CONFIGURATION));
 		bundleMaps = new HashMap<String, Map<String, ResourceBundle>>();
-		for(String s : splitString(myConfiguration.getString(CONFIGURATION))) {
+		List<String> iter = splitString(myConfiguration.getString(CONFIGURATION));
+		for(String s : iter) {
 			bundleMaps.put(s, loadMap(s));
 		}
 	}
@@ -70,7 +67,6 @@ public class AuthoringConfigManager {
 	 * 
 	 * 
 	 */
-	
 	public List<String> getKeyList(String type) {
 		return new ArrayList<String>(bundleMaps.get(type).keySet());
 	}
@@ -78,10 +74,10 @@ public class AuthoringConfigManager {
 	/**
 	 * 
 	 */
-	
 	public String getTypeInfo(String type, String instance, String info) {
 		return bundleMaps.get(type).get(instance).getString(info);
 	}
+	
 	
 	/**
 	 * This method will return a String array of all default Properties. 
@@ -89,9 +85,7 @@ public class AuthoringConfigManager {
 	 * @return List<String> 
 	 */	
 	public List<String> getPropertyList(String actor) {
-		return splitString(bundleMaps.get(ResourceType.ACTORS)
-				.get(actor)
-				.getString(ResourceType.PROPERTIES));
+		return splitString(getTypeInfo(ResourceType.ACTORS, actor, ResourceType.PROPERTIES));
 	}
 
 	/**
@@ -102,9 +96,7 @@ public class AuthoringConfigManager {
 	 * @return String
 	 */
 	public String getDefaultPropertyValue(String actor, String property) {
-		return bundleMaps.get(ResourceType.ACTORS)
-				.get(actor)
-				.getString(property);
+		return getTypeInfo(ResourceType.ACTORS, actor, property);
 	}
 	
 	/**
@@ -115,9 +107,7 @@ public class AuthoringConfigManager {
 	 * @return String
 	 */
 	public String getPropertyType(String property) {
-		return bundleMaps.get(ResourceType.ACTORS)
-				.get(property)
-				.getString(TYPE);
+		return getTypeInfo(ResourceType.PROPERTIES, property, ResourceType.TYPE);
 	}
 	
 	/**
@@ -133,8 +123,8 @@ public class AuthoringConfigManager {
 	 * @return List<String>
 	 */
 	public List<String> getConfigList(String actor, String type) {
-		List<String> actorActionList = splitString(bundleMaps.get(ResourceType.ACTORS).get(actor).getString(type));		
-		List<String> generalActionList = splitString(myConfiguration.getString(String.format("%s.%s", type, GENERAL)));		
+		List<String> actorActionList = splitString(getTypeInfo(ResourceType.ACTORS, actor, type));		
+		List<String> generalActionList = splitString(myConfiguration.getString(String.format("%s.%s", type, ResourceType.GENERAL)));		
 		return combineLists(actorActionList, generalActionList);
 	}
 	
@@ -144,8 +134,8 @@ public class AuthoringConfigManager {
 	 * @param instance
 	 * @return List<String>
 	 */
-	public List<String> getRequiredPropertyList(String type, String instance) {
-		return splitString(bundleMaps.get(type).get(instance).getString(REQUIRED_PROPERTIES));
+	public List<String> getRequiredPropertyList(String type, String instance, String data) {
+		return splitString(getTypeInfo(type, instance, data));
 	}
 	
 	

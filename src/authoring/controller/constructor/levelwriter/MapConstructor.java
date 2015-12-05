@@ -18,8 +18,8 @@ public class MapConstructor {
 	public MapConstructor() {
 		triggerMap = new HashMap<String, ITriggerEvent>();
 		actionMap = new HashMap<String, IAction>();		
-		addValueToMap(triggerMap, AuthoringConfigManager.getInstance().getKeyList(ResourceType.TRIGGERS));
-		addValueToMap(actionMap, AuthoringConfigManager.getInstance().getKeyList(ResourceType.ACTIONS));
+		addValueToMap(triggerMap, AuthoringConfigManager.getInstance().getKeyList(ResourceType.TRIGGERS), ResourceType.TRIGGERS);
+		addValueToMap(actionMap, AuthoringConfigManager.getInstance().getKeyList(ResourceType.ACTIONS), ResourceType.ACTIONS);
 	}
 	
 	/**
@@ -40,15 +40,16 @@ public class MapConstructor {
 		return actionMap;
 	}
 
-	private <T> void addValueToMap(Map<String, T> map, List<String> actions) {
+	private <T> void addValueToMap(Map<String, T> map, List<String> actions, String type) {
 		for (String action : actions) {
-			addValueToMap(map, action);
+			addValueToMap(map, action, type);
 		}
 	}
 	
-	private <T> void addValueToMap(Map<String, T> map, String action) {
+	private <T> void addValueToMap(Map<String, T> map, String action, String type) {
 		if (!map.containsKey(action)) {
-			map.put(action, (T) Reflection.createInstance(action));
+			String value = AuthoringConfigManager.getInstance().getTypeInfo(type, action, ResourceType.CLASS_NAME); 
+			map.put(action, (T) Reflection.createInstance(value));
 		}
 	}
 }

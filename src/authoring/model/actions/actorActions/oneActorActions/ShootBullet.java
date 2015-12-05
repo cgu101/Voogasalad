@@ -58,5 +58,10 @@ public class ShootBullet<V> extends AOneActorAction<V>{
 		Actor bullet = new Actor(propBundle, "bullet" + timeString);
 		return bullet;
 	}
+	
+	public static void main(String...args) {
+		System.out.println(ShootBullet.class);
+		
+	}
 
 }
