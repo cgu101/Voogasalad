@@ -13,6 +13,7 @@ public class DistanceTraveledCheck extends ASelfTrigger {
 	@Override
 	public boolean condition(Parameters parameters, InputManager inputManager, Actor actor) {
 		Double distanceTraveled = actor.getPropertyValue("distanceTraveled");
-		return (Double.compare(distanceTraveled, 100.0) >= 0);
+		double maxDistance = 400;
+		return (Double.compare(distanceTraveled, maxDistance) >= 0);
 	}
 }

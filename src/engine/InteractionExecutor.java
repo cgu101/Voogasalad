@@ -1,5 +1,7 @@
 package engine;
 
+import authoring.model.triggers.selfconditions.DistanceTraveledCheck;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -121,9 +123,9 @@ public class InteractionExecutor {
 		lambdaMap.put(TRIGGER_IDENTIFIER, (node, list) -> {
 //			System.out.println(triggerMap.values());
 			//TODO
-			System.out.println("NODE: " + node);
 			ITriggerEvent triggerEvent = triggerMap.get(node.getValue());
 			if (triggerEvent == null) {
+				triggerEvent = new DistanceTraveledCheck();
 				System.out.println("NULL TRIGGER");
 			}
 			if (triggerEvent.condition(((ParameterTreeNode) node).getParameters(), inputMap, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
