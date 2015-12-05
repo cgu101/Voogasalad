@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.properties.Property;
@@ -115,6 +116,7 @@ public class PlayerController implements IPlayer {
 			// TODO: myEngine.play() returns a State
 			myEngine.play();
 			mySpriteManager.updateSprites(getIndividualActorsList(), this.myScene);
+			myEngine.getState().areThereNewOrDeadActors();
 			refreshPlayerComponents();
 			actorMonitor.refresh();	
 		} catch (EngineException e) {
@@ -262,5 +264,9 @@ public class PlayerController implements IPlayer {
 			actorMonitor.refresh();
 			refreshComponentRate = 0;
 		}
+	}
+	
+	public State getState(){
+		return myEngine.getState();
 	}
 }

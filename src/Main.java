@@ -114,6 +114,7 @@ public class Main extends Application {
 		m.addActionsToMap("authoring.model.actions.oneActorActions.DecreaseSpeed");
 		m.addActionsToMap("authoring.model.actions.oneActorActions.ShootBullet");
 		m.addActionsToMap("authoring.model.actions.oneActorActions.SplitAndReduceSize");
+		m.addActionsToMap("authoring.model.actions.oneActorActions.RemoveActor");
 		
 		// Mega Man Self Triggers
 		List<String> actorList = new ArrayList<String>();
@@ -179,15 +180,15 @@ public class Main extends Application {
 //		actionList.add("authoring.model.actions.oneActorActions.SplitAndReduceSize");
 //		tc.addTreeNode(actorList, triggerList, actionList);
 		
-//		// External Triggers
-//		actorList.clear();
-//		actorList.add("asteroid");
-//		actorList.add("bullet");
-//		triggerList.clear();
-//		triggerList.add("authoring.model.triggers.externalconditions.CircleCollision");
-//		actionList.clear();
-//		actionList.add("authoring.model.actions.oneActorActions.Move");
-//		tc.addTreeNode(actorList, triggerList, actionList);
+		// External Triggers
+		actorList.clear();
+		actorList.add("asteroid");
+		actorList.add("player");
+		triggerList.clear();
+		triggerList.add("authoring.model.triggers.externalconditions.CircleCollision");
+		actionList.clear();
+		actionList.add("authoring.model.actions.oneActorActions.RemoveActor");
+		tc.addTreeNode(actorList, triggerList, actionList);
 		
 		
 		
@@ -208,43 +209,5 @@ public class Main extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
 	}
 }
-
-//		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.TrueSelfTrigger", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
-
-//		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.TrueSelfTrigger", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.DecreaseSpeed"}));
-
-//		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.UpArrowKey", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
-//		
-//		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.DownArrowKey", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.MoveBackwards"}));
-
-//		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.LeftArrowKey", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.RotateClockwise"}));
-//		
-//		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.RightArrowKey", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.RotateCounterclockwise"}));
-
-
-//		tc.addSelfTriggerActions("asteroid", "authoring.model.triggers.selfconditions.LeftArrowKey",
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
-//		
-//		tc.addSelfTriggerActions("asteroid", "authoring.model.triggers.selfconditions.RightArrowKey",
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.MoveBackwards"}));
-//		
-//		tc.addSelfTriggerActions("asteroid", "authoring.model.triggers.selfconditions.SpaceBarKey",
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.SplitAndReduceSize"}));
-//
-//		
-//		tc.addEventTriggerActions("player", "asteroid", "authoring.model.triggers.externalconditions.CircleCollision", 
-//				Arrays.asList(new String[]{"authoring.model.actions.twoActorActions.SwapDirections"}));
-
-//		tc.addEventTriggerActions("player", "asteroid", "authoring.model.triggers.externalconditions.InRange", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.ReduceSize"}));

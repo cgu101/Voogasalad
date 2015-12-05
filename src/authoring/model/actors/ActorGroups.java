@@ -11,7 +11,7 @@ import authoring.model.bundles.Bundle;
  * @author Inan and Sung
  *
  */
-public class ActorGroups implements Serializable {
+public class ActorGroups implements Serializable{
 	private Map<String,Bundle<Actor>> actorMap;
 	
 	private Map<String,Bundle<Actor>> newActors;
@@ -23,6 +23,10 @@ public class ActorGroups implements Serializable {
 		deadActors = new HashMap<String,Bundle<Actor>>();
 	}
 
+	/**
+	 * Doesn't copy newActors and deadActors
+	 * @param oldActorMap
+	 */
 	public ActorGroups (ActorGroups oldActorMap) {
 		this.actorMap = new HashMap<String, Bundle<Actor>>();
 		for (Entry<String, Bundle<Actor>> k : oldActorMap.getMap().entrySet()) {
@@ -64,6 +68,12 @@ public class ActorGroups implements Serializable {
 		addActorToMap(actor, actorMap);
 	}
 	
+	public void addActor (Actor... actor) {
+		for(Actor a: actor){
+			addActorToMap(a, actorMap);
+		}
+	}
+	
 	public void removeActor (Actor actor) {
 		String groupName = actor.getGroupName();
 		getGroupFromMap(groupName, actorMap).remove(actor.getUniqueID());
@@ -100,5 +110,9 @@ public class ActorGroups implements Serializable {
 				removeActor(actor);
 			}
 		}
+	}
+	
+	public boolean areThereNewOrDeadActors(){
+		return (!newActors.isEmpty() || !deadActors.isEmpty());
 	}
 }

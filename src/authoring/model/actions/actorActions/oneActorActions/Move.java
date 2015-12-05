@@ -1,22 +1,21 @@
-package authoring.model.actions.oneActorActions;
+package authoring.model.actions.actorActions.oneActorActions;
 
-import authoring.model.actions.AActionOneActor;
+import java.util.Map;
+
+import authoring.model.actions.actorActions.AOneActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
-import authoring.model.tree.Parameters;
-import engine.State;
 
 /**
  * @author Inan
  *
  */
-public class Move extends AActionOneActor{
+public class Move<V> extends AOneActorAction<V>{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
-
+	public void run(Map<String, V> parameters_values, ActorGroups actorGroups, Actor actor) {
 		Double angle = ((Property<Double>) actor.getProperty("angle")).getValue();
 		Double speed = ((Property<Double>) actor.getProperty("speed")).getValue();
 		Double x = ((Property<Double>) actor.getProperty("xLocation")).getValue();
@@ -26,8 +25,6 @@ public class Move extends AActionOneActor{
 		y = y + Math.sin(Math.toRadians(angle)) * speed;
 
 		((Property<Double>)actor.getProperty("xLocation")).setValue(x);
-		((Property<Double>)actor.getProperty("yLocation")).setValue(y);
-		ActorGroups actorGroup = state.getActorMap();
-		actorGroup.addActor(actor);
+		((Property<Double>)actor.getProperty("yLocation")).setValue(y);		
 	}
 }
