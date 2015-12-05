@@ -167,7 +167,7 @@ public class PlayerScreen extends AbstractScreen {
 		     switch (type) {
 		         case "Replay Level":  playerController.replayLevel();;
 		         	break;
-		         case "Reset Game": playerController.restartGame();;
+		         case "Reset Game": playerController.resetGame();;
 		         	break;
 		     }
 			//TODO: Needs to reset the map as well
