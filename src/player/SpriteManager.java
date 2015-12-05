@@ -47,16 +47,16 @@ public class SpriteManager {
 		for(Actor a : actors){
 			if(sprites.containsKey(a.getUniqueID())){
 				Sprite s = sprites.get(a.getUniqueID());
-				s.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
-				s.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
+				centerSprite(a, s);
 //				System.out.println(s.getX() + ", " + s.getY() + " - " + s.getImage());
 			//}else if((Boolean)a.getProperties().getComponents().get("_visible").getValue()){
 			}else{
 				Sprite newsp = createSprite(a);
 				sprites.put(a.getUniqueID(), newsp);
 				myCamera.getGroup().getChildren().add(newsp);
-				newsp.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
-				newsp.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
+				centerSprite(a, newsp);
+//				newsp.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
+//				newsp.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
 				newsp.play(0);
 			}
 			stillAlive.put(a.getUniqueID(), true);
@@ -75,6 +75,15 @@ public class SpriteManager {
 			stillAlive.put(id,  false);
 		}
 		
+	}
+
+	private void centerSprite(Actor a, Sprite s) {
+		double x = a.getPropertyValue("xLocation");
+		double y = a.getPropertyValue("yLocation");
+		double size = a.getPropertyValue("size");
+		
+		s.setX(x - size/2);
+		s.setY(y - size/2);
 	}
 	
 	private void removeDeadActors(ArrayList<Actor> actors) {
