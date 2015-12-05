@@ -52,6 +52,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 
 	@Override
 	protected void makePane() {
+		//pane.getChildren().clear();
 		addLabelPane();
 		individualActorList = FXCollections.observableArrayList(new ArrayList<String>());
 
@@ -62,7 +63,9 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 
 		observableIndividualActorList = new ListView<String>(individualActorList);
 		pane.add(observableIndividualActorList, 0, 1);
-		pane.prefHeightProperty().bind(screen.getScene().heightProperty());
+		pane.setMaxHeight(Double.parseDouble(myResources.getString("height")));
+		//pane.prefHeightProperty().bind(screen.getScene().heightProperty());
+		//pane.setMaxHeight(screen.getScene().getHeight() * 2/3);
 		pane.setFocusTraversable(false);
 		pane.setAlignment(Pos.TOP_CENTER);
 		pane.setMaxWidth(Double.parseDouble(myResources.getString("width")));
@@ -121,6 +124,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 
 	//Call to reload the properties for every actor
 	public void resetData() {
+	//	pane.getChildren().clear();
 		pane.getChildren().remove(observableIndividualActorList);
 		pane.getChildren().remove(checkComboBox);
 
