@@ -63,8 +63,8 @@ public class InteractionCell extends TreeCell<InteractionData>{
 			String tooltext;
 			try {
 				tooltext = item.getValues().stream()
-												.map(e -> {return e.getText() + ": " + e.getValue();})
-												.collect(Collectors.joining("\n"));
+						.map(e -> {return e.getText() + ": " + e.getValue();})
+						.collect(Collectors.joining("\n"));
 			} catch (NullPointerException n) {
 				tooltext = "";
 			}
