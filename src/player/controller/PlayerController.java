@@ -140,6 +140,19 @@ public class PlayerController implements IPlayer {
 	}
 	
 	/**
+	 * This method grabs the list of Actor Groups from the state returned by the engine.
+	 *
+	 * @return the list of Actor Groups.
+	 */
+	public ArrayList<String> getActorGroups() {
+		ArrayList<String> actorGroups = new ArrayList<String>();
+		for(String s :myEngine.getState().getActorMap().getMap().keySet()){
+			actorGroups.add(s);
+		}
+		return actorGroups;
+	}
+	
+	/**
 	 * This method grabs the the Game Properties from the Game Engine.
 	 * The keys are the property type, and the values are the property values.
 	 * 
@@ -192,7 +205,6 @@ public class PlayerController implements IPlayer {
 	 * The map is in <String, String> format to allow for easy GUI display.
 	 *
 	 * @param a The Actor you would like to retrieve the properties for.
-	 * @param group The group classification of the Actor you're looking for.
 	 * 
 	 * @return The map of properties identifier -> value casted to Strings.
 	 */
@@ -268,5 +280,23 @@ public class PlayerController implements IPlayer {
 	
 	public State getState(){
 		return myEngine.getState();
+	}
+	
+	public void resetGame() throws GameFileException{
+		try {
+			myEngine.reset();
+			actorMonitor.resetData();
+		} catch (EngineException e) {
+			throw new GameFileException(e.getMessage());
+		}
+	}
+	
+	public void replayLevel() throws GameFileException{
+		try {
+			myEngine.replayLevel();
+			actorMonitor.resetData();
+		} catch (EngineException e) {
+			throw new GameFileException(e.getMessage());
+		}
 	}
 }

@@ -101,7 +101,7 @@
                     <children>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
-                        <value>authoring.model.actions.actorActions.oneActorActions.Move</value>
+                        <value>authoring.model.actions.actorActions.oneActorActions.RemoveActor</value>
                         <parameters>
                           <parameter__values/>
                         </parameters>

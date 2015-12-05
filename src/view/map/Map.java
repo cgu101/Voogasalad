@@ -12,11 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import view.element.AbstractElement;
 import view.handler.ActorHandler;
-import view.screen.AbstractScreen;
 
 /**
  * The Map class allows for a visual representation of the game map. Includes a
@@ -32,7 +29,6 @@ public class Map extends AbstractElement {
 	private Group contentGroup;
 	private Group zoomGroup;
 	private Group layout;
-	private AbstractScreen screen;
 	protected AuthoringController controller;
 
 	private Group mapArea;
@@ -77,7 +73,7 @@ public class Map extends AbstractElement {
 		// it
 		controller = new AuthoringController();
 		editToolbar = new ToolBar();
-		actorHandler = new ActorHandler(layout, controller, editToolbar);
+		actorHandler = new ActorHandler(layout, controller, editToolbar, this);
 		// TODO: actorHandler = new ActorHandler(layout, zoomSliderArea,
 		// controller, editToolbar);
 
@@ -126,18 +122,6 @@ public class Map extends AbstractElement {
 		}
 		background.setPreserveRatio(true);
 		actorHandler.updateBackground(background);
-	}
-
-	public void setMapWidth(double width) {
-
-	}
-
-	public void setMapHeight(double height) {
-
-	}
-
-	public void preserveRatio(boolean preserve) {
-
 	}
 
 	public void setPanEnabled(boolean enable) {
@@ -212,7 +196,6 @@ public class Map extends AbstractElement {
 		createMiniMap();
 
 		mapArea.getChildren().add(mapScrollableArea);
-		theMiniMap.getMiniMap().setTranslateY(300);
 		mapArea.getChildren().add(theMiniMap.getMiniMap());
 		System.out.println("The minimap's bounds are: " + theMiniMap.getMiniMap().getBoundsInParent());
 	}
