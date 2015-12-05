@@ -125,12 +125,12 @@ public class ActorEditor extends AbstractDockElement {
 		contentPane.add(makeImage(leftItem), 0, 0);
 		contentPane.add(makeInteractionText(leftItem, rightItem), 1, 1);
 		contentPane.add(makeImage(rightItem), 2, 0);
-		contentPane.add(makeExternalTriggerEditor(leftItem, rightItem), 0, 2);
+		contentPane.add(makeTriggerEditor(leftItem, rightItem), 0, 2);
 	}
 
 
-	private TreeView<InteractionData> makeExternalTriggerEditor(String leftItem, String rightItem) {
-		//TODO
+	private TreeView<InteractionData> makeTriggerEditor(String... items) {
+		//TODO use items, hook up backend
 		TreeItem<InteractionData> rootItem = new TreeItem<InteractionData>(new InteractionData("Interaction","Interaction",null,new String[]{"Asteroid"}));
 		rootItem.setExpanded(true);
 		TreeView<InteractionData> treeView = new TreeView<InteractionData>(rootItem);
@@ -170,7 +170,9 @@ public class ActorEditor extends AbstractDockElement {
 		contentPane.add(makeImage(item), 0, 1);
 		contentPane.add(makeName(item), 1, 1);
 		contentPane.add(makePropertyEditor(item), 1, 2);
-		contentPane.add(makeSelfTriggerEditor(item), 0, 3);
+		// TODO
+//		contentPane.add(makeSelfTriggerEditor(item), 0, 3);
+		contentPane.add(makeTriggerEditor(item), 0, 3);
 	}
 
 	private ListView<String> makePropertyEditor(String item) {
