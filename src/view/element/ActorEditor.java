@@ -2,7 +2,10 @@ package view.element;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import authoring.controller.AuthoringController;
+import authoring.controller.parameters.ParameterData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -131,7 +134,8 @@ public class ActorEditor extends AbstractDockElement {
 
 	private TreeView<InteractionData> makeTriggerEditor(String... items) {
 		//TODO use items, hook up backend
-		TreeItem<InteractionData> rootItem = new TreeItem<InteractionData>(new InteractionData("Interaction","Interaction",null,new String[]{"Asteroid"}));
+		TreeItem<InteractionData> rootItem = new TreeItem<InteractionData>(new InteractionData("Interaction","",
+				Arrays.asList(new ParameterData("text", null, null, "value"), new ParameterData("text2",null,null,"value2")),new String[]{"Asteroid"}));
 		rootItem.setExpanded(true);
 		TreeView<InteractionData> treeView = new TreeView<InteractionData>(rootItem);
 		treeView.setEditable(true);

@@ -1,10 +1,12 @@
 package view.interactions;
 
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import authoring.controller.AuthoringController;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
@@ -28,7 +30,7 @@ public class InteractionCell extends TreeCell<InteractionData>{
 	public void updateItem(InteractionData item, boolean empty) {
 		super.updateItem(item, empty);
 
-		if (empty) {
+		if (empty || item == null) {
 			setText(null);
 			setGraphic(null);
 		} else {
@@ -58,6 +60,15 @@ public class InteractionCell extends TreeCell<InteractionData>{
 				menu.getItems().add(makeAddTriggerItem());
 			}
 			setContextMenu(menu);
+			String tooltext;
+			try {
+				tooltext = item.getValues().stream()
+												.map(e -> {return e.getText() + ": " + e.getValue();})
+												.collect(Collectors.joining("\n"));
+			} catch (NullPointerException n) {
+				tooltext = "";
+			}
+			setTooltip(new Tooltip(tooltext));
 		}
 	}
 	private MenuItem makeAddTriggerItem () {
