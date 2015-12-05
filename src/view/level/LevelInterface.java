@@ -11,5 +11,5 @@ public interface LevelInterface {
 
 	public String makeTitle(int i);
 
-	public void updateBackground(Image backgroundImage);
+	public void initializeBackground(Image backgroundImage);
 }

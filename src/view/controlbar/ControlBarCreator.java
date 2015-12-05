@@ -118,7 +118,7 @@ public class ControlBarCreator extends ControlBar {
 
 		try {
 			Image backgroundImage = new Image(file.toURI().toURL().toExternalForm(), 60, 0, true, false);
-			workspace.getCurrentLevel().updateBackground(backgroundImage);
+			workspace.getCurrentLevel().initializeBackground(backgroundImage);
 		} catch (IOException ex) {
 			// Alert fail = new Alert(AlertType.ERROR, "Unable to Load Image",
 			// ButtonType.OK);

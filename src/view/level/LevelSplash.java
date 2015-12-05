@@ -51,7 +51,7 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 	}
 
 	@Override
-	public void updateBackground(Image i) {
+	public void initializeBackground(Image i) {
 		pane.getChildren().clear();
 		ImageView image = new ImageView(i);
 		image.fitWidthProperty().bind(screen.getScene().widthProperty());
