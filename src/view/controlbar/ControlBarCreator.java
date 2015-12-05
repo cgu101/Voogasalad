@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import authoring.model.game.Game;
+import authoring.model.level.Level;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -29,7 +30,7 @@ import view.screen.StartScreen;
 
 public class ControlBarCreator extends ControlBar implements Observer {
 	
-	private static final String DEFAULT_IP = "52.21.160.171";
+	private static final String DEFAULT_IP = "localhost";
 
 	private CreatorScreen screen;
 	private GameWindow gameWindow;
@@ -51,7 +52,11 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		super(screen.getDefaultPane());
 		this.gameWindow = new GameWindow(DEFAULT_IP);
 		this.screen = screen;
+		this.screen.getWorkspace().addNetwork(gameWindow);
 		this.gameData = gameWindow.getGameData();
+		
+		gameWindow.addObserver(this.screen);
+		gameWindow.addObserver(this);
 		makePane();
 	}
 
@@ -75,9 +80,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		Button rightButton = makeButton("right", e -> screen.getWorkspace().moveLevelLeft(false));
 		Button splashButton = makeButton("splash", e -> screen.getWorkspace().addSplash());
 		Button newActor = makeButton("new", e -> addActor());
-		
-//		Button newActor = makeButton("new", e -> {addActor(); if (screen.getGameWindow() != null) {screen.getGameWindow().getClient().send("33");}});
-		
+
 		toolBar.getItems().addAll(backButton, new Separator(), leftButton, rightButton, addButton, splashButton,
 				new Separator(), newActor);
 	}
@@ -89,8 +92,9 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				KeyCombination.CONTROL_DOWN);
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save, exit);
 
-		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> screen.getWorkspace().addLevel(), KeyCode.T,
-				KeyCombination.CONTROL_DOWN);
+		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), 
+				e -> {gameData.addLevel(); screen.getWorkspace().updateVisual(gameWindow, gameData); }, 
+				KeyCode.T, KeyCombination.CONTROL_DOWN);
 		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> screen.getWorkspace().addSplash(), KeyCode.R,
 				KeyCombination.CONTROL_DOWN);
 		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(),
@@ -181,6 +185,6 @@ public class ControlBarCreator extends ControlBar implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		
+		this.gameData = (Game) arg;
 	}
 }

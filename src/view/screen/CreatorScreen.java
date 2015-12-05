@@ -53,6 +53,11 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		root.prefWidthProperty().bind(scene.widthProperty());
 		this.title = myResources.getString("title");
 	}
+	
+	public CreatorScreen (Game game, GameWindow gw) {
+		this(game);
+		w.addNetwork(gw);
+	}
 
 	@Override
 	public void run() {
@@ -132,6 +137,8 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		System.out.println("OBserver update");
+		
 		Game receivedGame = (Game) arg;
 		w.updateVisual((GameWindow) o, (Game) arg);
 	}
