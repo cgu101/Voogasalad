@@ -23,6 +23,10 @@ public class Move<V> extends AOneActorAction<V>{
 		
 		x = x + Math.cos(Math.toRadians(angle)) * speed; 
 		y = y + Math.sin(Math.toRadians(angle)) * speed;
+		
+		if (actor.hasProperty("distanceTraveled")) {
+			actor.setProperty("distanceTraveled", (Double) actor.getPropertyValue("distanceTraveled") + speed);
+		}
 
 		((Property<Double>)actor.getProperty("xLocation")).setValue(x);
 		((Property<Double>)actor.getProperty("yLocation")).setValue(y);		

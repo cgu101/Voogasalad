@@ -40,6 +40,7 @@ public class ShootBullet<V> extends AOneActorAction<V>{
 		Property<Double> xB = new Property<Double>(x.getUniqueID(), x.getValue() + Math.cos(Math.toRadians(angle.getValue()))*dist);
 		Property<Double> yB = new Property<Double>(y.getUniqueID(), y.getValue() + Math.sin(Math.toRadians(angle.getValue()))*dist);
 		Property<Double> speedB = new Property<Double>("speed", 50.0);
+		Property<Double> distanceB = new Property<Double>("distanceTraveled", 0.0);
 		
 //		System.out.println("MegaMan: (" + x.getValue() + " , " + y.getValue() + ")");
 //		System.out.println(" Bullet: (" + xB.getValue() + " , " + yB.getValue() + ")");
@@ -52,6 +53,7 @@ public class ShootBullet<V> extends AOneActorAction<V>{
 		propBundle.add(speedB);
 		propBundle.add(sizeB);
 		propBundle.add(groupIDB);
+		propBundle.add(distanceB);
 		
 		Timestamp currentTimeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
 		String timeString = currentTimeStamp.toString();
