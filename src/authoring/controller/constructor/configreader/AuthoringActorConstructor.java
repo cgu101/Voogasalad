@@ -116,33 +116,33 @@ public class AuthoringActorConstructor {
 	
 	private List<String> getListForEverything(String type, String actor, String...otherActors) {	
 		List<String> ret = AuthoringConfigManager.getInstance().getConfigList(actor, type);
-		removeInvalidInstances(type, ret, otherActors);;
+		removeInvalidInstances(type, ret, actor, otherActors);
 		return ret;
 	}	
 	
-	private void removeInvalidInstances(String type, List<String> actions, String...otherActors) {
+	private void removeInvalidInstances(String type, List<String> actions, String actor, String...otherActors) {
 		List<String> toRemove = new ArrayList<String>();
 		
 		for(String action : actions) {
 			String num = AuthoringConfigManager.getInstance().getTypeInfo(type, action, ResourceType.NUM_ACTORS);
-			if(!num.equals("")) {
-				Integer val = new Integer(num);				
-				if(val > otherActors.length) {
-					toRemove.add(action);
-				} else {
-					for(int i=1; i <= val; i++) {
-						List<String> requiredProperties = AuthoringConfigManager.getInstance()
-								.getRequiredPropertyList(type, otherActors[i], String.format("%s.%s", ResourceType.ACTORS, i));
-						List<String> actorProperties = getPropertyList(otherActors[i-1]);
-						if(!requiredProperties.isEmpty() && !actorProperties.containsAll(requiredProperties)) {
-							toRemove.add(action);
-							break;
-						}
+			Integer val = new Integer(num);				
+			if(val > otherActors.length) {
+				toRemove.add(action);
+			} else {
+				for(int i=0; i < val; i++) {
+					String current = i==0 ? actor : otherActors[i];
+					List<String> requiredProperties = AuthoringConfigManager.getInstance()
+							.getRequiredPropertyList(type, otherActors[i], String.format("%s.%s", ResourceType.ACTORS, i));
+					List<String> actorProperties = getPropertyList(current);
+					
+					if(!actorProperties.containsAll(requiredProperties)) {
+						toRemove.add(action);
+						break;
 					}
 				}
 			}
-			actions.removeAll(toRemove);
 		}
+		actions.removeAll(toRemove);
 	}
 
 	private class ActorObject {

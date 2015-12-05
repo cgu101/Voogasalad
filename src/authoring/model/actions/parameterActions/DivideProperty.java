@@ -10,5 +10,4 @@ public class DivideProperty<V> extends AParameterAction<V> {
 		Double divisor = (Double) value;
 		property.setValue((Double)property.getValue() / divisor);
 	}
-
 }
