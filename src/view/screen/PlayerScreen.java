@@ -2,11 +2,16 @@ package view.screen;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import exceptions.EngineException;
 import exceptions.data.GameFileException;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -15,6 +20,7 @@ import util.FileChooserUtility;
 import view.controlbar.ControlBarPlayer;
 import view.element.AbstractDockElement;
 import view.element.ActorMonitor;
+import view.element.GameInfoMonitor;
 
 public class PlayerScreen extends AbstractScreen {
 
@@ -22,7 +28,8 @@ public class PlayerScreen extends AbstractScreen {
 	private PlayerController playerController;
 	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
-	private ActorMonitor monitor;
+	private ActorMonitor actorMonitor;
+	private GameInfoMonitor gameInfoMonitor;
 	//	private Workspace w;
 
 	public PlayerScreen() {
@@ -85,10 +92,14 @@ public class PlayerScreen extends AbstractScreen {
 		bottomPane.add(homePanes.get(2), 0, 0);
 		r.setBottom(bottomPane);
 		components = new ArrayList<AbstractDockElement>(); //No components yet! 
-		monitor = new ActorMonitor(dockPanes.get(0), homePanes.get(0),
+		gameInfoMonitor = new GameInfoMonitor(dockPanes.get(0), homePanes.get(0),
+				myResources.getString("gameinfoname"), this, playerController);
+		
+		actorMonitor = new ActorMonitor(dockPanes.get(1), homePanes.get(1),
 				myResources.getString("monitorname"), this, playerController);
-		playerController.addMonitor(monitor);
-		components.add(monitor);
+		components.add(actorMonitor);
+		components.add(gameInfoMonitor);
+		playerController.addMonitor(actorMonitor);
 	}
 
 	// TODO: David: need a stage eventually for the line: fileChooser.showOpenDialog(null);
@@ -113,8 +124,9 @@ public class PlayerScreen extends AbstractScreen {
 			//			ee.printStackTrace();
 			System.err.println("Level exception!");
 		}
-		monitor.initializePane();
-		monitor.refresh();
+		gameInfoMonitor.initializePane();
+		actorMonitor.initializePane();
+		actorMonitor.refresh();
 		configureObserverRelationships();
 		controlBarPlayer.initializeComponents();
 	}
@@ -154,7 +166,39 @@ public class PlayerScreen extends AbstractScreen {
 	}
 	
 	private void configureObserverRelationships() {
-		playerController.getState().addObserver(monitor);
+		playerController.getState().addObserver(actorMonitor);
+	}
+
+	public void resetOrReplay(String type) {
+		try {
+		     switch (type) {
+		         case "Replay Level":  playerController.replayLevel();;
+		         	break;
+		         case "Reset Game": playerController.resetGame();;
+		         	break;
+		     }
+			//TODO: Needs to reset the map as well
+		} catch (NullPointerException e) {
+			showWarning("Game Reset Error", "No Game Laoded!");
+		} catch (GameFileException e) {
+			showWarning("Game Reset Error", "Unable to " + type);
+			e.printStackTrace();
+		}
+	}
+	
+	public void confirmRestartOrReplay(String type){
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation");
+		alert.setHeaderText(type);
+		alert.setContentText("Are you sure you'd like to?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK){
+		    alert.hide();
+		    resetOrReplay(type);
+		} else {
+		    alert.hide();
+		}
 	}
 
 }

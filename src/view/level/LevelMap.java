@@ -63,8 +63,6 @@ public class LevelMap extends Map implements LevelInterface {
 		}
 		event.setDropCompleted(success);
 		event.consume();
-		System.out.println(myTab.getTabPane().getBoundsInParent());
-
 	}
 	
 	private void createMap(ActorPropertyMap apm) {
