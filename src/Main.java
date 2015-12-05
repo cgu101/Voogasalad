@@ -155,7 +155,6 @@ public class Main extends Application {
 		actionList.add("Move");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
-		
 		// Asteroid Self Triggers
 		actorList.clear();
 		actorList.add("asteroid");
@@ -174,15 +173,21 @@ public class Main extends Application {
 		actionList.add("Move");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
+		triggerList.clear();
+		triggerList.add("DistanceTraveledCheck");
+		actionList.clear();
+		actionList.add("RemoveActor");
+		tc.addTreeNode(actorList, triggerList, actionList);
+		
 		// External Triggers
 		//Remove asteroid when asteroid and bullet collide
 		actorList.clear();
 		actorList.add("asteroid");
 		actorList.add("bullet");
 		triggerList.clear();
-		triggerList.add("authoring.model.triggers.externalconditions.CircleCollision");
+		triggerList.add("CircleCollision");
 		actionList.clear();
-		actionList.add("authoring.model.actions.actorActions.oneActorActions.RemoveActor");
+		actionList.add("RemoveActor");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
 		//Remove bullet when asteroid and bullet collide

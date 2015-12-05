@@ -120,7 +120,12 @@ public class InteractionExecutor {
 		});
 		lambdaMap.put(TRIGGER_IDENTIFIER, (node, list) -> {
 //			System.out.println(triggerMap.values());
+			//TODO
+			System.out.println("NODE: " + node);
 			ITriggerEvent triggerEvent = triggerMap.get(node.getValue());
+			if (triggerEvent == null) {
+				System.out.println("NULL TRIGGER");
+			}
 			if (triggerEvent.condition(((ParameterTreeNode) node).getParameters(), inputMap, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
 				for (InteractionTreeNode child : node.children()) {
 //					System.out.println(child.getIdentifier());
