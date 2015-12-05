@@ -1,13 +1,27 @@
 package view.controlbar;
 
+import java.util.Optional;
+
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.VBoxBuilder;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import view.element.AbstractDockElement;
 import view.screen.AbstractScreen;
 import view.screen.PlayerScreen;
@@ -78,7 +92,9 @@ public class ControlBarPlayer extends ControlBar {
 		Button pauseButton = makeButton("pause", e -> currentScreen.pause());
 		Button saveButton = makeButton("save", e -> currentScreen.saveState()); //TODO
 		Button loadButton = makeButton("load", e -> currentScreen.loadState()); // TODO
-		toolBar.getItems().addAll(backButton, playButton, pauseButton, saveButton, loadButton);
+		Button replayButton = makeButton("replay", e -> currentScreen.confirmRestartOrReplay("Replay Level"));
+		Button resetButton = makeButton("reset", e -> currentScreen.confirmRestartOrReplay("Reset Game"));
+		toolBar.getItems().addAll(backButton, playButton, pauseButton, saveButton, loadButton, replayButton, resetButton);
 	}
 	
 	private void toggleToolbar(Boolean value) {
