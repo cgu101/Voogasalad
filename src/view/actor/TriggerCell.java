@@ -20,7 +20,7 @@ import javafx.scene.text.Text;
  * It allows for modification of Triggers
  * 
  */
-public class TriggerCell extends AbstractListCell {
+public class TriggerCell extends AbstractListCell<String> {
 	private AuthoringController controller;
 	private String actor;
 	private String other;
