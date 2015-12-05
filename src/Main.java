@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import authoring.controller.constructor.levelwriter.ActorGroupsConstructor;
 import authoring.controller.constructor.levelwriter.MapConstructor;
@@ -54,67 +55,55 @@ public class Main extends Application {
 	private static void createTestGame2() {
 		/* Create a test game */
 		Game testGame = new Game();
-		Level testLevel = new Level("0");
-		TreeConstructor tc = new TreeConstructor();  //Changed constructor from none to public
-		
 		Property p = new Property("name", "Awesome Game");
 		testGame.addProperty(p);
-		
-		ActorGroupsConstructor ac = new ActorGroupsConstructor();	// Changed constructor from nothing to public
-		ActorPropertyMap apm = new ActorPropertyMap();
-		apm.addProperty("xLocation", "0");
-		apm.addProperty("yLocation", "0");
-		apm.addProperty("angle", "45");
-		apm.addProperty("speed", "0");
-		apm.addProperty("image", "megaman.png");
-		apm.addProperty("groupID", "player");
-		apm.addProperty("size", "12");
-		apm.addProperty("range", "40");
-		apm.addProperty("health", "20");
-		ac.updateActor("testActor", apm);
-		
-		ActorPropertyMap apm2 = new ActorPropertyMap();
-		apm2.addProperty("xLocation", "330");
-		apm2.addProperty("yLocation", "0");
-		apm2.addProperty("angle", "135");
-		apm2.addProperty("speed", "15");
-		apm2.addProperty("image", "asteroids.png");
-		apm2.addProperty("groupID", "asteroid");
-		apm2.addProperty("size", "30");
-		apm2.addProperty("health", "20");
-		ac.updateActor("testActor2", apm2);
-		
-		ac.getActorGroups().addGroup("bullet");
-		
-//		ActorPropertyMap apm3 = new ActorPropertyMap();
-//		apm.addProperty("s", "0");
-//		apm.addProperty("yLocation", "0");
-//		apm.addProperty("angle", "45");
-//		apm.addProperty("speed", "0");
-//		apm.addProperty("image", "megaman.png");
-//		apm.addProperty("groupID", "bullet");
-//		apm.addProperty("size", "12");
-//		apm.addProperty("range", "40");
-//		apm.addProperty("health", "20");
-//		ac.updateActor("testActor3", apm3);
-
-		
+		Level testLevel = new Level("0");
+		TreeConstructor tc = new TreeConstructor();  //Changed constructor from none to public
 		MapConstructor m = new MapConstructor();
-//		m.addTriggerToMap("authoring.model.triggers.selfconditions.UpArrowKey");
-//		m.addTriggerToMap("authoring.model.triggers.selfconditions.LeftArrowKey");
-//		m.addTriggerToMap("authoring.model.triggers.selfconditions.RightArrowKey");
-//		m.addTriggerToMap("authoring.model.triggers.selfconditions.DownArrowKey");
-//		m.addTriggerToMap("authoring.model.triggers.selfconditions.SpaceBarKey");
-//		m.addTriggerToMap("authoring.model.triggers.selfconditions.TrueSelfTrigger");
-//		m.addTriggerToMap("authoring.model.triggers.externalconditions.CircleCollision");
-//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.Move");
-//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.RotateCounterclockwise");
-//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.RotateClockwise");
-//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.IncreaseSpeed");
-//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.DecreaseSpeed");
-//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.ShootBullet");
-//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.SplitAndReduceSize");
-//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.RemoveActor");
+		ActorGroupsConstructor ac = new ActorGroupsConstructor();	// Changed constructor from nothing to public
+		ac.getActorGroups().addGroup("bullet");		
+
+		//MegaMan Actor
+		ActorPropertyMap apmMegaMan = new ActorPropertyMap();
+		apmMegaMan.addProperty("groupID", "player");
+		apmMegaMan.addProperty("image", "megaman.png");
+		apmMegaMan.addProperty("xLocation", "0");
+		apmMegaMan.addProperty("yLocation", "0");
+		apmMegaMan.addProperty("angle", "45");
+		apmMegaMan.addProperty("speed", "0");
+		apmMegaMan.addProperty("size", "50");
+		apmMegaMan.addProperty("range", "40");
+		apmMegaMan.addProperty("health", "20");
+		ac.updateActor("testActor", apmMegaMan);
+		
+		//Asteroid Actors
+		Random generator = new Random();
+		ActorPropertyMap apmAsteroid = new ActorPropertyMap();
+		apmAsteroid.addProperty("groupID", "asteroid");
+		apmAsteroid.addProperty("image", "asteroids.png");
+		apmAsteroid.addProperty("size", "128");
+		apmAsteroid.addProperty("health", "20");
+		apmAsteroid.addProperty("xLocation", Integer.toString(generator.nextInt(701)));
+		apmAsteroid.addProperty("yLocation", Integer.toString(generator.nextInt(601)));
+		apmAsteroid.addProperty("angle", Integer.toString(generator.nextInt(360)));
+		apmAsteroid.addProperty("speed", Integer.toString(10 + generator.nextInt(11)));
+		ac.updateActor("testActor2", apmAsteroid);
+		apmAsteroid.addProperty("xLocation", Integer.toString(generator.nextInt(701)));
+		apmAsteroid.addProperty("yLocation", Integer.toString(generator.nextInt(601)));
+		apmAsteroid.addProperty("angle", Integer.toString(generator.nextInt(360)));
+		apmAsteroid.addProperty("speed", Integer.toString(10 + generator.nextInt(11)));
+		ac.updateActor("testActor3", apmAsteroid);
+		apmAsteroid.addProperty("xLocation", Integer.toString(generator.nextInt(701)));
+		apmAsteroid.addProperty("yLocation", Integer.toString(generator.nextInt(601)));
+		apmAsteroid.addProperty("angle", Integer.toString(generator.nextInt(360)));
+		apmAsteroid.addProperty("speed", Integer.toString(10 + generator.nextInt(11)));
+		ac.updateActor("testActor4", apmAsteroid);
+		apmAsteroid.addProperty("xLocation", Integer.toString(generator.nextInt(701)));
+		apmAsteroid.addProperty("yLocation", Integer.toString(generator.nextInt(601)));
+		apmAsteroid.addProperty("angle", Integer.toString(generator.nextInt(360)));
+		apmAsteroid.addProperty("speed", Integer.toString(10 + generator.nextInt(11)));
+		ac.updateActor("testActor5", apmAsteroid);
+		
 		
 		// Mega Man Self Triggers
 		List<String> actorList = new ArrayList<String>();
@@ -159,7 +148,7 @@ public class Main extends Application {
 		actorList.clear();
 		actorList.add("asteroid");
 		triggerList.clear();
-		triggerList.add("DownArrowKey");
+		triggerList.add("TrueSelfTrigger");
 		actionList.clear();
 		actionList.add("Move");
 		tc.addTreeNode(actorList, triggerList, actionList);

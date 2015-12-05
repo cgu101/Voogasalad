@@ -27,8 +27,17 @@ public class Move<V> extends AOneActorAction<V>{
 		if (actor.hasProperty("distanceTraveled")) {
 			actor.setProperty("distanceTraveled", (Double) actor.getPropertyValue("distanceTraveled") + speed);
 		}
+		
+		x = checkBoundary(x, 1100-400);
+		y = checkBoundary(y, 600);
 
 		((Property<Double>)actor.getProperty("xLocation")).setValue(x);
 		((Property<Double>)actor.getProperty("yLocation")).setValue(y);		
+	}
+	
+	private double checkBoundary(double coordinate, int bound) {
+		if (coordinate < 0 || coordinate > bound)
+			return (coordinate+bound) % bound;
+		return coordinate;
 	}
 }
