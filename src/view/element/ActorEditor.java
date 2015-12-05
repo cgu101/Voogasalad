@@ -125,7 +125,7 @@ public class ActorEditor extends AbstractDockElement {
 
 	private ListView<String> makeExternalTriggerEditor(String leftItem, String rightItem) {
 		ObservableList<String> triggers = FXCollections.observableArrayList(new ArrayList<String>());
-		triggers.addAll(controller.getAuthoringActorConstructor().getEventTriggerList(leftItem, rightItem));
+		triggers.addAll(controller.getAuthoringActorConstructor().getTriggerList(leftItem, rightItem));
 		ListView<String> list = new ListView<String>(triggers);
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
@@ -177,7 +177,7 @@ public class ActorEditor extends AbstractDockElement {
 
 	private ListView<String> makeSelfTriggerEditor(String item) {
 		ObservableList<String> triggers = FXCollections.observableArrayList(new ArrayList<String>());
-		triggers.addAll(controller.getAuthoringActorConstructor().getSelfTriggerList(item));
+		triggers.addAll(controller.getAuthoringActorConstructor().getTriggerList(item));
 		ListView<String> list = new ListView<String>(triggers);
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override

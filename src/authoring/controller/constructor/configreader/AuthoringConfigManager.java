@@ -3,28 +3,25 @@ package authoring.controller.constructor.configreader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 public class AuthoringConfigManager {
-
-	private Map<String, ResourceBundle> actorMap;
-	private Map<String, ResourceBundle> propertyMap;
+	
+	private Map<String, Map<String, ResourceBundle>> bundleMaps;
 	private ResourceBundle myConfiguration;
 	
 	private static final String CONFIGURATION_DIR = "authoring/files/%s";
-	private static final String ACTORS = "actors";
-	private static final String PROPERTIES= "properties";
 	private static final String CONFIGURATION = "configuration";
 	private static final String DIRECTORY_FORMAT = "%s/%s";
 	private static final String REG_EX = ",";
+	
 	private static final String TYPE = "type";	
-
-	public static final String SELF_TRIGGER = "selfTrigger";
-	public static final String EVENT_TRIGGER = "eventTrigger";
-	public static final String ONE_ACTOR_ACTIONS = "oneActorActions";
-	public static final String TWO_ACTOR_ACTIONS = "twoActorActions";
+	private static final String GENERAL = "general";
+	private static final String REQUIRED_PROPERTIES = "requiredProperties";
 	
 	private static final AuthoringConfigManager myManager = new AuthoringConfigManager();
 	
@@ -33,21 +30,21 @@ public class AuthoringConfigManager {
 	}
 	
 	private void load() {
-		actorMap = new HashMap<String, ResourceBundle>();
-		propertyMap = new HashMap<String, ResourceBundle>();
 		myConfiguration = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, CONFIGURATION));
-		loadMap(actorMap, myConfiguration.getString(ACTORS).split(REG_EX), ACTORS);
-		loadMap(propertyMap, myConfiguration.getString(PROPERTIES).split(REG_EX), PROPERTIES);
+		bundleMaps = new HashMap<String, Map<String, ResourceBundle>>();
+		for(String s : splitString(myConfiguration.getString(CONFIGURATION))) {
+			bundleMaps.put(s, loadMap(s));
+		}
 	}
 	
-	private void loadMap(Map<String, ResourceBundle> map, String[] names, String type) {		
-		for(String s: names) {
-			ResourceBundle toAdd = ResourceBundle.getBundle(
-					String.format(CONFIGURATION_DIR, 
-					String.format(DIRECTORY_FORMAT, type, s))
-					);
-			map.put(s, toAdd);
-		}	
+	private Map<String, ResourceBundle> loadMap(String type) {	
+		Map<String, ResourceBundle> myMap = new HashMap<String, ResourceBundle>();
+		List<String> toAdd = splitString(myConfiguration.getString(type));
+		for(String s: toAdd) {
+			ResourceBundle r = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, String.format(DIRECTORY_FORMAT, type, s)));
+			myMap.put(s, r);
+		}
+		return myMap;
 	}
 	
 	/**
@@ -68,22 +65,22 @@ public class AuthoringConfigManager {
 		load();
 	}
 	
+	
 	/**
-	 * This method will return a String array of all default Actors. 
 	 * 
-	 * @return List<String> 
+	 * 
 	 */
-	public List<String> getActorList() {
-		return new ArrayList<String>(actorMap.keySet());
+	
+	public List<String> getKeyList(String type) {
+		return new ArrayList<String>(bundleMaps.get(type).keySet());
 	}
 	
 	/**
-	 * This method will return a String array of all default Properties. 
 	 * 
-	 * @return List<String> 
-	 */	
-	public List<String> getPropertyList() {
-		return new ArrayList<String>(propertyMap.keySet());
+	 */
+	
+	public String getTypeInfo(String type, String instance, String info) {
+		return bundleMaps.get(type).get(instance).getString(info);
 	}
 	
 	/**
@@ -92,7 +89,9 @@ public class AuthoringConfigManager {
 	 * @return List<String> 
 	 */	
 	public List<String> getPropertyList(String actor) {
-		return splitString(actorMap.get(actor).getString(PROPERTIES));
+		return splitString(bundleMaps.get(ResourceType.ACTORS)
+				.get(actor)
+				.getString(ResourceType.PROPERTIES));
 	}
 
 	/**
@@ -103,7 +102,9 @@ public class AuthoringConfigManager {
 	 * @return String
 	 */
 	public String getDefaultPropertyValue(String actor, String property) {
-		return actorMap.get(actor).getString(property);
+		return bundleMaps.get(ResourceType.ACTORS)
+				.get(actor)
+				.getString(property);
 	}
 	
 	/**
@@ -114,7 +115,9 @@ public class AuthoringConfigManager {
 	 * @return String
 	 */
 	public String getPropertyType(String property) {
-		return propertyMap.get(property).getString(TYPE);
+		return bundleMaps.get(ResourceType.ACTORS)
+				.get(property)
+				.getString(TYPE);
 	}
 	
 	/**
@@ -130,15 +133,9 @@ public class AuthoringConfigManager {
 	 * @return List<String>
 	 */
 	public List<String> getConfigList(String actor, String type) {
-		List<String> triggerList = splitString(actorMap.get(actor).getString(type));
-		List<String> propertyList = getPropertyList(actor);
-		for(String s: propertyList) {
-			if(propertyMap.containsKey(s)) {
-				List<String> toAdd = splitString(propertyMap.get(s).getString(type));
-				combineList(triggerList, checkIfAdditionIsPossible(propertyList, toAdd, actor));
-			}
-		}	
-		return triggerList;
+		List<String> actorActionList = splitString(bundleMaps.get(ResourceType.ACTORS).get(actor).getString(type));		
+		List<String> generalActionList = splitString(myConfiguration.getString(String.format("%s.%s", type, GENERAL)));		
+		return combineLists(actorActionList, generalActionList);
 	}
 	
 	/**
@@ -147,24 +144,10 @@ public class AuthoringConfigManager {
 	 * @param instance
 	 * @return List<String>
 	 */
-	public static List<String> getRequiredPropertyList(String instance) {
-		return splitString(myManager.myConfiguration.getString(String.format("%s.%s", instance, PROPERTIES)));
+	public List<String> getRequiredPropertyList(String type, String instance) {
+		return splitString(bundleMaps.get(type).get(instance).getString(REQUIRED_PROPERTIES));
 	}
 	
-	private List<String> checkIfAdditionIsPossible(List<String> propertyList, List<String> toAdd, String actor) {
-		List<String> ret = new ArrayList<String>();
-		for(String add: toAdd) {
-			if(!add.equals("")) {
-				List<String> requiredProperties = getRequiredPropertyList(add);
-				if(requiredProperties.isEmpty() || propertyList.containsAll(requiredProperties)) {
-					if(!ret.contains(add)) {
-						ret.add(add);
-					}
-				}
-			}
-		}
-		return ret;
-	}
 	
 	private static List<String> splitString(String toSplit) {
 		List<String> ret = new ArrayList<String>();
@@ -174,11 +157,35 @@ public class AuthoringConfigManager {
 		return ret;
 	}
 	
-	private void combineList(List<String> a, List<String> b) {
-		for(String s : b) {
-			if(!a.contains(s)) {
-				a.add(s);
-			}
+	
+	@SafeVarargs
+	private static List<String> combineLists(List<String>...lists) {
+		Set<String> container = new HashSet<String>();
+		for(List<String> list : lists) {
+			container.addAll(list);
 		}
+		
+		List<String> ret = new ArrayList<String>();
+		ret.addAll(container);
+		return ret;
 	}
+
+	
+//	/**
+//	 * This method will return a String array of all default Actors. 
+//	 * 
+//	 * @return List<String> 
+//	 */
+//	public List<String> getActorList() {
+//		return new ArrayList<String>(actorMap.keySet());
+//	}
+//	
+//	/**
+//	 * This method will return a String array of all default Properties. 
+//	 * 
+//	 * @return List<String> 
+//	 */	
+//	public List<String> getPropertyList() {
+//		return new ArrayList<String>(propertyMap.keySet());
+//	}
 }

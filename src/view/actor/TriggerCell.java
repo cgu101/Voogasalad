@@ -77,7 +77,7 @@ public class TriggerCell extends AbstractListCell {
 				}
 			});
 		} else {
-			actions.addAll(controller.getAuthoringActorConstructor().getTwoActorActionList(actor, other));
+			actions.addAll(controller.getAuthoringActorConstructor().getActionList(actor, other));
 			selector.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 				public void onChanged(ListChangeListener.Change<? extends String> c) {
 					List<String> actions = selector.getCheckModel().getCheckedItems();
