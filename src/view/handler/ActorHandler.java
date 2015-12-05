@@ -1,9 +1,13 @@
 package view.handler;
 
+import java.util.Date;
+
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorPropertyMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -18,8 +22,12 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.RotateEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -94,16 +102,50 @@ public class ActorHandler extends AbstractVisual {
 		double origX = a.getXCoor();
 		double origY = a.getYCoor();
 		// create the filter
-		Rectangle r = makeFilterRectangle(e -> dragDrop(a, e));
+		Rectangle r = makeFilterRectangle(null);
+		r.setOnDragDetected(e -> startMoveDrag(e, a, r));
+		r.setOnDragOver(e -> duringMoveDrag(e));
+		r.setOnDragDone(e -> endMoveDrag(e, a, r));
+		r.setOnDragDropped(e -> dropMoveDrag(e, a, r));
 		Button undo = makeButton(myResources.getString("restore"), e -> a.restoreXY(origX, origY));
 		Pane spacer = makeSpacer();
 		Button finish = makeFinishButton(r);
 		replaceToolbar(makeLabel(myResources.getString("moveInstru")), spacer, undo, finish);
 	}
 
-	private void dragDrop(ActorView a, MouseEvent e) {
-		a.setXCoor(e.getX());
-		a.setYCoor(e.getY());
+	private void duringMoveDrag(DragEvent e) {
+		e.acceptTransferModes(TransferMode.MOVE);
+	}
+
+	private void startMoveDrag(MouseEvent e, ActorView a, Rectangle r) {
+		removeActor(a);
+		r.setCursor(Cursor.CLOSED_HAND);
+		Dragboard db = r.startDragAndDrop(TransferMode.MOVE);
+		ClipboardContent content = new ClipboardContent();
+		content.putString(a.getXCoor() + " " + a.getYCoor());
+		db.setContent(content);
+		db.setDragView(a.getImageView().getImage(), a.getImageView().getImage().getWidth() / 2,
+				a.getImageView().getImage().getHeight() / 2);
+	}
+
+	private void dropMoveDrag(DragEvent event, ActorView a, Rectangle r) {
+		r.setCursor(Cursor.DEFAULT);
+		System.out.println("drop");
+		viewManager.removeElements(r);
+		if (true) {// replace with in bounds condition
+			//add actor to the place
+		} else {
+			addActor(a, event.getX(), event.getY());
+		}
+		viewManager.addElements(r);
+		event.setDropCompleted(true);
+		event.consume();
+	}
+
+	private void endMoveDrag(DragEvent e, ActorView a, Rectangle r) {
+		e.getDragboard().clear();
+		r.setCursor(Cursor.DEFAULT);
+		e.consume();
 	}
 
 	private void copyActor(ActorView a) {
@@ -114,7 +156,7 @@ public class ActorHandler extends AbstractVisual {
 
 	private void rotateActor(ActorView a) {
 		map.setPanEnabled(false);
-		Rectangle r = makeFilterRectangle(e -> dragDrop(a, e));
+		Rectangle r = makeFilterRectangle(null);
 		Node currNode = a.getImageView();
 		double heading = currNode.getRotate();
 		// TODO: currNode.setOnRotate(e -> rotateActor(e));
@@ -171,7 +213,7 @@ public class ActorHandler extends AbstractVisual {
 
 	private void resizeActor(ActorView a) {
 		map.setPanEnabled(false);
-		Rectangle r = makeFilterRectangle(e -> dragDrop(a, e));
+		Rectangle r = makeFilterRectangle(null);
 		int growInc = Integer.parseInt(myResources.getString("growIncrement"));
 		Button plus = makeButton(makeImage(myResources.getString("plus")), e -> increaseActorSize(a, growInc));
 		Button minus = makeButton(makeImage(myResources.getString("minus")), e -> increaseActorSize(a, -1 * growInc));
@@ -218,7 +260,9 @@ public class ActorHandler extends AbstractVisual {
 		Rectangle rect = new Rectangle(700, 700);
 		double opacity = Double.parseDouble(myResources.getString("opacity"));
 		rect.setFill(Color.rgb(255, 0, 0, opacity));
-		rect.addEventHandler(MouseEvent.MOUSE_CLICKED, rectHandler);
+		if (rectHandler != null) {
+			rect.addEventHandler(MouseEvent.MOUSE_CLICKED, rectHandler);
+		}
 		viewManager.addElements(rect);
 		return rect;
 	}
