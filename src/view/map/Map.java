@@ -6,6 +6,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
@@ -92,7 +95,12 @@ public class Map extends AbstractElement {
 	 */
 	public void addActor(Actor element, double x, double y) {
 		// Use this method to add an actor to the StackPane.
-		actorHandler.addActor(element, x, y);
+		if (!actorHandler.rectangleOn()) {
+			actorHandler.addActor(element, x, y);
+		} else {
+			Alert alert = new Alert(AlertType.ERROR, myResources.getString("rectangleOn"), ButtonType.OK);
+			alert.showAndWait();
+		}
 	}
 
 	/**
@@ -119,9 +127,10 @@ public class Map extends AbstractElement {
 		if (!preserveMapRatio) {
 			background.setPreserveRatio(false);
 			background.setFitHeight(mapRegularHeight);
+		} else {
+			background.setFitHeight(mapRegularWidth * bg.getHeight()/bg.getWidth());
 		}
-		background.setPreserveRatio(true);
-		actorHandler.updateBackground(bg, background);
+		actorHandler.updateBackground(background);
 	}
 
 	public void setPanEnabled(boolean enable) {
