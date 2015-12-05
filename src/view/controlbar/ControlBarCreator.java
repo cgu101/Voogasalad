@@ -29,7 +29,7 @@ import view.screen.StartScreen;
 
 public class ControlBarCreator extends ControlBar implements Observer {
 	
-	private static final String DEFAULT_IP = "52.21.160.171";
+	private static final String DEFAULT_IP = "localhost";
 
 	private CreatorScreen screen;
 	private GameWindow gameWindow;

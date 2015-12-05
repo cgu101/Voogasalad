@@ -9,6 +9,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import authoring.controller.constructor.levelwriter.LevelConstructor;
+import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
 import javafx.beans.value.ChangeListener;
@@ -46,6 +47,8 @@ public class Workspace extends AbstractElement implements Observer {
 //	public SGameState buildGameState(Workspace w);
 	
 	public void updateVisual (GameWindow w, Game g) {
+		myGame = g;
+		
 		Collection<Level> myLevels = g.getLevels();
 		Map<String, LevelInterface> myLevelMap = new HashMap<>();
 		
@@ -54,10 +57,15 @@ public class Workspace extends AbstractElement implements Observer {
 		}
 		
 		for (Level modelLevel : myLevels) {
-			if (myLevelMap.get(modelLevel.getActionMap()) == null) {
+			if (myLevelMap.get(modelLevel.getUniqueID()) == null) {
+				LevelInterface newLevelInterface = new LevelMap(new GridPane(), modelLevel, screen);
 				
+				myLevelMap.put(modelLevel.getUniqueID(), newLevelInterface);
+				addLevel(modelLevel);
+			} else {
+				LevelInterface levelToBeModified = myLevelMap.get(modelLevel.getUniqueID());
+				levelToBeModified.redraw(modelLevel);
 			}
-			
 		}
 	}
 
@@ -88,6 +96,11 @@ public class Workspace extends AbstractElement implements Observer {
 			}
 		}
 		LevelMap newLevel = new LevelMap(new GridPane(), levels.size(), screen);
+		return configureTab(newLevel);
+	}
+	
+	public Tab addLevel (Level l) {
+		LevelMap newLevel = new LevelMap(new GridPane(), l, screen);
 		return configureTab(newLevel);
 	}
 
@@ -161,9 +174,21 @@ public class Workspace extends AbstractElement implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		Game myChangedGame = buildGame();
+		((GameWindow) o).send(myChangedGame);
 	}
 	
 	private Game buildGame () {
-		return null;
+		Game changeGame = new Game();
+		changeGame.addAllProperties(myGame.getProperties());
+		
+		Bundle<Level> changedLevelBundle = new Bundle<Level>();
+		
+		for (LevelInterface l : levels) {
+			Level newLevel = l.buildLevel();
+			changedLevelBundle.add(newLevel);
+		}
+		
+		changeGame.addAllLevels(changedLevelBundle);
+		return changeGame;
 	}
 }

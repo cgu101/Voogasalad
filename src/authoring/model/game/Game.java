@@ -28,12 +28,24 @@ public class Game implements Serializable {
 		myLevelBundle.add(level);
 	}
 	
+	public void addAllLevels (Bundle<Level> bundle) {
+		for (Level l : myLevelBundle) {
+			myLevelBundle.add(l);
+		}
+	}
+	
 	public Level getLevel (String levelName) {
 		return myLevelBundle.get(levelName);
 	}
 
 	public void addProperty (Property<?> property) {
 		myPropertyBundle.add(property);
+	}
+	
+	public void addAllProperties (Bundle<Property<?>> bundle) {
+		for (Property<?> p : bundle) {
+			myPropertyBundle.add(p);
+		}
 	}
 	
 	public Property<?> getProperty (String propertyName) {

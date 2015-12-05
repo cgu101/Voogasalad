@@ -80,6 +80,10 @@ public class GameWindow extends Observable {
 		notifyObservers(o);
 	}
 	
+	public void send (Object message) {
+		connection.send(message);
+	}
+	
 	public Game getGameData () {
 		return gameData;
 	}
