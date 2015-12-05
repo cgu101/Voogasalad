@@ -46,7 +46,6 @@ public class GameEngine implements IEngine {
 		// TODO: force game to have a name
 		propertyBundle.add(new Property<String>(gameKey, (String) game.getProperty(gameKey).getValue()));
 		setExecutor(initialLevel, new State(propertyBundle,null));
-
 	}
 	private String getFirstLevelName (Game g) {
 		Object levelProperty = g.getProperty(initialLevelKey);
@@ -82,7 +81,7 @@ public class GameEngine implements IEngine {
 	 */
 	@Override
 	public void reset() throws EngineException {
-		init(game);
+		init(game);		
 	}
 	
 	/**

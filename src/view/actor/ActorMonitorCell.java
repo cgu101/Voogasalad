@@ -61,7 +61,7 @@ public class ActorMonitorCell extends AbstractListCell {
 	} 	
 	
 	protected VBox makePropertiesVBox(Map<String, String> propertyStringMap) {
-		VBox props = new VBox();
+		VBox props = new VBox(2);
 		//props.getChildren().add(new Label(String.valueOf(derp) + ":" + actor.getUniqueID()));
 		for(String s: propertyStringMap.keySet()){
 			Label l = new Label(s + " : " + propertyStringMap.get(s));
