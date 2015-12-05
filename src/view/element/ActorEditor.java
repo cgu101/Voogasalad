@@ -131,7 +131,7 @@ public class ActorEditor extends AbstractDockElement {
 
 	private TreeView<InteractionData> makeExternalTriggerEditor(String leftItem, String rightItem) {
 		//TODO
-		TreeItem<InteractionData> rootItem = new TreeItem<InteractionData>(new InteractionData(null,"Interaction",null,new String[]{"Asteroid"}));
+		TreeItem<InteractionData> rootItem = new TreeItem<InteractionData>(new InteractionData("Interaction","Interaction",null,new String[]{"Asteroid"}));
 		rootItem.setExpanded(true);
 		TreeView<InteractionData> treeView = new TreeView<InteractionData>(rootItem);
 		treeView.setEditable(true);
@@ -146,7 +146,7 @@ public class ActorEditor extends AbstractDockElement {
 		treeView.setFocusTraversable(false);
 		GridPane.setColumnSpan(treeView, 3);
 		// TODO
-		rootItem.getChildren().add(new TreeItem<InteractionData>(new InteractionData(null,"next",null,null)));
+		rootItem.getChildren().add(new TreeItem<InteractionData>(new InteractionData("Action","next",null,null)));
 		return treeView;
 	}
 
