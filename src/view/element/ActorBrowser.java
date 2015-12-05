@@ -126,6 +126,7 @@ public class ActorBrowser extends AbstractDockElement {
 	public void addNewActor() {
 		// actors.add("Actor " + actors.size());
 		// TODO: add backend implementation
+		System.out.println("add actor");
 	}
 
 	public BooleanProperty getDoubleListsProperty() {
