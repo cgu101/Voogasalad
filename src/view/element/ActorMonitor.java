@@ -1,6 +1,8 @@
 package view.element;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -31,7 +33,6 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 	private CheckComboBox<String> checkComboBox;
 	private ObservableList<String> showOnlyGroups;
 	private ObservableList<String> currentlySelected;
-	private boolean canUpdate;
 
 	/**
 	 * Actor Monitor Constructor
@@ -47,11 +48,11 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 		super(pane, home, title, screen);
 		findResources();
 		this.controller = controller;
-		canUpdate = true;
 	}
 
 	@Override
 	protected void makePane() {
+		//pane.getChildren().clear();
 		addLabelPane();
 		individualActorList = FXCollections.observableArrayList(new ArrayList<String>());
 
@@ -62,7 +63,9 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 
 		observableIndividualActorList = new ListView<String>(individualActorList);
 		pane.add(observableIndividualActorList, 0, 1);
-		pane.prefHeightProperty().bind(screen.getScene().heightProperty());
+		pane.setMaxHeight(Double.parseDouble(myResources.getString("height")));
+		//pane.prefHeightProperty().bind(screen.getScene().heightProperty());
+		//pane.setMaxHeight(screen.getScene().getHeight() * 2/3);
 		pane.setFocusTraversable(false);
 		pane.setAlignment(Pos.TOP_CENTER);
 		pane.setMaxWidth(Double.parseDouble(myResources.getString("width")));
@@ -93,16 +96,6 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 				return new ActorMonitorCell(controller);
 			}
 		});
-		observableIndividualActorList.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent me) {
-				canUpdate = false;
-			}
-		});
-		observableIndividualActorList.setOnMouseExited(new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent me) {
-				canUpdate = true;
-			}
-		});
 	}
 
 	private void addLabelPane() {
@@ -122,7 +115,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 		checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 			public void onChanged(ListChangeListener.Change<? extends String> c) {
 				currentlySelected = checkComboBox.getCheckModel().getCheckedItems();
-				update();
+				resetData();
 			}
 		});
 
@@ -130,7 +123,8 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 	}
 
 	//Call to reload the properties for every actor
-	private void update() {
+	public void resetData() {
+	//	pane.getChildren().clear();
 		pane.getChildren().remove(observableIndividualActorList);
 		pane.getChildren().remove(checkComboBox);
 
@@ -165,7 +159,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		update();
+		resetData();
 	}
 
 

@@ -281,4 +281,22 @@ public class PlayerController implements IPlayer {
 	public State getState(){
 		return myEngine.getState();
 	}
+	
+	public void resetGame() throws GameFileException{
+		try {
+			myEngine.reset();
+			actorMonitor.resetData();
+		} catch (EngineException e) {
+			throw new GameFileException(e.getMessage());
+		}
+	}
+	
+	public void replayLevel() throws GameFileException{
+		try {
+			myEngine.replayLevel();
+			actorMonitor.resetData();
+		} catch (EngineException e) {
+			throw new GameFileException(e.getMessage());
+		}
+	}
 }

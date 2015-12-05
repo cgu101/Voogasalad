@@ -63,7 +63,9 @@ public class SpriteManager {
 		// remove sprites that are no longer in actors list
 		for(String id : stillAlive.keySet()){
 			if(!stillAlive.get(id)){
+				Sprite s = sprites.get(id);
 				sprites.remove(id);
+				myCamera.getGroup().getChildren().remove(s);
 			}
 		}
 		stillAlive.entrySet().removeIf(e -> !e.getValue() );
