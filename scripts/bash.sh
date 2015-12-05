@@ -32,13 +32,16 @@ function3() {
 	FILES="${PATH1}/src/authoring/files/triggers"
 
 	for i in $( ls ${FILES} ); do
-		> "${FILES}/${i}"
-		echo "" > "${FILES}/${i}"
-		echo "className=" >> "${FILES}/${i}"
-		echo "numActors=" >> "${FILES}/${i}"
-		echo "actors.1=" >> "${FILES}/${i}"
+		# > "${FILES}/${i}"
+		# echo "className=" >> "${FILES}/${i}"
+		# echo "numActors=" >> "${FILES}/${i}"
+		# echo "actors.1=" >> "${FILES}/${i}"
+		# echo "param.1.string=" >> "${FILES}/${i}"
+		# echo "param.1.type=" >> "${FILES}/${i}"
+		echo "param.0.actorindex=" >> "${FILES}/${i}"
 		echo "param.1.string=" >> "${FILES}/${i}"
-		echo "param.1.type=" >> "${FILES}/${i}"	
+		echo "param.1.type=" >> "${FILES}/${i}"
+		echo "param.1.actorindex=" >> "${FILES}/${i}"	
 	done
 }
 
@@ -47,11 +50,18 @@ function4() {
 	FILES="${PATH1}/src/authoring/files/actions"
 
 	for i in $( ls ${FILES} ); do
-		> "${FILES}/${i}"
-		echo "className=" >> "${FILES}/${i}"
-		echo "numActors=" >> "${FILES}/${i}"
-		echo "actors.1=" >> "${FILES}/${i}"
+		# > "${FILES}/${i}"
+		# echo "className=" >> "${FILES}/${i}"
+		# echo "numActors=" >> "${FILES}/${i}"
+		# echo "actors.1=" >> "${FILES}/${i}"
+		# echo "param.1.string=" >> "${FILES}/${i}"
+		# echo "param.1.type=" >> "${FILES}/${i}"
+		echo "param.0.actorindex=" >> "${FILES}/${i}"
 		echo "param.1.string=" >> "${FILES}/${i}"
 		echo "param.1.type=" >> "${FILES}/${i}"
+		echo "param.1.actorindex=" >> "${FILES}/${i}"
 	done
 }
+
+function3
+function4

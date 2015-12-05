@@ -18,6 +18,8 @@ public class CircleCollision extends AExternalTrigger {
 
 		Double sizeA = ((Property<Double>) actorA.getProperties().getComponents().get("size")).getValue();
 		Double sizeB = ((Property<Double>) actorB.getProperties().getComponents().get("size")).getValue();
+		
+		
 
 		double radiusSum = sizeA + sizeB;
 		double distance = ActionTriggerHelper.distance(actorA, actorB);
