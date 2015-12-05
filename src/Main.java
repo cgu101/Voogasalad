@@ -157,13 +157,13 @@ public class Main extends Application {
 		
 		
 		// Asteroid Self Triggers
-		actorList.clear();
-		actorList.add("asteroid");
-		triggerList.clear();
-		triggerList.add("authoring.model.triggers.selfconditions.DownArrowKey");
-		actionList.clear();
-		actionList.add("authoring.model.actions.actorActions.oneActorActions.RemoveActor");
-		tc.addTreeNode(actorList, triggerList, actionList);
+//		actorList.clear();
+//		actorList.add("asteroid");
+//		triggerList.clear();
+//		triggerList.add("authoring.model.triggers.selfconditions.DownArrowKey");
+//		actionList.clear();
+//		actionList.add("authoring.model.actions.actorActions.oneActorActions.RemoveActor");
+//		tc.addTreeNode(actorList, triggerList, actionList);
 		
 		// Bullet Self Triggers
 		actorList.clear();
@@ -174,21 +174,27 @@ public class Main extends Application {
 		actionList.add("authoring.model.actions.actorActions.oneActorActions.Move");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
-//		triggerList.clear();
-//		triggerList.add("authoring.model.triggers.selfconditions.SpaceBarKey");
-//		actionList.clear();
-//		actionList.add("authoring.model.actions.oneActorActions.SplitAndReduceSize");
-//		tc.addTreeNode(actorList, triggerList, actionList);
-		
 		// External Triggers
+		//Remove asteroid when asteroid and bullet collide
 		actorList.clear();
 		actorList.add("asteroid");
-		actorList.add("player");
+		actorList.add("bullet");
 		triggerList.clear();
 		triggerList.add("authoring.model.triggers.externalconditions.CircleCollision");
 		actionList.clear();
 		actionList.add("authoring.model.actions.actorActions.oneActorActions.RemoveActor");
 		tc.addTreeNode(actorList, triggerList, actionList);
+		
+		//Remove bullet when asteroid and bullet collide
+		actorList.clear();
+		actorList.add("bullet");
+		actorList.add("asteroid");
+		triggerList.clear();
+		triggerList.add("authoring.model.triggers.externalconditions.CircleCollision");
+		actionList.clear();
+		actionList.add("authoring.model.actions.actorActions.oneActorActions.RemoveActor");
+		tc.addTreeNode(actorList, triggerList, actionList);
+
 			
 		
 		

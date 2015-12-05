@@ -101,13 +101,13 @@
                     <children>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
-                        <value>authoring.model.actions.actorActions.oneActorActions.RemoveActor</value>
+                        <value>authoring.model.actions.actorActions.oneActorActions.Move</value>
                         <parameters>
                           <parameter__values/>
                         </parameters>
                       </authoring.model.tree.ActionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.DownArrowKey</value>
+                    <value>authoring.model.triggers.selfconditions.TrueSelfTrigger</value>
                     <parameters>
                       <parameter__values/>
                     </parameters>
@@ -130,30 +130,35 @@
                         </parameters>
                       </authoring.model.tree.TriggerTreeNode>
                     </children>
-                    <value>player</value>
+                    <value>asteroid</value>
                   </authoring.model.tree.ActorTreeNode>
                 </children>
-                <value>asteroid</value>
+                <value>bullet</value>
               </authoring.model.tree.ActorTreeNode>
               <authoring.model.tree.ActorTreeNode>
                 <children>
-                  <authoring.model.tree.TriggerTreeNode>
+                  <authoring.model.tree.ActorTreeNode>
                     <children>
-                      <authoring.model.tree.ActionTreeNode>
-                        <children/>
-                        <value>authoring.model.actions.actorActions.oneActorActions.Move</value>
+                      <authoring.model.tree.TriggerTreeNode>
+                        <children>
+                          <authoring.model.tree.ActionTreeNode>
+                            <children/>
+                            <value>authoring.model.actions.actorActions.oneActorActions.RemoveActor</value>
+                            <parameters>
+                              <parameter__values/>
+                            </parameters>
+                          </authoring.model.tree.ActionTreeNode>
+                        </children>
+                        <value>authoring.model.triggers.externalconditions.CircleCollision</value>
                         <parameters>
                           <parameter__values/>
                         </parameters>
-                      </authoring.model.tree.ActionTreeNode>
+                      </authoring.model.tree.TriggerTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.TrueSelfTrigger</value>
-                    <parameters>
-                      <parameter__values/>
-                    </parameters>
-                  </authoring.model.tree.TriggerTreeNode>
+                    <value>bullet</value>
+                  </authoring.model.tree.ActorTreeNode>
                 </children>
-                <value>bullet</value>
+                <value>asteroid</value>
               </authoring.model.tree.ActorTreeNode>
             </children>
           </rootTree>
