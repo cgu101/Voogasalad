@@ -33,7 +33,6 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 	private CheckComboBox<String> checkComboBox;
 	private ObservableList<String> showOnlyGroups;
 	private ObservableList<String> currentlySelected;
-	private boolean canUpdate;
 
 	/**
 	 * Actor Monitor Constructor
@@ -49,7 +48,6 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 		super(pane, home, title, screen);
 		findResources();
 		this.controller = controller;
-		canUpdate = true;
 	}
 
 	@Override
@@ -93,16 +91,6 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 			@Override
 			public ListCell<String> call(ListView<String> list) {
 				return new ActorMonitorCell(controller);
-			}
-		});
-		observableIndividualActorList.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent me) {
-				canUpdate = false;
-			}
-		});
-		observableIndividualActorList.setOnMouseExited(new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent me) {
-				canUpdate = true;
 			}
 		});
 	}
