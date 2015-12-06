@@ -2,12 +2,9 @@ package view.screen;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import authoring.controller.AuthoringController;
-import authoring.controller.constructor.levelwriter.LevelConstructor;
 import authoring.model.game.Game;
 import data.XMLManager;
 import exceptions.data.GameFileException;
@@ -15,13 +12,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import network.test.GameWindow;
+import network.framework.GameWindow;
+import network.framework.format.Mail;
 import util.FileChooserUtility;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.ActorEditor;
 import view.handler.ActorHandlerToolbar;
 import view.level.Workspace;
+import view.map.CreatorMapSliders;
 import view.map.MapSliders;
 
 /**
@@ -40,7 +39,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	private Game game;
 
 	public CreatorScreen() {
-		this(null);
+		this(new Game());
 	}
 	
 	public CreatorScreen (Game game) {
@@ -56,7 +55,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	
 	public CreatorScreen (Game game, GameWindow gw) {
 		this(game);
-		w.addNetwork(gw);
+//		w.addNetwork(gw);
 	}
 
 	@Override
@@ -70,7 +69,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		root = r;
 		scene = new Scene(root, WIDTH, HEIGHT);
 		makePanes(2);
-		w = new Workspace(myPanes.get(1), this);
+		w = new Workspace(myPanes.get(1), this, this.game);
 		r.setTop(myPanes.get(0));
 		GridPane mapPane = new GridPane();
 		mapPane.add(myPanes.get(1), 0, 1);
@@ -88,6 +87,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		rightPane.add(homePanes.get(1), 0, 1);
 		rightPane.setAlignment(Pos.CENTER);
 		r.setRight(rightPane);
+		
 		components = new ArrayList<AbstractDockElement>();
 		ActorBrowser browser = new ActorBrowser(dockPanes.get(0), homePanes.get(0),
 				myResources.getString("browsername"), this, w);
@@ -95,7 +95,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		ActorEditor editor = new ActorEditor(dockPanes.get(1), homePanes.get(1), myResources.getString("editorname"),
 				this, browser, w);
 		components.add(editor);
-		MapSliders slider = new MapSliders(dockPanes.get(2), homePanes.get(2), myResources.getString("slidername"),
+		CreatorMapSliders slider = new CreatorMapSliders(dockPanes.get(2), homePanes.get(2), myResources.getString("slidername"),
 				this, w);
 		components.add(slider);
 		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3), myResources.getString("toolbarname"), this, w);
@@ -108,10 +108,8 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	public void saveGame() {
 		System.out.println("Testing saving game ");
 
-		List<LevelConstructor> levelConstructors = w.getLevels();
-
 		try {
-			Game game = AuthoringController.getGameWithLevels(levelConstructors);
+			Game game = this.game;
 			File saveFile = FileChooserUtility.save(scene.getWindow());
 
 			String fileLocation = saveFile.getAbsolutePath();
@@ -134,12 +132,21 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	public GridPane getDefaultPane () {
 		return myPanes.get(DEFAULT_MAP_PANE_INDEX);
 	}
+	
+	public Game getGame () {
+		return game;
+	}
+	
+	public void setGame (Game game) {
+		this.game = game;
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("OBserver update");
+		System.out.println("Observer update");
 		
-		Game receivedGame = (Game) arg;
-		w.updateVisual((GameWindow) o, (Game) arg);
+		Mail mail = (Mail) arg;
+
+		w.forward(mail.getPath(), (Mail) arg);
 	}
 }

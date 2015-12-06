@@ -141,6 +141,20 @@ public class Sprite extends ImageView {
 	public void pause() {
 		this.currentAnimation.pause();
 	}
+	
+	/**
+	 * Goes to a specific frame and pauses.
+	 * 
+	 * @param row
+	 * @param col
+	 */
+	public void gotoFrame(int row, int col){
+		this.pause();
+		double yoffset = this.rect.getHeight() * row;
+		double xoffset = this.rect.getWidth() * col;
+		Sprite.this.setViewport(new Rectangle2D(this.rect.getMinX() + xoffset,
+				this.rect.getMinY() + yoffset, this.rect.getWidth(), this.rect.getHeight()));
+	}
 
 	/**
 	 * Replays the current animation from the start.
