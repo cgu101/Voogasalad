@@ -2,6 +2,7 @@ package authoring.model.actions.actorActions.twoActorActions;
 
 import java.util.Map;
 
+import authoring.files.properties.ActorProperties;
 import authoring.model.actions.ActionTriggerHelper;
 import authoring.model.actions.actorActions.ATwoActorActions;
 import authoring.model.actors.Actor;
@@ -18,8 +19,8 @@ public class SwapDirections<V> extends ATwoActorActions<V> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run(Map<String, V> parameters_values, ActorGroups actorGroups, Actor a, Actor b) {
-		Property<Double> a_angleP = (Property<Double>) a.getProperties().getComponents().get("angle");
-		Property<Double> b_angleP = (Property<Double>) b.getProperties().getComponents().get("angle");
+		Property<Double> a_angleP = (Property<Double>) a.getProperty(ActorProperties.ANGLE.getKey());
+		Property<Double> b_angleP = (Property<Double>) b.getProperty(ActorProperties.ANGLE.getKey());
 
 		Double temp = a_angleP.getValue();
 		a_angleP.setValue(b_angleP.getValue());
