@@ -14,6 +14,7 @@
 #Considerations
 
 * Make Parameter Objects Immutable
+* Why do keycode triggers use "keycode" as the key to the parameter? Please use ParametersKey type + index
 
 #Resolved
 
