@@ -45,7 +45,7 @@ public class LevelMap extends Map implements LevelInterface {
 		if (db.hasString()) {
 			String actor = db.getString();
 			ActorPropertyMap map = controller.getAuthoringActorConstructor().getActorPropertyMap(actor);
-
+			
 			map.addProperty("xLocation", "" + (event.getX()));
 			map.addProperty("yLocation", "" + (event.getY())); 
 			

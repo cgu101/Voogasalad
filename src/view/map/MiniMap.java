@@ -177,4 +177,12 @@ public class MiniMap extends AbstractVisual {
 		public double initialTranslateX;
 		public double initialTranslateY;
 	}
+	
+	public double getRectangleX() {
+		return currentRectangleXPos;
+	}
+	
+	public double getRectangleY() {
+		return currentRectangleYPos;
+	}
 }

@@ -88,8 +88,21 @@ public class ActorHandler extends AbstractVisual {
 					}
 				});
 			}
+			addToScale(av, x, y);
 			viewManager.addElements(av.getImageView());
 		}
+	}
+	
+	private void addToScale(ActorView a, double x, double y) {
+		double scale = map.getActualSlider().valueProperty().doubleValue();
+		scale = 100 / (scale + 100);
+		double xOffset = map.getMiniMap().getRectangleX();
+		double yOffset = map.getMiniMap().getRectangleY();
+		
+		double scaleOffset = Double.parseDouble(myResources.getString("minimapscaleratio"));
+		double newX = xOffset*scaleOffset + x * scale;
+		double newY = yOffset*scaleOffset + y * scale;
+		a.restoreXY(newX, newY);
 	}
 
 	private ContextMenu makeContextMenu(ActorView a) {
@@ -246,10 +259,9 @@ public class ActorHandler extends AbstractVisual {
 	}
 
 	protected void removeActor(ActorView a) {
-		viewManager.removeElements(a.getImageView()); // TODO:
+		viewManager.removeElements(a.getImageView()); 
 	}
 
-	// TODO: ...
 	public void removeActor(Node element) {
 		viewManager.removeElements(element);
 	}
@@ -262,20 +274,9 @@ public class ActorHandler extends AbstractVisual {
 
 	}
 
-	// private void makeToolbar(ToolBar hello, String desc,
-	// EventHandler<ActionEvent> finishHandler, Node... options) {
-	// Label instru = makeLabel(desc);
-	// Button exit = makeButton("Finished", finishHandler);
-	//
-	// hello.getItems().addAll(instru, exit);
-	// for (int i = 0; i < options.length; i++) {
-	// hello.getItems().add(1 + i, options[i]);
-	// }
-	// }
-
 	private Rectangle makeFilterRectangle(EventHandler<MouseEvent> rectHandler) {
 		// TODO: size & dimension of Rectangle
-		Rectangle rect = new Rectangle(700, 700);
+		Rectangle rect = new Rectangle(myBackground.getFitWidth(), myBackground.getFitHeight());
 		double opacity = Double.parseDouble(myResources.getString("opacity"));
 		rect.setFill(Color.rgb(255, 0, 0, opacity));
 		if (rectHandler != null) {
