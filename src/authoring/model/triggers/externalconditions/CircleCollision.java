@@ -1,6 +1,6 @@
 package authoring.model.triggers.externalconditions;
 
-import authoring.model.actions.ActionTriggerHelper;
+import authoring.model.ActionTriggerHelper;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import authoring.model.triggers.externaltriggers.ATwoActorExternalTrigger;

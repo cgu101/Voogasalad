@@ -1,6 +1,7 @@
 package authoring.model.triggers.externalconditions;
 
-import authoring.model.actions.ActionTriggerHelper;
+import authoring.files.properties.ActorProperties;
+import authoring.model.ActionTriggerHelper;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import authoring.model.triggers.externaltriggers.ATwoActorExternalTrigger;
@@ -14,9 +15,9 @@ public class InRange extends ATwoActorExternalTrigger {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean condition(Parameters parameters, Actor a, Actor b) {
-		Double rangeA = a.getPropertyValue("range");
-		Double sizeB = b.getPropertyValue("size");
-		double distanceToActorB = ActionTriggerHelper.distance(a, b) - sizeB;
+		Double rangeA = a.getPropertyValue(ActorProperties.RANGE.getKey());
+		Double sizeB = b.getPropertyValue(ActorProperties.SIZE.getKey());
+		Double distanceToActorB = ActionTriggerHelper.distance(a, b) - sizeB;
 		return Double.compare(distanceToActorB, rangeA) <= 0;
 	}
 

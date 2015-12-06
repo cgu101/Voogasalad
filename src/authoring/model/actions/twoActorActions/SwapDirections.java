@@ -1,24 +1,26 @@
-package authoring.model.actions.actorActions.twoActorActions;
-
-import java.util.Map;
+package authoring.model.actions.twoActorActions;
 
 import authoring.files.properties.ActorProperties;
-import authoring.model.actions.ActionTriggerHelper;
-import authoring.model.actions.actorActions.ATwoActorActions;
+import authoring.model.ActionTriggerHelper;
+import authoring.model.actions.ATwoActorAction;
 import authoring.model.actors.Actor;
-import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
+import authoring.model.tree.Parameters;
+import engine.State;
 
 /**
  * @author Inan
  *
  */
-public class SwapDirections<V> extends ATwoActorActions<V> {
+public class SwapDirections extends ATwoActorAction {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = 4981001366273988038L;
 
-
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Map<String, V> parameters_values, ActorGroups actorGroups, Actor a, Actor b) {
+	public void run(Parameters parameters, State state, Actor a, Actor b) {
 		Property<Double> a_angleP = (Property<Double>) a.getProperty(ActorProperties.ANGLE.getKey());
 		Property<Double> b_angleP = (Property<Double>) b.getProperty(ActorProperties.ANGLE.getKey());
 
