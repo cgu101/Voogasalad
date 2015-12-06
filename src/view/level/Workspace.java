@@ -89,7 +89,11 @@ public class Workspace extends AbstractElement implements Anscestral {
 		tabManager.setSide(Side.TOP);
 		pane.add(tabManager, DEFAULT_POSITION, DEFAULT_POSITION);
 		addListener((ov, oldTab, newTab) -> {
-			currentLevel = levels.get(newTab.getId());
+			try {
+				currentLevel = levels.get(newTab.getId());
+			} catch (NullPointerException e) {
+				currentLevel = null;
+			}
 		});
 	}
 

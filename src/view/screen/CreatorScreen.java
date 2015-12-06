@@ -98,29 +98,36 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3),
 				myResources.getString("toolbarname"), this, w);
 		components.add(aet);
+		configureMap(browser, editor);
+	}
+
+	private void configureMap(ActorBrowser browser, ActorEditor editor) {
 		fullscreen.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
 				editor.getDockedProperty().getValue()));
 		browser.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
 				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
 		editor.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
 				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
+		w.addListener((ov, oldTab, newTab) -> manageMapSize(fullscreen.getValue(),
+				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
 	}
 
-	private void manageMapSize(boolean fullscreen, boolean browser, boolean editor) {
-		if (!fullscreen) {
+	public void manageMapSize(boolean fullscreen, boolean browser, boolean editor) {
+		if (w.getCurrentLevel() == null) {
+			return;
+		} else if (!fullscreen) {
 			if (!browser && !editor) {
 				System.out.println("hi");
 				w.getCurrentLevel().setMapDimensions(1000, 724);
-				System.out.println("The background bounds are: " + w.getCurrentLevel().getBackground().getBoundsInParent());
-
 			} else {
 				System.out.println("bye");
 				w.getCurrentLevel().setMapDimensions(700, 724);
 			}
 		} else {
 			if (!browser && !editor) {
+				w.getCurrentLevel().setMapDimensions(1920, 1006);
 			} else {
-
+				w.getCurrentLevel().setMapDimensions(1620, 1006);
 			}
 		}
 	}
