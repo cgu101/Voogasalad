@@ -51,11 +51,6 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 	}
 
 	@Override
-	public String makeTitle(int i) {
-		return (i + 1) + myString;
-	}
-
-	@Override
 	public void initializeBackground(Image i) {
 		pane.getChildren().clear();
 		ImageView image = new ImageView(i);

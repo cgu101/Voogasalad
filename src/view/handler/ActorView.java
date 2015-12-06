@@ -21,6 +21,7 @@ public class ActorView extends AbstractVisual {
 	private double myRotation;
 	private double myXCoor;
 	private double myYCoor;
+	private boolean itsAlive;
 
 	public ActorView(Actor a, double x, double y) {
 		myActor = a;
@@ -31,6 +32,7 @@ public class ActorView extends AbstractVisual {
 		myRotation = Double.parseDouble(myResources.getString("defaultRotation"));
 		myNode = createImage();
 		setupNode();
+		itsAlive = true;
 	}
 
 	public ActorView(ActorView copy) {
@@ -125,6 +127,14 @@ public class ActorView extends AbstractVisual {
 		return myRotation;
 	}
 
+	protected void setLife(boolean alive) {
+		itsAlive = alive;
+	}
+	
+	protected boolean getLife() {
+		return itsAlive;
+	}
+	
 	protected void setRotation(double rotate) {
 		myRotation = rotate;
 		myNode.setRotate(rotate);
