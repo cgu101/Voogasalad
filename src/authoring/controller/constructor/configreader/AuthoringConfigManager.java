@@ -123,9 +123,8 @@ public class AuthoringConfigManager {
 	 * @return List<String>
 	 */
 	public List<String> getConfigList(String actor, String type) {
-		List<String> actorActionList = splitString(getTypeInfo(ResourceType.ACTORS, actor, type));		
-		List<String> generalActionList = splitString(myConfiguration.getString(String.format("%s.%s", type, ResourceType.GENERAL)));		
-		return combineLists(actorActionList, generalActionList);
+		List<String> generalActionList = splitString(myConfiguration.getString(type));		
+		return generalActionList;
 	}
 	
 	/**
@@ -148,17 +147,17 @@ public class AuthoringConfigManager {
 	}
 	
 	
-	@SafeVarargs
-	private static List<String> combineLists(List<String>...lists) {
-		Set<String> container = new HashSet<String>();
-		for(List<String> list : lists) {
-			container.addAll(list);
-		}
-		
-		List<String> ret = new ArrayList<String>();
-		ret.addAll(container);
-		return ret;
-	}
+//	@SafeVarargs
+//	private static List<String> combineLists(List<String>...lists) {
+//		Set<String> container = new HashSet<String>();
+//		for(List<String> list : lists) {
+//			container.addAll(list);
+//		}
+//		
+//		List<String> ret = new ArrayList<String>();
+//		ret.addAll(container);
+//		return ret;
+//	}
 
 	
 //	/**
