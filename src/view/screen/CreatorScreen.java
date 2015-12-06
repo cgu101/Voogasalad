@@ -20,6 +20,7 @@ import view.element.ActorBrowser;
 import view.element.ActorEditor;
 import view.handler.ActorHandlerToolbar;
 import view.level.Workspace;
+import view.map.CreatorMapSliders;
 import view.map.MapSliders;
 
 /**
@@ -86,6 +87,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		rightPane.add(homePanes.get(1), 0, 1);
 		rightPane.setAlignment(Pos.CENTER);
 		r.setRight(rightPane);
+		
 		components = new ArrayList<AbstractDockElement>();
 		ActorBrowser browser = new ActorBrowser(dockPanes.get(0), homePanes.get(0),
 				myResources.getString("browsername"), this, w);
@@ -93,7 +95,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		ActorEditor editor = new ActorEditor(dockPanes.get(1), homePanes.get(1), myResources.getString("editorname"),
 				this, browser, w);
 		components.add(editor);
-		MapSliders slider = new MapSliders(dockPanes.get(2), homePanes.get(2), myResources.getString("slidername"),
+		CreatorMapSliders slider = new CreatorMapSliders(dockPanes.get(2), homePanes.get(2), myResources.getString("slidername"),
 				this, w);
 		components.add(slider);
 		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3), myResources.getString("toolbarname"), this, w);
