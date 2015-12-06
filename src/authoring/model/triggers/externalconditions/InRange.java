@@ -20,5 +20,4 @@ public class InRange extends ATwoActorExternalTrigger {
 		Double distanceToActorB = ActionTriggerHelper.distance(a, b) - sizeB;
 		return Double.compare(distanceToActorB, rangeA) <= 0;
 	}
-
 }
