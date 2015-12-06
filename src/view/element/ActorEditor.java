@@ -6,10 +6,12 @@ import authoring.controller.AuthoringController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -21,13 +23,16 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
 import view.actor.PropertyCell;
 import view.actor.TriggerCell;
+import view.interactions.InteractionCell;
+import view.interactions.InteractionData;
 import view.level.Workspace;
 import view.screen.AbstractScreenInterface;
+
 /**
  * @author David
  * 
- * Allows for modification of a single actor type.
- * Loads the actor information when they are selected in the actor browser.
+ *         Allows for modification of a single actor type. Loads the actor
+ *         information when they are selected in the actor browser.
  * 
  */
 public class ActorEditor extends AbstractDockElement {
@@ -117,25 +122,32 @@ public class ActorEditor extends AbstractDockElement {
 	}
 
 	private void editInteraction(String leftItem, String rightItem) {
-		contentPane.add(makeImage(leftItem), 0, 1);
+		contentPane.add(makeImage(leftItem), 0, 0);
 		contentPane.add(makeInteractionText(leftItem, rightItem), 1, 1);
-		contentPane.add(makeImage(rightItem), 2, 1);
+		contentPane.add(makeImage(rightItem), 2, 0);
 		contentPane.add(makeExternalTriggerEditor(leftItem, rightItem), 0, 2);
 	}
 
-	private ListView<String> makeExternalTriggerEditor(String leftItem, String rightItem) {
-		ObservableList<String> triggers = FXCollections.observableArrayList(new ArrayList<String>());
-		triggers.addAll(controller.getAuthoringActorConstructor().getEventTriggerList(leftItem, rightItem));
-		ListView<String> list = new ListView<String>(triggers);
-		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+
+	private TreeView<InteractionData> makeExternalTriggerEditor(String leftItem, String rightItem) {
+		//TODO
+		TreeItem<InteractionData> rootItem = new TreeItem<InteractionData>(new InteractionData(null,"Interaction",null,new String[]{"Asteroid"}));
+		rootItem.setExpanded(true);
+		TreeView<InteractionData> treeView = new TreeView<InteractionData>(rootItem);
+		treeView.setEditable(true);
+		treeView.setCellFactory(new Callback<TreeView<InteractionData>, TreeCell<InteractionData>>() {
 			@Override
-			public ListCell<String> call(ListView<String> list) {
-				return new TriggerCell(controller, leftItem, rightItem);
+			public TreeCell<InteractionData> call(TreeView<InteractionData> p) {
+				InteractionCell cell = new InteractionCell(pane, controller);
+//				new TriggerParametersView(null, controller);
+				return cell;
 			}
 		});
-		GridPane.setColumnSpan(list, 3);
-		list.setFocusTraversable(false);
-		return list;
+		treeView.setFocusTraversable(false);
+		GridPane.setColumnSpan(treeView, 3);
+		// TODO
+		rootItem.getChildren().add(new TreeItem<InteractionData>(new InteractionData(null,"next",null,null)));
+		return treeView;
 	}
 
 	private VBox makeInteractionText(String left, String right) {
@@ -177,7 +189,7 @@ public class ActorEditor extends AbstractDockElement {
 
 	private ListView<String> makeSelfTriggerEditor(String item) {
 		ObservableList<String> triggers = FXCollections.observableArrayList(new ArrayList<String>());
-		triggers.addAll(controller.getAuthoringActorConstructor().getSelfTriggerList(item));
+		triggers.addAll(controller.getAuthoringActorConstructor().getTriggerList(item));
 		ListView<String> list = new ListView<String>(triggers);
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override

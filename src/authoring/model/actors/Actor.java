@@ -40,6 +40,11 @@ public class Actor implements Identifiable, IActor, Serializable {
 	public Property<?> getProperty(String identifier) {
 		return (Property<?>) myPropertyBundle.getComponents().get(identifier);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> T getPropertyValue(String identifier) {
+		return (T) myPropertyBundle.getComponents().get(identifier).getValue();
+	}
 
 	@Override
 	public void setProperty(String identifier, Object value) {
@@ -63,5 +68,9 @@ public class Actor implements Identifiable, IActor, Serializable {
 	@Override
 	public String getGroupName() {
 		return ((Property<String>) myPropertyBundle.getComponents().get("groupID")).getValue();
+	}
+	
+	public boolean hasProperty(String identifier) {
+		return getProperties().getComponents().containsKey(identifier);
 	}
 }

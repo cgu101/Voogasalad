@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 import player.controller.PlayerController;
 import util.Sprite;
 
-public class ActorMonitorCell extends AbstractListCell {
+public class ActorMonitorCell extends AbstractListCell<String> {
 
 	private PlayerController controller;
 	private final ResourceBundle spriteResources = ResourceBundle.getBundle("resources/SpriteManager");

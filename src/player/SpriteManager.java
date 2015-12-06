@@ -2,6 +2,7 @@ package player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -42,6 +43,7 @@ public class SpriteManager {
 	 * @param scene
 	 */
 	public void updateSprites(ArrayList<Actor> actors, Scene scene){
+		removeDeadActors(actors);
 		for(Actor a : actors){
 			if(sprites.containsKey(a.getUniqueID())){
 				Sprite s = sprites.get(a.getUniqueID());
@@ -75,6 +77,18 @@ public class SpriteManager {
 		
 	}
 	
+	private void removeDeadActors(ArrayList<Actor> actors) {
+		List<String> removeList = new ArrayList<String>();;
+		for (String actorID : sprites.keySet()) {
+			if (!actors.contains(actorID)) {
+				removeList.add(actorID);
+			}
+		}
+		for (String actorID : removeList) {
+			myCamera.getGroup().getChildren().remove(sprites.remove(actorID));
+		}
+	}
+
 	/**
 	 * Creates a visual sprite object based on a back-end actor object
 	 * 

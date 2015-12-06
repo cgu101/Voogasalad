@@ -100,100 +100,107 @@ public class Main extends Application {
 
 		
 		MapConstructor m = new MapConstructor();
-		m.addTriggerToMap("authoring.model.triggers.selfconditions.UpArrowKey");
-		m.addTriggerToMap("authoring.model.triggers.selfconditions.LeftArrowKey");
-		m.addTriggerToMap("authoring.model.triggers.selfconditions.RightArrowKey");
-		m.addTriggerToMap("authoring.model.triggers.selfconditions.DownArrowKey");
-		m.addTriggerToMap("authoring.model.triggers.selfconditions.SpaceBarKey");
-		m.addTriggerToMap("authoring.model.triggers.selfconditions.TrueSelfTrigger");
-		m.addTriggerToMap("authoring.model.triggers.externalconditions.CircleCollision");
-		m.addActionsToMap("authoring.model.actions.oneActorActions.Move");
-		m.addActionsToMap("authoring.model.actions.oneActorActions.RotateCounterclockwise");
-		m.addActionsToMap("authoring.model.actions.oneActorActions.RotateClockwise");
-		m.addActionsToMap("authoring.model.actions.oneActorActions.IncreaseSpeed");
-		m.addActionsToMap("authoring.model.actions.oneActorActions.DecreaseSpeed");
-		m.addActionsToMap("authoring.model.actions.oneActorActions.ShootBullet");
-		m.addActionsToMap("authoring.model.actions.oneActorActions.SplitAndReduceSize");
+//		m.addTriggerToMap("authoring.model.triggers.selfconditions.UpArrowKey");
+//		m.addTriggerToMap("authoring.model.triggers.selfconditions.LeftArrowKey");
+//		m.addTriggerToMap("authoring.model.triggers.selfconditions.RightArrowKey");
+//		m.addTriggerToMap("authoring.model.triggers.selfconditions.DownArrowKey");
+//		m.addTriggerToMap("authoring.model.triggers.selfconditions.SpaceBarKey");
+//		m.addTriggerToMap("authoring.model.triggers.selfconditions.TrueSelfTrigger");
+//		m.addTriggerToMap("authoring.model.triggers.externalconditions.CircleCollision");
+//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.Move");
+//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.RotateCounterclockwise");
+//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.RotateClockwise");
+//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.IncreaseSpeed");
+//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.DecreaseSpeed");
+//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.ShootBullet");
+//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.SplitAndReduceSize");
+//		m.addActionsToMap("authoring.model.actions.actorActions.oneActorActions.RemoveActor");
 		
 		// Mega Man Self Triggers
 		List<String> actorList = new ArrayList<String>();
 		actorList.add("player");
 		List<String> triggerList = new ArrayList<String>();
-		triggerList.add("authoring.model.triggers.selfconditions.UpArrowKey");
+		triggerList.add("UpArrowKey");
 		List<String> actionList = new ArrayList<String>();
-		actionList.add("authoring.model.actions.oneActorActions.IncreaseSpeed");
+		actionList.add("IncreaseSpeed");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
 		triggerList.clear();
-		triggerList.add("authoring.model.triggers.selfconditions.RightArrowKey");
+		triggerList.add("RightArrowKey");
 		actionList.clear();
-		actionList.add("authoring.model.actions.oneActorActions.RotateCounterclockwise");
+		actionList.add("RotateCounterclockwise");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
 		triggerList.clear();
-		triggerList.add("authoring.model.triggers.selfconditions.LeftArrowKey");
+		triggerList.add("LeftArrowKey");
 		actionList.clear();
-		actionList.add("authoring.model.actions.oneActorActions.RotateClockwise");
+		actionList.add("RotateClockwise");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
 		triggerList.clear();
-		triggerList.add("authoring.model.triggers.selfconditions.SpaceBarKey");
+		triggerList.add("SpaceBarKey");
 		actionList.clear();
-		actionList.add("authoring.model.actions.oneActorActions.ShootBullet");
+		actionList.add("ShootBullet");
 		tc.addTreeNode(actorList, triggerList, actionList);
 
 		triggerList.clear();
-		triggerList.add("authoring.model.triggers.selfconditions.TrueSelfTrigger");
+		triggerList.add("TrueSelfTrigger");
 		actionList.clear();
-		actionList.add("authoring.model.actions.oneActorActions.DecreaseSpeed");
+		actionList.add("DecreaseSpeed");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
 		triggerList.clear();
-		triggerList.add("authoring.model.triggers.selfconditions.TrueSelfTrigger");
+		triggerList.add("TrueSelfTrigger");
 		actionList.clear();
-		actionList.add("authoring.model.actions.oneActorActions.Move");
+		actionList.add("Move");
 		tc.addTreeNode(actorList, triggerList, actionList);
-		
 		
 		// Asteroid Self Triggers
 		actorList.clear();
 		actorList.add("asteroid");
 		triggerList.clear();
-		triggerList.add("authoring.model.triggers.selfconditions.DownArrowKey");
+		triggerList.add("DownArrowKey");
 		actionList.clear();
-		actionList.add("authoring.model.actions.oneActorActions.Move");
+		actionList.add("Move");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
 		// Bullet Self Triggers
 		actorList.clear();
 		actorList.add("bullet");
 		triggerList.clear();
-		triggerList.add("authoring.model.triggers.selfconditions.TrueSelfTrigger");
+		triggerList.add("TrueSelfTrigger");
 		actionList.clear();
-		actionList.add("authoring.model.actions.oneActorActions.Move");
+		actionList.add("Move");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
-//		triggerList.clear();
-//		triggerList.add("authoring.model.triggers.selfconditions.SpaceBarKey");
-//		actionList.clear();
-//		actionList.add("authoring.model.actions.oneActorActions.SplitAndReduceSize");
-//		tc.addTreeNode(actorList, triggerList, actionList);
+		triggerList.clear();
+		triggerList.add("DistanceTraveledCheck");
+		actionList.clear();
+		actionList.add("RemoveActor");
+		tc.addTreeNode(actorList, triggerList, actionList);
 		
-//		// External Triggers
-//		actorList.clear();
-//		actorList.add("asteroid");
-//		actorList.add("bullet");
-//		triggerList.clear();
-//		triggerList.add("authoring.model.triggers.externalconditions.CircleCollision");
-//		actionList.clear();
-//		actionList.add("authoring.model.actions.oneActorActions.Move");
-//		tc.addTreeNode(actorList, triggerList, actionList);
+		// External Triggers
+		//Remove asteroid when asteroid and bullet collide
+		actorList.clear();
+		actorList.add("asteroid");
+		actorList.add("bullet");
+		triggerList.clear();
+		triggerList.add("CircleCollision");
+		actionList.clear();
+		actionList.add("RemoveActor");
+		tc.addTreeNode(actorList, triggerList, actionList);
 		
-		
-		
-		
-		
-		
+		//Remove bullet when asteroid and bullet collide
+		actorList.clear();
+		actorList.add("bullet");
+		actorList.add("asteroid");
+		triggerList.clear();
+		triggerList.add("CircleCollision");
+		actionList.clear();
+		actionList.add("RemoveActor");
+		tc.addTreeNode(actorList, triggerList, actionList);
+
+			
 		
 		
 		testLevel.setTreeConstructorValues(tc);
@@ -208,43 +215,5 @@ public class Main extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
 	}
 }
-
-//		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.TrueSelfTrigger", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
-
-//		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.TrueSelfTrigger", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.DecreaseSpeed"}));
-
-//		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.UpArrowKey", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
-//		
-//		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.DownArrowKey", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.MoveBackwards"}));
-
-//		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.LeftArrowKey", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.RotateClockwise"}));
-//		
-//		tc.addSelfTriggerActions("player", "authoring.model.triggers.selfconditions.RightArrowKey", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.RotateCounterclockwise"}));
-
-
-//		tc.addSelfTriggerActions("asteroid", "authoring.model.triggers.selfconditions.LeftArrowKey",
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.Move"}));
-//		
-//		tc.addSelfTriggerActions("asteroid", "authoring.model.triggers.selfconditions.RightArrowKey",
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.MoveBackwards"}));
-//		
-//		tc.addSelfTriggerActions("asteroid", "authoring.model.triggers.selfconditions.SpaceBarKey",
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.SplitAndReduceSize"}));
-//
-//		
-//		tc.addEventTriggerActions("player", "asteroid", "authoring.model.triggers.externalconditions.CircleCollision", 
-//				Arrays.asList(new String[]{"authoring.model.actions.twoActorActions.SwapDirections"}));
-
-//		tc.addEventTriggerActions("player", "asteroid", "authoring.model.triggers.externalconditions.InRange", 
-//				Arrays.asList(new String[]{"authoring.model.actions.oneActorActions.ReduceSize"}));
