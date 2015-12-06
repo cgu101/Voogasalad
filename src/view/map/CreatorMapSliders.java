@@ -25,7 +25,7 @@ public class CreatorMapSliders extends MapSliders {
 
 	private void load(LevelMap currentLevel) {
 		pane.getChildren().clear();
-		if (currentLevel.getType() == LevelType.LEVEL) {
+		if (currentLevel != null && currentLevel.getType() == LevelType.LEVEL) {
 			this.map = (LevelMap) currentLevel;
 			makePane();
 			showing.setValue(true);

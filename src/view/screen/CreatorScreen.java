@@ -98,32 +98,31 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3),
 				myResources.getString("toolbarname"), this, w);
 		components.add(aet);
-		configureMap(browser, editor);
+		configureMap(browser, editor, slider);
 	}
 
-	private void configureMap(ActorBrowser browser, ActorEditor editor) {
+	private void configureMap(ActorBrowser browser, ActorEditor editor, CreatorMapSliders slider) {
 		fullscreen.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
-				editor.getDockedProperty().getValue()));
-		browser.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
-				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
-		editor.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
-				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
-		w.addListener((ov, oldTab, newTab) -> manageMapSize(fullscreen.getValue(),
-				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
+				editor.getDockedProperty().getValue(), slider.getDockedProperty().getValue()));
+		browser.getDockedProperty()
+				.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
+						editor.getDockedProperty().getValue(), slider.getDockedProperty().getValue()));
+		editor.getDockedProperty()
+				.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
+						editor.getDockedProperty().getValue(), slider.getDockedProperty().getValue()));
 	}
 
-	public void manageMapSize(boolean fullscreen, boolean browser, boolean editor) {
+	private void manageMapSize(boolean fullscreen, boolean browser, boolean editor, boolean slider) {
 		if (w.getCurrentLevel() == null) {
 			return;
 		} else if (!fullscreen) {
 			if (!browser && !editor) {
-				System.out.println("hi");
 				w.getCurrentLevel().setMapDimensions(1000, 724);
 			} else {
-				System.out.println("bye");
 				w.getCurrentLevel().setMapDimensions(700, 724);
 			}
 		} else {
+			w.refresh();
 			if (!browser && !editor) {
 				w.getCurrentLevel().setMapDimensions(1920, 1006);
 			} else {
