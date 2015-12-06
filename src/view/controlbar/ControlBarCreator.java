@@ -91,7 +91,6 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	}
 
 	private void makeTools(ToolBar toolBar) {
-<<<<<<< HEAD
 		Button backButton = makeButton("back", e -> {screen.setNextScreen(new StartScreen()); System.out.println("BRIIIIINGIT");});
 		Button addButton = makeButton("add", e -> addNewLevel());
 		Button leftButton = makeButton("left", e -> screen.getWorkspace().moveLevel(true));
@@ -100,15 +99,6 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		
 		Button backgroundButton = makeButton("background", e -> updateBackground());
 		Button newActor = makeButton("new", e -> addActor());
-=======
-		Button backButton = makeButton("back", e -> screen.setNextScreen(new StartScreen()));
-		Button addButton = makeButton("add", e -> screen.getWorkspace().addLevel());
-		Button leftButton = makeButton("left", e -> screen.getWorkspace().moveLevelLeft(true));
-		Button rightButton = makeButton("right", e -> screen.getWorkspace().moveLevelLeft(false));
-		Button splashButton = makeButton("splash", e -> screen.getWorkspace().addSplash());
-		Button newActor = makeButton("new", e -> {addActor();}); //if (screen.getGameWindow() != null) {screen.getGameWindow().getClient().send("33");}});
-		Button backgroundButton = makeButton("background", e -> updateBackground());
->>>>>>> 3868daaab6b964732b83d55f3f2dedbc7e0ceb5e
 
 		toolBar.getItems().addAll(backButton, new Separator(), addButton, splashButton, new Separator(), leftButton, rightButton, 
 				new Separator(), newActor, new Separator(), backgroundButton);
