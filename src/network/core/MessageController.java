@@ -4,17 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import network.core.Hub.Message;
+import network.game.GameThread;
 
 public class MessageController {
 	
-	private Map<String, GameThread> currentGames;
-	private Map<String, MessageHandler> messageHandlers;
 	
 	
-	public MessageController() {
-		currentGames = new HashMap<String, GameThread>();
-		messageHandlers = new HashMap<String, MessageHandler>();
-	}
+	public MessageController() {}
 	
 	public Map<Integer, Message> handleMessage(Message msg) {
 		// TODO parse message, extract enum, data, gamedata and do something
