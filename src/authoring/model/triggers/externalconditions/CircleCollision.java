@@ -2,30 +2,23 @@ package authoring.model.triggers.externalconditions;
 
 import authoring.model.actions.ActionTriggerHelper;
 import authoring.model.actors.Actor;
-import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
-import authoring.model.triggers.externaltriggers.AExternalTrigger;
-import player.InputManager;
+import authoring.model.triggers.externaltriggers.ATwoActorExternalTrigger;
 
-public class CircleCollision extends AExternalTrigger {
+public class CircleCollision extends ATwoActorExternalTrigger {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = -2528189707062365870L;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean condition(Parameters parameters, InputManager inputManager, Actor... actors) {
-
-		Actor actorA = actors[0];
-		Actor actorB = actors[1];
-
-		Double sizeA = ((Property<Double>) actorA.getProperties().getComponents().get("size")).getValue();
-		Double sizeB = ((Property<Double>) actorB.getProperties().getComponents().get("size")).getValue();
-
-		double radiusSum = sizeA + sizeB;
-		double distance = ActionTriggerHelper.distance(actorA, actorB);
-
-		if (Double.compare(distance, radiusSum) <= 0) {
-			return true;
-		}
-		return false;
+	public boolean condition(Parameters parameters, Actor a, Actor b) {
+		Double distance = ActionTriggerHelper.distance(a, b);
+		Double sizeA = a.getPropertyValue("size");
+		Double sizeB = b.getPropertyValue("size");
+		Double radiusSum = sizeA + sizeB;
+		return Double.compare(distance, radiusSum) <= 0;
 	}
 
 }

@@ -2,14 +2,19 @@ package authoring.model.triggers.selfconditions;
 
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
-import authoring.model.triggers.selftriggers.ASelfTrigger;
+import authoring.model.triggers.selftriggers.AInputSelfTrigger;
 import player.InputManager;
 
-public class KeyPress extends ASelfTrigger {
-	private static final int KEY_INDEX = 0;
+public class KeyPress extends AInputSelfTrigger {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = -84412559723661948L;
 
+	// TODO Fix hard-coded parameter identifier
+	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean condition(Parameters parameters, InputManager inputManager, Actor actor) {
-		return inputManager.getValue((String) parameters.getParameterList("string").get(KEY_INDEX));
+		return inputManager.getValue((String) parameters.getParameter("keyCode"));
 	}
 }

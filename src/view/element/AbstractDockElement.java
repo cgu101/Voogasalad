@@ -82,7 +82,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 		this.title.setOnMouseReleased(me -> reposition(me, false));
 	}
 
-	public void dock() {
+	protected void dock() {
 		if (stage != null) {
 			stage.close();
 		}

@@ -1,5 +1,8 @@
 package authoring.model.actions;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+
 import authoring.model.actors.Actor;
 import authoring.model.properties.Property;
 
@@ -26,5 +29,10 @@ public final class ActionTriggerHelper {
 			return true;
 		}
 		return false;
+	}
+	
+	public static String createActorID(){
+		Timestamp currentTimeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
+		return currentTimeStamp.toString();
 	}
 }
