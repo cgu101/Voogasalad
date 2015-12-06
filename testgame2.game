@@ -225,7 +225,11 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">615.0</myValue>
+=======
+                                <myValue class="double">330.0</myValue>
+>>>>>>> dws20
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -253,21 +257,33 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">340.0</myValue>
+=======
+                                <myValue class="double">229.0</myValue>
+>>>>>>> dws20
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">281.0</myValue>
+=======
+                                <myValue class="double">82.0</myValue>
+>>>>>>> dws20
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">15.0</myValue>
+=======
+                                <myValue class="double">12.0</myValue>
+>>>>>>> dws20
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -293,7 +309,11 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">89.0</myValue>
+=======
+                                <myValue class="double">537.0</myValue>
+>>>>>>> dws20
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -321,21 +341,33 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">150.0</myValue>
+=======
+                                <myValue class="double">225.0</myValue>
+>>>>>>> dws20
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">94.0</myValue>
+=======
+                                <myValue class="double">316.0</myValue>
+>>>>>>> dws20
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">18.0</myValue>
+=======
+                                <myValue class="double">19.0</myValue>
+>>>>>>> dws20
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -361,7 +393,11 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">207.0</myValue>
+=======
+                                <myValue class="double">104.0</myValue>
+>>>>>>> dws20
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -389,21 +425,33 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">190.0</myValue>
+=======
+                                <myValue class="double">104.0</myValue>
+>>>>>>> dws20
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">212.0</myValue>
+=======
+                                <myValue class="double">590.0</myValue>
+>>>>>>> dws20
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">11.0</myValue>
+=======
+                                <myValue class="double">12.0</myValue>
+>>>>>>> dws20
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -429,7 +477,11 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">260.0</myValue>
+=======
+                                <myValue class="double">59.0</myValue>
+>>>>>>> dws20
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -457,14 +509,22 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">169.0</myValue>
+=======
+                                <myValue class="double">58.0</myValue>
+>>>>>>> dws20
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">202.0</myValue>
+=======
+                                <myValue class="double">161.0</myValue>
+>>>>>>> dws20
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
