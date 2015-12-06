@@ -2,6 +2,7 @@ package network.framework;
 
 import java.io.IOException;
 
+import network.core.Hub;
 import network.core.TempHub;
 
 public class GameHub {
@@ -9,7 +10,7 @@ public class GameHub {
     
     public static void main(String[] args) {
         try {
-            new TempHub(PORT); 
+            new Hub(PORT); 
         }
         catch (IOException e) {
             System.out.println("Can't create listening socket.  Shutting down.");

@@ -1,4 +1,4 @@
-package network.core.connections;
+package network.game;
 
 import network.framework.format.Mail;
 

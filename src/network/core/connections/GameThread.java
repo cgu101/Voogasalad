@@ -1,4 +1,4 @@
-package network.game;
+package network.core.connections;
 
 import network.deprecated.GameState;
 

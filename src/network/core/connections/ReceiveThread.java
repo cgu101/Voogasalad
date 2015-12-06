@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
 import network.framework.format.Mail;
+import network.game.Message;
 
 public class ReceiveThread extends ConnectionThread {
 	

@@ -1,7 +1,8 @@
 package network.core.connections;
 
-import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import network.game.Message;
 
 public class MessageHandlerThread extends ConnectionThread {
 
@@ -13,11 +14,16 @@ public class MessageHandlerThread extends ConnectionThread {
 	public void run() {
 		while (!closed) {
 			try {
-				Message msg = incomingMessages.take();              
+				Message msg = incomingMessages.take();  
+				// Need to do something here
 			}
 			catch (Exception e) {
 				System.out.println("Exception while handling received message: " + e);
 			}
 		}
+	}
+	
+	public void addConnectionToClient(ConnectionToClient cli) {
+		
 	}
 }

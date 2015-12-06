@@ -9,7 +9,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import network.core.connections.ConnectionToClient;
-import network.core.connections.Message;
+import network.core.connections.MessageHandlerThread;
+import network.game.Message;
 
 
 /**
@@ -72,13 +73,12 @@ public class Hub {
 	 * queue and processes them (in the order in which they were received).
 	 */
 	private LinkedBlockingQueue<Message> incomingMessages;
-
-	private ServerSocket serverSocket;  // Listens for connections.
-	private Thread serverThread;        // Accepts connections on serverSocket
-	volatile private boolean shutdown;  // Set to true when the Hub is not listening.
-
-	private int nextClientId = 0;  // The id number that will be assigned to
-	// the next client that connects.
+	private ServerSocket serverSocket;  
+	private Thread serverThread;
+	private Thread messageHandlerThread;
+	volatile private boolean shutdown;
+	private int nextClientId = 0;  
+	private int port;
 
 	/**
 	 * Creates a Hub listening on a specified port, and starts a thread for
@@ -86,11 +86,14 @@ public class Hub {
 	 * @param port  the port on which the server will listen.
 	 * @throws IOException if it is not possible to create a listening socket on the specified port.
 	 */
-	public Hub(int port) throws IOException {
+	public Hub(Integer port) throws IOException {
+		this.port = port;
 		incomingMessages = new LinkedBlockingQueue<Message>();
 		serverSocket = new ServerSocket(port);
 		System.out.println("Listening for client connections on port " + port);
+		messageHandlerThread = new MessageHandlerThread(incomingMessages);
 		serverThread = new ServerThread();
+		messageHandlerThread.start();
 		serverThread.start();
 	}
 
@@ -100,9 +103,7 @@ public class Hub {
 	 * been reached, as when a game only allows two players.
 	 */
 	public void shutdownServerSocket() {
-		if (serverThread == null) {
-			return;
-		} else {
+		if (serverThread != null) {
 			incomingMessages.clear();
 			shutdown = true;
 			try {
@@ -114,6 +115,19 @@ public class Hub {
 	}
 
 
+	/**
+	 *  Disconnects all currently connected clients and stops accepting new client
+	 *  requests.  It is still possible to restart listening after this method has
+	 *  been called, by calling the restartServer() method.
+	 */
+	public void shutDownHub() {
+		shutdownServerSocket();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {}
+		// TODO Need to set a method for killing all connections and saving all states
+	}
+	
 	/**
 	 * Restarts listening and accepting new clients.  This would only be used if
 	 * the shutDownHub() method has been called previously.
@@ -130,32 +144,21 @@ public class Hub {
 	}
 
 
-	/**
-	 *  Disconnects all currently connected clients and stops accepting new client
-	 *  requests.  It is still possible to restart listening after this method has
-	 *  been called, by calling the restartServer() method.
-	 */
-	public void shutDownHub() {
-		shutdownServerSocket();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {}
-		// TODO Need to set a method for killing all connections and saving all states
-	}
-
-
-	private class ServerThread extends Thread {  // Listens for connection requests from clients.
+	private class ServerThread extends Thread {
 		public void run() {
 			try {
 				while (!shutdown) {
 					ConnectionToClient toAdd = new ConnectionToClient(nextClientId++, incomingMessages, serverSocket.accept());
-					// TODO whatever is supposed to go here
+					((MessageHandlerThread) messageHandlerThread).addConnectionToClient(toAdd);
 				}
 			} catch (Exception e) {
 				if (shutdown) {
 					System.out.println("Listener socket has shut down.");
 				} else {
 					System.out.println("Listener socket has been shut down by error: " + e);
+					try {
+						restartServer(port);
+					} catch (IOException e1) {}
 				}
 			}
 		}

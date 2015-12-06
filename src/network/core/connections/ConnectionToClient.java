@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import network.framework.format.Mail;
+import network.game.Message;
 
 public class ConnectionToClient {
 	
