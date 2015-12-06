@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import authoring.controller.AuthoringController;
 import authoring.controller.parameters.ParameterData;
+import authoring.model.tree.ParameterTreeNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -27,7 +28,6 @@ import javafx.util.Callback;
 import view.actor.PropertyCell;
 import view.actor.TriggerCell;
 import view.interactions.InteractionCell;
-import view.interactions.InteractionTreeNode;
 import view.level.Workspace;
 import view.screen.AbstractScreenInterface;
 
@@ -132,16 +132,16 @@ public class ActorEditor extends AbstractDockElement {
 	}
 
 
-	private TreeView<InteractionTreeNode> makeTriggerEditor(String... items) {
+	private TreeView<ParameterTreeNode> makeTriggerEditor(String... items) {
 		//TODO use items, hook up backend
-		TreeItem<InteractionTreeNode> rootItem = new TreeItem<InteractionTreeNode>(new InteractionTreeNode("Interaction","",
+		TreeItem<ParameterTreeNode> rootItem = new TreeItem<ParameterTreeNode>(new ParameterTreeNode("Interaction","",
 				Arrays.asList(new ParameterData("text", null, null, "value"), new ParameterData("text2",null,null,"value2")),new String[]{"Asteroid"}));
 		rootItem.setExpanded(true);
-		TreeView<InteractionTreeNode> treeView = new TreeView<InteractionTreeNode>(rootItem);
+		TreeView<ParameterTreeNode> treeView = new TreeView<ParameterTreeNode>(rootItem);
 		treeView.setEditable(true);
-		treeView.setCellFactory(new Callback<TreeView<InteractionTreeNode>, TreeCell<InteractionTreeNode>>() {
+		treeView.setCellFactory(new Callback<TreeView<ParameterTreeNode>, TreeCell<ParameterTreeNode>>() {
 			@Override
-			public TreeCell<InteractionTreeNode> call(TreeView<InteractionTreeNode> p) {
+			public TreeCell<ParameterTreeNode> call(TreeView<ParameterTreeNode> p) {
 				InteractionCell cell = new InteractionCell(pane, controller);
 //				new TriggerParametersView(null, controller);
 				return cell;
@@ -150,7 +150,7 @@ public class ActorEditor extends AbstractDockElement {
 		treeView.setFocusTraversable(false);
 		GridPane.setColumnSpan(treeView, 3);
 		// TODO
-		rootItem.getChildren().add(new TreeItem<InteractionTreeNode>(new InteractionTreeNode("Action","next",null,null)));
+		rootItem.getChildren().add(new TreeItem<ParameterTreeNode>(new ParameterTreeNode("Action","next",null,null)));
 		return treeView;
 	}
 
