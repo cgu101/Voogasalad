@@ -8,8 +8,8 @@ public interface ResourceType {
 	String PARAMETERS = "parameters";
 	String ACTIONS = "actions";
 	
+	String NUM_PARAMS = "numParams";
 	String NUM_ACTORS = "numActors";
 	String TYPE = "type";	
-	String GENERAL = "general";	
 	String CLASS_NAME = "className";
 }
