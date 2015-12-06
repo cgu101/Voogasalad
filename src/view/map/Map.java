@@ -78,7 +78,7 @@ public abstract class Map extends AbstractElement {
 		// it
 		controller = new AuthoringController();
 		editToolbar = new ToolBar();
-		//actorHandler = new ActorHandler(layout, controller, editToolbar, this, theMiniMap, zoomSliderArea);
+		actorHandler = new ActorHandler(layout, controller, editToolbar, this, theMiniMap, zoomSliderArea);
 		// TODO: actorHandler = new ActorHandler(layout, zoomSliderArea,
 		// controller, editToolbar);
 
@@ -106,7 +106,7 @@ public abstract class Map extends AbstractElement {
 			background.setPreserveRatio(true);
 		}
 		
-		updateBackground();
+		actorHandler.updateBackground(background);
 	}
 
 	/**
@@ -145,7 +145,7 @@ public abstract class Map extends AbstractElement {
 	 * @param background
 	 *            - the Node to set as the new Map background
 	 */
-	public void initializeBackground(Image bg) {
+	public void updateBackground(Image bg) {
 		background = new ImageView(bg);
 		background.setFitWidth(mapRegularWidth);
 		background.setSmooth(true);
@@ -157,9 +157,6 @@ public abstract class Map extends AbstractElement {
 			background.setFitHeight(mapRegularWidth * bg.getHeight()/bg.getWidth());
 		}
 		background.setPreserveRatio(true);
-	}
-	
-	public void updateBackground() {
 		actorHandler.updateBackground(background);
 	}
 
@@ -321,14 +318,12 @@ public abstract class Map extends AbstractElement {
 	protected void makePane() {
 		//Image backgroundImage = new Image(myResources.getString("backgroundURL"));
 		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
-		initializeBackground(backgroundImage);
+		updateBackground(backgroundImage);
 
 		// Create the map after adding elements you want
 		createTheMap();
 		
 		actorHandler = new ActorHandler(layout, controller, editToolbar, this, theMiniMap, zoomSliderArea);
-
-		updateBackground();
 
 		// remove pesky key event handlers
 		addEventFilters();

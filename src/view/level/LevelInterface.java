@@ -15,7 +15,7 @@ public interface LevelInterface extends Anscestral {
 
 	public AuthoringController getController();
 
-	public void initializeBackground(Image backgroundImage);
+	public void updateBackground(Image backgroundImage);
 	
 	public String getTitle ();
 
