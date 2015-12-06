@@ -38,13 +38,16 @@ public class Workspace extends AbstractElement implements Anscestral {
 
 	private Deque<String> anscestors;
 
-	public Workspace (GridPane pane, AbstractScreen screen, Game game) {
+	public Workspace(GridPane pane, AbstractScreen screen, Game game) {
 		super(pane);
 
 		this.tabManager = new TabPane();
 		this.screen = screen;
 		this.levelInterfaceMap = new HashMap<>();
-		this.currentLevelInterface = null; // TODO Make current level connect to the server's current level (or default to 1... Essentially load game!)
+		this.currentLevelInterface = null; // TODO Make current level connect to
+											// the server's current level (or
+											// default to 1... Essentially load
+											// game!)
 
 		this.game = game;
 		levelInfo = game.getBundleLevels();
@@ -55,26 +58,26 @@ public class Workspace extends AbstractElement implements Anscestral {
 		makePane();
 	}
 
-	public Workspace (GridPane pane, AbstractScreen screen) {
+	public Workspace(GridPane pane, AbstractScreen screen) {
 		this(pane, screen, new Game());
 	}
 
-	private void deleteVisual (Level l) {
+	private void deleteVisual(Level l) {
 		tabManager.getTabs().remove(levelInterfaceMap.get(l.getUniqueID()).getTab());
 		removeLevel(l);
 	}
 
-	private void addVisual (Level l) {
+	private void addVisual(Level l) {
 		addScreenElement(l);
 	}
 
-	private void updateVisual (Level l) {
+	private void updateVisual(Level l) {
 		LevelInterface levelToBeModified = levelInterfaceMap.get(l.getUniqueID());
 		levelToBeModified.redraw(l);
 		displayInfo(propertyInfo);
 	}
 
-	private void displayInfo (Bundle<Property<?>> p) {
+	private void displayInfo(Bundle<Property<?>> p) {
 		System.out.println(p.getSize());
 	}
 
@@ -82,7 +85,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 	 * Initialize tabManager
 	 */
 	@Override
-	protected void makePane () {
+	protected void makePane() {
 		tabManager.setSide(Side.TOP);
 		pane.add(tabManager, DEFAULT_POSITION, DEFAULT_POSITION);
 		addListener((ov, oldTab, newTab) -> {
@@ -91,12 +94,12 @@ public class Workspace extends AbstractElement implements Anscestral {
 		});
 	}
 
-	public void addListener (ChangeListener<? super Tab> listener) {
+	public void addListener(ChangeListener<? super Tab> listener) {
 		SingleSelectionModel<Tab> tabManagerModel = tabManager.getSelectionModel();
 		tabManagerModel.selectedItemProperty().addListener(listener);
 	}
 
-	public void addLevel (Level level) {
+	public void addLevel(Level level) {
 		if (levelInterfaceMap.size() == 0) {
 			initializeVisualLevelComponents();
 		}
@@ -107,34 +110,32 @@ public class Workspace extends AbstractElement implements Anscestral {
 		configureTab(level);
 	}
 
-	private void initializeVisualLevelComponents () {
+	private void initializeVisualLevelComponents() {
 		for (AbstractDockElement dockElement : screen.getComponents()) {
 			dockElement.getShowingProperty().setValue(true);
 		}
 	}
 
-	public void addSplashScreen (Level level) {
+	public void addSplashScreen(Level level) {
 		addScreenElement(level);
-		
+
 		LevelMap levelInterface = (LevelMap) levelInterfaceMap.get(level.getUniqueID());
-		levelInterface.removeMiniMap();
-		levelInterface.removeMap();
 	}
-	
-	private void addScreenElement (Level level) {
+
+	private void addScreenElement(Level level) {
 		LevelInterface newLevelInterface = new LevelMap(new GridPane(), level, screen);
 
-		levelInterfaceMap.put(level.getUniqueID(),  newLevelInterface);
+		levelInterfaceMap.put(level.getUniqueID(), newLevelInterface);
 		levelInfo.add(level);
 
 		addLevel(level);
 	}
 
-	public void configureTab (Level level) {
+	public void configureTab(Level level) {
 		LevelInterface levelInterface = levelInterfaceMap.get(level.getUniqueID());
 		Tab newTab = levelInterface.getTab();
 		newTab.setOnClosed(e -> {
-			removeLevel(level); 
+			removeLevel(level);
 			DataDecorator d = new DataDecorator(Request.DELETE, level, this.anscestors);
 			updateObservers(d);
 		});
@@ -142,20 +143,15 @@ public class Workspace extends AbstractElement implements Anscestral {
 		tabManager.getSelectionModel().select(newTab);
 	}
 
-	private void removeLevel (Level level) {
+	private void removeLevel(Level level) {
 		levelInterfaceMap.remove(level.getUniqueID());
 		levelInfo.remove(level.getUniqueID());
 	}
 
-	public LevelInterface getCurrentLevel () {
-		return currentLevelInterface;
-	}
-
-	public void moveLevel (Boolean left) {
+	public void moveLevel(Boolean left) {
 		int currentTabIndex = tabManager.getSelectionModel().getSelectedIndex();
 
-		if (left && currentTabIndex <= 0 ||
-				!left && currentTabIndex > tabManager.getTabs().size()) {
+		if (left && currentTabIndex <= 0 || !left && currentTabIndex > tabManager.getTabs().size()) {
 			return;
 		}
 
@@ -166,7 +162,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 		}
 	}
 
-	public void updateObservers (Object o) {
+	public void updateObservers(Object o) {
 		setChanged();
 		notifyObservers(o);
 	}
@@ -182,21 +178,34 @@ public class Workspace extends AbstractElement implements Anscestral {
 		Request request = mail.getRequest();
 
 		switch (request) {
-		case ADD: {addVisual(data); break;}
-		case DELETE: {deleteVisual(data); break;}
-		case MODIFY: {updateVisual(data); break;}
-		case TRANSITION: {addSplashScreen(data); break;}
-		default: {break;}
+		case ADD: {
+			addVisual(data);
+			break;
+		}
+		case DELETE: {
+			deleteVisual(data);
+			break;
+		}
+		case MODIFY: {
+			updateVisual(data);
+			break;
+		}
+		case TRANSITION: {
+			addSplashScreen(data);
+			break;
+		}
+		default: {
+			break;
+		}
 		}
 	}
 
-	public Game getGame () {
+	public Game getGame() {
 		return game;
 	}
-	
-	public LevelInterface getCurrentLevelInterface () {
-		String currentTabID = this.tabManager.getSelectionModel().getSelectedItem().getId();
-		return levelInterfaceMap.get(currentTabID);
+
+	public LevelInterface getCurrentLevelInterface() {
+		return currentLevelInterface;
 	}
 
 	@Override

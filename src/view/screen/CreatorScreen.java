@@ -110,7 +110,6 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		if (!fullscreen) {
 			if (!browser && !editor) {
 			} else {
-				
 			}
 		} else {
 			if (!browser && !editor) {

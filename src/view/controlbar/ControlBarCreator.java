@@ -37,7 +37,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 
 	private static final String DEFAULT_IP = "localhost";
 	private static final String LEVEL_ID = "Level ";
-	private static final String SPLASH_ID = "Splash";
+	private static final String SPLASH_ID = "Splash ";
 
 	private CreatorScreen screen;
 	private GameWindow gameWindow;
@@ -95,7 +95,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		Button leftButton = makeButton("left", e -> screen.getWorkspace().moveLevel(true));
 		Button rightButton = makeButton("right", e -> screen.getWorkspace().moveLevel(false));
 		Button splashButton = makeButton("splash", e -> addNewSplash());
-		
+
 		Button backgroundButton = makeButton("background", e -> updateBackground());
 		Button newActor = makeButton("new", e -> addActor());
 
@@ -110,8 +110,8 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				KeyCombination.CONTROL_DOWN);
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save, new SeparatorMenuItem(), exit);
 
-		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), 
-				e -> addNewLevel(), KeyCode.T, KeyCombination.CONTROL_DOWN);
+		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> addNewLevel(), KeyCode.T,
+				KeyCombination.CONTROL_DOWN);
 		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> addNewSplash(), KeyCode.R,
 				KeyCombination.CONTROL_DOWN);
 		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(),
@@ -138,9 +138,9 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				new SeparatorMenuItem(), fullscreen);
 		makeMenuBar(mainMenu, file, edit, window);
 	}
-	
-	private void addNewLevel () {
-		Level newLevel = new Level(LEVEL_ID + Integer.toString(screen.getGame().getLevels().size()+1));
+
+	private void addNewLevel() {
+		Level newLevel = new Level(LEVEL_ID + Integer.toString(screen.getGame().getLevels().size() + 1));
 		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, new ArrayDeque<String>());
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
 		screen.getWorkspace().updateObservers(dataMail);
@@ -152,8 +152,8 @@ public class ControlBarCreator extends ControlBar implements Observer {
 			}
 		}
 	}
-	
-	private void addNewSplash () {
+
+	private void addNewSplash() {
 		Level newSplash = new Level(SPLASH_ID + Integer.toString(screen.getGame().getLevels().size() + 1));
 		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, new ArrayDeque<String>());
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
@@ -176,13 +176,11 @@ public class ControlBarCreator extends ControlBar implements Observer {
 
 		try {
 			Image backgroundImage = new Image(file.toURI().toURL().toExternalForm(), 60, 0, true, false);
-			
+
 			this.screen.getWorkspace().getCurrentLevelInterface().initializeBackground(backgroundImage);
-//			this.screen.getWorkspace().getCurrentLevel().initializeBackground(backgroundImage);
+
 		} catch (IOException ex) {
-			// Alert fail = new Alert(AlertType.ERROR, "Unable to Load Image",
-			// ButtonType.OK);
-			// fail.showAndWait();
+			showError("Error", "Unable to Load Image");
 		}
 
 	}
