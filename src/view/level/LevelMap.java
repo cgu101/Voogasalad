@@ -5,6 +5,7 @@ import java.util.Date;
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
+import authoring.model.level.Level;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.effect.BlendMode;
@@ -21,12 +22,34 @@ public class LevelMap extends Map implements LevelInterface {
 	private ScrollPane sp;
 	private String myString;
 	private GameWindow gameWindow;
+	
+	private String myTitle;
+	private Level myLevel;
 
+	public LevelMap(GridPane pane, Level l, AbstractScreen screen) {
+		super(pane);
+		findResources();
+		myString = myResources.getString("tabName");
+		myTab = new Tab(l.getUniqueID());
+		myTitle = l.getUniqueID();
+		myTab.setContent(pane);
+		myTab.setId(l.getUniqueID());
+		
+		mapScrollableArea.setOnDragEntered(event -> startDrag(event));
+
+		mapScrollableArea.setOnDragExited(event -> exitDrag(event));
+
+		mapScrollableArea.setOnDragOver(event -> dragAroundMap(event));
+		mapScrollableArea.setOnDragDropped(event -> dragFinished(event));
+		myLevel = l;
+	}
+	
 	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
 		super(pane);
 		findResources();
 		myString = myResources.getString("tabName");
 		myTab = new Tab(makeTitle(i));
+		myTitle = myString + (i + 1);
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));
 
@@ -36,6 +59,8 @@ public class LevelMap extends Map implements LevelInterface {
 
 		mapScrollableArea.setOnDragOver(event -> dragAroundMap(event));
 		mapScrollableArea.setOnDragDropped(event -> dragFinished(event));
+		
+		myLevel = null;
 	}
 
 	private void dragFinished(DragEvent event) {
@@ -56,7 +81,7 @@ public class LevelMap extends Map implements LevelInterface {
 			addActor(a, (double) a.getProperties().getComponents().get("xLocation").getValue(),
 					(double) a.getProperties().getComponents().get("yLocation").getValue());
 			success = true;
-			gameWindow.getClient().send("New Drop Event");
+//			gameWindow.getClient().send("New Drop Event");
 		}
 		event.setDropCompleted(success);
 		event.consume();
@@ -105,5 +130,22 @@ public class LevelMap extends Map implements LevelInterface {
 
 	public void setGameWindow(GameWindow g) {
 		this.gameWindow = g;
+	}
+
+	@Override
+	public String getTitle() {
+		return myTitle;
+	}
+
+	@Override
+	public void redraw(Level modelLevel) {
+		// TODO Auto-generated method stub
+		System.out.println("I am redrawing");
+	}
+
+	@Override
+	public Level buildLevel() {
+		// TODO Auto-generated method stub
+		return myLevel;
 	}
 }

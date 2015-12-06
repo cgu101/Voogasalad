@@ -16,7 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import player.controller.PlayerController;
 
-public class ActorMonitorCell extends AbstractListCell {
+public class ActorMonitorCell extends AbstractListCell<String> {
 
 	private PlayerController controller;
 	

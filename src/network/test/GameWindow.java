@@ -1,15 +1,17 @@
 package network.test;
 
 import java.io.IOException;
+import java.util.Observable;
 
+import authoring.model.game.Game;
+import javafx.application.Platform;
 import network.core.Client;
 import network.core.ForwardedMessage;
-import view.screen.CreatorScreen;
 
-public class GameWindow {
+public class GameWindow extends Observable {
 	private final static int PORT = 6969;
 
-	public class GameClient extends Client {
+	private class GameClient extends Client {
 
 		GameClient(String host) throws IOException {
 			super(host, PORT);
@@ -19,7 +21,18 @@ public class GameWindow {
 			if (message instanceof ForwardedMessage) {
 				ForwardedMessage bm = (ForwardedMessage)message;
 				addToTranscript("I HAVE RECEIVED! Sender ID is: " + bm.senderID + " and says:  " + bm.message.getClass());
-				myCreatorScreen.getScene().getRoot().setTranslateX(myCreatorScreen.getScene().getRoot().getTranslateX()+50);
+				
+				if (bm.message instanceof Game && bm.senderID != this.getID()) {
+					System.out.println(this.getID());
+					
+					System.out.println(((Game) bm.message).getLevels().isEmpty());
+					Platform.runLater(new Runnable() {
+					    @Override
+					    public void run() {
+					    	updateObservers((Game) bm.message);
+					    }
+					});
+				}
 			}
 		}
 
@@ -40,13 +53,11 @@ public class GameWindow {
 	}
 
 	private GameClient connection; 
-	private CreatorScreen myCreatorScreen;
-	private volatile boolean connected; 
+	private volatile boolean connected;
+	
+	private Game gameData;
 
 	public GameWindow(final String host) {
-		myCreatorScreen = new CreatorScreen();
-		myCreatorScreen.setGameWindow(this);
-
 
 		new Thread() {
 			public void run() {
@@ -54,7 +65,12 @@ public class GameWindow {
 					addToTranscript("Connecting to " + host + " ...");
 					connection = new GameClient(host);
 					connected = true;
-					connection.send("yayyyyyyyyyyyy");
+					connection.send("I have connected to " + host);
+
+					/**
+					 * Instead of creating a new game as the game data, we want to try to obtain a Game object from the server side
+					 * using a obtainFromServer() method --> gameData = obtainFromServer();
+					 */
 				}
 				catch (IOException e) {
 					addToTranscript("Connection attempt failed.");
@@ -62,19 +78,30 @@ public class GameWindow {
 				}
 			}
 		}.start();
+		
+		gameData = new Game();
 	}
 
 
 
-	public void addToTranscript (String message) {
+	private void addToTranscript (String message) {
 		System.out.println(message);
 	}
-
-	public GameClient getClient () {
-		return connection;
+	
+	public void updateObservers (Object o) {
+		setChanged();
+		notifyObservers(o);
 	}
-
-	public CreatorScreen getScreen () {
-		return myCreatorScreen;
+	
+	public void send (Object message) {
+		connection.send(message);
+	}
+	
+	public Game getGameData () {
+		return gameData;
+	}
+	
+	public void setGameData (Game game) {
+		gameData = game;
 	}
 }

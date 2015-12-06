@@ -13,7 +13,6 @@ import resources.keys.PropertyKeyResource;
 /**
  * The game engine, which handles loading single levels and level transitions.
  */
-
 public class GameEngine implements IEngine {
 	private static final String INITIAL_LEVEL = "0";
 
@@ -21,6 +20,7 @@ public class GameEngine implements IEngine {
 	private String levelKey = PropertyKeyResource.getKey(PropertyKey.LEVEL_ID_KEY);
 	private String initialLevelKey = PropertyKeyResource.getKey(PropertyKey.INITIAL_LEVEL_KEY);
 	private String levelCountKey = PropertyKeyResource.getKey(PropertyKey.GAME_LEVEL_COUNT_KEY);
+	private String nextLevelKey = PropertyKeyResource.getKey(PropertyKey.NEXT_LEVEL_KEY);
 	
 	private Game game;
 	private InteractionExecutor levelExecutor;
@@ -60,7 +60,7 @@ public class GameEngine implements IEngine {
 		return g.getLevel(levelID);
 	}
 	private Level makeLevel(String levelID) {
-		if (Integer.parseInt(levelID) < 0) {
+		if (levelID.equals(nextLevelKey)) {
 			return makeDefaultNextLevel(levelExecutor.getLevelID());
 		}
 		return game.getLevel(levelID);

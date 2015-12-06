@@ -1,6 +1,7 @@
 package view.level;
 
 import authoring.controller.AuthoringController;
+import authoring.model.level.Level;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -58,5 +59,22 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 		image.fitHeightProperty().bind(screen.getScene().widthProperty());
 		image.setPreserveRatio(true);
 		pane.add(image, 0, 0);
+	}
+
+	@Override
+	public String getTitle() {
+		return null;
+	}
+
+	@Override
+	public void redraw(Level modelLevel) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Level buildLevel() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

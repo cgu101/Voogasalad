@@ -68,6 +68,12 @@ public class ActorGroups implements Serializable{
 		addActorToMap(actor, actorMap);
 	}
 	
+	public void addActor (Actor... actor) {
+		for(Actor a: actor){
+			addActorToMap(a, actorMap);
+		}
+	}
+	
 	public void removeActor (Actor actor) {
 		String groupName = actor.getGroupName();
 		getGroupFromMap(groupName, actorMap).remove(actor.getUniqueID());

@@ -1,6 +1,8 @@
 package view.screen;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -91,5 +93,9 @@ public abstract class AbstractScreen extends AbstractVisual implements AbstractS
 
 	public BooleanProperty getFullscreenProperty() {
 		return fullscreen;
+	}
+	
+	public List<GridPane> getPanes () {
+		return Collections.unmodifiableList(myPanes);
 	}
 }

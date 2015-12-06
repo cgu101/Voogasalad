@@ -3,6 +3,8 @@ package view.screen;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import authoring.controller.AuthoringController;
 import authoring.controller.constructor.levelwriter.LevelConstructor;
@@ -15,7 +17,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import network.test.GameWindow;
 import util.FileChooserUtility;
-import view.controlbar.ControlBarCreator;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.ActorEditor;
@@ -29,17 +30,21 @@ import view.map.MapSliders;
  * @author David
  *
  */
-public class CreatorScreen extends AbstractScreen {
+public class CreatorScreen extends AbstractScreen implements Observer {
+	private static final int DEFAULT_MAP_PANE_INDEX = 0;
 
-	//TODO take this out
-	private GameWindow g = null;
-	
-	private ControlBarCreator t;
 	private Workspace w;
 	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
+	
+	private Game game;
 
 	public CreatorScreen() {
+		this(null);
+	}
+	
+	public CreatorScreen (Game game) {
+		this.game = game;
 		findResources();
 		WIDTH = Integer.parseInt(myResources.getString("width"));
 		HEIGHT = Integer.parseInt(myResources.getString("height"));
@@ -47,6 +52,11 @@ public class CreatorScreen extends AbstractScreen {
 		root.prefHeightProperty().bind(scene.heightProperty());
 		root.prefWidthProperty().bind(scene.widthProperty());
 		this.title = myResources.getString("title");
+	}
+	
+	public CreatorScreen (Game game, GameWindow gw) {
+		this(game);
+		w.addNetwork(gw);
 	}
 
 	@Override
@@ -90,7 +100,8 @@ public class CreatorScreen extends AbstractScreen {
 		components.add(slider);
 		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3), myResources.getString("toolbarname"), this, w);
 		components.add(aet);
-		t = new ControlBarCreator(myPanes.get(0), this, w);
+		
+//		t = new ControlBarCreator(myPanes.get(0), this);
 	}
 
 	// TODO
@@ -116,16 +127,19 @@ public class CreatorScreen extends AbstractScreen {
 		System.out.println("Testing loading game ");
 	}
 	
-	public ControlBarCreator getControls () {
-		return t;
+	public Workspace getWorkspace () {
+		return w;
 	}
 	
-	public void setGameWindow(GameWindow g) {
-		this.g = g;
-		w.setGameWindow(g);
+	public GridPane getDefaultPane () {
+		return myPanes.get(DEFAULT_MAP_PANE_INDEX);
 	}
-	
-	public GameWindow getGameWindow() {
-		return g;
+
+	@Override
+	public void update(Observable o, Object arg) {
+		System.out.println("OBserver update");
+		
+		Game receivedGame = (Game) arg;
+		w.updateVisual((GameWindow) o, (Game) arg);
 	}
 }

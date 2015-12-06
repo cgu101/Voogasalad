@@ -14,82 +14,82 @@
                     <children>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
-                        <value>authoring.model.actions.oneActorActions.IncreaseSpeed</value>
+                        <value>IncreaseSpeed</value>
                         <parameters>
-                          <map/>
+                          <parameter__values/>
                         </parameters>
                       </authoring.model.tree.ActionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.UpArrowKey</value>
+                    <value>UpArrowKey</value>
                     <parameters>
-                      <map/>
+                      <parameter__values/>
                     </parameters>
                   </authoring.model.tree.TriggerTreeNode>
                   <authoring.model.tree.TriggerTreeNode>
                     <children>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
-                        <value>authoring.model.actions.oneActorActions.RotateCounterclockwise</value>
+                        <value>RotateCounterclockwise</value>
                         <parameters>
-                          <map/>
+                          <parameter__values/>
                         </parameters>
                       </authoring.model.tree.ActionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.RightArrowKey</value>
+                    <value>RightArrowKey</value>
                     <parameters>
-                      <map/>
+                      <parameter__values/>
                     </parameters>
                   </authoring.model.tree.TriggerTreeNode>
                   <authoring.model.tree.TriggerTreeNode>
                     <children>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
-                        <value>authoring.model.actions.oneActorActions.RotateClockwise</value>
+                        <value>RotateClockwise</value>
                         <parameters>
-                          <map/>
+                          <parameter__values/>
                         </parameters>
                       </authoring.model.tree.ActionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.LeftArrowKey</value>
+                    <value>LeftArrowKey</value>
                     <parameters>
-                      <map/>
+                      <parameter__values/>
                     </parameters>
                   </authoring.model.tree.TriggerTreeNode>
                   <authoring.model.tree.TriggerTreeNode>
                     <children>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
-                        <value>authoring.model.actions.oneActorActions.ShootBullet</value>
+                        <value>ShootBullet</value>
                         <parameters>
-                          <map/>
+                          <parameter__values/>
                         </parameters>
                       </authoring.model.tree.ActionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.SpaceBarKey</value>
+                    <value>SpaceBarKey</value>
                     <parameters>
-                      <map/>
+                      <parameter__values/>
                     </parameters>
                   </authoring.model.tree.TriggerTreeNode>
                   <authoring.model.tree.TriggerTreeNode>
                     <children>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
-                        <value>authoring.model.actions.oneActorActions.DecreaseSpeed</value>
+                        <value>DecreaseSpeed</value>
                         <parameters>
-                          <map/>
+                          <parameter__values/>
                         </parameters>
                       </authoring.model.tree.ActionTreeNode>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
-                        <value>authoring.model.actions.oneActorActions.Move</value>
+                        <value>Move</value>
                         <parameters>
-                          <map/>
+                          <parameter__values/>
                         </parameters>
                       </authoring.model.tree.ActionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.TrueSelfTrigger</value>
+                    <value>TrueSelfTrigger</value>
                     <parameters>
-                      <map/>
+                      <parameter__values/>
                     </parameters>
                   </authoring.model.tree.TriggerTreeNode>
                 </children>
@@ -101,17 +101,37 @@
                     <children>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
-                        <value>authoring.model.actions.oneActorActions.Move</value>
+                        <value>Move</value>
                         <parameters>
-                          <map/>
+                          <parameter__values/>
                         </parameters>
                       </authoring.model.tree.ActionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.DownArrowKey</value>
+                    <value>TrueSelfTrigger</value>
                     <parameters>
-                      <map/>
+                      <parameter__values/>
                     </parameters>
                   </authoring.model.tree.TriggerTreeNode>
+                  <authoring.model.tree.ActorTreeNode>
+                    <children>
+                      <authoring.model.tree.TriggerTreeNode>
+                        <children>
+                          <authoring.model.tree.ActionTreeNode>
+                            <children/>
+                            <value>RemoveActor</value>
+                            <parameters>
+                              <parameter__values/>
+                            </parameters>
+                          </authoring.model.tree.ActionTreeNode>
+                        </children>
+                        <value>CircleCollision</value>
+                        <parameters>
+                          <parameter__values/>
+                        </parameters>
+                      </authoring.model.tree.TriggerTreeNode>
+                    </children>
+                    <value>bullet</value>
+                  </authoring.model.tree.ActorTreeNode>
                 </children>
                 <value>asteroid</value>
               </authoring.model.tree.ActorTreeNode>
@@ -121,17 +141,52 @@
                     <children>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
-                        <value>authoring.model.actions.oneActorActions.Move</value>
+                        <value>Move</value>
                         <parameters>
-                          <map/>
+                          <parameter__values/>
                         </parameters>
                       </authoring.model.tree.ActionTreeNode>
                     </children>
-                    <value>authoring.model.triggers.selfconditions.TrueSelfTrigger</value>
+                    <value>TrueSelfTrigger</value>
                     <parameters>
-                      <map/>
+                      <parameter__values/>
                     </parameters>
                   </authoring.model.tree.TriggerTreeNode>
+                  <authoring.model.tree.TriggerTreeNode>
+                    <children>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>RemoveActor</value>
+                        <parameters>
+                          <parameter__values/>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                    </children>
+                    <value>DistanceTraveledCheck</value>
+                    <parameters>
+                      <parameter__values/>
+                    </parameters>
+                  </authoring.model.tree.TriggerTreeNode>
+                  <authoring.model.tree.ActorTreeNode>
+                    <children>
+                      <authoring.model.tree.TriggerTreeNode>
+                        <children>
+                          <authoring.model.tree.ActionTreeNode>
+                            <children/>
+                            <value>RemoveActor</value>
+                            <parameters>
+                              <parameter__values/>
+                            </parameters>
+                          </authoring.model.tree.ActionTreeNode>
+                        </children>
+                        <value>CircleCollision</value>
+                        <parameters>
+                          <parameter__values/>
+                        </parameters>
+                      </authoring.model.tree.TriggerTreeNode>
+                    </children>
+                    <value>asteroid</value>
+                  </authoring.model.tree.ActorTreeNode>
                 </children>
                 <value>bullet</value>
               </authoring.model.tree.ActorTreeNode>
@@ -154,6 +209,210 @@
                   <obs/>
                   <components>
                     <entry>
+                      <string>testActor4</string>
+                      <authoring.model.actors.Actor>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">asteroids.png</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">276.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>size</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">128.0</myValue>
+                                <identifier>size</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">asteroid</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>health</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">20.0</myValue>
+                                <identifier>health</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">356.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">469.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">14.0</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>testActor4</identifier>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                    <entry>
+                      <string>testActor3</string>
+                      <authoring.model.actors.Actor>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">asteroids.png</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">264.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>size</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">128.0</myValue>
+                                <identifier>size</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">asteroid</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>health</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">20.0</myValue>
+                                <identifier>health</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">332.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">37.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">18.0</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>testActor3</identifier>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                    <entry>
+                      <string>testActor5</string>
+                      <authoring.model.actors.Actor>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">asteroids.png</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">439.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>size</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">128.0</myValue>
+                                <identifier>size</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">asteroid</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>health</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">20.0</myValue>
+                                <identifier>health</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">61.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">44.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">17.0</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>testActor5</identifier>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                    <entry>
                       <string>testActor2</string>
                       <authoring.model.actors.Actor>
                         <myPropertyBundle>
@@ -170,14 +429,14 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">330.0</myValue>
+                                <myValue class="double">108.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>size</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">30.0</myValue>
+                                <myValue class="double">128.0</myValue>
                                 <identifier>size</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -189,13 +448,6 @@
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
-                              <string>angle</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">135.0</myValue>
-                                <identifier>angle</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
                               <string>health</string>
                               <authoring.model.properties.Property>
                                 <myValue class="double">20.0</myValue>
@@ -203,16 +455,23 @@
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">6.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">0.0</myValue>
+                                <myValue class="double">563.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">15.0</myValue>
+                                <myValue class="double">17.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -254,7 +513,7 @@
                             <entry>
                               <string>size</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">12.0</myValue>
+                                <myValue class="double">50.0</myValue>
                                 <identifier>size</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -314,82 +573,126 @@
           </actorGroups>
           <triggerMap>
             <entry>
-              <string>authoring.model.triggers.selfconditions.SpaceBarKey</string>
-              <authoring.model.triggers.selfconditions.SpaceBarKey/>
+              <string>KeyPress</string>
+              <authoring.model.triggers.selfconditions.KeyPress/>
             </entry>
             <entry>
-              <string>authoring.model.triggers.selfconditions.UpArrowKey</string>
+              <string>UpArrowKey</string>
               <authoring.model.triggers.selfconditions.UpArrowKey/>
             </entry>
             <entry>
-              <string>authoring.model.triggers.externalconditions.InRange</string>
-              <authoring.model.triggers.externalconditions.InRange/>
+              <string>PropertyEquals</string>
+              <authoring.model.triggers.selfconditions.PropertyEquals/>
             </entry>
             <entry>
-              <string>authoring.model.triggers.selfconditions.LeftArrowKey</string>
-              <authoring.model.triggers.selfconditions.LeftArrowKey/>
+              <string>TrueExternalTrigger</string>
+              <authoring.model.triggers.externalconditions.TrueExternalTrigger/>
             </entry>
             <entry>
-              <string>authoring.model.triggers.selfconditions.TrueSelfTrigger</string>
+              <string>TrueSelfTrigger</string>
               <authoring.model.triggers.selfconditions.TrueSelfTrigger/>
             </entry>
             <entry>
-              <string>authoring.model.triggers.externalconditions.CircleCollision</string>
+              <string>InRange</string>
+              <authoring.model.triggers.externalconditions.InRange/>
+            </entry>
+            <entry>
+              <string>LeftArrowKey</string>
+              <authoring.model.triggers.selfconditions.LeftArrowKey/>
+            </entry>
+            <entry>
+              <string>CircleCollision</string>
               <authoring.model.triggers.externalconditions.CircleCollision/>
             </entry>
             <entry>
-              <string>authoring.model.triggers.selfconditions.DownArrowKey</string>
+              <string>SpaceBarKey</string>
+              <authoring.model.triggers.selfconditions.SpaceBarKey/>
+            </entry>
+            <entry>
+              <string>DistanceTraveledCheck</string>
+              <authoring.model.triggers.selfconditions.DistanceTraveledCheck/>
+            </entry>
+            <entry>
+              <string>DownArrowKey</string>
               <authoring.model.triggers.selfconditions.DownArrowKey/>
             </entry>
             <entry>
-              <string>authoring.model.triggers.selfconditions.RightArrowKey</string>
+              <string>RightArrowKey</string>
               <authoring.model.triggers.selfconditions.RightArrowKey/>
-            </entry>
-            <entry>
-              <string>authoring.model.triggers.externalconditions.TrueExternalTrigger</string>
-              <authoring.model.triggers.externalconditions.TrueExternalTrigger/>
             </entry>
           </triggerMap>
           <actionMap>
             <entry>
-              <string>authoring.model.actions.oneActorActions.DecreaseSpeed</string>
-              <authoring.model.actions.oneActorActions.DecreaseSpeed/>
+              <string>DivideProperty</string>
+              <authoring.model.actions.parameterActions.DivideProperty/>
             </entry>
             <entry>
-              <string>authoring.model.actions.oneActorActions.RotateCounterclockwise</string>
-              <authoring.model.actions.oneActorActions.RotateCounterclockwise/>
+              <string>ShootBullet</string>
+              <authoring.model.actions.actorActions.oneActorActions.ShootBullet/>
             </entry>
             <entry>
-              <string>authoring.model.actions.oneActorActions.ShootBullet</string>
-              <authoring.model.actions.oneActorActions.ShootBullet/>
+              <string>DecreaseProperty</string>
+              <authoring.model.actions.parameterActions.DecreaseProperty/>
             </entry>
             <entry>
-              <string>authoring.model.actions.oneActorActions.IncreaseSpeed</string>
-              <authoring.model.actions.oneActorActions.IncreaseSpeed/>
+              <string>SwapDirections</string>
+              <authoring.model.actions.actorActions.twoActorActions.SwapDirections/>
             </entry>
             <entry>
-              <string>authoring.model.actions.twoActorActions.SwapDirections</string>
-              <authoring.model.actions.twoActorActions.SwapDirections/>
+              <string>MultiplyProperty</string>
+              <authoring.model.actions.parameterActions.MultiplyProperty/>
             </entry>
             <entry>
-              <string>authoring.model.actions.oneActorActions.DamageHealth</string>
-              <authoring.model.actions.oneActorActions.DamageHealth/>
+              <string>SplitAndReduceSize</string>
+              <authoring.model.actions.actorActions.oneActorActions.SplitAndReduceSize/>
             </entry>
             <entry>
-              <string>authoring.model.actions.oneActorActions.SplitAndReduceSize</string>
-              <authoring.model.actions.oneActorActions.SplitAndReduceSize/>
+              <string>RemoveActor</string>
+              <authoring.model.actions.actorActions.oneActorActions.RemoveActor/>
             </entry>
             <entry>
-              <string>authoring.model.actions.oneActorActions.ReduceSize</string>
-              <authoring.model.actions.oneActorActions.ReduceSize/>
+              <string>DecreaseSpeed</string>
+              <authoring.model.actions.actorActions.oneActorActions.DecreaseSpeed/>
             </entry>
             <entry>
-              <string>authoring.model.actions.oneActorActions.Move</string>
-              <authoring.model.actions.oneActorActions.Move/>
+              <string>IncreaseSpeed</string>
+              <authoring.model.actions.actorActions.oneActorActions.IncreaseSpeed/>
             </entry>
             <entry>
-              <string>authoring.model.actions.oneActorActions.RotateClockwise</string>
-              <authoring.model.actions.oneActorActions.RotateClockwise/>
+              <string>LevelTransition</string>
+              <authoring.model.actions.parameterActions.LevelTransition/>
+            </entry>
+            <entry>
+              <string>Move</string>
+              <authoring.model.actions.actorActions.oneActorActions.Move/>
+            </entry>
+            <entry>
+              <string>RotateClockwise</string>
+              <authoring.model.actions.actorActions.oneActorActions.RotateClockwise/>
+            </entry>
+            <entry>
+              <string>IncreaseProperty</string>
+              <authoring.model.actions.parameterActions.IncreaseProperty/>
+            </entry>
+            <entry>
+              <string>DamageHealth</string>
+              <authoring.model.actions.actorActions.oneActorActions.DamageHealth/>
+            </entry>
+            <entry>
+              <string>RotateCounterclockwise</string>
+              <authoring.model.actions.actorActions.oneActorActions.RotateCounterclockwise/>
+            </entry>
+            <entry>
+              <string>MoveActorsToAvoidCollisions</string>
+              <authoring.model.actions.actorActions.twoActorActions.MoveActorsToAvoidCollisions/>
+            </entry>
+            <entry>
+              <string>MoveBackwards</string>
+              <authoring.model.actions.actorActions.oneActorActions.MoveBackwards/>
+            </entry>
+            <entry>
+              <string>ReduceSize</string>
+              <authoring.model.actions.actorActions.oneActorActions.ReduceSize/>
             </entry>
           </actionMap>
           <uniqueID>0</uniqueID>
