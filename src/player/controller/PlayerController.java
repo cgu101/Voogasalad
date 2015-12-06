@@ -297,4 +297,8 @@ public class PlayerController implements IPlayer {
 			throw new GameFileException(e.getMessage());
 		}
 	}
+	
+	public view.map.Map getMap(){
+		return mySpriteManager.getMap();
+	}
 }
