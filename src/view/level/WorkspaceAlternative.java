@@ -99,7 +99,7 @@ public class WorkspaceAlternative extends AbstractElement {
 				c.getShowingProperty().setValue(true);
 			}
 		}
-		LevelMap newLevel = new LevelMap(new GridPane(), levels.size(), screen);
+		LevelMap newLevel = new LevelMap(new GridPane(), new Level("TESTTT"), screen);
 		return configureTab(newLevel);
 	}
 	
@@ -150,9 +150,9 @@ public class WorkspaceAlternative extends AbstractElement {
 		LevelInterface switchLevel = levels.get(switchID);
 
 		currentLevel.getTab().setId(Integer.toString(switchID));
-		currentLevel.getTab().setText(currentLevel.makeTitle(switchID));
+//		currentLevel.getTab().setText(currentLevel.makeTitle(switchID));
 		switchLevel.getTab().setId(Integer.toString(currID));
-		switchLevel.getTab().setText(switchLevel.makeTitle(currID));
+//		switchLevel.getTab().setText(switchLevel.makeTitle(currID));
 
 		manager.getTabs().remove(switchLevel.getTab());
 		manager.getTabs().add(currID, switchLevel.getTab());
