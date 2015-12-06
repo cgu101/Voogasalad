@@ -94,4 +94,10 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public LevelType getType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -13,11 +13,13 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import view.screen.AbstractScreenInterface;
+
 /**
  * @author David
  * 
- * This class allows for elements that can be docked
- * In addition to a pane to house the contents, this class uses a home pane that contains the location of the element when docked.
+ *         This class allows for elements that can be docked In addition to a
+ *         pane to house the contents, this class uses a home pane that contains
+ *         the location of the element when docked.
  * 
  */
 public abstract class AbstractDockElement extends AbstractElement {
@@ -27,6 +29,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 	protected AbstractScreenInterface screen;
 	protected GridPane home;
 	protected BooleanProperty showing;
+	private BooleanProperty docked;
 
 	public AbstractDockElement(GridPane pane, GridPane home, String title, AbstractScreenInterface screen) {
 		super(pane);
@@ -38,6 +41,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 			screen.getScene().setCursor(Cursor.CLOSED_HAND);
 		});
 		showing = new SimpleBooleanProperty(false);
+		docked = new SimpleBooleanProperty(false);
 		showing.addListener(e -> toggleShowing(showing.getValue()));
 	}
 
@@ -80,6 +84,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 		stage.setOnCloseRequest(e -> showing.setValue(false));
 		stage.setAlwaysOnTop(true);
 		this.title.setOnMouseReleased(me -> reposition(me, false));
+		docked.setValue(false);
 	}
 
 	protected void dock() {
@@ -88,6 +93,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 		}
 		home.add(pane, 0, 0);
 		this.title.setOnMouseReleased(me -> reposition(me, true));
+		docked.setValue(true);
 	}
 
 	private void hide() {
@@ -95,6 +101,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 			stage.close();
 		}
 		home.getChildren().clear();
+		docked.setValue(false);
 	}
 
 	public GridPane makeLabelPane() {
@@ -108,4 +115,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 		return showing;
 	}
 
+	public BooleanProperty getDockedProperty() {
+		return docked;
+	}
 }
