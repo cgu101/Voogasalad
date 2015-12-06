@@ -4,6 +4,7 @@ import javafx.scene.layout.GridPane;
 import view.element.AbstractDockElement;
 import view.level.LevelInterface;
 import view.level.LevelMap;
+import view.level.LevelType;
 import view.level.Workspace;
 import view.map.Map;
 import view.screen.AbstractScreenInterface;
@@ -28,7 +29,7 @@ public class ActorHandlerToolbar extends AbstractDockElement {
 
 	private void load(LevelInterface currentLevel) {
 		pane.getChildren().clear();
-		if (currentLevel instanceof LevelMap) {
+		if (currentLevel.getType() == LevelType.LEVEL) {
 			this.map = (LevelMap) currentLevel;
 			makePane();
 			showing.setValue(true);
