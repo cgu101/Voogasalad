@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import authoring.controller.AuthoringController;
 import authoring.controller.parameters.ParameterData;
+import authoring.model.tree.InteractionTreeNode;
 import authoring.model.tree.ParameterTreeNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -131,26 +132,32 @@ public class ActorEditor extends AbstractDockElement {
 		contentPane.add(makeTriggerEditor(leftItem, rightItem), 0, 2);
 	}
 
-
+	private void populateTree (TreeItem<ParameterTreeNode> frontNode, InteractionTreeNode backNode) {
+		for (InteractionTreeNode backChild : backNode.children()) {
+			TreeItem<ParameterTreeNode> frontChild = new TreeItem<ParameterTreeNode>((ParameterTreeNode) backChild);
+			frontNode.getChildren().add(frontChild);
+			populateTree(frontChild,backChild);
+		}
+	}
 	private TreeView<ParameterTreeNode> makeTriggerEditor(String... items) {
 		//TODO use items, hook up backend
-		TreeItem<ParameterTreeNode> rootItem = new TreeItem<ParameterTreeNode>(new ParameterTreeNode("Interaction","",
-				Arrays.asList(new ParameterData("text", null, null, "value"), new ParameterData("text2",null,null,"value2")),new String[]{"Asteroid"}));
+		InteractionTreeNode branch = controller.getLevelConstructor().getTreeConstructor().getActorBaseNode(items);
+		TreeItem<ParameterTreeNode> rootItem = new TreeItem<ParameterTreeNode>(new ParameterTreeNode("Interaction"));
+		populateTree(rootItem, branch);
+		
 		rootItem.setExpanded(true);
 		TreeView<ParameterTreeNode> treeView = new TreeView<ParameterTreeNode>(rootItem);
 		treeView.setEditable(true);
 		treeView.setCellFactory(new Callback<TreeView<ParameterTreeNode>, TreeCell<ParameterTreeNode>>() {
 			@Override
 			public TreeCell<ParameterTreeNode> call(TreeView<ParameterTreeNode> p) {
-				InteractionCell cell = new InteractionCell(pane, controller);
+				InteractionCell cell = new InteractionCell(pane, controller, items);
 //				new TriggerParametersView(null, controller);
 				return cell;
 			}
 		});
 		treeView.setFocusTraversable(false);
 		GridPane.setColumnSpan(treeView, 3);
-		// TODO
-		rootItem.getChildren().add(new TreeItem<ParameterTreeNode>(new ParameterTreeNode("Action","next",null,null)));
 		return treeView;
 	}
 
