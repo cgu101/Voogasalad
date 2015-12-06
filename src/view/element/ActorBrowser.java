@@ -44,8 +44,8 @@ public class ActorBrowser extends AbstractDockElement {
 		doubleLists.addListener(e -> toggleDoubleLists(doubleLists.getValue()));
 		this.controller = null;
 		workspace.addListener((ov, oldTab, newTab) -> {
-			if (workspace.getCurrentLevelInterface() != null) {
-				load(workspace.getCurrentLevelInterface().getController());
+			if (workspace.getCurrentLevel() != null) {
+				load(workspace.getCurrentLevel().getController());
 			} else {
 				load(null);
 			}

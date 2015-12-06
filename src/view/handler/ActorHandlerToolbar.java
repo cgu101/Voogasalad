@@ -2,7 +2,6 @@ package view.handler;
 
 import javafx.scene.layout.GridPane;
 import view.element.AbstractDockElement;
-import view.level.LevelInterface;
 import view.level.LevelMap;
 import view.level.LevelType;
 import view.level.Workspace;
@@ -16,7 +15,7 @@ public class ActorHandlerToolbar extends AbstractDockElement {
 			Workspace w) {
 		super(pane, home, title, screen);
 		w.addListener((ov, oldTab, newTab) -> {
-			load(w.getCurrentLevelInterface());
+			load(w.getCurrentLevel());
 		});
 	}
 
@@ -27,7 +26,7 @@ public class ActorHandlerToolbar extends AbstractDockElement {
 		pane.add(map.getToolbar(), 1, 0);
 	}
 
-	private void load(LevelInterface currentLevel) {
+	private void load(LevelMap currentLevel) {
 		pane.getChildren().clear();
 		if (currentLevel.getType() == LevelType.LEVEL) {
 			this.map = (LevelMap) currentLevel;

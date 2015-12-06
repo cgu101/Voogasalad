@@ -29,8 +29,8 @@ public class Workspace extends AbstractElement implements Anscestral {
 
 	private TabPane tabManager;
 	private AbstractScreen screen;
-	private Map<String, LevelInterface> levelInterfaceMap;
-	private LevelInterface currentLevelInterface;
+	private Map<String, LevelMap> levels;
+	private LevelMap currentLevel;
 
 	public Game game;
 	public Bundle<Level> levelInfo;
@@ -43,11 +43,11 @@ public class Workspace extends AbstractElement implements Anscestral {
 
 		this.tabManager = new TabPane();
 		this.screen = screen;
-		this.levelInterfaceMap = new HashMap<>();
-		this.currentLevelInterface = null; // TODO Make current level connect to
-											// the server's current level (or
-											// default to 1... Essentially load
-											// game!)
+		this.levels = new HashMap<>();
+		this.currentLevel = null; // TODO Make current level connect to
+									// the server's current level (or
+									// default to 1... Essentially load
+									// game!)
 
 		this.game = game;
 		levelInfo = game.getBundleLevels();
@@ -63,7 +63,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 	}
 
 	private void deleteVisual(Level l) {
-		tabManager.getTabs().remove(levelInterfaceMap.get(l.getUniqueID()).getTab());
+		tabManager.getTabs().remove(levels.get(l.getUniqueID()).getTab());
 		removeLevel(l);
 	}
 
@@ -72,7 +72,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 	}
 
 	private void updateVisual(Level l) {
-		LevelInterface levelToBeModified = levelInterfaceMap.get(l.getUniqueID());
+		LevelMap levelToBeModified = levels.get(l.getUniqueID());
 		levelToBeModified.redraw(l);
 		displayInfo(propertyInfo);
 	}
@@ -90,7 +90,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 		pane.add(tabManager, DEFAULT_POSITION, DEFAULT_POSITION);
 		addListener((ov, oldTab, newTab) -> {
 			tabManager.maxWidthProperty().unbind();
-			currentLevelInterface = levelInterfaceMap.get(newTab.getId());
+			currentLevel = levels.get(newTab.getId());
 		});
 	}
 
@@ -100,11 +100,11 @@ public class Workspace extends AbstractElement implements Anscestral {
 	}
 
 	public void addLevel(Level level) {
-		if (levelInterfaceMap.size() == 0) {
+		if (levels.size() == 0) {
 			initializeVisualLevelComponents();
 		}
 
-		levelInterfaceMap.put(level.getUniqueID(), new LevelMap(new GridPane(), level, screen));
+		levels.put(level.getUniqueID(), new LevelMap(new GridPane(), level, screen));
 		levelInfo.add(level);
 
 		configureTab(level);
@@ -119,32 +119,32 @@ public class Workspace extends AbstractElement implements Anscestral {
 	public void addSplashScreen(Level level) {
 		addScreenElement(level);
 
-		LevelMap levelInterface = (LevelMap) levelInterfaceMap.get(level.getUniqueID());
+		// LevelMap levelMap = (LevelMap) levels.get(level.getUniqueID());
 	}
 
 	private void addScreenElement(Level level) {
-		LevelInterface newLevelInterface = new LevelMap(new GridPane(), level, screen);
+		LevelMap newLevel = new LevelMap(new GridPane(), level, screen);
 
-		levelInterfaceMap.put(level.getUniqueID(), newLevelInterface);
+		levels.put(level.getUniqueID(), newLevel);
 		levelInfo.add(level);
 
 		addLevel(level);
 	}
 
 	public void configureTab(Level level) {
-		LevelInterface levelInterface = levelInterfaceMap.get(level.getUniqueID());
-		Tab newTab = levelInterface.getTab();
+		LevelMap levelmap = levels.get(level.getUniqueID());
+		Tab newTab = levelmap.getTab();
 		newTab.setOnClosed(e -> {
 			removeLevel(level);
 			DataDecorator d = new DataDecorator(Request.DELETE, level, this.anscestors);
 			updateObservers(d);
 		});
-		tabManager.getTabs().add(levelInterfaceMap.size() - 1, newTab);
+		tabManager.getTabs().add(levels.size() - 1, newTab);
 		tabManager.getSelectionModel().select(newTab);
 	}
 
 	private void removeLevel(Level level) {
-		levelInterfaceMap.remove(level.getUniqueID());
+		levels.remove(level.getUniqueID());
 		levelInfo.remove(level.getUniqueID());
 	}
 
@@ -204,13 +204,13 @@ public class Workspace extends AbstractElement implements Anscestral {
 		return game;
 	}
 
-	public LevelInterface getCurrentLevelInterface() {
-		return currentLevelInterface;
+	public LevelMap getCurrentLevel() {
+		return currentLevel;
 	}
 
 	@Override
 	public Anscestral getChild(String id) {
-		Anscestral a = this.levelInterfaceMap.get(id);
+		Anscestral a = this.levels.get(id);
 		return a;
 	}
 }

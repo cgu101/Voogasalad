@@ -173,15 +173,9 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				new FileChooser.ExtensionFilter("PNG", "*.png"));
 
 		File file = fileChooser.showOpenDialog(null);
+		Image backgroundImage = new Image(file.toURI().toString());
 
-		try {
-			Image backgroundImage = new Image(file.toURI().toURL().toExternalForm(), 60, 0, true, false);
-			
-			this.screen.getWorkspace().getCurrentLevelInterface().updateBackground(backgroundImage);
-
-		} catch (IOException ex) {
-			showError("Error", "Unable to Load Image");
-		}
+		this.screen.getWorkspace().getCurrentLevel().updateBackground(backgroundImage);
 
 	}
 

@@ -97,10 +97,10 @@ public class ActorEditor extends AbstractDockElement {
 	}
 
 	private void load() {
-		if (workspace.getCurrentLevelInterface() == null) {
+		if (workspace.getCurrentLevel() == null) {
 			controller = null;
 		} else {
-			this.controller = workspace.getCurrentLevelInterface().getController();
+			this.controller = workspace.getCurrentLevel().getController();
 		}
 		contentPane.getChildren().clear();
 		if (!showing.getValue()) {

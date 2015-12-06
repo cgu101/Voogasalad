@@ -84,28 +84,28 @@ public abstract class Map extends AbstractElement {
 
 		makePane();
 	}
-	
+
 	public void build (Map map) {
-		
+
 	}
-	
+
 	public void setMapDimensions(double width, double height) {
 		mapRegularWidth = width;
 		mapRegularHeight = height;
 		mapScrollableArea.setPrefWidth(mapRegularWidth);
 		mapScrollableArea.setPrefViewportWidth(mapRegularWidth);
 		mapScrollableArea.setPrefHeight(mapRegularHeight);
-		
+
 		if (width < height) {
 			background.setFitWidth(mapRegularWidth);
 			background.setPreserveRatio(true);
 		}
-		
+
 		else {
 			background.setFitHeight(mapRegularHeight);
 			background.setPreserveRatio(true);
 		}
-		
+
 		actorHandler.updateBackground(background);
 	}
 
@@ -158,6 +158,10 @@ public abstract class Map extends AbstractElement {
 		}
 		background.setPreserveRatio(true);
 		actorHandler.updateBackground(background);
+		if(theMiniMap != null) {
+			theMiniMap.updateMiniMapBackground(background);
+			System.out.println("Updated minimap!");
+		}
 	}
 
 	public void setPanEnabled(boolean enable) {
@@ -184,7 +188,7 @@ public abstract class Map extends AbstractElement {
 
 		opacitySliderArea = new MapOpacitySlider(theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
 		opacitySliderArea.createTheSlider();
-		
+
 		miniMapResizerSliderArea = new MinimapResizerSlider(theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
 		miniMapResizerSliderArea.createTheSlider();
 	}
@@ -192,7 +196,7 @@ public abstract class Map extends AbstractElement {
 	public GridPane getZoomSlider() {
 		return zoomSliderArea.getSliderWithCaptions();
 	}
-	
+
 	public Slider getActualSlider() {
 		return zoomSliderArea.getSlider();
 	}
@@ -234,12 +238,12 @@ public abstract class Map extends AbstractElement {
 		addScrollAreaAndMiniMap();
 		setMapMaximumBounds();
 	}
-	
+
 	private void addScrollAreaAndMiniMap() {
 		mapArea.getChildren().add(mapScrollableArea);
 		mapArea.getChildren().add(theMiniMap.getMiniMap());
 	}
-	
+
 	private void setMapMaximumBounds() {
 		Rectangle clip = new Rectangle(mapRegularWidth, mapRegularHeight);
 		clip.setLayoutX(0);
@@ -305,11 +309,11 @@ public abstract class Map extends AbstractElement {
 
 		});
 	}
-		
+
 	public double getMapWidth() {
 		return mapRegularWidth;
 	}
-	
+
 	public double getMapHeight() {
 		return mapRegularHeight;
 	}
@@ -322,7 +326,7 @@ public abstract class Map extends AbstractElement {
 
 		// Create the map after adding elements you want
 		createTheMap();
-		
+
 		actorHandler = new ActorHandler(layout, controller, editToolbar, this, theMiniMap, zoomSliderArea);
 
 		// remove pesky key event handlers
@@ -330,21 +334,20 @@ public abstract class Map extends AbstractElement {
 
 		// Add the map to the GridPane
 		addMapToPane(pane);
-		
+
+
+
 		System.out.println("The background bounds are: " + background.getBoundsInParent());
 		// System.out.println(mapScrollableArea.getHvalue());
 		// System.out.println(mapScrollableArea.getVvalue());
 	}
-	
+
 	public void removeElement (Node n) {
 		this.mapArea.getChildren().remove(n);
 	}
-	
+
 	public void removeMiniMap () {
 		removeElement(this.theMiniMap.getMiniMap());
 	}
-	
-	public void removeMap () {
-		this.mapScrollableArea.setContent(null);;
-	}
+
 }

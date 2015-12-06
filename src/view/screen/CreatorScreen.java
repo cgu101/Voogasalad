@@ -109,7 +109,11 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	private void manageMapSize(boolean fullscreen, boolean browser, boolean editor) {
 		if (!fullscreen) {
 			if (!browser && !editor) {
+				System.out.println("hi");
+				w.getCurrentLevel().setMapDimensions(850, 724);
 			} else {
+				System.out.println("bye");
+				w.getCurrentLevel().setMapDimensions(700, 724);
 			}
 		} else {
 			if (!browser && !editor) {

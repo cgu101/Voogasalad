@@ -20,7 +20,7 @@ import network.framework.format.Mail;
 import view.map.Map;
 import view.screen.AbstractScreen;
 
-public class LevelMap extends Map implements LevelInterface {
+public class LevelMap extends Map implements Anscestral {
 
 	private static final String LEVEL_IDENTIFIER = "Level";
 	private static final String SPLASH_IDENTIFIER = "Splash";
@@ -64,7 +64,6 @@ public class LevelMap extends Map implements LevelInterface {
 
 		if (type == LevelType.SPLASH) {
 			this.removeMiniMap();
-			this.removeMap();
 		}
 	}
 
@@ -144,7 +143,6 @@ public class LevelMap extends Map implements LevelInterface {
 	// return (i + 1) + myString;
 	// }
 
-	@Override
 	public String getTitle() {
 		return myTitle;
 	}
@@ -153,13 +151,11 @@ public class LevelMap extends Map implements LevelInterface {
 		return this.pane;
 	}
 
-	@Override
 	public void redraw(Level modelLevel) {
 		// TODO Auto-generated method stub
 		System.out.println("I am redrawing");
 	}
 
-	@Override
 	public Level buildLevel() {
 		// TODO Auto-generated method stub
 		return myLevel;
