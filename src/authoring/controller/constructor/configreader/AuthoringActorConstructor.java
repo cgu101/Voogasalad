@@ -10,21 +10,15 @@ import authoring.model.actors.ActorPropertyMap;
 public class AuthoringActorConstructor {
 
 	private Map<String, ActorObject> actorMap;
-	private static final String ALT = "b";
 
 	public AuthoringActorConstructor() {
-		actorMap = new HashMap<String, ActorObject>();
 		load();
 	}
 
 	private void load() {
-		for (String s : AuthoringConfigManager.getInstance().getActorList()) {
-			actorMap.put(s,
-					new ActorObject(s, AuthoringConfigManager.getInstance().getPropertyList(s),
-							AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.SELF_TRIGGER),
-							AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.EVENT_TRIGGER),
-							AuthoringConfigManager.getInstance().getConfigList(s,AuthoringConfigManager.ONE_ACTOR_ACTIONS),
-							AuthoringConfigManager.getInstance().getConfigList(s, AuthoringConfigManager.TWO_ACTOR_ACTIONS)));
+		actorMap = new HashMap<String, ActorObject>();
+		for (String actor : AuthoringConfigManager.getInstance().getKeyList(ResourceType.ACTORS)) {
+			actorMap.put(actor, new ActorObject(actor, AuthoringConfigManager.getInstance().getPropertyList(actor)));
 		}
 	}
 
@@ -85,8 +79,8 @@ public class AuthoringActorConstructor {
 	 * @param actor
 	 * @return
 	 */
-	public List<String> getSelfTriggerList(String actor) {
-		return actorMap.get(actor).selfTriggerList;
+	public List<String> getTriggerList(String actor) {
+		return getTriggerList(actor, new String[]{});
 	}
 
 	/**
@@ -96,10 +90,8 @@ public class AuthoringActorConstructor {
 	 * @param otherActors
 	 * @return List<String>
 	 */
-	public List<String> getEventTriggerList(String actor, String... otherActors) {
-		List<String> ret = new ArrayList<String>(actorMap.get(actor).eventTriggerList);
-		removeInvalidInstances(ret, otherActors);
-		return ret;
+	public List<String> getTriggerList(String actor, String... otherActors) {	
+		return getListForEverything(ResourceType.TRIGGERS, actor, otherActors);
 	}
 
 	/**
@@ -109,62 +101,62 @@ public class AuthoringActorConstructor {
 	 * @return List<String>
 	 */
 	public List<String> getActionList(String actor) {
-		return new ArrayList<String>(actorMap.get(actor).oneActorActionList);
+		return getListForEverything(ResourceType.ACTIONS, actor, new String[]{});
 	}
 	
 	/**
-	 * Returns the actions between two actors. 
 	 * 
 	 * @param actor
 	 * @param otherActors
-	 * @return List<String>
+	 * @return
 	 */
-	public List<String> getTwoActorActionList(String actor, String...otherActors) {
-		List<String> ret = new ArrayList<String>(actorMap.get(actor).twoActorActionList);
-		removeInvalidInstances(ret, otherActors);
-		ret.addAll(getActionList(actor));
-		return ret;
+	public List<String> getActionList(String actor, String...otherActors) {
+		return getListForEverything(ResourceType.ACTIONS, actor, otherActors);
 	}
 	
-	private void removeInvalidInstances(List<String> actions, String...otherActors) {
+	private List<String> getListForEverything(String type, String actor, String...otherActors) {	
+		List<String> ret = AuthoringConfigManager.getInstance().getConfigList(actor, type);
+		removeInvalidInstances(type, ret, actor, otherActors);
+		return ret;
+	}	
+	
+	private void removeInvalidInstances(String type, List<String> actions, String actor, String...otherActors) {
 		List<String> toRemove = new ArrayList<String>();
-		for(String actor: otherActors) {
-			List<String> actorProperties = getPropertyList(actor);
-			for(String s: actions) {
-				List<String> requiredProperties = AuthoringConfigManager.getRequiredPropertyList(String.format("%s.%s", s, ALT));
-				if(!requiredProperties.isEmpty() && !actorProperties.containsAll(requiredProperties)) {
-					toRemove.add(s);
+		
+		for(String action : actions) {
+			String num = AuthoringConfigManager.getInstance().getTypeInfo(type, action, ResourceType.NUM_ACTORS);
+			Integer val = new Integer(num);				
+			if(val > otherActors.length) {
+				toRemove.add(action);
+			} else {
+				for(int i=0; i < val; i++) {
+					String current = i==0 ? actor : otherActors[i];
+					List<String> requiredProperties = AuthoringConfigManager.getInstance()
+							.getRequiredPropertyList(type, otherActors[i], String.format("%s.%s", ResourceType.ACTORS, i));
+					List<String> actorProperties = getPropertyList(current);
+					
+					if(!actorProperties.containsAll(requiredProperties)) {
+						toRemove.add(action);
+						break;
+					}
 				}
 			}
-			actions.removeAll(toRemove);
 		}
+		actions.removeAll(toRemove);
 	}
 
 	private class ActorObject {
-		private String actor;
 		private ActorPropertyMap propertyMap;
-		private List<String> selfTriggerList;
-		private List<String> eventTriggerList;
-		private List<String> oneActorActionList;
-		private List<String> twoActorActionList;
 
-
-		private ActorObject(String actor, List<String> propertyList, List<String> selfTriggerList,
-				List<String> eventTriggerList, List<String> oneActorActionList, List<String> twoActorActionList) {
+		private ActorObject(String actor, List<String> propertyList) {
 			this.propertyMap = new ActorPropertyMap();
-			this.actor = actor;
-			this.selfTriggerList = selfTriggerList;
-			this.eventTriggerList = eventTriggerList;
-			this.oneActorActionList = oneActorActionList;
-			this.twoActorActionList = twoActorActionList;
-			load(propertyList);
+			load(actor, propertyList);
 		}
 
-		private void load(List<String> propertyList) {
+		private void load(String actor, List<String> propertyList) {
 			for (String s : propertyList) {
 				propertyMap.addProperty(s, AuthoringConfigManager.getInstance().getDefaultPropertyValue(actor, s));
 			}
 		}
 	}
-
 }

@@ -39,6 +39,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import view.map.Map;
 import view.map.MapViewManager;
+import view.map.MapZoomSlider;
+import view.map.MiniMap;
 import view.visual.AbstractVisual;
 
 /**
@@ -56,14 +58,19 @@ public class ActorHandler extends AbstractVisual {
 	private Label defaultLabel;
 	private ImageView myBackground; // TODO: this should be the map size once that is implemented
 	private Map map;
+	private MiniMap theMiniMap;
+	private MapZoomSlider theZoomSlider;
 	private List<ActorView> myAVs;
 	private boolean rectangleOn;
 
-	public ActorHandler(Group layout, AuthoringController ac, ToolBar tb, Map map) {
+	public ActorHandler(Group layout, AuthoringController ac, ToolBar tb, Map map,
+			MiniMap miniMap, MapZoomSlider zoomSlider) {
 		myController = ac;
 		viewManager = new MapViewManager(layout);
 		myToolbar = tb;
 		this.map = map;
+		theMiniMap = miniMap;
+		theZoomSlider = zoomSlider;
 		findResources();
 		defaultLabel = makeLabel(myResources.getString("defaultPrompt"));
 		restoreToolbar();

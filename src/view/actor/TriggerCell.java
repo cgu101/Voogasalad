@@ -20,7 +20,7 @@ import javafx.scene.text.Text;
  * It allows for modification of Triggers
  * 
  */
-public class TriggerCell extends AbstractListCell {
+public class TriggerCell extends AbstractListCell<String> {
 	private AuthoringController controller;
 	private String actor;
 	private String other;
@@ -77,7 +77,7 @@ public class TriggerCell extends AbstractListCell {
 				}
 			});
 		} else {
-			actions.addAll(controller.getAuthoringActorConstructor().getTwoActorActionList(actor, other));
+			actions.addAll(controller.getAuthoringActorConstructor().getActionList(actor, other));
 			selector.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
 				public void onChanged(ListChangeListener.Change<? extends String> c) {
 					List<String> actions = selector.getCheckModel().getCheckedItems();

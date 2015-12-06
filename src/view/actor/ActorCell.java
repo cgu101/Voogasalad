@@ -21,7 +21,7 @@ import util.Sprite;
  *         This class is designed to be used with the ActorBrowser
  * 
  */
-public class ActorCell extends AbstractListCell {
+public class ActorCell extends AbstractListCell<String> {
 
 	private AuthoringController controller;
 	private boolean deselect;

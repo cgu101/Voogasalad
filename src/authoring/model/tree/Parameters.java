@@ -1,26 +1,30 @@
 package authoring.model.tree;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
-public class Parameters {
-	private Map<String, List<?>> map;
+public class Parameters<V> {
+	private Map<String, V> parameter_values;
 
 	public Parameters() {
-		map = new HashMap<String, List<?>>();
+		parameter_values = new HashMap<String, V>();
+	}
+	
+	public V getParameter(String identifier) {
+		return parameter_values.get(identifier);
+	}
+	
+	public Parameters(Map <String, V> map) {
+		parameter_values = new HashMap<String, V>(map);
 	}
 
-	public List<?> getParameterList(String key) {
-		return map.get(key);
+	public Set<Entry<String, V>> getParameterAndValues() {
+		return parameter_values.entrySet();
 	}
 
-	public void setParameters(String parameterType, List<?> parameterList) {
-		map.put(parameterType, parameterList);
-	}
-
-	public <T> void setParameters(String parameterType, T parameter) {
-		setParameters(parameterType, Arrays.asList(parameter));
+	public void addParameter(String parameter, V value) {
+		parameter_values.put(parameter, value);
 	}
 }
