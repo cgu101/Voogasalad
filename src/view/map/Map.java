@@ -242,7 +242,7 @@ public abstract class Map extends AbstractElement {
 		createMiniMap();
 
 		addScrollAreaAndMiniMap();
-		setMapMaximumBounds();
+		setMapDimensions(mapRegularWidth, mapRegularHeight);
 	}
 
 	private void addScrollAreaAndMiniMap() {
@@ -264,11 +264,6 @@ public abstract class Map extends AbstractElement {
 		mapScrollableArea.setPannable(true);
 
 		mapScrollableArea.setContent(contentGroup);
-
-		mapScrollableArea.setPrefWidth(mapRegularWidth);
-		mapScrollableArea.setPrefViewportWidth(mapRegularWidth);
-
-		mapScrollableArea.setPrefHeight(mapRegularHeight);
 	}
 
 	private void createGroups() {
@@ -340,12 +335,6 @@ public abstract class Map extends AbstractElement {
 
 		// Add the map to the GridPane
 		addMapToPane(pane);
-
-
-
-		System.out.println("The background bounds are: " + background.getBoundsInParent());
-		// System.out.println(mapScrollableArea.getHvalue());
-		// System.out.println(mapScrollableArea.getVvalue());
 	}
 
 	public void removeElement (Node n) {
