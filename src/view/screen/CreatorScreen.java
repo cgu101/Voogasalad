@@ -100,8 +100,6 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		components.add(slider);
 		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3), myResources.getString("toolbarname"), this, w);
 		components.add(aet);
-		
-//		t = new ControlBarCreator(myPanes.get(0), this);
 	}
 
 	// TODO
