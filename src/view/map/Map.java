@@ -6,12 +6,16 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 import view.element.AbstractElement;
 import view.handler.ActorHandler;
 
@@ -73,11 +77,15 @@ public class Map extends AbstractElement {
 		// it
 		controller = new AuthoringController();
 		editToolbar = new ToolBar();
-		actorHandler = new ActorHandler(layout, controller, editToolbar, this);
+		//actorHandler = new ActorHandler(layout, controller, editToolbar, this, theMiniMap, zoomSliderArea);
 		// TODO: actorHandler = new ActorHandler(layout, zoomSliderArea,
 		// controller, editToolbar);
 
 		makePane();
+	}
+	
+	public void build (Map map) {
+		
 	}
 
 	/**
@@ -92,7 +100,12 @@ public class Map extends AbstractElement {
 	 */
 	public void addActor(Actor element, double x, double y) {
 		// Use this method to add an actor to the StackPane.
-		actorHandler.addActor(element, x, y);
+		if (!actorHandler.rectangleOn()) {
+			actorHandler.addActor(element, x, y);
+		} else {
+			Alert alert = new Alert(AlertType.ERROR, myResources.getString("rectangleOn"), ButtonType.OK);
+			alert.showAndWait();
+		}
 	}
 
 	/**
@@ -111,7 +124,7 @@ public class Map extends AbstractElement {
 	 * @param background
 	 *            - the Node to set as the new Map background
 	 */
-	public void updateBackground(Image bg) {
+	public void initializeBackground(Image bg) {
 		background = new ImageView(bg);
 		background.setFitWidth(mapRegularWidth);
 		background.setSmooth(true);
@@ -119,8 +132,13 @@ public class Map extends AbstractElement {
 		if (!preserveMapRatio) {
 			background.setPreserveRatio(false);
 			background.setFitHeight(mapRegularHeight);
+		} else {
+			background.setFitHeight(mapRegularWidth * bg.getHeight()/bg.getWidth());
 		}
 		background.setPreserveRatio(true);
+	}
+	
+	public void updateBackground() {
 		actorHandler.updateBackground(background);
 	}
 
@@ -178,10 +196,6 @@ public class Map extends AbstractElement {
 	 */
 	private void addMapToPane(GridPane pane) {
 		pane.add(mapArea, 0, 0);
-
-		// pane.add(zoomSliderArea.getSliderWithCaptions(), 0, 1);
-		// pane.add(opacitySliderArea.getSliderWithCaptions(), 0, 2);
-
 	}
 
 	/**
@@ -195,9 +209,20 @@ public class Map extends AbstractElement {
 		createPanListeners();
 		createMiniMap();
 
+		addScrollAreaAndMiniMap();
+		setMapMaximumBounds();
+	}
+	
+	private void addScrollAreaAndMiniMap() {
 		mapArea.getChildren().add(mapScrollableArea);
 		mapArea.getChildren().add(theMiniMap.getMiniMap());
-		System.out.println("The minimap's bounds are: " + theMiniMap.getMiniMap().getBoundsInParent());
+	}
+	
+	private void setMapMaximumBounds() {
+		Rectangle clip = new Rectangle(mapRegularWidth, mapRegularHeight);
+		clip.setLayoutX(0);
+		clip.setLayoutY(0);
+		layout.setClip(clip);
 	}
 
 	private void createMapScrollPane() {
@@ -266,16 +291,21 @@ public class Map extends AbstractElement {
 	protected void makePane() {
 		//Image backgroundImage = new Image(myResources.getString("backgroundURL"));
 		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
-		updateBackground(backgroundImage);
+		initializeBackground(backgroundImage);
 
 		// Create the map after adding elements you want
 		createTheMap();
+		
+		actorHandler = new ActorHandler(layout, controller, editToolbar, this, theMiniMap, zoomSliderArea);
+
+		updateBackground();
 
 		// remove pesky key event handlers
 		addEventFilters();
 
 		// Add the map to the GridPane
 		addMapToPane(pane);
+		
 		System.out.println("The background bounds are: " + background.getBoundsInParent());
 		// System.out.println(mapScrollableArea.getHvalue());
 		// System.out.println(mapScrollableArea.getVvalue());

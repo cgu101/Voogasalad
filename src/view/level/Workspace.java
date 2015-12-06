@@ -1,229 +1,193 @@
 package view.level;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 
-import authoring.controller.constructor.levelwriter.LevelConstructor;
+import authoring.model.Anscestral;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
+import authoring.model.properties.Property;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Side;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
-import network.test.GameWindow;
+import network.framework.format.Mail;
+import network.framework.format.Request;
+import network.instances.DataDecorator;
 import view.element.AbstractDockElement;
 import view.element.AbstractElement;
 import view.screen.AbstractScreen;
 
-public class Workspace extends AbstractElement implements Observer {
-	private TabPane manager;
-	private ArrayList<LevelInterface> levels;
-	private LevelInterface currentLevel;
+public class Workspace extends AbstractElement implements Anscestral {
+
+	private static final int DEFAULT_POSITION = 0;
+
+	private TabPane tabManager;
 	private AbstractScreen screen;
-	
-	private Game myGame;
-	private GameWindow myNetworkGame;
+	private Map<String, LevelInterface> levelInterfaceMap;
+	private LevelInterface currentLevelInterface;
 
-	public Workspace (GridPane pane, AbstractScreen screen, GameWindow w) {
-		this(pane, screen);
-		myNetworkGame = w;
-	}
+	public Game game;
+	public Bundle<Level> levelInfo;
+	private Bundle<Property<?>> propertyInfo;
 	
-	public Workspace(GridPane pane, AbstractScreen screen) {
+	private Deque<String> anscestors;
+
+	public Workspace (GridPane pane, AbstractScreen screen, Game game) {
 		super(pane);
+
+		this.tabManager = new TabPane();
 		this.screen = screen;
+		this.levelInterfaceMap = new HashMap<>();
+		this.currentLevelInterface = null; // TODO Make current level connect to the server's current level (or default to 1... Essentially load game!)
+
+		this.game = game;
+		levelInfo = game.getBundleLevels();
+		propertyInfo = game.getProperties();
+		
+		this.anscestors = new ArrayDeque<String>();
+		
 		makePane();
-		
-		myGame = null;
-		myNetworkGame = null;
 	}
 	
-//	public Workspace (SGameState gs) {
-//		buildWorkspace(gs);
-//	}
-	
-//	public SGameState buildGameState(Workspace w);
-	
-	public void updateVisual (GameWindow w, Game g) {
-		myNetworkGame = w;
-		myGame = g;
-		
-		System.out.println("A new level is registered");
-		
-		Collection<Level> myLevels = g.getLevels();
-		Map<String, LevelInterface> myLevelMap = new HashMap<>();
-		
-		for (LevelInterface levelInterface : levels) {
-			myLevelMap.put(levelInterface.getTitle(), levelInterface);
-		}
-		
-		for (Level modelLevel : myLevels) {
-			if (myLevelMap.get(modelLevel.getUniqueID()) == null) {
-				LevelInterface newLevelInterface = new LevelMap(new GridPane(), modelLevel, screen);
-				
-				myLevelMap.put(modelLevel.getUniqueID(), newLevelInterface);
-				addLevel(modelLevel);
-
-				System.out.println(myNetworkGame);
-				System.out.println((myGame).getLevels().isEmpty());
-				
-				myGame = buildGame();
-				
-				myNetworkGame.send(myGame);
-				
-				System.out.println("TESTING");
-			} else {
-				LevelInterface levelToBeModified = myLevelMap.get(modelLevel.getUniqueID());
-				levelToBeModified.redraw(modelLevel);
-			}
-		}
+	public Workspace (GridPane pane, AbstractScreen screen) {
+		this(pane, screen, new Game());
 	}
 
+	private void deleteVisual (Level l) {
+		tabManager.getTabs().remove(levelInterfaceMap.get(l.getUniqueID()).getTab());
+		removeLevel(l);
+	}
+	
+	private void addVisual (Level l) {
+		LevelInterface newLevelInterface = new LevelMap(new GridPane(), l, screen);
+		
+		levelInterfaceMap.put(l.getUniqueID(),  newLevelInterface);
+		levelInfo.add(l);
+		
+		addLevel(l);
+	}
+	
+	private void updateVisual (Level l) {
+		LevelInterface levelToBeModified = levelInterfaceMap.get(l.getUniqueID());
+		levelToBeModified.redraw(l);
+		displayInfo(propertyInfo);
+	}
+	
+	private void displayInfo (Bundle<Property<?>> p) {
+		System.out.println(p.getSize());
+	}
+	
+	/**
+	 * Initialize tabManager
+	 */
 	@Override
-	protected void makePane() {
-		manager = new TabPane();
-		levels = new ArrayList<LevelInterface>();
-		manager.setSide(Side.TOP);
-		pane.add(manager, 0, 0);
+	protected void makePane () {
+		tabManager.setSide(Side.TOP);
+		pane.add(tabManager, DEFAULT_POSITION, DEFAULT_POSITION);
 		addListener((ov, oldTab, newTab) -> {
-			manager.maxWidthProperty().unbind();
-			try {
-				currentLevel = levels.get(Integer.parseInt(newTab.getId()));
-			} catch (NullPointerException e) {
-				currentLevel = null;
-			}
+			tabManager.maxWidthProperty().unbind();
+			currentLevelInterface = levelInterfaceMap.get(newTab.getId());
 		});
 	}
 
-	public void addListener(ChangeListener<? super Tab> e) {
-		manager.getSelectionModel().selectedItemProperty().addListener(e);
+	public void addListener (ChangeListener<? super Tab> listener) {
+		SingleSelectionModel<Tab> tabManagerModel = tabManager.getSelectionModel();
+		tabManagerModel.selectedItemProperty().addListener(listener);
 	}
 
-	public Tab addLevel() {
-		if (levels.size() == 0) {
-			for (AbstractDockElement c : screen.getComponents()) {
-				c.getShowingProperty().setValue(true);
-			}
+	public void addLevel (Level level) {
+		if (levelInterfaceMap.size() == 0) {
+			initializeVisualLevelComponents();
 		}
-		LevelMap newLevel = new LevelMap(new GridPane(), levels.size(), screen);
-		return configureTab(newLevel);
+
+		levelInterfaceMap.put(level.getUniqueID(), new LevelMap(new GridPane(), level, screen));
+		levelInfo.add(level);
+		
+		configureTab(level);
+	}
+
+	private void initializeVisualLevelComponents () {
+		for (AbstractDockElement dockElement : screen.getComponents()) {
+			dockElement.getShowingProperty().setValue(true);
+		}
+	}
+
+	public void addSplashScreen () {
+		//TODO
+	}
+
+	public void configureTab (Level level) {
+		LevelInterface levelInterface = levelInterfaceMap.get(level.getUniqueID());
+		Tab newTab = levelInterface.getTab();
+		newTab.setOnClosed(e -> {
+			removeLevel(level); 
+			DataDecorator d = new DataDecorator(Request.DELETE, level, this.anscestors);
+			updateObservers(d);
+		});
+		tabManager.getTabs().add(levelInterfaceMap.size() - 1, newTab);
+		tabManager.getSelectionModel().select(newTab);
+	}
+
+	private void removeLevel (Level level) {
+		levelInterfaceMap.remove(level.getUniqueID());
+		levelInfo.remove(level.getUniqueID());
+	}
+
+	public LevelInterface getCurrentLevel () {
+		return currentLevelInterface;
+	}
+
+	public void moveLevel (Boolean left) {
+		int currentTabIndex = tabManager.getSelectionModel().getSelectedIndex();
+
+		if (left && currentTabIndex <= 0 ||
+				!left && currentTabIndex > tabManager.getTabs().size()) {
+			return;
+		}
+
+		if (left) {
+			tabManager.getSelectionModel().select(currentTabIndex - 1);
+		} else {
+			tabManager.getSelectionModel().select(currentTabIndex + 1);
+		}
 	}
 	
-	public Tab addLevel (Level l) {
-		if (levels.size() == 0) {
-			for (AbstractDockElement c : screen.getComponents()) {
-				c.getShowingProperty().setValue(true);
-			}
-		}
-		LevelMap newLevel = new LevelMap(new GridPane(), l, screen);
-		return configureTab(newLevel);
-	}
-
-	public Tab addSplash() {
-		LevelSplash newLevel = new LevelSplash(new GridPane(), levels.size(), screen);
-		return configureTab(newLevel);
-	}
-
-	public Tab configureTab(LevelInterface newLevel) {
-		levels.add(newLevel);
-		Tab newLevelTab = newLevel.getTab();
-		int newID = Integer.parseInt(newLevelTab.getId());
-		newLevelTab.setOnClosed(e -> removeLevel(newLevelTab));
-		manager.getTabs().add(levels.size() - 1, newLevelTab);
-		manager.getSelectionModel().select(newID);
-		return newLevelTab;
-	}
-
-	public void moveLevelLeft(Boolean left) {
-		if (levels.size() == 0)
-			return;
-		int currID = Integer.parseInt(currentLevel.getTab().getId());
-
-		int switchID;
-		if (left) {
-			switchID = currID - 1;
-		} else {
-			switchID = currID + 1;
-		}
-
-		if (switchID >= levels.size() || switchID < 0)
-			return;
-
-		LevelInterface switchLevel = levels.get(switchID);
-
-		currentLevel.getTab().setId(Integer.toString(switchID));
-		currentLevel.getTab().setText(currentLevel.makeTitle(switchID));
-		switchLevel.getTab().setId(Integer.toString(currID));
-		switchLevel.getTab().setText(switchLevel.makeTitle(currID));
-
-		manager.getTabs().remove(switchLevel.getTab());
-		manager.getTabs().add(currID, switchLevel.getTab());
-
-		levels.remove(switchLevel);
-		levels.add(currID, switchLevel);
-
-		manager.getSelectionModel().select(switchID);
-	}
-
-	public List<LevelConstructor> getLevels() {
-		List<LevelConstructor> levelConstructorList = new ArrayList<LevelConstructor>();
-		for (LevelInterface levelMap : levels) {
-			levelConstructorList.add(levelMap.getController().getLevelConstructor());
-		}
-		return levelConstructorList;
-	}
-
-	private void removeLevel(Tab tab) {
-		int Id = Integer.parseInt(tab.getId());
-		levels.remove(Id);
-		for (int i = Id; i < levels.size(); i++) {
-			levels.get(i).getTab().setId(Integer.toString(i));
-			levels.get(i).getTab().setText("Level " + (i + 1));
-		}
-	}
-
-	public LevelInterface getCurrentLevel() {
-		return currentLevel;
+	public void updateObservers (Object o) {
+		setChanged();
+		notifyObservers(o);
 	}
 
 	@Override
-	public void update(Observable o, Object arg) {
-		myNetworkGame = (GameWindow) o;
-		
-		if (arg == null) {return;}
-		
-		Game myChangedGame = buildGame();
-		
-		System.out.println(myNetworkGame);
-		System.out.println(o);
-		
-//		((GameWindow) o).send(myChangedGame);
+	public Deque<String> getAnscestralPath() {
+		return this.anscestors;
 	}
-	
-	private Game buildGame () {
-		Game changeGame = new Game();
-		changeGame.addAllProperties(myGame.getProperties());
+
+	@Override
+	public void process(Mail mail) {
+		Level data = (Level) mail.getData();
+		Request request = mail.getRequest();
 		
-		Bundle<Level> changedLevelBundle = new Bundle<Level>();
-		
-		for (LevelInterface l : levels) {
-			Level newLevel = l.buildLevel();
-			changedLevelBundle.add(newLevel);
+		switch (request) {
+		case ADD: {addVisual(data); break;}
+		case DELETE: {deleteVisual(data); break;}
+		case MODIFY: {updateVisual(data); break;}
+		default: {break;}
 		}
-		
-		changeGame.addAllLevels(changedLevelBundle);
-		
-		return changeGame;
 	}
 	
-	public void addNetwork (GameWindow gw) {
-		this.myNetworkGame = gw;
+	public Game getGame () {
+		return game;
+	}
+
+	@Override
+	public Anscestral getChild(String id) {
+		Anscestral a = this.levelInterfaceMap.get(id);
+		return a;
 	}
 }

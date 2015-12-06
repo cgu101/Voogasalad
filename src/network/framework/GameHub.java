@@ -1,8 +1,7 @@
-package network.test;
+package network.framework;
 
 import java.io.IOException;
 
-import network.core.Hub;
 import network.core.TempHub;
 
 public class GameHub {
