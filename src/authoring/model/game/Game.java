@@ -65,6 +65,10 @@ public class Game implements Serializable {
 		return myPropertyBundle;
 	}
 	
+	public Bundle<Level> getBundleLevels () {
+		return myLevelBundle;
+	}
+	
 	public Collection<Level> getLevels () {
 		Map<String, Level> myLevelMap = myLevelBundle.getComponents();
 		Collection<Level> myLevels = myLevelMap.values();

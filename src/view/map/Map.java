@@ -79,6 +79,10 @@ public class Map extends AbstractElement {
 
 		makePane();
 	}
+	
+	public void build (Map map) {
+		
+	}
 
 	/**
 	 * Adds a Node onto the Map's display area at the given x and y coordinates.

@@ -1,5 +1,6 @@
 package view.visual;
 
+import java.util.Observable;
 import java.util.ResourceBundle;
 
 import javafx.geometry.Pos;
@@ -9,7 +10,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
-public class AbstractVisual {
+public class AbstractVisual extends Observable {
 	private final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	private String className = this.getClass().getName();
 	protected ResourceBundle myResources;

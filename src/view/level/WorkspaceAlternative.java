@@ -15,7 +15,7 @@ import javafx.geometry.Side;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
-import network.test.GameWindow;
+import network.framework.GameWindow;
 import view.element.AbstractDockElement;
 import view.element.AbstractElement;
 import view.screen.AbstractScreen;

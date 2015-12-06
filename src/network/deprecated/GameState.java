@@ -1,4 +1,4 @@
-package network;
+package network.deprecated;
 
 import java.io.Serializable;
 import java.util.ArrayList;

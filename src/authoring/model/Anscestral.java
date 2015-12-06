@@ -2,20 +2,22 @@ package authoring.model;
 
 import java.util.Deque;
 
-import network.framework.Mail;
-import network.framework.Request;
+import network.framework.format.Mail;
+import network.framework.format.Request;
 
 public interface Anscestral {
 	public Deque<String> getAnscestralPath ();
 	
-	public default void forward (Deque<String> aDeque, Anscestral a, Mail mail) {
+	public default void forward (Deque<String> aDeque, Mail mail) {
 		if (!aDeque.isEmpty()) {
-			aDeque.removeFirst();
-			a.forward(aDeque, a, mail);
+			String aID = aDeque.poll();
+			getChild(aID).forward(aDeque, mail);
 		} else {
-			a.process(mail);
+			process(mail);
 		}
 	}
 	
 	public void process (Mail mail) ;
+	
+	public Anscestral getChild (String id);
 }

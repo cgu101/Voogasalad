@@ -1,4 +1,4 @@
-package network.framework;
+package network.framework.format;
 
 public enum Request {
 	ADD("Add"), 

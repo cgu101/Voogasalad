@@ -2,10 +2,11 @@ package view.controlbar;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.Observable;
 import java.util.Observer;
 
-import authoring.model.game.Game;
+import authoring.model.level.Level;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -21,28 +22,30 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import network.test.GameWindow;
+import network.framework.GameWindow;
+import network.framework.format.Mail;
+import network.framework.format.Request;
+import network.instances.DataDecorator;
+import network.util.PostalNetwork;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.screen.CreatorScreen;
 import view.screen.StartScreen;
 
 public class ControlBarCreator extends ControlBar implements Observer {
-	
+
 	private static final String DEFAULT_IP = "localhost";
 
 	private CreatorScreen screen;
 	private GameWindow gameWindow;
-	
-	private Game gameData;
-	
+
 	/**
 	 * TODO: David: It would be preferable to have these in the CreatorScreen
 	 */
 	private MenuBar mainMenu;
 	private ToolBar toolBar;
 	private VBox box;
-	
+
 	public ControlBarCreator () {
 		this(new CreatorScreen());
 	}
@@ -51,19 +54,26 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		super(screen.getDefaultPane());
 		this.gameWindow = new GameWindow(DEFAULT_IP);
 		this.screen = screen;
-		this.screen.getWorkspace().addNetwork(gameWindow);
-		this.gameData = new Game();
-		
+
 		initializeObservers();
 		makePane();
 	}
 
 	/**
-	 * 
+	 * CreatorScren:
+	 * 	 o--> network
+	 * ControlBarCreator:
+	 * 	 o--> Workspace(...?)
+	 *    o--> LevelInterface(...)
+	 *     o--> ActorView(...)
+	 *     o--> InteractionCell(...)
+	 *   .
+	 *   .
+	 *   . 
 	 */
 	private void initializeObservers() {
 		gameWindow.addObserver(this.screen);
-		gameWindow.addObserver(this);
+		this.screen.getWorkspace().addObserver(this);
 	}
 
 	@Override
@@ -81,7 +91,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 
 	private void makeTools(ToolBar toolBar) {
 		Button backButton = makeButton("back", e -> {screen.setNextScreen(new StartScreen()); System.out.println("BRIIIIINGIT");});
-		Button addButton = makeButton("add", e -> {gameData.addLevel(); screen.getWorkspace().updateVisual(gameWindow, gameData); });
+		Button addButton = makeButton("add", e -> addNewLevel());
 		Button leftButton = makeButton("left", e -> screen.getWorkspace().moveLevel(true));
 		Button rightButton = makeButton("right", e -> screen.getWorkspace().moveLevel(false));
 		Button splashButton = makeButton("splash", e -> screen.getWorkspace().addSplashScreen());
@@ -99,8 +109,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save, exit);
 
 		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), 
-				e -> {gameData.addLevel(); screen.getWorkspace().updateVisual(gameWindow, gameData); }, 
-				KeyCode.T, KeyCombination.CONTROL_DOWN);
+				e -> addNewLevel(), KeyCode.T, KeyCombination.CONTROL_DOWN);
 		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> screen.getWorkspace().addSplashScreen(), KeyCode.R,
 				KeyCombination.CONTROL_DOWN);
 		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(),
@@ -124,6 +133,13 @@ public class ControlBarCreator extends ControlBar implements Observer {
 
 		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow, doubleLists);
 		makeMenuBar(mainMenu, file, edit, window);
+	}
+	
+	private void addNewLevel () {
+		Level newLevel = new Level(Integer.toString(screen.getGame().getLevels().size()+1));
+		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, new ArrayDeque<String>());
+		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
+		screen.getWorkspace().updateObservers(dataMail);
 	}
 
 	private void addActor() {
@@ -176,21 +192,28 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		}
 		return null;
 	}
-	
+
 	public GameWindow getGameWindow() {
 		return gameWindow;
 	}
-	
+
 	public Scene getVisual() {
 		return screen.getScene();
 	}
-	
+
 	public CreatorScreen getScreen () {
 		return screen;
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		this.gameData = (Game) arg;
+		screen.setGame(screen.getWorkspace().getGame()); //TODO perhaps unneeded
+
+		if (arg instanceof Observable) {
+			((Observable) arg).addObserver(this);
+		} else if (arg instanceof Mail) {
+			PostalNetwork.packageAndDeliver(this.gameWindow, (Mail) arg);
+		}
+
 	}
 }

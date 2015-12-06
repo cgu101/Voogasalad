@@ -12,7 +12,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import network.test.GameWindow;
+import network.framework.GameWindow;
+import network.framework.format.Mail;
 import util.FileChooserUtility;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
@@ -37,7 +38,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	private Game game;
 
 	public CreatorScreen() {
-		this(null);
+		this(new Game());
 	}
 	
 	public CreatorScreen (Game game) {
@@ -53,7 +54,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	
 	public CreatorScreen (Game game, GameWindow gw) {
 		this(game);
-		w.addNetwork(gw);
+//		w.addNetwork(gw);
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		root = r;
 		scene = new Scene(root, WIDTH, HEIGHT);
 		makePanes(2);
-		w = new Workspace(myPanes.get(1), this);
+		w = new Workspace(myPanes.get(1), this, this.game);
 		r.setTop(myPanes.get(0));
 		GridPane mapPane = new GridPane();
 		mapPane.add(myPanes.get(1), 0, 1);
@@ -129,12 +130,21 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	public GridPane getDefaultPane () {
 		return myPanes.get(DEFAULT_MAP_PANE_INDEX);
 	}
+	
+	public Game getGame () {
+		return game;
+	}
+	
+	public void setGame (Game game) {
+		this.game = game;
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		System.out.println("Observer update");
 		
-		Game receivedGame = (Game) arg;
-		w.updateVisual((GameWindow) o, (Game) arg);
+		Mail mail = (Mail) arg;
+
+		w.forward(mail.getPath(), (Mail) arg);
 	}
 }

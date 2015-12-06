@@ -1,6 +1,7 @@
 package view.level;
 
 import authoring.controller.AuthoringController;
+import authoring.model.Anscestral;
 import authoring.model.level.Level;
 import javafx.scene.control.Tab;
 import javafx.scene.image.Image;
@@ -9,7 +10,7 @@ import javafx.scene.image.Image;
  * 
  * @author Austin
  */
-public interface LevelInterface {
+public interface LevelInterface extends Anscestral {
 	public Tab getTab();
 
 	public AuthoringController getController();

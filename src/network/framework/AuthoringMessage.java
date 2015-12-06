@@ -3,6 +3,7 @@ package network.framework;
 import java.io.Serializable;
 
 import authoring.model.game.Game;
+import network.framework.format.Request;
 import resources.keys.PropertyKey;
 import resources.keys.PropertyKeyResource;
 
