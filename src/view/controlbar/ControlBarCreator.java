@@ -176,8 +176,8 @@ public class ControlBarCreator extends ControlBar implements Observer {
 
 		try {
 			Image backgroundImage = new Image(file.toURI().toURL().toExternalForm(), 60, 0, true, false);
-
-			this.screen.getWorkspace().getCurrentLevelInterface().initializeBackground(backgroundImage);
+			
+			this.screen.getWorkspace().getCurrentLevelInterface().updateBackground(backgroundImage);
 
 		} catch (IOException ex) {
 			showError("Error", "Unable to Load Image");
