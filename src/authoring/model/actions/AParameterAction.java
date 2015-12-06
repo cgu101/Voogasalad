@@ -20,12 +20,12 @@ public abstract class AParameterAction<V> implements IAction<V> {
 			Set<Entry<String, V>> entrySet = parameters_values.entrySet();
 			for(Map.Entry<String, V> entry : entrySet){
 				Property<?> prop = actor.getProperty(entry.getKey());
-				run(prop, entry.getValue(), actor);
+				run(prop, entry.getValue(), state, actor);
 			}
 		}
 		ActorGroups actorGroups = state.getActorMap();
 		actorGroups.addActor(a);
 	}
 
-	public abstract void run(Property<?> property, V value, Actor a);
+	public abstract void run(Property<?> property, V value, State state, Actor a);
 }
