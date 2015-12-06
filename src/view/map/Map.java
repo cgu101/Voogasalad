@@ -90,17 +90,19 @@ public class Map extends AbstractElement {
 	}
 	
 	public void setMapDimensions(double width, double height) {
-		mapScrollableArea.setPrefWidth(width);
-		mapScrollableArea.setPrefViewportWidth(width);
-		mapScrollableArea.setPrefHeight(height);
+		mapRegularWidth = width;
+		mapRegularHeight = height;
+		mapScrollableArea.setPrefWidth(mapRegularWidth);
+		mapScrollableArea.setPrefViewportWidth(mapRegularWidth);
+		mapScrollableArea.setPrefHeight(mapRegularHeight);
 		
 		if (width < height) {
-			background.setFitWidth(width);
+			background.setFitWidth(mapRegularWidth);
 			background.setPreserveRatio(true);
 		}
 		
 		else {
-			background.setFitHeight(height);
+			background.setFitHeight(mapRegularHeight);
 			background.setPreserveRatio(true);
 		}
 		
