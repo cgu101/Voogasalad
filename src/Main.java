@@ -204,7 +204,7 @@ public class Main extends Application {
 		//MegaMan Actor
 		ActorPropertyMap apmMegaMan1 = new ActorPropertyMap();
 		apmMegaMan1.addProperty("groupID", "player");
-		apmMegaMan1.addProperty("image", "megaman.png");
+		apmMegaMan1.addProperty("image", "rcd.jpg");
 		apmMegaMan1.addProperty("xLocation", "0");
 		apmMegaMan1.addProperty("yLocation", "0");
 		apmMegaMan1.addProperty("angle", "45");

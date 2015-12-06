@@ -28,7 +28,7 @@ public class Move<V> extends AOneActorAction<V>{
 		
 //		TODO UPDATE
 		x = checkBoundary(x, 1100-400);
-		y = checkBoundary(y, 600);
+		y = checkBoundary(y, 528);
 
 		((Property<Double>)actor.getProperty(ActorProperties.X_LOCATION.getKey())).setValue(x);
 		((Property<Double>)actor.getProperty(ActorProperties.Y_LOCATION.getKey())).setValue(y);
