@@ -9,4 +9,10 @@
 
 * Exception raised at the end of a drag and drop by LevelMap.java:59
 
+#Considerations
+
+* Make Parameter Objects Immutable
+
 #Resolved
+
+
