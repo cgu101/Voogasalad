@@ -61,6 +61,11 @@ public class InteractionTreeNode implements Serializable {
 	public String getValue () {
 		return value;
 	}
+	public void setValue (String value) {
+		if (value != null) {
+			this.value = value;
+		}
+	}
 	
 	public void printGraph() {
 		System.out.println(value);
