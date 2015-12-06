@@ -1,4 +1,4 @@
-package authoring.model.actions;
+package authoring.model;
 
 import java.sql.Timestamp;
 import java.util.Calendar;

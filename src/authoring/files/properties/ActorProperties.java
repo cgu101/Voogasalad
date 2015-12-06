@@ -12,7 +12,9 @@ public enum ActorProperties {
 	SIZE("SIZE"),
 	SPEED("SPEED"),
 	X_LOCATION("X_LOCATION"),
-	Y_LOCATION("Y_LOCATION");
+	Y_LOCATION("Y_LOCATION"),
+	KEYCODE("KEYCODE");
+
 
 	private final ResourceBundle resources = ResourceBundle.getBundle("authoring/files/properties/ActorProperties");
 	private String key;

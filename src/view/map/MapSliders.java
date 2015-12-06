@@ -2,7 +2,6 @@ package view.map;
 
 import javafx.scene.layout.GridPane;
 import view.element.AbstractDockElement;
-import view.level.LevelInterface;
 import view.level.LevelMap;
 import view.level.Workspace;
 import view.screen.AbstractScreenInterface;

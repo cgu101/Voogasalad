@@ -21,7 +21,6 @@ import view.element.ActorEditor;
 import view.handler.ActorHandlerToolbar;
 import view.level.Workspace;
 import view.map.CreatorMapSliders;
-import view.map.MapSliders;
 
 /**
  * Screen for authoring environment
@@ -35,14 +34,14 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	private Workspace w;
 	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
-	
+
 	private Game game;
 
 	public CreatorScreen() {
 		this(new Game());
 	}
-	
-	public CreatorScreen (Game game) {
+
+	public CreatorScreen(Game game) {
 		this.game = game;
 		findResources();
 		WIDTH = Integer.parseInt(myResources.getString("width"));
@@ -52,15 +51,14 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		root.prefWidthProperty().bind(scene.widthProperty());
 		this.title = myResources.getString("title");
 	}
-	
-	public CreatorScreen (Game game, GameWindow gw) {
+
+	public CreatorScreen(Game game, GameWindow gw) {
 		this(game);
-//		w.addNetwork(gw);
+		// w.addNetwork(gw);
 	}
 
 	@Override
 	public void run() {
-		//System.out.println("test run");
 	}
 
 	@Override
@@ -87,7 +85,6 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		rightPane.add(homePanes.get(1), 0, 1);
 		rightPane.setAlignment(Pos.CENTER);
 		r.setRight(rightPane);
-		
 		components = new ArrayList<AbstractDockElement>();
 		ActorBrowser browser = new ActorBrowser(dockPanes.get(0), homePanes.get(0),
 				myResources.getString("browsername"), this, w);
@@ -95,13 +92,35 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		ActorEditor editor = new ActorEditor(dockPanes.get(1), homePanes.get(1), myResources.getString("editorname"),
 				this, browser, w);
 		components.add(editor);
-		CreatorMapSliders slider = new CreatorMapSliders(dockPanes.get(2), homePanes.get(2), myResources.getString("slidername"),
-				this, w);
+		CreatorMapSliders slider = new CreatorMapSliders(dockPanes.get(2), homePanes.get(2),
+				myResources.getString("slidername"), this, w);
 		components.add(slider);
-		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3), myResources.getString("toolbarname"), this, w);
+		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3),
+				myResources.getString("toolbarname"), this, w);
 		components.add(aet);
-		
-//		t = new ControlBarCreator(myPanes.get(0), this);
+		fullscreen.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
+				editor.getDockedProperty().getValue()));
+		browser.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
+				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
+		editor.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
+				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
+	}
+
+	private void manageMapSize(boolean fullscreen, boolean browser, boolean editor) {
+		if (!fullscreen) {
+			if (!browser && !editor) {
+				System.out.println("hi");
+				w.getCurrentLevel().setMapDimensions(850, 724);
+			} else {
+				System.out.println("bye");
+				w.getCurrentLevel().setMapDimensions(700, 724);
+			}
+		} else {
+			if (!browser && !editor) {
+			} else {
+
+			}
+		}
 	}
 
 	// TODO
@@ -124,27 +143,27 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	public void loadGame() {
 		System.out.println("Testing loading game ");
 	}
-	
-	public Workspace getWorkspace () {
+
+	public Workspace getWorkspace() {
 		return w;
 	}
-	
-	public GridPane getDefaultPane () {
+
+	public GridPane getDefaultPane() {
 		return myPanes.get(DEFAULT_MAP_PANE_INDEX);
 	}
-	
-	public Game getGame () {
+
+	public Game getGame() {
 		return game;
 	}
-	
-	public void setGame (Game game) {
+
+	public void setGame(Game game) {
 		this.game = game;
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		System.out.println("Observer update");
-		
+
 		Mail mail = (Mail) arg;
 
 		w.forward(mail.getPath(), (Mail) arg);

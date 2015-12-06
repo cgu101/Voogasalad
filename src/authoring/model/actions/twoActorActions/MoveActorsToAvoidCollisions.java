@@ -1,24 +1,29 @@
-package authoring.model.actions.actorActions.twoActorActions;
+package authoring.model.actions.twoActorActions;
 
 import java.util.Map;
-
-import authoring.model.actions.ActionTriggerHelper;
-import authoring.model.actions.actorActions.ATwoActorActions;
+import authoring.model.ActionTriggerHelper;
+import authoring.model.actions.ATwoActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
+import authoring.model.tree.Parameters;
 import authoring.model.triggers.externalconditions.CircleCollision;
+import engine.State;
 
 /**
  * @author Tyler
  *
  */
-public class MoveActorsToAvoidCollisions<V> extends ATwoActorActions<V> {
+public class MoveActorsToAvoidCollisions extends ATwoActorAction {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = 5960139488436126498L;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Map<String, V> parameters_values, ActorGroups actorGroups, Actor a, Actor b) {
-		if (checkIfCollided(actorGroups, a, b)) {
+	public void run(Parameters parameters, State state, Actor a, Actor b) {
+		if (checkIfCollided(state.getActorMap(), a, b)) {
 			Double sizeA = ((Property<Double>) a.getProperties().getComponents().get("size")).getValue();
 			Double sizeB = ((Property<Double>) b.getProperties().getComponents().get("size")).getValue();
 			Double difference = (sizeA + sizeB) - ActionTriggerHelper.distance(a, b);

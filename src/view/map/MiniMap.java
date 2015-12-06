@@ -58,7 +58,9 @@ public class MiniMap extends AbstractVisual {
 
 	public void updateMiniMapBackground(ImageView background) {
 		// Not sure if this will properly update it
-		miniMapImageView = background;
+		theMiniMap.getChildren().remove(0);
+		createMiniMapImageView(Double.valueOf(myResources.getString("minimapwidth")));
+		addMiniMapImageView();
 	}
 
 	private void createMiniMap() {
@@ -89,7 +91,7 @@ public class MiniMap extends AbstractVisual {
 	}
 
 	private void addMiniMapImageView() {
-		theMiniMap.getChildren().add(miniMapImageView);
+		theMiniMap.getChildren().add(0, miniMapImageView);
 		miniMapWidth = (double) miniMapImageView.getBoundsInParent().getWidth();
 		miniMapHeight = (double) miniMapImageView.getBoundsInParent().getHeight();
 	}
@@ -176,5 +178,13 @@ public class MiniMap extends AbstractVisual {
 		public double mouseAnchorY;
 		public double initialTranslateX;
 		public double initialTranslateY;
+	}
+	
+	public double getRectangleX() {
+		return currentRectangleXPos;
+	}
+	
+	public double getRectangleY() {
+		return currentRectangleYPos;
 	}
 }
