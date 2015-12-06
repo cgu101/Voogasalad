@@ -1,5 +1,7 @@
 package authoring.model.triggers.selfconditions;
 
+import authoring.model.triggers.selftriggers.APropertyTest;
+
 public class PropertyGreaterThanOrEqual extends APropertyTest {
 	/**
 	 * Generated serial version ID

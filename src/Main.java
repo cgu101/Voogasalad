@@ -53,6 +53,7 @@ public class Main extends Application {
 	 * Space Bar: Shoot bullet (bullets are currently using rcd.jpg)
 	 */
 	private static void createTestGame2() {
+		//Test
 		/* Create a test game */
 		Game testGame = new Game();
 		Property p = new Property("name", "Awesome Game");

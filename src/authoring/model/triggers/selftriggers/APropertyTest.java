@@ -1,8 +1,7 @@
-package authoring.model.triggers.selfconditions;
+package authoring.model.triggers.selftriggers;
 
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
-import authoring.model.triggers.selftriggers.AActorSelfTrigger;
 
 public abstract class APropertyTest extends AActorSelfTrigger {
 	/**
