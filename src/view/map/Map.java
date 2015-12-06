@@ -88,6 +88,26 @@ public abstract class Map extends AbstractElement {
 	public void build (Map map) {
 		
 	}
+	
+	public void setMapDimensions(double width, double height) {
+		mapRegularWidth = width;
+		mapRegularHeight = height;
+		mapScrollableArea.setPrefWidth(mapRegularWidth);
+		mapScrollableArea.setPrefViewportWidth(mapRegularWidth);
+		mapScrollableArea.setPrefHeight(mapRegularHeight);
+		
+		if (width < height) {
+			background.setFitWidth(mapRegularWidth);
+			background.setPreserveRatio(true);
+		}
+		
+		else {
+			background.setFitHeight(mapRegularHeight);
+			background.setPreserveRatio(true);
+		}
+		
+		updateBackground();
+	}
 
 	/**
 	 * Adds a Node onto the Map's display area at the given x and y coordinates.
@@ -238,12 +258,9 @@ public abstract class Map extends AbstractElement {
 
 		mapScrollableArea.setContent(contentGroup);
 
-		// mapScrollableArea.prefWidthProperty().bind(pane.widthProperty());
-		// mapScrollableArea.prefViewportWidthProperty().bind(pane.widthProperty());
 		mapScrollableArea.setPrefWidth(mapRegularWidth);
 		mapScrollableArea.setPrefViewportWidth(mapRegularWidth);
 
-		// mapScrollableArea.prefViewportHeightProperty().bind(pane.heightProperty());
 		mapScrollableArea.setPrefHeight(mapRegularHeight);
 	}
 
