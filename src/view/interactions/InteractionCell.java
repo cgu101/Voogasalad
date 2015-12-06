@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 import authoring.controller.AuthoringController;
+import authoring.model.tree.InteractionTreeNode;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
@@ -15,7 +16,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
-public class InteractionCell extends TreeCell<InteractionData>{
+public class InteractionCell extends TreeCell<InteractionTreeNode>{
 
 	private GridPane pane;
 	private AuthoringController controller;
@@ -27,14 +28,14 @@ public class InteractionCell extends TreeCell<InteractionData>{
 
 	}
 	@Override
-	public void updateItem(InteractionData item, boolean empty) {
+	public void updateItem(InteractionTreeNode item, boolean empty) {
 		super.updateItem(item, empty);
 
 		if (empty || item == null) {
 			setText(null);
 			setGraphic(null);
 		} else {
-			setText(getItem() == null ? "" : getItem().getType());
+			setText(getItem() == null ? "" : getItem().getID());
 			HBox box = new HBox(2);
 			ImageView icon;
 			try {
@@ -75,8 +76,8 @@ public class InteractionCell extends TreeCell<InteractionData>{
 		MenuItem triggerItem = new MenuItem("Add Trigger");
 		triggerItem.setOnAction(e -> {
 			TriggerParametersView view = new TriggerParametersView(getItem(), pane, controller);
-			TreeItem<InteractionData> newTrigger = 
-					new TreeItem<InteractionData>(new InteractionData("Trigger", "notlikethis",null, null));
+			TreeItem<InteractionTreeNode> newTrigger = 
+					new TreeItem<InteractionTreeNode>(new InteractionTreeNode("Trigger", "notlikethis",null, null));
 			newTrigger.setExpanded(true);
 			getTreeItem().getChildren().add(newTrigger);
 
@@ -86,8 +87,8 @@ public class InteractionCell extends TreeCell<InteractionData>{
 	private MenuItem makeAddActionItem () {
 		MenuItem actionItem = new MenuItem("Add Action");
 		actionItem.setOnAction(e -> {
-			TreeItem<InteractionData> newAction = 
-					new TreeItem<InteractionData>(new InteractionData("Action", "a",null,null));
+			TreeItem<InteractionTreeNode> newAction = 
+					new TreeItem<InteractionTreeNode>(new InteractionTreeNode("Action", "a",null,null));
 			getTreeItem().getChildren().add(newAction);
 		});
 		return actionItem;
@@ -102,7 +103,7 @@ public class InteractionCell extends TreeCell<InteractionData>{
 	private MenuItem makeDeleteItem () {
 		MenuItem deleteItem = new MenuItem("Delete");
 		deleteItem.setOnAction(e -> {
-			TreeItem<InteractionData> treeItem = getTreeItem();
+			TreeItem<InteractionTreeNode> treeItem = getTreeItem();
 			treeItem.getParent().getChildren().remove(treeItem);
 		});
 		return deleteItem;

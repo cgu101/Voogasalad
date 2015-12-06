@@ -9,7 +9,7 @@ public class InteractionData {
 	private String[] actors;
 	private List<ParameterData> currentValues;
 	
-	public InteractionData(String type,String classID, List<ParameterData> values, String[] actors){
+	public InteractionData (String type,String classID, List<ParameterData> values, String[] actors){
 		this.type = type;
 		this.classID = classID;
 		this.currentValues = values;

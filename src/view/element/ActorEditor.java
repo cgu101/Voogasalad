@@ -27,7 +27,7 @@ import javafx.util.Callback;
 import view.actor.PropertyCell;
 import view.actor.TriggerCell;
 import view.interactions.InteractionCell;
-import view.interactions.InteractionData;
+import view.interactions.InteractionTreeNode;
 import view.level.Workspace;
 import view.screen.AbstractScreenInterface;
 
@@ -132,16 +132,16 @@ public class ActorEditor extends AbstractDockElement {
 	}
 
 
-	private TreeView<InteractionData> makeTriggerEditor(String... items) {
+	private TreeView<InteractionTreeNode> makeTriggerEditor(String... items) {
 		//TODO use items, hook up backend
-		TreeItem<InteractionData> rootItem = new TreeItem<InteractionData>(new InteractionData("Interaction","",
+		TreeItem<InteractionTreeNode> rootItem = new TreeItem<InteractionTreeNode>(new InteractionTreeNode("Interaction","",
 				Arrays.asList(new ParameterData("text", null, null, "value"), new ParameterData("text2",null,null,"value2")),new String[]{"Asteroid"}));
 		rootItem.setExpanded(true);
-		TreeView<InteractionData> treeView = new TreeView<InteractionData>(rootItem);
+		TreeView<InteractionTreeNode> treeView = new TreeView<InteractionTreeNode>(rootItem);
 		treeView.setEditable(true);
-		treeView.setCellFactory(new Callback<TreeView<InteractionData>, TreeCell<InteractionData>>() {
+		treeView.setCellFactory(new Callback<TreeView<InteractionTreeNode>, TreeCell<InteractionTreeNode>>() {
 			@Override
-			public TreeCell<InteractionData> call(TreeView<InteractionData> p) {
+			public TreeCell<InteractionTreeNode> call(TreeView<InteractionTreeNode> p) {
 				InteractionCell cell = new InteractionCell(pane, controller);
 //				new TriggerParametersView(null, controller);
 				return cell;
@@ -150,7 +150,7 @@ public class ActorEditor extends AbstractDockElement {
 		treeView.setFocusTraversable(false);
 		GridPane.setColumnSpan(treeView, 3);
 		// TODO
-		rootItem.getChildren().add(new TreeItem<InteractionData>(new InteractionData("Action","next",null,null)));
+		rootItem.getChildren().add(new TreeItem<InteractionTreeNode>(new InteractionTreeNode("Action","next",null,null)));
 		return treeView;
 	}
 

@@ -2,6 +2,7 @@ package view.interactions;
 
 import authoring.controller.AuthoringController;
 import authoring.controller.parameters.ParameterData;
+import authoring.model.tree.InteractionTreeNode;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
@@ -13,7 +14,7 @@ public class TriggerParametersView extends ParametersView {
 	private static final String TRIGGER_TITLE = "Trigger";
 //	private ResourceBundle triggerNames = ResourceBundle.getBundle("authoring/files/triggers");
 	
-	public TriggerParametersView(InteractionData cell, GridPane pane, AuthoringController controller) {
+	public TriggerParametersView(InteractionTreeNode cell, GridPane pane, AuthoringController controller) {
 		super(cell, pane, controller);
 		this.title = TRIGGER_TITLE;
 		init();

@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 
 import authoring.controller.AuthoringController;
 import authoring.controller.parameters.ParameterData;
+import authoring.model.tree.InteractionTreeNode;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,10 +26,10 @@ public abstract class ParametersView {
 	private ListView<ParameterData> paramListView;
 	protected ObservableList<ParameterData> paramList;
 	private Button finishButton;
-	protected InteractionData cell;
+	protected InteractionTreeNode cell;
 	private ResourceBundle myResources = ResourceBundle.getBundle("resources/ParametersView");
 
-	public ParametersView (InteractionData cell, GridPane pane, AuthoringController controller) {
+	public ParametersView (InteractionTreeNode cell, GridPane pane, AuthoringController controller) {
 		this.cell = cell;
 		this.pane = pane;
 		this.controller = controller;
