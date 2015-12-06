@@ -3,6 +3,7 @@ package network.framework;
 import java.io.Serializable;
 
 import authoring.model.game.Game;
+import network.framework.format.Request;
 import resources.keys.PropertyKey;
 import resources.keys.PropertyKeyResource;
 
@@ -18,7 +19,7 @@ public class AuthoringMessage implements Serializable {
 	 */
 	private static final long serialVersionUID = 8898809091241353334L;
 
-	private static String GAME_NAME = PropertyKeyResource.getKey(PropertyKey.GAME_ID_KEY);;
+	private static String GAME_NAME = PropertyKeyResource.getKey(PropertyKey.GAME_ID_KEY);
 	
 	private Request request;
 	private String data;

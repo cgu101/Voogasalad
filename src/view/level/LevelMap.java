@@ -1,8 +1,10 @@
 package view.level;
 
 import java.util.Date;
+import java.util.Deque;
 
 import authoring.controller.AuthoringController;
+import authoring.model.Anscestral;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import authoring.model.level.Level;
@@ -13,7 +15,8 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
-import network.test.GameWindow;
+import network.framework.GameWindow;
+import network.framework.format.Mail;
 import view.map.Map;
 import view.screen.AbstractScreen;
 
@@ -125,7 +128,7 @@ public class LevelMap extends Map implements LevelInterface {
 
 	@Override
 	public String makeTitle(int i) {
-		return myString + (i + 1);
+		return (i + 1) + myString;
 	}
 
 	public void setGameWindow(GameWindow g) {
@@ -136,7 +139,11 @@ public class LevelMap extends Map implements LevelInterface {
 	public String getTitle() {
 		return myTitle;
 	}
-
+	
+	public GridPane getPane () {
+		return this.pane;
+	}
+	
 	@Override
 	public void redraw(Level modelLevel) {
 		// TODO Auto-generated method stub
@@ -148,4 +155,24 @@ public class LevelMap extends Map implements LevelInterface {
 		// TODO Auto-generated method stub
 		return myLevel;
 	}
+
+	@Override
+	public Deque<String> getAnscestralPath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void process(Mail mail) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Anscestral getChild(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

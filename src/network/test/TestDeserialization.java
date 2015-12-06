@@ -1,4 +1,4 @@
-package network.framework;
+package network.test;
 
 import java.io.FileInputStream;
 import java.io.IOException;

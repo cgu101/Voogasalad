@@ -1,14 +1,17 @@
 package authoring.model.actions.parameterActions;
 
-import authoring.model.actions.AParameterAction;
-import authoring.model.actors.Actor;
-import authoring.model.properties.Property;
+import java.util.Map;
 
-public class LevelTransition<V> extends AParameterAction<V>  {
+import authoring.model.actions.actorActions.AOneActorAction;
+import authoring.model.actors.Actor;
+import authoring.model.actors.ActorGroups;
+
+public class LevelTransition<V> extends AOneActorAction<V>  {
 
 	@Override
-	public void run(Property<?> property, V value, Actor a) {
-		
+	public void run(Map<String, V> parameters_values, ActorGroups actorGroups, Actor a) {
+				
 	}
+
 }
 

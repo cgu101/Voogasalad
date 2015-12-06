@@ -20,7 +20,7 @@ public class SpriteManager {
 	private ResourceBundle myResources;
 	private Map<String, Boolean> stillAlive;
 	//private Group group;
-	private view.map.Map myCamera;
+	private view.map.Map myMap;
 	
 	public SpriteManager(Scene s){
 		sprites = new HashMap<String, Sprite>();
@@ -31,7 +31,7 @@ public class SpriteManager {
 		//bp.setCenter(group);
 		GridPane gp = new GridPane();
 
-		myCamera = new view.map.Map(gp);
+		myMap = new view.map.Map(gp);
 //		myCamera.createTheMap(); this should not be called because it gets called in the constructor
 
 		bp.setCenter(gp);
@@ -53,7 +53,7 @@ public class SpriteManager {
 			}else{
 				Sprite newsp = createSprite(a);
 				sprites.put(a.getUniqueID(), newsp);
-				myCamera.getGroup().getChildren().add(newsp);
+				myMap.getGroup().getChildren().add(newsp);
 				centerSprite(a, newsp);
 //				newsp.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
 //				newsp.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
@@ -67,7 +67,7 @@ public class SpriteManager {
 			if(!stillAlive.get(id)){
 				Sprite s = sprites.get(id);
 				sprites.remove(id);
-				myCamera.getGroup().getChildren().remove(s);
+				myMap.getGroup().getChildren().remove(s);
 			}
 		}
 		stillAlive.entrySet().removeIf(e -> !e.getValue() );
@@ -94,7 +94,7 @@ public class SpriteManager {
 			}
 		}
 		for (String actorID : removeList) {
-			myCamera.getGroup().getChildren().remove(sprites.remove(actorID));
+			myMap.getGroup().getChildren().remove(sprites.remove(actorID));
 		}
 	}
 
@@ -128,6 +128,13 @@ public class SpriteManager {
 		for(Sprite s : sprites.values()){
 			s.play();
 		}
+	}
+	
+	/**
+	 * Returns the current map where Actors are placed.
+	 */
+	public view.map.Map getMap(){
+		return myMap;
 	}
 
 }
