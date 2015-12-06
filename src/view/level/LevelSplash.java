@@ -26,7 +26,7 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 		myString = myResources.getString("tabName");
 		this.screen = screen;
 		makePane();
-		myTab = new Tab(makeTitle(i));
+		myTab = new Tab("" + i);
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));
 	}
@@ -73,7 +73,7 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 	@Override
 	public void redraw(Level modelLevel) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 	@Override
 	public void process(Mail mail) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
