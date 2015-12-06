@@ -40,6 +40,11 @@ public class MiniMap extends AbstractVisual {
 		theMapHeight = mapHeight;
 		createMiniMap();
 	}
+	
+	public void updateMapDimensions(double mapWidth, double mapHeight) {
+		theMapWidth = mapWidth;
+		theMapHeight = mapHeight;
+	}
 
 	public void updateMiniMapRectangleOnZoom(double scale) {
 		double rectangleScale = 1 / scale;

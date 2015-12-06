@@ -40,7 +40,7 @@ public class MapViewManager extends AbstractVisual {
 	 * @param background
 	 *            - the new background to be set
 	 */
-	public void updateBackground(Node background) {
+	public void updateBackground(Node background) { 
 		if (!mapLayout.getChildren().isEmpty()) {
 			mapLayout.getChildren().remove(0);
 		}
