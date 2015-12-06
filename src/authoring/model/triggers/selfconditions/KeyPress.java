@@ -1,5 +1,6 @@
 package authoring.model.triggers.selfconditions;
 
+import authoring.files.properties.ActorProperties;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import authoring.model.triggers.selftriggers.AInputSelfTrigger;
@@ -15,6 +16,6 @@ public class KeyPress extends AInputSelfTrigger {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean condition(Parameters parameters, InputManager inputManager, Actor actor) {
-		return inputManager.getValue((String) parameters.getParameter("keyCode"));
+		return inputManager.getValue((String) parameters.getParameter(ActorProperties.KEYCODE.getKey()));
 	}
 }

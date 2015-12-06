@@ -212,7 +212,7 @@ public class Main extends Application {
 		apmMegaMan1.addProperty("size", "50");
 		apmMegaMan1.addProperty("range", "40");
 		apmMegaMan1.addProperty("health", "20");
-		ac.updateActor("testActor", apmMegaMan1);
+		ac1.updateActor("testActor", apmMegaMan1);
 		
 		List<String> actorList1 = new ArrayList<String>();
 		actorList1.add("player");
