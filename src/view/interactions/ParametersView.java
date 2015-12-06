@@ -71,7 +71,7 @@ public class ParametersView {
 		stage.setResizable(false);
 		stage.setAlwaysOnTop(true);
 		stage.setOnCloseRequest(e -> {
-			e.consume();
+//			e.consume();
 		});
 		stage.initOwner(pane.getScene().getWindow());
 		stage.setTitle(myResources.getString("title") + type);
