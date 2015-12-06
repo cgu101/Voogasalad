@@ -51,12 +51,7 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 	}
 
 	@Override
-	public String makeTitle(int i) {
-		return (i + 1) + myString;
-	}
-
-	@Override
-	public void initializeBackground(Image i) {
+	public void updateBackground(Image i) {
 		pane.getChildren().clear();
 		ImageView image = new ImageView(i);
 		image.fitWidthProperty().bind(screen.getScene().widthProperty());
@@ -96,6 +91,12 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 
 	@Override
 	public Anscestral getChild(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public LevelType getType() {
 		// TODO Auto-generated method stub
 		return null;
 	}

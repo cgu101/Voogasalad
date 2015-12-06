@@ -68,12 +68,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 	}
 
 	private void addVisual(Level l) {
-		LevelInterface newLevelInterface = new LevelMap(new GridPane(), l, screen);
-
-		levelInterfaceMap.put(l.getUniqueID(), newLevelInterface);
-		levelInfo.add(l);
-
-		addLevel(l);
+		addScreenElement(l);
 	}
 
 	private void updateVisual(Level l) {
@@ -112,8 +107,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 		levelInterfaceMap.put(level.getUniqueID(), new LevelMap(new GridPane(), level, screen));
 		levelInfo.add(level);
 
-		LevelInterface levelInterface = levelInterfaceMap.get(level.getUniqueID());
-		configureTab(levelInterface);
+		configureTab(level);
 	}
 
 	private void initializeVisualLevelComponents() {
@@ -122,18 +116,27 @@ public class Workspace extends AbstractElement implements Anscestral {
 		}
 	}
 
-	public void addSplashScreen() {
-		// TODO
-		LevelSplash newLevel = new LevelSplash(new GridPane(), levelInterfaceMap.size(), screen);
-		configureTab(newLevel);
+	public void addSplashScreen(Level level) {
+		addScreenElement(level);
+
+		LevelMap levelInterface = (LevelMap) levelInterfaceMap.get(level.getUniqueID());
 	}
 
-	public void configureTab(LevelInterface levelInterface) {
+	private void addScreenElement(Level level) {
+		LevelInterface newLevelInterface = new LevelMap(new GridPane(), level, screen);
+
+		levelInterfaceMap.put(level.getUniqueID(), newLevelInterface);
+		levelInfo.add(level);
+
+		addLevel(level);
+	}
+
+	public void configureTab(Level level) {
+		LevelInterface levelInterface = levelInterfaceMap.get(level.getUniqueID());
 		Tab newTab = levelInterface.getTab();
 		newTab.setOnClosed(e -> {
-			removeLevel(levelInfo.get(levelInterface.getTitle()));
-			DataDecorator d = new DataDecorator(Request.DELETE, levelInfo.get(levelInterface.getTitle()),
-					this.anscestors);
+			removeLevel(level);
+			DataDecorator d = new DataDecorator(Request.DELETE, level, this.anscestors);
 			updateObservers(d);
 		});
 		tabManager.getTabs().add(levelInterfaceMap.size() - 1, newTab);
@@ -143,10 +146,6 @@ public class Workspace extends AbstractElement implements Anscestral {
 	private void removeLevel(Level level) {
 		levelInterfaceMap.remove(level.getUniqueID());
 		levelInfo.remove(level.getUniqueID());
-	}
-
-	public LevelInterface getCurrentLevel() {
-		return currentLevelInterface;
 	}
 
 	public void moveLevel(Boolean left) {
@@ -191,6 +190,10 @@ public class Workspace extends AbstractElement implements Anscestral {
 			updateVisual(data);
 			break;
 		}
+		case TRANSITION: {
+			addSplashScreen(data);
+			break;
+		}
 		default: {
 			break;
 		}
@@ -199,6 +202,10 @@ public class Workspace extends AbstractElement implements Anscestral {
 
 	public Game getGame() {
 		return game;
+	}
+
+	public LevelInterface getCurrentLevelInterface() {
+		return currentLevelInterface;
 	}
 
 	@Override
