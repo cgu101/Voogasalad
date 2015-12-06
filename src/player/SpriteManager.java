@@ -134,7 +134,7 @@ public class SpriteManager {
 	 * Returns the current map where Actors are placed.
 	 */
 	public view.map.Map getMap(){
-		return myCamera;
+		return myMap;
 	}
 
 }
