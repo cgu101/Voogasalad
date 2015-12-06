@@ -1,22 +1,22 @@
-package authoring.model.triggers.externaltriggers;
+package authoring.model.triggers.selftriggers;
 
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import authoring.model.triggers.ATriggerEvent;
 import player.InputManager;
 
-public abstract class AExternalTrigger extends ATriggerEvent {
+public abstract class AActorSelfTrigger extends ATriggerEvent {
 	/**
 	 * Generated serial version ID
 	 */
-	private static final long serialVersionUID = 4100817942508845434L;
+	private static final long serialVersionUID = 8384807132239670679L;
 
 	@SuppressWarnings("rawtypes")
-	public abstract boolean condition(Parameters parameters, Actor... actors);
+	public abstract boolean condition(Parameters parameters, Actor actor);
 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean condition(Parameters parameters, InputManager inputManager, Actor... actors) {
-		return condition(parameters, actors);
+		return condition(parameters, actors[0]);
 	}
 }

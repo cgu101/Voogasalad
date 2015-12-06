@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 import view.element.AbstractElement;
 import view.handler.ActorHandler;
 
@@ -178,10 +179,6 @@ public class Map extends AbstractElement {
 	 */
 	private void addMapToPane(GridPane pane) {
 		pane.add(mapArea, 0, 0);
-
-		// pane.add(zoomSliderArea.getSliderWithCaptions(), 0, 1);
-		// pane.add(opacitySliderArea.getSliderWithCaptions(), 0, 2);
-
 	}
 
 	/**
@@ -195,9 +192,20 @@ public class Map extends AbstractElement {
 		createPanListeners();
 		createMiniMap();
 
+		addScrollAreaAndMiniMap();
+		setMapMaximumBounds();
+	}
+	
+	private void addScrollAreaAndMiniMap() {
 		mapArea.getChildren().add(mapScrollableArea);
 		mapArea.getChildren().add(theMiniMap.getMiniMap());
-		System.out.println("The minimap's bounds are: " + theMiniMap.getMiniMap().getBoundsInParent());
+	}
+	
+	private void setMapMaximumBounds() {
+		Rectangle clip = new Rectangle(mapRegularWidth, mapRegularHeight);
+		clip.setLayoutX(0);
+		clip.setLayoutY(0);
+		layout.setClip(clip);
 	}
 
 	private void createMapScrollPane() {
@@ -276,6 +284,7 @@ public class Map extends AbstractElement {
 
 		// Add the map to the GridPane
 		addMapToPane(pane);
+		
 		System.out.println("The background bounds are: " + background.getBoundsInParent());
 		// System.out.println(mapScrollableArea.getHvalue());
 		// System.out.println(mapScrollableArea.getVvalue());

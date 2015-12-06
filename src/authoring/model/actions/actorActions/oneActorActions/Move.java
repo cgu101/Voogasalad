@@ -31,12 +31,13 @@ public class Move<V> extends AOneActorAction<V>{
 		y = checkBoundary(y, 600);
 
 		((Property<Double>)actor.getProperty(ActorProperties.X_LOCATION.getKey())).setValue(x);
-		((Property<Double>)actor.getProperty(ActorProperties.Y_LOCATION.getKey())).setValue(y);		
+		((Property<Double>)actor.getProperty(ActorProperties.Y_LOCATION.getKey())).setValue(y);
 	}
-	
+
+
 	private double checkBoundary(double coordinate, int bound) {
 		if (coordinate < 0 || coordinate > bound)
-			return (coordinate+bound) % bound;
+			return (coordinate + bound) % bound;
 		return coordinate;
 	}
 }
