@@ -131,11 +131,11 @@ public class ActorEditor extends AbstractDockElement {
 		contentPane.add(makeTriggerEditor(leftItem, rightItem), 0, 2);
 	}
 
-
 	private TreeView<InteractionData> makeTriggerEditor(String... items) {
-		//TODO use items, hook up backend
-		TreeItem<InteractionData> rootItem = new TreeItem<InteractionData>(new InteractionData("Interaction","",
-				Arrays.asList(new ParameterData("text", null, null, "value"), new ParameterData("text2",null,null,"value2")),new String[]{"Asteroid"}));
+		// TODO use items, hook up backend
+		TreeItem<InteractionData> rootItem = new TreeItem<InteractionData>(
+				new InteractionData("Interaction", "", Arrays.asList(new ParameterData("text", null, null, "value"),
+						new ParameterData("text2", null, null, "value2")), new String[] { "Asteroid" }));
 		rootItem.setExpanded(true);
 		TreeView<InteractionData> treeView = new TreeView<InteractionData>(rootItem);
 		treeView.setEditable(true);
@@ -143,14 +143,14 @@ public class ActorEditor extends AbstractDockElement {
 			@Override
 			public TreeCell<InteractionData> call(TreeView<InteractionData> p) {
 				InteractionCell cell = new InteractionCell(pane, controller);
-//				new TriggerParametersView(null, controller);
+				// new TriggerParametersView(null, controller);
 				return cell;
 			}
 		});
 		treeView.setFocusTraversable(false);
 		GridPane.setColumnSpan(treeView, 3);
 		// TODO
-		rootItem.getChildren().add(new TreeItem<InteractionData>(new InteractionData("Action","next",null,null)));
+		rootItem.getChildren().add(new TreeItem<InteractionData>(new InteractionData("Action", "next", null, null)));
 		return treeView;
 	}
 
@@ -175,7 +175,7 @@ public class ActorEditor extends AbstractDockElement {
 		contentPane.add(makeName(item), 1, 1);
 		contentPane.add(makePropertyEditor(item), 1, 2);
 		// TODO
-//		contentPane.add(makeSelfTriggerEditor(item), 0, 3);
+		// contentPane.add(makeSelfTriggerEditor(item), 0, 3);
 		contentPane.add(makeTriggerEditor(item), 0, 3);
 	}
 
