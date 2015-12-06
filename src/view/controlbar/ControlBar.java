@@ -3,6 +3,7 @@ package view.controlbar;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -58,6 +59,16 @@ public abstract class ControlBar extends AbstractElement {
 		return menu;
 	}
 	
+	protected CheckMenuItem makeCheckMenuItem(String s, KeyCode key, Modifier mod){
+		CheckMenuItem menu = new CheckMenuItem(s);
+		if(mod == null){
+			menu.setAccelerator(new KeyCodeCombination(key));
+		} else {
+			menu.setAccelerator(new KeyCodeCombination(key, mod));
+		}
+		return menu;
+	}
+
 	protected MenuItem makeMenuItem(String s, EventHandler<ActionEvent> handler) {
 		MenuItem m = new MenuItem(s);
 		m.setOnAction(handler);

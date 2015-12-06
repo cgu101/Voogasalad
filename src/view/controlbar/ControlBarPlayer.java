@@ -8,6 +8,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyCombination.Modifier;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
@@ -22,6 +25,7 @@ import javafx.scene.layout.VBoxBuilder;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import resources.KeyCodesMap;
 import view.element.AbstractDockElement;
 import view.screen.AbstractScreen;
 import view.screen.PlayerScreen;
@@ -57,11 +61,14 @@ public class ControlBarPlayer extends ControlBar {
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
-		MenuItem load = makeMenuItem(myResources.getString("loadGame"), e -> currentScreen.loadGame());
-		MenuItem save = makeMenuItem(myResources.getString("saveGame"), e -> currentScreen.saveState());
+		MenuItem load = makeMenuItem(myResources.getString("loadGame"), e -> currentScreen.loadGame(), KeyCode.L,
+				KeyCombination.CONTROL_DOWN);
+		MenuItem save = makeMenuItem(myResources.getString("saveGame"), e -> currentScreen.saveState(), KeyCode.S,
+				KeyCombination.CONTROL_DOWN);
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save);
 
-		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
+		CheckMenuItem fullscreen = makeCheckMenuItem(myResources.getString("fullscreen"), KeyCode.F,
+				KeyCombination.CONTROL_DOWN);
 		fullscreen.selectedProperty().bindBidirectional(currentScreen.getFullscreenProperty());
 		
 		CheckMenuItem toolbar = new CheckMenuItem(myResources.getString("toolbar"));
@@ -72,15 +79,7 @@ public class ControlBarPlayer extends ControlBar {
 		highScore.selectedProperty().setValue(false);
 		highScore.selectedProperty().addListener(e -> System.out.println("High Score not implemented yet"));
 		
-		CheckMenuItem headsUpDisplay = new CheckMenuItem(myResources.getString("hud"));
-		headsUpDisplay.selectedProperty().setValue(false);
-		headsUpDisplay.selectedProperty().addListener(e -> System.out.println("HeadsUpDisplay not implemented yet"));
-		
-		CheckMenuItem preferences = new CheckMenuItem(myResources.getString("preferences"));
-		preferences.selectedProperty().setValue(false);
-		preferences.selectedProperty().addListener(e -> System.out.println("Game Preferences not implemented yet"));
-		
-		hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar, highScore, headsUpDisplay, preferences);
+		hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar, highScore);
 		
 		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow);
 		makeMenuBar(mainMenu, file, window);
@@ -113,7 +112,7 @@ public class ControlBarPlayer extends ControlBar {
 	public void initializeComponents() {
 		if(currentScreen.getComponents() != null){
 			for (AbstractDockElement c : currentScreen.getComponents()) {
-				CheckMenuItem item = new CheckMenuItem(myResources.getString(c.getClass().getSimpleName()));
+				CheckMenuItem item = new CheckMenuItem(c.getClass().getSimpleName());
 				item.selectedProperty().bindBidirectional(c.getShowingProperty());
 				item.selectedProperty().set(false);
 				addToMenu(hideAndShow, item);
