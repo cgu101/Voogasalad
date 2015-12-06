@@ -36,6 +36,8 @@ import view.screen.StartScreen;
 public class ControlBarCreator extends ControlBar implements Observer {
 
 	private static final String DEFAULT_IP = "localhost";
+	private static final String LEVEL_ID = "Level ";
+	private static final String SPLASH_ID = "Splash ";
 
 	private CreatorScreen screen;
 	private GameWindow gameWindow;
@@ -47,7 +49,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	private ToolBar toolBar;
 	private VBox box;
 
-	public ControlBarCreator () {
+	public ControlBarCreator() {
 		this(new CreatorScreen());
 	}
 
@@ -61,16 +63,8 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	}
 
 	/**
-	 * CreatorScren:
-	 * 	 o--> network
-	 * ControlBarCreator:
-	 * 	 o--> Workspace(...?)
-	 *    o--> LevelInterface(...)
-	 *     o--> ActorView(...)
-	 *     o--> InteractionCell(...)
-	 *   .
-	 *   .
-	 *   . 
+	 * CreatorScren: o--> network ControlBarCreator: o--> Workspace(...?) o-->
+	 * LevelInterface(...) o--> ActorView(...) o--> InteractionCell(...) . . .
 	 */
 	private void initializeObservers() {
 		gameWindow.addObserver(this.screen);
@@ -91,17 +85,22 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	}
 
 	private void makeTools(ToolBar toolBar) {
-		Button backButton = makeButton("back", e -> {screen.setNextScreen(new StartScreen()); System.out.println("BRIIIIINGIT");});
+		Button backButton = makeButton("back", e -> {
+			for (AbstractDockElement c : screen.getComponents()) {
+				c.getShowingProperty().setValue(false);
+			}
+			screen.setNextScreen(new StartScreen());
+		});
 		Button addButton = makeButton("add", e -> addNewLevel());
 		Button leftButton = makeButton("left", e -> screen.getWorkspace().moveLevel(true));
 		Button rightButton = makeButton("right", e -> screen.getWorkspace().moveLevel(false));
-		Button splashButton = makeButton("splash", e -> screen.getWorkspace().addSplashScreen());
-		
+		Button splashButton = makeButton("splash", e -> addNewSplash());
+
 		Button backgroundButton = makeButton("background", e -> updateBackground());
 		Button newActor = makeButton("new", e -> addActor());
 
-		toolBar.getItems().addAll(backButton, new Separator(), addButton, splashButton, new Separator(), leftButton, rightButton, 
-				new Separator(), newActor, new Separator(), backgroundButton);
+		toolBar.getItems().addAll(backButton, new Separator(), addButton, splashButton, new Separator(), leftButton,
+				rightButton, new Separator(), newActor, new Separator(), backgroundButton);
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
@@ -111,15 +110,15 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				KeyCombination.CONTROL_DOWN);
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save, new SeparatorMenuItem(), exit);
 
-		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), 
-				e -> addNewLevel(), KeyCode.T, KeyCombination.CONTROL_DOWN);
-		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> screen.getWorkspace().addSplashScreen(), KeyCode.R,
+		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), e -> addNewLevel(), KeyCode.T,
+				KeyCombination.CONTROL_DOWN);
+		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> addNewSplash(), KeyCode.R,
 				KeyCombination.CONTROL_DOWN);
 		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(),
 				KeyCode.N, KeyCombination.CONTROL_DOWN);
 		MenuItem changeBackground = makeMenuItem(myResources.getString("background.message"), e -> updateBackground());
-		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addActor, new SeparatorMenuItem(), 
-				addLevel, addSplash, new SeparatorMenuItem(), changeBackground);
+		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addActor, new SeparatorMenuItem(), addLevel,
+				addSplash, new SeparatorMenuItem(), changeBackground);
 
 		CheckMenuItem toolbar = new CheckMenuItem(myResources.getString("toolbar"));
 		toolbar.selectedProperty().setValue(true);
@@ -135,15 +134,29 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		CheckMenuItem doubleLists = new CheckMenuItem(myResources.getString("dualactors"));
 		doubleLists.selectedProperty().bindBidirectional(findActorBrowser().getDoubleListsProperty());
 
-		Menu window = addToMenu(new Menu(myResources.getString("window")), hideAndShow, doubleLists, new SeparatorMenuItem(), fullscreen);
+		Menu window = addToMenu(new Menu(myResources.getString("window")), hideAndShow, doubleLists,
+				new SeparatorMenuItem(), fullscreen);
 		makeMenuBar(mainMenu, file, edit, window);
 	}
-	
-	private void addNewLevel () {
-		Level newLevel = new Level(Integer.toString(screen.getGame().getLevels().size()+1));
+
+	private void addNewLevel() {
+		Level newLevel = new Level(LEVEL_ID + Integer.toString(screen.getGame().getLevels().size() + 1));
 		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, new ArrayDeque<String>());
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
 		screen.getWorkspace().updateObservers(dataMail);
+		if (screen.getGame().getLevels().size() == 1) {
+			for (AbstractDockElement c : screen.getComponents()) {
+				if (!c.getShowingProperty().getValue()) {
+					c.getShowingProperty().setValue(true);
+				}
+			}
+		}
+	}
+
+	private void addNewSplash() {
+		Level newSplash = new Level(SPLASH_ID + Integer.toString(screen.getGame().getLevels().size() + 1));
+		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, new ArrayDeque<String>());
+		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
 	}
 
 	private void addActor() {
@@ -163,11 +176,11 @@ public class ControlBarCreator extends ControlBar implements Observer {
 
 		try {
 			Image backgroundImage = new Image(file.toURI().toURL().toExternalForm(), 60, 0, true, false);
-			this.screen.getWorkspace().getCurrentLevel().initializeBackground(backgroundImage);
+			
+			this.screen.getWorkspace().getCurrentLevelInterface().updateBackground(backgroundImage);
+
 		} catch (IOException ex) {
-			// Alert fail = new Alert(AlertType.ERROR, "Unable to Load Image",
-			// ButtonType.OK);
-			// fail.showAndWait();
+			showError("Error", "Unable to Load Image");
 		}
 
 	}
@@ -205,13 +218,14 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		return screen.getScene();
 	}
 
-	public CreatorScreen getScreen () {
+	public CreatorScreen getScreen() {
 		return screen;
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		screen.setGame(screen.getWorkspace().getGame()); //TODO perhaps unneeded
+		screen.setGame(screen.getWorkspace().getGame()); // TODO perhaps
+															// unneeded
 
 		if (arg instanceof Observable) {
 			((Observable) arg).addObserver(this);

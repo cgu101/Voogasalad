@@ -2,13 +2,13 @@ package authoring.model.triggers.selfconditions;
 
 import authoring.model.triggers.selftriggers.APropertyTest;
 
-public abstract class PropertyGreaterThan extends APropertyTest {
+public class PropertyGreaterThanOrEqual extends APropertyTest {
 	/**
 	 * Generated serial version ID
 	 */
-	private static final long serialVersionUID = 4210872700351308587L;
+	private static final long serialVersionUID = -6522407096096774660L;
 
 	protected boolean checkCondition(Double property, Double value) {
-		return Double.compare(property, value) > 0;
+		return Double.compare(property, value) >= 0;
 	}
 }

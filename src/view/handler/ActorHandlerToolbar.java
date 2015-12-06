@@ -10,11 +10,12 @@ import view.screen.AbstractScreenInterface;
 
 public class ActorHandlerToolbar extends AbstractDockElement {
 	private Map map;
-	
-	public ActorHandlerToolbar(GridPane pane, GridPane home, String title, AbstractScreenInterface screen, Workspace w) {
+
+	public ActorHandlerToolbar(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,
+			Workspace w) {
 		super(pane, home, title, screen);
 		w.addListener((ov, oldTab, newTab) -> {
-			load(w.getCurrentLevel());
+			load(w.getCurrentLevelInterface());
 		});
 	}
 
@@ -24,7 +25,7 @@ public class ActorHandlerToolbar extends AbstractDockElement {
 		pane.add(labelPane, 0, 0);
 		pane.add(map.getToolbar(), 1, 0);
 	}
-	
+
 	private void load(LevelInterface currentLevel) {
 		pane.getChildren().clear();
 		if (currentLevel instanceof LevelMap) {

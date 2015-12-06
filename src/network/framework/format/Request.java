@@ -3,7 +3,8 @@ package network.framework.format;
 public enum Request {
 	ADD("Add"), 
 	DELETE("Delete"), 
-	MODIFY("Modify");
+	MODIFY("Modify"),
+	TRANSITION("Transition");
 	
 	private final String requestType;
 	
