@@ -1,32 +1,34 @@
-package authoring.model.actions.actorActions.oneActorActions;
+package authoring.model.actions.oneActorActions;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Map;
 
-import authoring.model.actions.actorActions.AOneActorAction;
+import authoring.model.actions.AOneActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;
+import authoring.model.tree.Parameters;
+import engine.State;
 
 /**
  * @author Inan and Tyler
  *
  */
-public class ShootBullet<V> extends AOneActorAction<V>{
+public class ShootBullet extends AOneActorAction {
 	private static int bulletCount = 0;
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run(Map<String, V> parameters_values, ActorGroups actorGroups, Actor actor) {
+	public void run(Parameters parameters, State state, Actor actor) {
 		Property<Double> angle = (Property<Double>) actor.getProperties().getComponents().get("angle");
 		Property<Double> x = (Property<Double>) actor.getProperties().getComponents().get("xLocation");
 		Property<Double> y = (Property<Double>) actor.getProperties().getComponents().get("yLocation");
 		Property<Double> size = (Property<Double>) actor.getProperties().getComponents().get("size");
 
 		Actor bullet = createBullet(angle, x, y, size);
-		actorGroups.createActor(bullet);
+		state.getActorMap().createActor(bullet);
 	}
 
 

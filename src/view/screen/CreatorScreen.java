@@ -110,7 +110,9 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		if (!fullscreen) {
 			if (!browser && !editor) {
 				System.out.println("hi");
-				w.getCurrentLevel().setMapDimensions(850, 724);
+				w.getCurrentLevel().setMapDimensions(1000, 724);
+				System.out.println("The background bounds are: " + w.getCurrentLevel().getBackground().getBoundsInParent());
+
 			} else {
 				System.out.println("bye");
 				w.getCurrentLevel().setMapDimensions(700, 724);

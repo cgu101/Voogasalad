@@ -93,21 +93,26 @@ public abstract class Map extends AbstractElement {
 	public void setMapDimensions(double width, double height) {
 		mapRegularWidth = width;
 		mapRegularHeight = height;
+		
+		mapScrollableArea.setMinViewportWidth(mapRegularWidth);
 		mapScrollableArea.setPrefWidth(mapRegularWidth);
-		mapScrollableArea.setPrefViewportWidth(mapRegularWidth);
 		mapScrollableArea.setPrefHeight(mapRegularHeight);
 
 		if (width < height) {
+			background.setFitHeight(-1);
 			background.setFitWidth(mapRegularWidth);
 			background.setPreserveRatio(true);
 		}
 
 		else {
+			background.setFitWidth(-1);
 			background.setFitHeight(mapRegularHeight);
 			background.setPreserveRatio(true);
 		}
 
 		actorHandler.updateBackground(background);
+		setMapMaximumBounds();
+		theMiniMap.updateMapDimensions(mapRegularWidth, mapRegularHeight);
 	}
 
 	/**
@@ -148,12 +153,12 @@ public abstract class Map extends AbstractElement {
 	 */
 	public void updateBackground(Image bg) {
 		background = new ImageView(bg);
-		background.setFitWidth(mapRegularWidth);
+		background.setFitWidth(200);
 		background.setSmooth(true);
 		background.setCache(true);
 		if (!preserveMapRatio) {
 			background.setPreserveRatio(false);
-			background.setFitHeight(mapRegularHeight);
+			background.setFitHeight(200);
 		} else {
 			background.setFitHeight(mapRegularWidth * bg.getHeight()/bg.getWidth());
 		}
@@ -349,6 +354,10 @@ public abstract class Map extends AbstractElement {
 
 	public void removeMiniMap () {
 		removeElement(this.theMiniMap.getMiniMap());
+	}
+	
+	public ImageView getBackground() {
+		return background;
 	}
 
 }
