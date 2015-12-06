@@ -188,15 +188,45 @@ public class Main extends Application {
 		actionList.clear();
 		actionList.add("RemoveActor");
 		tc.addTreeNode(actorList, triggerList, actionList);
-
-			
-		
 		
 		testLevel.setTreeConstructorValues(tc);
 		testLevel.setActorGroupsValues(ac);
 		testLevel.setMapConstructorValues(m);
 		
 		testGame.addLevel(testLevel);
+		
+		Level testLevel1 = new Level("1");
+		TreeConstructor tc1 = new TreeConstructor();  //Changed constructor from none to public
+		MapConstructor m1 = new MapConstructor();
+		ActorGroupsConstructor ac1 = new ActorGroupsConstructor();	// Changed constructor from nothing to public
+
+		//MegaMan Actor
+		ActorPropertyMap apmMegaMan1 = new ActorPropertyMap();
+		apmMegaMan1.addProperty("groupID", "player");
+		apmMegaMan1.addProperty("image", "megaman.png");
+		apmMegaMan1.addProperty("xLocation", "0");
+		apmMegaMan1.addProperty("yLocation", "0");
+		apmMegaMan1.addProperty("angle", "45");
+		apmMegaMan1.addProperty("speed", "0");
+		apmMegaMan1.addProperty("size", "50");
+		apmMegaMan1.addProperty("range", "40");
+		apmMegaMan1.addProperty("health", "20");
+		ac.updateActor("testActor", apmMegaMan1);
+		
+		List<String> actorList1 = new ArrayList<String>();
+		actorList1.add("player");
+		List<String> triggerList1 = new ArrayList<String>();
+		triggerList1.add("UpArrowKey");
+		List<String> actionList1 = new ArrayList<String>();
+		actionList1.add("IncreaseSpeed");
+		tc.addTreeNode(actorList, triggerList, actionList);
+		
+		testLevel1.setTreeConstructorValues(tc1);
+		testLevel1.setActorGroupsValues(ac1);
+		testLevel1.setMapConstructorValues(m1);
+		
+		testGame.addLevel(testLevel1);
+		
 		XMLManager out = new XMLManager();
 		try {
 			out.saveGame(testGame, "testgame2.game");
