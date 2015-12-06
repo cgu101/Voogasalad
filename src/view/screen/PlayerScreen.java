@@ -97,6 +97,7 @@ public class PlayerScreen extends AbstractScreen {
 		
 		actorMonitor = new ActorMonitor(dockPanes.get(1), homePanes.get(1),
 				myResources.getString("monitorname"), this, playerController);
+		
 		components.add(actorMonitor);
 		components.add(gameInfoMonitor);
 		playerController.addMonitor(actorMonitor);
@@ -129,6 +130,9 @@ public class PlayerScreen extends AbstractScreen {
 		actorMonitor.refresh();
 		configureObserverRelationships();
 		controlBarPlayer.initializeComponents();
+		for (AbstractDockElement c : getComponents()) {
+			c.getShowingProperty().setValue(true);
+		}
 	}
 
 	/**

@@ -151,7 +151,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 	}
 
 	/**
-	 * This method allows properties of Actor's to be refreshed.
+	 * This method allows properties of Actor's to be refreshed without the whole pane resetting.
 	 */
 	public void refresh(){
 		observableIndividualActorList.refresh();
