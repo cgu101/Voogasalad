@@ -129,5 +129,12 @@ public class SpriteManager {
 			s.play();
 		}
 	}
+	
+	/**
+	 * Returns the current map where Actors are placed.
+	 */
+	public view.map.Map getMap(){
+		return myMap;
+	}
 
 }

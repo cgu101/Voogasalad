@@ -6,6 +6,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
@@ -74,11 +77,15 @@ public class Map extends AbstractElement {
 		// it
 		controller = new AuthoringController();
 		editToolbar = new ToolBar();
-		actorHandler = new ActorHandler(layout, controller, editToolbar, this);
+		//actorHandler = new ActorHandler(layout, controller, editToolbar, this, theMiniMap, zoomSliderArea);
 		// TODO: actorHandler = new ActorHandler(layout, zoomSliderArea,
 		// controller, editToolbar);
 
 		makePane();
+	}
+	
+	public void build (Map map) {
+		
 	}
 
 	/**
@@ -93,7 +100,12 @@ public class Map extends AbstractElement {
 	 */
 	public void addActor(Actor element, double x, double y) {
 		// Use this method to add an actor to the StackPane.
-		actorHandler.addActor(element, x, y);
+		if (!actorHandler.rectangleOn()) {
+			actorHandler.addActor(element, x, y);
+		} else {
+			Alert alert = new Alert(AlertType.ERROR, myResources.getString("rectangleOn"), ButtonType.OK);
+			alert.showAndWait();
+		}
 	}
 
 	/**
@@ -112,7 +124,7 @@ public class Map extends AbstractElement {
 	 * @param background
 	 *            - the Node to set as the new Map background
 	 */
-	public void updateBackground(Image bg) {
+	public void initializeBackground(Image bg) {
 		background = new ImageView(bg);
 		background.setFitWidth(mapRegularWidth);
 		background.setSmooth(true);
@@ -120,8 +132,13 @@ public class Map extends AbstractElement {
 		if (!preserveMapRatio) {
 			background.setPreserveRatio(false);
 			background.setFitHeight(mapRegularHeight);
+		} else {
+			background.setFitHeight(mapRegularWidth * bg.getHeight()/bg.getWidth());
 		}
 		background.setPreserveRatio(true);
+	}
+	
+	public void updateBackground() {
 		actorHandler.updateBackground(background);
 	}
 
@@ -274,10 +291,14 @@ public class Map extends AbstractElement {
 	protected void makePane() {
 		//Image backgroundImage = new Image(myResources.getString("backgroundURL"));
 		Image backgroundImage = new Image("http://www.narniaweb.com/wp-content/uploads/2009/08/NarniaMap.jpg");
-		updateBackground(backgroundImage);
+		initializeBackground(backgroundImage);
 
 		// Create the map after adding elements you want
 		createTheMap();
+		
+		actorHandler = new ActorHandler(layout, controller, editToolbar, this, theMiniMap, zoomSliderArea);
+
+		updateBackground();
 
 		// remove pesky key event handlers
 		addEventFilters();

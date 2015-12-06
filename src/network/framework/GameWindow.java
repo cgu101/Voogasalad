@@ -1,4 +1,4 @@
-package network.test;
+package network.framework;
 
 import java.io.IOException;
 import java.util.Observable;
@@ -7,8 +7,10 @@ import authoring.model.game.Game;
 import javafx.application.Platform;
 import network.core.Client;
 import network.core.ForwardedMessage;
+import network.framework.format.Mail;
+import network.framework.format.Proxy;
 
-public class GameWindow extends Observable {
+public class GameWindow extends Observable implements Proxy {
 	private final static int PORT = 6969;
 
 	private class GameClient extends Client {
@@ -22,18 +24,28 @@ public class GameWindow extends Observable {
 				ForwardedMessage bm = (ForwardedMessage)message;
 				addToTranscript("I HAVE RECEIVED! Sender ID is: " + bm.senderID + " and says:  " + bm.message.getClass());
 				
-				if (bm.message instanceof Game && bm.senderID != this.getID()) {
-					System.out.println(this.getID());
-					
-					System.out.println(((Game) bm.message).getLevels().isEmpty());
+//				if (bm.message instanceof Game && bm.senderID != this.getID()) {
+//					Platform.runLater(new Runnable() {
+//					    @Override
+//					    public void run() {
+//					    	updateObservers((Game) bm.message);
+//					    }
+//					});
+//				}
+				
+				if (isMessageValid(bm)) {
 					Platform.runLater(new Runnable() {
 					    @Override
 					    public void run() {
-					    	updateObservers((Game) bm.message);
+					    	updateObservers((Mail) bm.message);
 					    }
 					});
 				}
 			}
+		}
+		
+		private boolean isMessageValid (ForwardedMessage m) {
+			return (m.message instanceof Mail && m.senderID != this.getID());
 		}
 
 		protected void connectionClosedByError(String message) {
@@ -55,7 +67,7 @@ public class GameWindow extends Observable {
 	private GameClient connection; 
 	private volatile boolean connected;
 	
-	private Game gameData;
+	private Game gameData; //Require this for local builds
 
 	public GameWindow(final String host) {
 
@@ -81,8 +93,10 @@ public class GameWindow extends Observable {
 		
 		gameData = new Game();
 	}
-
-
+	
+	public Game requestServerObject () {
+		return gameData;
+	}
 
 	private void addToTranscript (String message) {
 		System.out.println(message);
@@ -94,14 +108,12 @@ public class GameWindow extends Observable {
 	}
 	
 	public void send (Object message) {
-		connection.send(message);
+		if (connection != null) {
+			connection.send(message);
+		}
 	}
 	
-	public Game getGameData () {
-		return gameData;
-	}
-	
-	public void setGameData (Game game) {
-		gameData = game;
+	public boolean isConnected () {
+		return connected;
 	}
 }

@@ -21,6 +21,8 @@ import view.controlbar.ControlBarPlayer;
 import view.element.AbstractDockElement;
 import view.element.ActorMonitor;
 import view.element.GameInfoMonitor;
+import view.map.MapSliders;
+import view.map.PlayerMapSliders;
 
 public class PlayerScreen extends AbstractScreen {
 
@@ -30,6 +32,8 @@ public class PlayerScreen extends AbstractScreen {
 	private ArrayList<GridPane> homePanes;
 	private ActorMonitor actorMonitor;
 	private GameInfoMonitor gameInfoMonitor;
+	private view.map.Map map;
+	PlayerMapSliders mapSlider;
 	//	private Workspace w;
 
 	public PlayerScreen() {
@@ -66,19 +70,15 @@ public class PlayerScreen extends AbstractScreen {
 	@Override
 	protected void makeScene() {
 		BorderPane r = new BorderPane();
+		root = r;
+		scene = new Scene(root, WIDTH, HEIGHT);
 		makePanes(2);
 		controlBarPlayer = new ControlBarPlayer(myPanes.get(0), this, WIDTH);
 		r.setTop(myPanes.get(0));
-		//		w = new Workspace(myPanes.get(1), this);
-		r.setCenter(myPanes.get(1));
-		root = r;
-		r.setTop(myPanes.get(0));
-		r.setCenter(myPanes.get(1));
-		scene = new Scene(root, WIDTH, HEIGHT);
-		this.playerController = new PlayerController(scene);
-
 		dockPanes = new ArrayList<GridPane>();
 		homePanes = new ArrayList<GridPane>();
+		this.playerController = new PlayerController(scene);
+		map = playerController.getMap();
 		for (int i = 0; i < 3; i++) {
 			dockPanes.add(new GridPane());
 			homePanes.add(new GridPane());
@@ -88,15 +88,19 @@ public class PlayerScreen extends AbstractScreen {
 		rightPane.add(homePanes.get(1), 0, 1);
 		rightPane.setAlignment(Pos.CENTER);
 		r.setRight(rightPane);
-		GridPane bottomPane = new GridPane();
-		bottomPane.add(homePanes.get(2), 0, 0);
-		r.setBottom(bottomPane);
+		
 		components = new ArrayList<AbstractDockElement>(); //No components yet! 
 		gameInfoMonitor = new GameInfoMonitor(dockPanes.get(0), homePanes.get(0),
 				myResources.getString("gameinfoname"), this, playerController);
 		
 		actorMonitor = new ActorMonitor(dockPanes.get(1), homePanes.get(1),
 				myResources.getString("monitorname"), this, playerController);
+		mapSlider = new PlayerMapSliders(dockPanes.get(2), homePanes.get(2), myResources.getString("slidername"),
+				this);
+		r.setBottom(homePanes.get(2));
+		homePanes.get(2).setAlignment(Pos.BASELINE_CENTER);
+		mapSlider.initializeMap(map);
+		components.add(mapSlider);
 		components.add(actorMonitor);
 		components.add(gameInfoMonitor);
 		playerController.addMonitor(actorMonitor);
@@ -129,6 +133,9 @@ public class PlayerScreen extends AbstractScreen {
 		actorMonitor.refresh();
 		configureObserverRelationships();
 		controlBarPlayer.initializeComponents();
+		for (AbstractDockElement c : getComponents()) {
+			c.getShowingProperty().setValue(true);
+		}
 	}
 
 	/**
