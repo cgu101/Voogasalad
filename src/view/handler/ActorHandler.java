@@ -1,6 +1,10 @@
 package view.handler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.swing.event.HyperlinkEvent.EventType;
 
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
@@ -52,9 +56,12 @@ public class ActorHandler extends AbstractVisual {
 	private MapViewManager viewManager;
 	private ToolBar myToolbar;
 	private Label defaultLabel;
+	private ImageView myBackground; // TODO: this should be the map size once that is implemented
 	private Map map;
 	private MiniMap theMiniMap;
 	private MapZoomSlider theZoomSlider;
+	private List<ActorView> myAVs;
+	private boolean rectangleOn;
 
 	public ActorHandler(Group layout, AuthoringController ac, ToolBar tb, Map map,
 			MiniMap miniMap, MapZoomSlider zoomSlider) {
@@ -67,6 +74,8 @@ public class ActorHandler extends AbstractVisual {
 		findResources();
 		defaultLabel = makeLabel(myResources.getString("defaultPrompt"));
 		restoreToolbar();
+		myAVs = new ArrayList<ActorView>();
+		rectangleOn = false;
 	}
 
 	public void addActor(Actor a, double x, double y) {
@@ -75,12 +84,19 @@ public class ActorHandler extends AbstractVisual {
 	}
 
 	public void addActor(ActorView av, double x, double y) {
-		ImageView image = av.getImageView();
-		ContextMenu cm = makeContextMenu(av);
-		image.setOnContextMenuRequested(e -> {
-			cm.show(image, e.getScreenX(), e.getScreenY());
-		});
-		viewManager.addElements(image);
+		if (!checkOutOfBounds(av, x, y)) {
+			if (!myAVs.contains(av)) {
+				myAVs.add(av);
+				ImageView image = av.getImageView();
+				ContextMenu cm = makeContextMenu(av);
+				image.setOnContextMenuRequested(e -> {
+					if (!rectangleOn) {
+						cm.show(image, e.getScreenX(), e.getScreenY());
+					}
+				});
+			}
+			viewManager.addElements(av.getImageView());
+		}
 	}
 
 	private ContextMenu makeContextMenu(ActorView a) {
@@ -113,8 +129,11 @@ public class ActorHandler extends AbstractVisual {
 		r.setOnDragDetected(e -> startMoveDrag(e, a, r));
 		r.setOnDragOver(e -> duringMoveDrag(e));
 		r.setOnDragDone(e -> endMoveDrag(e, a, r));
-		r.setOnDragDropped(e -> dropMoveDrag(e, a, r));
-		Button undo = makeButton(myResources.getString("restore"), e -> a.restoreXY(origX, origY));
+		r.setOnDragDropped(e -> dropMoveDrag(e, a, r));		
+		Button undo = makeButton(myResources.getString("restore"), e -> {
+			a.restoreXY(origX, origY);
+			viewManager.addElements(a.getImageView());
+		});
 		Pane spacer = makeSpacer();
 		Button finish = makeFinishButton(r);
 		replaceToolbar(makeLabel(myResources.getString("moveInstru")), spacer, undo, finish);
@@ -137,14 +156,11 @@ public class ActorHandler extends AbstractVisual {
 
 	private void dropMoveDrag(DragEvent event, ActorView a, Rectangle r) {
 		r.setCursor(Cursor.DEFAULT);
-		System.out.println("drop");
 		viewManager.removeElements(r);
-		if (true) {// replace with in bounds condition
-			//add actor to the place
-		} else {
-			addActor(a, event.getX(), event.getY());
-		}
-		viewManager.addElements(r);
+		if (!checkOutOfBounds(a, event.getX(), event.getY())) { 
+			a.restoreXY(event.getX(), event.getY());
+		} 
+		viewManager.addElements(a.getImageView(), r);
 		event.setDropCompleted(true);
 		event.consume();
 	}
@@ -191,7 +207,6 @@ public class ActorHandler extends AbstractVisual {
 	}
 
 	private void rotateActor(ActorView a, RotateEvent r) {
-		// TODO:
 		double initialHeading = a.getImageView().getRotate();
 		a.setRotation(initialHeading + r.getAngle());
 	}
@@ -232,6 +247,9 @@ public class ActorHandler extends AbstractVisual {
 
 	private void increaseActorSize(ActorView a, double increase) {
 		a.addDimensions(increase);
+		if (checkOutOfBounds(a, a.getXCoor(), a.getYCoor()) || a.getWidth() <= 0) {
+			a.addDimensions(-1*increase);
+		} 
 	}
 
 	protected void removeActor(ActorView a) {
@@ -271,6 +289,7 @@ public class ActorHandler extends AbstractVisual {
 			rect.addEventHandler(MouseEvent.MOUSE_CLICKED, rectHandler);
 		}
 		viewManager.addElements(rect);
+		rectangleOn = true;
 		return rect;
 	}
 
@@ -307,6 +326,7 @@ public class ActorHandler extends AbstractVisual {
 			viewManager.removeElements(elementsToRemove);
 			restoreToolbar();
 			map.setPanEnabled(true);
+			rectangleOn = false;
 		});
 	}
 
@@ -328,6 +348,18 @@ public class ActorHandler extends AbstractVisual {
 		myToolbar.getItems().add(defaultLabel);
 	}
 
+	// returns true if out-of-bounds
+	private boolean checkOutOfBounds(ActorView av, double x, double y) {
+		map.getPane().getWidth();
+		if (((x - av.getWidth()/2) < 0) || ((x + av.getWidth()/2) > myBackground.getFitWidth()) || 
+				((y - av.getHeight()/2) < 0) || ((y + av.getHeight()/2) > myBackground.getFitHeight())) {
+			Alert error = new Alert(AlertType.ERROR, myResources.getString("outofboundserror"), ButtonType.OK);
+			error.showAndWait();
+			return true; 
+		} 
+		return false;
+	}
+	
 	// TODO:
 	// input is rgb color code
 	// idea is to highlight an actor when an actor is selected - through a
@@ -341,7 +373,12 @@ public class ActorHandler extends AbstractVisual {
 	// return rect;
 	// }
 
-	public void updateBackground(Node n) {
+	public boolean rectangleOn() {
+		return rectangleOn;
+	}
+	
+	public void updateBackground(ImageView n) {
+		myBackground = n;
 		viewManager.updateBackground(n);
 	}
 }

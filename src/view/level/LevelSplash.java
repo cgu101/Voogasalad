@@ -48,7 +48,7 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 
 	@Override
 	public String makeTitle(int i) {
-		return myString + (i + 1);
+		return (i + 1) + myString;
 	}
 
 	@Override

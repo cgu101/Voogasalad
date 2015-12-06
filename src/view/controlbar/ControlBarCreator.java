@@ -15,6 +15,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Separator;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -79,10 +80,11 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		Button leftButton = makeButton("left", e -> screen.getWorkspace().moveLevelLeft(true));
 		Button rightButton = makeButton("right", e -> screen.getWorkspace().moveLevelLeft(false));
 		Button splashButton = makeButton("splash", e -> screen.getWorkspace().addSplash());
-		Button newActor = makeButton("new", e -> addActor());
+		Button newActor = makeButton("new", e -> {addActor();}); //if (screen.getGameWindow() != null) {screen.getGameWindow().getClient().send("33");}});
+		Button backgroundButton = makeButton("background", e -> updateBackground());
 
-		toolBar.getItems().addAll(backButton, new Separator(), leftButton, rightButton, addButton, splashButton,
-				new Separator(), newActor);
+		toolBar.getItems().addAll(backButton, new Separator(), addButton, splashButton, new Separator(), leftButton, rightButton, 
+				new Separator(), newActor, new Separator(), backgroundButton);
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
@@ -90,7 +92,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		MenuItem save = makeMenuItem(myResources.getString("save"), e -> screen.saveGame());
 		MenuItem exit = makeMenuItem(myResources.getString("exit"), e -> Platform.exit(), KeyCode.E,
 				KeyCombination.CONTROL_DOWN);
-		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save, exit);
+		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save, new SeparatorMenuItem(), exit);
 
 		MenuItem addLevel = makeMenuItem(myResources.getString("newLevel"), 
 				e -> {gameData.addLevel(); screen.getWorkspace().updateVisual(gameWindow, gameData); }, 
@@ -99,8 +101,9 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				KeyCombination.CONTROL_DOWN);
 		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(),
 				KeyCode.N, KeyCombination.CONTROL_DOWN);
-		MenuItem changeBackground = makeMenuItem(myResources.getString("background"), e -> updateBackground());
-		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addLevel, addSplash, addActor, changeBackground);
+		MenuItem changeBackground = makeMenuItem(myResources.getString("background.message"), e -> updateBackground());
+		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addActor, new SeparatorMenuItem(), 
+				addLevel, addSplash, new SeparatorMenuItem(), changeBackground);
 
 		CheckMenuItem toolbar = new CheckMenuItem(myResources.getString("toolbar"));
 		toolbar.selectedProperty().setValue(true);
@@ -116,7 +119,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		CheckMenuItem doubleLists = new CheckMenuItem(myResources.getString("dualactors"));
 		doubleLists.selectedProperty().bindBidirectional(findActorBrowser().getDoubleListsProperty());
 
-		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow, doubleLists);
+		Menu window = addToMenu(new Menu(myResources.getString("window")), hideAndShow, doubleLists, new SeparatorMenuItem(), fullscreen);
 		makeMenuBar(mainMenu, file, edit, window);
 	}
 

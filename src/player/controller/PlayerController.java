@@ -216,10 +216,8 @@ public class PlayerController implements IPlayer {
 				break;
 			}
 		}
-		if(match != null){
-			return getPropertyStringMap(match);
-		}
-		return null;
+		
+		return getPropertyStringMap(match);
 	}
 	
 	public Actor getActorFromString(String a){

@@ -36,12 +36,12 @@ public class ActorView extends AbstractVisual {
 	public ActorView(ActorView copy) {
 		this.myActor = new Actor(copy.getActor());
 		findResources();
-		myFitWidth = Double.parseDouble(myResources.getString("defaultWidth"));
-		myRotation = Double.parseDouble(myResources.getString("defaultRotation"));
+		myFitWidth = copy.getWidth();
+		myRotation = copy.getRotation();
 		myNode = createImage();
-
-		myXCoor = copy.getXCoor();
-		myYCoor = copy.getYCoor();
+		// makes it so a copy is slightly to the side of original
+		myXCoor = copy.getXCoor() + Double.parseDouble(myResources.getString("copyoffset"));
+		myYCoor = copy.getYCoor() + Double.parseDouble(myResources.getString("copyoffset"));
 
 		setupNode();
 	}
@@ -92,8 +92,6 @@ public class ActorView extends AbstractVisual {
 		myNode.setTranslateY(myYCoor - getHeight() / 2);
 	}
 
-	// call when we have the coordinates for the top left corner of the node,
-	// not the center
 	protected void restoreXY(double xCoor, double yCoor) {
 		setXCoor(xCoor);
 		setYCoor(yCoor);
