@@ -28,14 +28,14 @@ import view.handler.ActorHandler;
  * @author Daniel
  *
  */
-public class Map extends AbstractElement {
+public abstract class Map extends AbstractElement {
 
 	private Group contentGroup;
 	private Group zoomGroup;
 	private Group layout;
-	protected AuthoringController controller;
+	protected AuthoringController controller; // TODO move to LevelMap
 
-	private Group mapArea;
+	private Group mapArea; 
 	protected ScrollPane mapScrollableArea;
 	private MapZoomSlider zoomSliderArea;
 	private MapOpacitySlider opacitySliderArea;
@@ -309,5 +309,17 @@ public class Map extends AbstractElement {
 		System.out.println("The background bounds are: " + background.getBoundsInParent());
 		// System.out.println(mapScrollableArea.getHvalue());
 		// System.out.println(mapScrollableArea.getVvalue());
+	}
+	
+	public void removeElement (Node n) {
+		this.mapArea.getChildren().remove(n);
+	}
+	
+	public void removeMiniMap () {
+		removeElement(this.theMiniMap.getMiniMap());
+	}
+	
+	public void removeMap () {
+		this.mapScrollableArea.setContent(null);;
 	}
 }

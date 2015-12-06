@@ -21,20 +21,31 @@ import view.map.Map;
 import view.screen.AbstractScreen;
 
 public class LevelMap extends Map implements LevelInterface {
+
+	/**
+	 * Visual Variables
+	 */
 	private Tab myTab;
 	private ScrollPane sp;
 	private String myString;
-	private GameWindow gameWindow;
 	
+	/**
+	 * Identifiers and Data
+	 */
 	private String myTitle;
+	private Deque<String> myPath;
 	private Level myLevel;
 
 	public LevelMap(GridPane pane, Level l, AbstractScreen screen) {
 		super(pane);
 		findResources();
+		
 		myString = myResources.getString("tabName");
 		myTab = new Tab(l.getUniqueID());
 		myTitle = l.getUniqueID();
+		
+		
+		
 		myTab.setContent(pane);
 		myTab.setId(l.getUniqueID());
 		
@@ -45,25 +56,6 @@ public class LevelMap extends Map implements LevelInterface {
 		mapScrollableArea.setOnDragOver(event -> dragAroundMap(event));
 		mapScrollableArea.setOnDragDropped(event -> dragFinished(event));
 		myLevel = l;
-	}
-	
-	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
-		super(pane);
-		findResources();
-		myString = myResources.getString("tabName");
-		myTab = new Tab(makeTitle(i));
-		myTitle = myString + (i + 1);
-		myTab.setContent(pane);
-		myTab.setId(Integer.toString(i));
-
-		mapScrollableArea.setOnDragEntered(event -> startDrag(event));
-
-		mapScrollableArea.setOnDragExited(event -> exitDrag(event));
-
-		mapScrollableArea.setOnDragOver(event -> dragAroundMap(event));
-		mapScrollableArea.setOnDragDropped(event -> dragFinished(event));
-		
-		myLevel = null;
 	}
 
 	private void dragFinished(DragEvent event) {
@@ -126,14 +118,10 @@ public class LevelMap extends Map implements LevelInterface {
 		return this.controller;
 	}
 
-	@Override
-	public String makeTitle(int i) {
-		return (i + 1) + myString;
-	}
-
-	public void setGameWindow(GameWindow g) {
-		this.gameWindow = g;
-	}
+//	@Override
+//	public String makeTitle(int i) {
+//		return (i + 1) + myString;
+//	}
 
 	@Override
 	public String getTitle() {

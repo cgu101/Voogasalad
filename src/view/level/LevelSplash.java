@@ -26,7 +26,7 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 		myString = myResources.getString("tabName");
 		this.screen = screen;
 		makePane();
-		myTab = new Tab(makeTitle(i));
+		myTab = new Tab(Integer.toString(i+1));
 		myTab.setContent(pane);
 		myTab.setId(Integer.toString(i));
 	}
@@ -48,11 +48,6 @@ public class LevelSplash extends AbstractElement implements LevelInterface {
 		start.widthProperty().bind(screen.getScene().widthProperty());
 		start.heightProperty().bind(screen.getScene().heightProperty());
 		pane.add(start, 0, 0);
-	}
-
-	@Override
-	public String makeTitle(int i) {
-		return (i + 1) + myString;
 	}
 
 	@Override
