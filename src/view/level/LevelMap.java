@@ -8,8 +8,13 @@ import authoring.model.Anscestral;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import authoring.model.level.Level;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -51,7 +56,8 @@ public class LevelMap extends Map implements Anscestral {
 
 		myTab.setContent(pane);
 		myTab.setId(l.getUniqueID());
-
+		myTab.setContextMenu(createContextMenu());
+		
 		mapScrollableArea.setOnDragEntered(event -> startDrag(event));
 
 		mapScrollableArea.setOnDragExited(event -> exitDrag(event));
@@ -77,7 +83,7 @@ public class LevelMap extends Map implements Anscestral {
 			type = null;
 		}
 	}
-
+	
 	private void dragFinished(DragEvent event) {
 		Dragboard db = event.getDragboard();
 
@@ -93,7 +99,7 @@ public class LevelMap extends Map implements Anscestral {
 			controller.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, map);
 			Actor a = controller.getLevelConstructor().getActorGroupsConstructor().getActor(actor, uniqueID);
 
-			addActor(a, (double) a.getProperties().getComponents().get("xLocation").getValue(),
+			addActor(a, map, actor, (double) a.getProperties().getComponents().get("xLocation").getValue(),
 					(double) a.getProperties().getComponents().get("yLocation").getValue());
 			success = true;
 			// gameWindow.getClient().send("New Drop Event");
@@ -128,6 +134,39 @@ public class LevelMap extends Map implements Anscestral {
 			event.acceptTransferModes(TransferMode.ANY);
 		}
 		event.consume();
+	}
+	
+	private ContextMenu createContextMenu() {
+		ContextMenu cm = new ContextMenu();
+		MenuItem rename = makeMenuItem(myResources.getString("rename"), e -> renameLevel());
+		MenuItem delete = makeMenuItem(myResources.getString("delete"), e -> deleteLevel());
+		MenuItem copy = makeMenuItem(myResources.getString("copy"), e -> copyLevel());
+		cm.getItems().addAll(rename, copy, delete);
+		return cm;
+	}
+	
+	private void renameLevel() {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setContentText(myResources.getString("nameLevelInstru"));
+		dialog.setTitle(myResources.getString("rename"));
+		dialog.showAndWait();
+		
+		String s = dialog.getEditor().getText();
+		myTab.setText(s);
+	}
+	
+	private void deleteLevel() {
+		//TODO:
+	}
+	
+	private void copyLevel() {
+		//TODO:
+	}
+	
+	private MenuItem makeMenuItem(String title, EventHandler<ActionEvent> handler) {
+		MenuItem mi = new MenuItem(title);
+		mi.setOnAction(handler);
+		return mi;
 	}
 
 	public Tab getTab() {

@@ -1,11 +1,11 @@
 package view.handler;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorPropertyMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -49,7 +49,6 @@ import view.visual.AbstractVisual;
  *
  */
 public class ActorHandler extends AbstractVisual {
-	private AuthoringController myController;
 	private MapViewManager viewManager;
 	private ToolBar myToolbar;
 	private Label defaultLabel;
@@ -59,9 +58,7 @@ public class ActorHandler extends AbstractVisual {
 	private List<ActorView> myAVs;
 	private boolean rectangleOn;
 
-	public ActorHandler(Group layout, AuthoringController ac, ToolBar tb, Map map, MiniMap miniMap,
-			MapZoomSlider zoomSlider) {
-		myController = ac;
+	public ActorHandler(Group layout, ToolBar tb, Map map, MiniMap miniMap, MapZoomSlider zoomSlider) {
 		viewManager = new MapViewManager(layout);
 		myToolbar = tb;
 		this.map = map;
@@ -74,8 +71,8 @@ public class ActorHandler extends AbstractVisual {
 		rectangleOn = false;
 	}
 
-	public void addActor(Actor a, double x, double y) {
-		ActorView av = new ActorView(a, x, y);
+	public void addActor(Actor a, ActorPropertyMap map, String actorType, double x, double y, AuthoringController ac) {
+		ActorView av = new ActorView(a, map, actorType, x, y, ac);
 		addActor(av, x, y);
 	}
 
@@ -356,19 +353,6 @@ public class ActorHandler extends AbstractVisual {
 		}
 		return false;
 	}
-
-	// TODO:
-	// input is rgb color code
-	// idea is to highlight an actor when an actor is selected - through a
-	// double click method?
-	// and through a second double click, actor is deselected.
-	// private Rectangle selectActor(int red, int green, int blue) {
-	// Image image = getImageFromActor(currActor);
-	// Rectangle rect = new Rectangle(image.getWidth() + 10, image.getHeight() +
-	// 10);
-	// rect.setFill(Color.rgb(255, 0, 0, 0.2));
-	// return rect;
-	// }
 
 	public boolean rectangleOn() {
 		return rectangleOn;

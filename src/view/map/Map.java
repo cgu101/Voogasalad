@@ -2,6 +2,7 @@ package view.map;
 
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorPropertyMap;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
@@ -78,7 +79,7 @@ public abstract class Map extends AbstractElement {
 		// it
 		controller = new AuthoringController();
 		editToolbar = new ToolBar();
-		actorHandler = new ActorHandler(layout, controller, editToolbar, this, theMiniMap, zoomSliderArea);
+		actorHandler = new ActorHandler(layout, editToolbar, this, theMiniMap, zoomSliderArea);
 		// TODO: actorHandler = new ActorHandler(layout, zoomSliderArea,
 		// controller, editToolbar);
 
@@ -119,10 +120,10 @@ public abstract class Map extends AbstractElement {
 	 * @param y
 	 *            - vertical position to place the Node
 	 */
-	public void addActor(Actor element, double x, double y) {
+	public void addActor(Actor element, ActorPropertyMap map, String actorType, double x, double y) {
 		// Use this method to add an actor to the StackPane.
 		if (!actorHandler.rectangleOn()) {
-			actorHandler.addActor(element, x, y);
+			actorHandler.addActor(element, map, actorType, x, y, controller);
 		} else {
 			Alert alert = new Alert(AlertType.ERROR, myResources.getString("rectangleOn"), ButtonType.OK);
 			alert.showAndWait();
@@ -326,8 +327,8 @@ public abstract class Map extends AbstractElement {
 
 		// Create the map after adding elements you want
 		createTheMap();
-
-		actorHandler = new ActorHandler(layout, controller, editToolbar, this, theMiniMap, zoomSliderArea);
+		
+		actorHandler = new ActorHandler(layout, editToolbar, this, theMiniMap, zoomSliderArea);
 
 		// remove pesky key event handlers
 		addEventFilters();
