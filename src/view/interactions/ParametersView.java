@@ -26,13 +26,15 @@ public abstract class ParametersView {
 	private ListView<ParameterData> paramListView;
 	protected ObservableList<ParameterData> paramList;
 	private Button finishButton;
-	protected InteractionCell cell;
+	protected ParameterTreeNode node;
+	protected String[] actors;
 	private ResourceBundle myResources = ResourceBundle.getBundle("resources/ParametersView");
 
-	public ParametersView (InteractionCell cell, GridPane pane, AuthoringController controller) {
-		this.cell = cell;
+	public ParametersView (ParameterTreeNode node, GridPane pane, AuthoringController controller, String... actors) {
+		this.node = node;
 		this.pane = pane;
 		this.controller = controller;
+		this.actors = actors;
 		makePane();
 	}
 	protected void init() {

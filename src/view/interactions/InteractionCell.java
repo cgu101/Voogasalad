@@ -45,7 +45,7 @@ public class InteractionCell extends TreeCell<ParameterTreeNode>{
 			setText(null);
 			setGraphic(null);
 		} else {
-			setText(getItem() == null ? "" : getItem().getValue());
+			setText(getItem() == null || getTreeItem().getParent() == null ? "" : getItem().getIdentifier().split("TreeNode")[0]);
 			HBox box = new HBox(2);
 			ImageView icon;
 			try {
@@ -86,7 +86,7 @@ public class InteractionCell extends TreeCell<ParameterTreeNode>{
 		MenuItem triggerItem = new MenuItem("Add Trigger");
 		triggerItem.setOnAction(e -> {
 			TriggerTreeNode triggerNode = new TriggerTreeNode("Trigger");
-			TriggerParametersView view = new TriggerParametersView(this, pane, controller);
+			TriggerParametersView view = new TriggerParametersView(triggerNode, pane, controller);
 			TreeItem<ParameterTreeNode> newTrigger = 
 					new TreeItem<ParameterTreeNode>(triggerNode);
 			newTrigger.setExpanded(true);
@@ -110,7 +110,7 @@ public class InteractionCell extends TreeCell<ParameterTreeNode>{
 	private MenuItem makeEditItem () {
 		MenuItem editItem = new MenuItem("Edit");
 		editItem.setOnAction(e -> {
-			TriggerParametersView view = new TriggerParametersView(this, pane, controller);
+			TriggerParametersView view = new TriggerParametersView(getItem(), pane, controller);
 		});
 		return editItem;
 	}
