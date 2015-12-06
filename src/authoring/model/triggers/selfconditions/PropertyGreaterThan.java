@@ -1,11 +1,12 @@
 package authoring.model.triggers.selfconditions;
 
-import authoring.model.actors.Actor;
-import authoring.model.tree.Parameters;
-import authoring.model.triggers.selftriggers.AActorSelfTrigger;
+public abstract class PropertyGreaterThan extends APropertyTest {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = 4210872700351308587L;
 
-public abstract class PropertyGreaterThan extends AActorSelfTrigger {
-	protected boolean checkCondition(Double value, Double property) {
-		return value >= 
+	protected boolean checkCondition(Double property, Double value) {
+		return Double.compare(property, value) > 0;
 	}
 }

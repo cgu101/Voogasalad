@@ -4,8 +4,13 @@ import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import authoring.model.triggers.selftriggers.AActorSelfTrigger;
 
-public abstract class PropertyTest extends AActorSelfTrigger {
-	// TODO Fix hard-coded values
+public abstract class APropertyTest extends AActorSelfTrigger {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = 1622215949688922117L;
+
+	// TODO Fix hard-coded strings
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean condition(Parameters parameters, Actor actor) {
