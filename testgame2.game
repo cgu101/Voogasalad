@@ -225,7 +225,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">401.0</myValue>
+                                <myValue class="double">328.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -253,21 +253,21 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">127.0</myValue>
+                                <myValue class="double">160.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">11.0</myValue>
+                                <myValue class="double">312.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">11.0</myValue>
+                                <myValue class="double">15.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -293,143 +293,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">697.0</myValue>
-                                <identifier>xLocation</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>size</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">128.0</myValue>
-                                <identifier>size</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>groupID</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="string">asteroid</myValue>
-                                <identifier>groupID</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>health</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">20.0</myValue>
-                                <identifier>health</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>angle</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">105.0</myValue>
-                                <identifier>angle</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>yLocation</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">586.0</myValue>
-                                <identifier>yLocation</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>speed</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">19.0</myValue>
-                                <identifier>speed</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                          </components>
-                        </myPropertyBundle>
-                        <identifier>testActor3</identifier>
-                      </authoring.model.actors.Actor>
-                    </entry>
-                    <entry>
-                      <string>testActor5</string>
-                      <authoring.model.actors.Actor>
-                        <myPropertyBundle>
-                          <changed>false</changed>
-                          <obs/>
-                          <components>
-                            <entry>
-                              <string>image</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="string">asteroids.png</myValue>
-                                <identifier>image</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>xLocation</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">445.0</myValue>
-                                <identifier>xLocation</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>size</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">128.0</myValue>
-                                <identifier>size</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>groupID</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="string">asteroid</myValue>
-                                <identifier>groupID</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>health</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">20.0</myValue>
-                                <identifier>health</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>angle</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">155.0</myValue>
-                                <identifier>angle</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>yLocation</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">514.0</myValue>
-                                <identifier>yLocation</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>speed</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">15.0</myValue>
-                                <identifier>speed</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                          </components>
-                        </myPropertyBundle>
-                        <identifier>testActor5</identifier>
-                      </authoring.model.actors.Actor>
-                    </entry>
-                    <entry>
-                      <string>testActor2</string>
-                      <authoring.model.actors.Actor>
-                        <myPropertyBundle>
-                          <changed>false</changed>
-                          <obs/>
-                          <components>
-                            <entry>
-                              <string>image</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="string">asteroids.png</myValue>
-                                <identifier>image</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>xLocation</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">436.0</myValue>
+                                <myValue class="double">260.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -464,7 +328,143 @@
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">311.0</myValue>
+                                <myValue class="double">123.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">13.0</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>testActor3</identifier>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                    <entry>
+                      <string>testActor5</string>
+                      <authoring.model.actors.Actor>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">asteroids.png</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">238.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>size</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">128.0</myValue>
+                                <identifier>size</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">asteroid</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>health</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">20.0</myValue>
+                                <identifier>health</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">12.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">437.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">15.0</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>testActor5</identifier>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                    <entry>
+                      <string>testActor2</string>
+                      <authoring.model.actors.Actor>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">asteroids.png</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">536.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>size</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">128.0</myValue>
+                                <identifier>size</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">asteroid</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>health</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">20.0</myValue>
+                                <identifier>health</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">318.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">437.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>

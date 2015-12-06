@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.event.HyperlinkEvent.EventType;
-
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
-import authoring.model.actors.ActorPropertyMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -30,7 +27,6 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.RotateEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
@@ -57,8 +53,6 @@ public class ActorHandler extends AbstractVisual {
 	private MapViewManager viewManager;
 	private ToolBar myToolbar;
 	private Label defaultLabel;
-	private ImageView myBackground; // TODO: this should be the map size once
-									// that is implemented
 	private Map map;
 	private MiniMap theMiniMap;
 	private MapZoomSlider theZoomSlider;
@@ -97,8 +91,21 @@ public class ActorHandler extends AbstractVisual {
 					}
 				});
 			}
+			addToScale(av, x, y);
 			viewManager.addElements(av.getImageView());
 		}
+	}
+	
+	private void addToScale(ActorView a, double x, double y) {
+		double scale = theZoomSlider.getSlider().valueProperty().doubleValue();
+		scale = 100 / (scale + 100);
+		double xOffset = theMiniMap.getRectangleX();
+		double yOffset = theMiniMap.getRectangleY();
+		
+		double scaleOffset = Double.parseDouble(myResources.getString("minimapscaleratio"));
+		double newX = xOffset*scaleOffset + x * scale;
+		double newY = yOffset*scaleOffset + y * scale;
+		a.restoreXY(newX, newY);
 	}
 
 	private ContextMenu makeContextMenu(ActorView a) {
@@ -175,7 +182,8 @@ public class ActorHandler extends AbstractVisual {
 
 	private void copyActor(ActorView a) {
 		ActorView aCopy = new ActorView(a);
-		addActor(aCopy, aCopy.getWidth() / 2, aCopy.getHeight() / 2);
+		double offset = Double.parseDouble(myResources.getString("copyoffset"));
+		addActor(aCopy, aCopy.getXCoor() + offset, aCopy.getYCoor() + offset);
 		moveActorFilter(aCopy);
 	}
 
@@ -204,11 +212,6 @@ public class ActorHandler extends AbstractVisual {
 
 	private void rotateRight(ActorView a, double i) {
 		a.setRotation(a.getRotation() + i);
-	}
-
-	private void rotateActor(ActorView a, RotateEvent r) {
-		double initialHeading = a.getImageView().getRotate();
-		a.setRotation(initialHeading + r.getAngle());
 	}
 
 	private void rotateDialog(ActorView a, boolean absolute) {
@@ -258,10 +261,9 @@ public class ActorHandler extends AbstractVisual {
 	}
 
 	protected void removeActor(ActorView a) {
-		viewManager.removeElements(a.getImageView()); // TODO:
+		viewManager.removeElements(a.getImageView()); 
 	}
 
-	// TODO: ...
 	public void removeActor(Node element) {
 		viewManager.removeElements(element);
 	}
@@ -274,20 +276,9 @@ public class ActorHandler extends AbstractVisual {
 
 	}
 
-	// private void makeToolbar(ToolBar hello, String desc,
-	// EventHandler<ActionEvent> finishHandler, Node... options) {
-	// Label instru = makeLabel(desc);
-	// Button exit = makeButton("Finished", finishHandler);
-	//
-	// hello.getItems().addAll(instru, exit);
-	// for (int i = 0; i < options.length; i++) {
-	// hello.getItems().add(1 + i, options[i]);
-	// }
-	// }
 
 	private Rectangle makeFilterRectangle() {
-		// TODO: size & dimension of Rectangle
-		Rectangle rect = new Rectangle(700, 700);
+		Rectangle rect = new Rectangle(map.getMapWidth(), map.getMapHeight());
 		double opacity = Double.parseDouble(myResources.getString("opacity"));
 		rect.setFill(Color.rgb(255, 0, 0, opacity));
 		rect.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> finish(rect));
@@ -342,6 +333,7 @@ public class ActorHandler extends AbstractVisual {
 	}
 
 	private void replaceToolbar(Node... nodes) {
+		myToolbar.setPrefWidth(map.getMapWidth());
 		myToolbar.getItems().clear();
 		for (Node n : nodes) {
 			myToolbar.getItems().add(n);
@@ -356,8 +348,8 @@ public class ActorHandler extends AbstractVisual {
 	// returns true if out-of-bounds
 	private boolean checkOutOfBounds(ActorView av, double x, double y) {
 		map.getPane().getWidth();
-		if (((x - av.getWidth() / 2) < 0) || ((x + av.getWidth() / 2) > myBackground.getFitWidth())
-				|| ((y - av.getHeight() / 2) < 0) || ((y + av.getHeight() / 2) > myBackground.getFitHeight())) {
+		if (((x - av.getWidth() / 2) < 0) || ((x + av.getWidth() / 2) > map.getMapWidth())
+				|| ((y - av.getHeight() / 2) < 0) || ((y + av.getHeight() / 2) > map.getMapHeight())) {
 			Alert error = new Alert(AlertType.ERROR, myResources.getString("outofboundserror"), ButtonType.OK);
 			error.showAndWait();
 			return true;
@@ -383,7 +375,6 @@ public class ActorHandler extends AbstractVisual {
 	}
 
 	public void updateBackground(ImageView n) {
-		myBackground = n;
 		viewManager.updateBackground(n);
 	}
 }

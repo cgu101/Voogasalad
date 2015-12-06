@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -174,6 +175,10 @@ public class Map extends AbstractElement {
 	public GridPane getZoomSlider() {
 		return zoomSliderArea.getSliderWithCaptions();
 	}
+	
+	public Slider getActualSlider() {
+		return zoomSliderArea.getSlider();
+	}
 
 	public GridPane getOpacitySlider() {
 		return opacitySliderArea.getSliderWithCaptions();
@@ -285,6 +290,14 @@ public class Map extends AbstractElement {
 			}
 
 		});
+	}
+		
+	public double getMapWidth() {
+		return mapRegularWidth;
+	}
+	
+	public double getMapHeight() {
+		return mapRegularHeight;
 	}
 
 	@Override
