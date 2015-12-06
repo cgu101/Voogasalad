@@ -98,10 +98,10 @@ public class ActorEditor extends AbstractDockElement {
 	}
 
 	private void load() {
-		if (workspace.getCurrentLevel() == null) {
+		if (workspace.getCurrentLevelInterface() == null) {
 			controller = null;
 		} else {
-			this.controller = workspace.getCurrentLevel().getController();
+			this.controller = workspace.getCurrentLevelInterface().getController();
 		}
 		contentPane.getChildren().clear();
 		if (!showing.getValue()) {
@@ -144,12 +144,13 @@ public class ActorEditor extends AbstractDockElement {
 		InteractionTreeNode branch = controller.getLevelConstructor().getTreeConstructor().getActorBaseNode(items);
 		TreeItem<ParameterTreeNode> rootItem = new TreeItem<ParameterTreeNode>(new ParameterTreeNode("Interaction"));
 		populateTree(rootItem, branch);
-		
+
 		rootItem.setExpanded(true);
 		TreeView<ParameterTreeNode> treeView = new TreeView<ParameterTreeNode>(rootItem);
 		treeView.setEditable(true);
 		treeView.setCellFactory(new Callback<TreeView<ParameterTreeNode>, TreeCell<ParameterTreeNode>>() {
 			@Override
+
 			public TreeCell<ParameterTreeNode> call(TreeView<ParameterTreeNode> p) {
 				InteractionCell cell = new InteractionCell(pane, controller, items);
 //				new TriggerParametersView(null, controller);
@@ -182,7 +183,7 @@ public class ActorEditor extends AbstractDockElement {
 		contentPane.add(makeName(item), 1, 1);
 		contentPane.add(makePropertyEditor(item), 1, 2);
 		// TODO
-//		contentPane.add(makeSelfTriggerEditor(item), 0, 3);
+		// contentPane.add(makeSelfTriggerEditor(item), 0, 3);
 		contentPane.add(makeTriggerEditor(item), 0, 3);
 	}
 

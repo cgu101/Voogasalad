@@ -21,23 +21,37 @@ import view.map.Map;
 import view.screen.AbstractScreen;
 
 public class LevelMap extends Map implements LevelInterface {
+
+	private static final String LEVEL_IDENTIFIER = "Level";
+	private static final String SPLASH_IDENTIFIER = "Splash";
+
+	/**
+	 * Visual Variables
+	 */
 	private Tab myTab;
 	private ScrollPane sp;
 	private String myString;
-	private GameWindow gameWindow;
-	
+
+	/**
+	 * Identifiers and Data
+	 */
 	private String myTitle;
+	private Deque<String> myPath;
 	private Level myLevel;
+
+	private LevelType type;
 
 	public LevelMap(GridPane pane, Level l, AbstractScreen screen) {
 		super(pane);
 		findResources();
+
 		myString = myResources.getString("tabName");
 		myTab = new Tab(l.getUniqueID());
 		myTitle = l.getUniqueID();
+
 		myTab.setContent(pane);
 		myTab.setId(l.getUniqueID());
-		
+
 		mapScrollableArea.setOnDragEntered(event -> startDrag(event));
 
 		mapScrollableArea.setOnDragExited(event -> exitDrag(event));
@@ -45,25 +59,24 @@ public class LevelMap extends Map implements LevelInterface {
 		mapScrollableArea.setOnDragOver(event -> dragAroundMap(event));
 		mapScrollableArea.setOnDragDropped(event -> dragFinished(event));
 		myLevel = l;
+
+		setLevelType();
+
+		if (type == LevelType.SPLASH) {
+			this.removeMiniMap();
+			this.removeMap();
+		}
 	}
-	
-	public LevelMap(GridPane pane, int i, AbstractScreen screen) {
-		super(pane);
-		findResources();
-		myString = myResources.getString("tabName");
-		myTab = new Tab(makeTitle(i));
-		myTitle = myString + (i + 1);
-		myTab.setContent(pane);
-		myTab.setId(Integer.toString(i));
 
-		mapScrollableArea.setOnDragEntered(event -> startDrag(event));
-
-		mapScrollableArea.setOnDragExited(event -> exitDrag(event));
-
-		mapScrollableArea.setOnDragOver(event -> dragAroundMap(event));
-		mapScrollableArea.setOnDragDropped(event -> dragFinished(event));
-		
-		myLevel = null;
+	private void setLevelType() {
+		// TODO Auto-generated method stub
+		if (myLevel.getUniqueID().startsWith(LEVEL_IDENTIFIER)) {
+			type = LevelType.LEVEL;
+		} else if (myLevel.getUniqueID().startsWith(SPLASH_IDENTIFIER)) {
+			type = LevelType.SPLASH;
+		} else {
+			type = null;
+		}
 	}
 
 	private void dragFinished(DragEvent event) {
@@ -75,8 +88,8 @@ public class LevelMap extends Map implements LevelInterface {
 			ActorPropertyMap map = controller.getAuthoringActorConstructor().getActorPropertyMap(actor);
 
 			map.addProperty("xLocation", "" + (event.getX()));
-			map.addProperty("yLocation", "" + (event.getY())); 
-			
+			map.addProperty("yLocation", "" + (event.getY()));
+
 			String uniqueID = new Date().toString();
 			controller.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, map);
 			Actor a = controller.getLevelConstructor().getActorGroupsConstructor().getActor(actor, uniqueID);
@@ -84,14 +97,14 @@ public class LevelMap extends Map implements LevelInterface {
 			addActor(a, (double) a.getProperties().getComponents().get("xLocation").getValue(),
 					(double) a.getProperties().getComponents().get("yLocation").getValue());
 			success = true;
-//			gameWindow.getClient().send("New Drop Event");
+			// gameWindow.getClient().send("New Drop Event");
 		}
 		event.setDropCompleted(success);
 		event.consume();
 	}
-	
+
 	private void createMap(ActorPropertyMap apm) {
-		// TODO? 
+		// TODO?
 		apm.addProperty("xLocation", "0.0");
 		apm.addProperty("yLocation", "0.0");
 		apm.addProperty("Rotation", "0.0");
@@ -126,24 +139,20 @@ public class LevelMap extends Map implements LevelInterface {
 		return this.controller;
 	}
 
-	@Override
-	public String makeTitle(int i) {
-		return (i + 1) + myString;
-	}
-
-	public void setGameWindow(GameWindow g) {
-		this.gameWindow = g;
-	}
+	// @Override
+	// public String makeTitle(int i) {
+	// return (i + 1) + myString;
+	// }
 
 	@Override
 	public String getTitle() {
 		return myTitle;
 	}
-	
-	public GridPane getPane () {
+
+	public GridPane getPane() {
 		return this.pane;
 	}
-	
+
 	@Override
 	public void redraw(Level modelLevel) {
 		// TODO Auto-generated method stub
@@ -165,7 +174,7 @@ public class LevelMap extends Map implements LevelInterface {
 	@Override
 	public void process(Mail mail) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -173,6 +182,9 @@ public class LevelMap extends Map implements LevelInterface {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
+
+	public LevelType getType() {
+		return type;
+	}
+
 }

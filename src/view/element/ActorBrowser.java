@@ -16,11 +16,13 @@ import javafx.util.Callback;
 import view.actor.ActorCell;
 import view.level.Workspace;
 import view.screen.AbstractScreenInterface;
+
 /**
  * @author David
  * 
- * A double list view element class that allows the user to see the level's current actor types.
- * Also allows for drag and drop placement of new actor instances
+ *         A double list view element class that allows the user to see the
+ *         level's current actor types. Also allows for drag and drop placement
+ *         of new actor instances
  * 
  */
 public class ActorBrowser extends AbstractDockElement {
@@ -32,6 +34,7 @@ public class ActorBrowser extends AbstractDockElement {
 	private BooleanProperty doubleLists;
 	private AuthoringController controller;
 	private GridPane listPane;
+	private GridPane labelPane;
 
 	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,
 			Workspace workspace) {
@@ -41,8 +44,8 @@ public class ActorBrowser extends AbstractDockElement {
 		doubleLists.addListener(e -> toggleDoubleLists(doubleLists.getValue()));
 		this.controller = null;
 		workspace.addListener((ov, oldTab, newTab) -> {
-			if (workspace.getCurrentLevel() != null) {
-				load(workspace.getCurrentLevel().getController());
+			if (workspace.getCurrentLevelInterface() != null) {
+				load(workspace.getCurrentLevelInterface().getController());
 			} else {
 				load(null);
 			}
@@ -52,7 +55,7 @@ public class ActorBrowser extends AbstractDockElement {
 
 	@Override
 	protected void makePane() {
-		GridPane labelPane = makeLabelPane();
+		labelPane = makeLabelPane();
 		pane.add(labelPane, 0, 0);
 		listPane = new GridPane();
 		pane.add(listPane, 0, 1);
@@ -61,7 +64,6 @@ public class ActorBrowser extends AbstractDockElement {
 		leftlist = new ListView<String>(actors);
 		listPane.add(leftlist, 0, 1);
 		listPane.add(rightlist, 1, 1);
-		listPane.setAlignment(Pos.TOP_CENTER);
 		configure(leftlist);
 		configure(rightlist);
 		lists = new ArrayList<ListView<String>>();
@@ -78,12 +80,6 @@ public class ActorBrowser extends AbstractDockElement {
 		if (controller != null) {
 			actors.addAll(controller.getAuthoringActorConstructor().getActorList());
 		}
-	}
-
-	private void addLabelPane() {
-		GridPane labelPane = makeLabelPane();
-		pane.add(labelPane, 0, 0);
-		GridPane.setColumnSpan(labelPane, 2);
 	}
 
 	private void configure(ListView<String> list) {
@@ -135,11 +131,21 @@ public class ActorBrowser extends AbstractDockElement {
 
 	private void toggleDoubleLists(Boolean value) {
 		if (value) {
-			pane.add(rightlist, 1, 1);
+			listPane.add(rightlist, 1, 1);
+			setWidth(leftlist, Double.parseDouble(myResources.getString("width")));
+			GridPane.setColumnSpan(labelPane, 2);
+			listPane.setAlignment(Pos.TOP_CENTER);
 		} else {
 			rightlist.getSelectionModel().clearSelection();
-			pane.getChildren().remove(rightlist);
+			listPane.getChildren().remove(rightlist);
+			setWidth(leftlist, 2 * Double.parseDouble(myResources.getString("width")));
+			GridPane.setColumnSpan(labelPane, 1);
 		}
+	}
+
+	public void setWidth(ListView list, double width) {
+		list.setMinWidth(width);
+		list.setMaxWidth(width);
 	}
 
 	public ArrayList<ListView<String>> getLists() {

@@ -15,13 +15,13 @@ public interface LevelInterface extends Anscestral {
 
 	public AuthoringController getController();
 
-	public String makeTitle(int i);
-
 	public void initializeBackground(Image backgroundImage);
-	
-	public String getTitle ();
+
+	public String getTitle();
 
 	public void redraw(Level modelLevel);
 
 	public Level buildLevel();
+	
+	public LevelType getType();
 }
