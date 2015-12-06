@@ -34,11 +34,10 @@ public class ActorBrowser extends AbstractDockElement {
 	private BooleanProperty doubleLists;
 	private AuthoringController controller;
 	private GridPane listPane;
-	private GridPane labelPane;
 
-	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,
+	public ActorBrowser(GridPane home, String title, AbstractScreenInterface screen,
 			Workspace workspace) {
-		super(pane, home, title, screen);
+		super(home, title, screen);
 		findResources();
 		doubleLists = new SimpleBooleanProperty(true);
 		doubleLists.addListener(e -> toggleDoubleLists(doubleLists.getValue()));
@@ -55,8 +54,7 @@ public class ActorBrowser extends AbstractDockElement {
 
 	@Override
 	protected void makePane() {
-		labelPane = makeLabelPane();
-		pane.add(labelPane, 0, 0);
+		pane.add(titlePane, 0, 0);
 		listPane = new GridPane();
 		pane.add(listPane, 0, 1);
 		actors = FXCollections.observableArrayList(new ArrayList<String>());
@@ -133,13 +131,13 @@ public class ActorBrowser extends AbstractDockElement {
 		if (value) {
 			listPane.add(rightlist, 1, 1);
 			setWidth(leftlist, Double.parseDouble(myResources.getString("width")));
-			GridPane.setColumnSpan(labelPane, 2);
+			GridPane.setColumnSpan(titlePane, 2);
 			listPane.setAlignment(Pos.TOP_CENTER);
 		} else {
 			rightlist.getSelectionModel().clearSelection();
 			listPane.getChildren().remove(rightlist);
 			setWidth(leftlist, 2 * Double.parseDouble(myResources.getString("width")));
-			GridPane.setColumnSpan(labelPane, 1);
+			GridPane.setColumnSpan(titlePane, 1);
 		}
 	}
 

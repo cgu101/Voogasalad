@@ -28,21 +28,38 @@ public abstract class AbstractDockElement extends AbstractElement {
 	protected Label title;
 	protected AbstractScreenInterface screen;
 	protected GridPane home;
+	protected GridPane titlePane;
 	protected BooleanProperty showing;
 	private BooleanProperty docked;
 
-	public AbstractDockElement(GridPane pane, GridPane home, String title, AbstractScreenInterface screen) {
-		super(pane);
+	public AbstractDockElement(GridPane home, String title, AbstractScreenInterface screen) {
+		super(new GridPane());
 		this.screen = screen;
 		this.home = home;
 		this.title = new Label(title);
 		this.title.setFont(headerFont);
-		this.title.setOnMouseDragged(me -> {
-			screen.getScene().setCursor(Cursor.CLOSED_HAND);
-		});
+		configureCursors();
 		showing = new SimpleBooleanProperty(false);
 		docked = new SimpleBooleanProperty(false);
 		showing.addListener(e -> toggleShowing(showing.getValue()));
+		titlePane = new GridPane();
+		titlePane.add(this.title, 0, 0);
+		titlePane.setAlignment(Pos.CENTER);
+	}
+
+	private void configureCursors() {
+		this.title.setOnMouseEntered(me -> {
+			screen.getScene().setCursor(Cursor.OPEN_HAND);
+		});
+		this.title.setOnMousePressed(me -> {
+			screen.getScene().setCursor(Cursor.CLOSED_HAND);
+		});
+		this.title.setOnMouseDragged(me -> {
+			screen.getScene().setCursor(Cursor.CLOSED_HAND);
+		});
+		this.title.setOnMouseExited(me -> {
+			screen.getScene().setCursor(Cursor.DEFAULT);
+		});
 	}
 
 	private void toggleShowing(boolean input) {
@@ -72,7 +89,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 		}
 	}
 
-	public void launch(double x, double y) {
+	private void launch(double x, double y) {
 		home.getChildren().clear();
 		stage = new Stage();
 		stage.setScene(new Scene(pane));
@@ -87,7 +104,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 		docked.setValue(false);
 	}
 
-	protected void dock() {
+	private void dock() {
 		if (stage != null) {
 			stage.close();
 		}
@@ -102,13 +119,6 @@ public abstract class AbstractDockElement extends AbstractElement {
 		}
 		home.getChildren().clear();
 		docked.setValue(false);
-	}
-
-	public GridPane makeLabelPane() {
-		GridPane labelPane = new GridPane();
-		labelPane.add(title, 0, 0);
-		labelPane.setAlignment(Pos.CENTER);
-		return labelPane;
 	}
 
 	public BooleanProperty getShowingProperty() {

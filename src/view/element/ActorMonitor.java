@@ -44,8 +44,8 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 	 * @param  screen The Screen used to determine dimensions of the component
 	 * @param  controller The PlayerController which allows the ActorMonitor to grab the actors' properties
 	 */
-	public ActorMonitor(GridPane pane, GridPane home, String title, AbstractScreenInterface screen, PlayerController controller) {
-		super(pane, home, title, screen);
+	public ActorMonitor(GridPane home, String title, AbstractScreenInterface screen, PlayerController controller) {
+		super(home, title, screen);
 		findResources();
 		this.controller = controller;
 	}
@@ -99,11 +99,9 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 	}
 
 	private void addLabelPane() {
-		GridPane labelPane = makeLabelPane();
-		labelPane.setAlignment(Pos.CENTER);
-		pane.add(labelPane, 0, 0);
-		labelPane.add(makeCheckBox(), 0, 1);
-		GridPane.setColumnSpan(labelPane, 2);
+		pane.add(titlePane, 0, 0);
+		titlePane.add(makeCheckBox(), 0, 1);
+		GridPane.setColumnSpan(titlePane, 2);
 	}
 
 	private Node makeCheckBox(){

@@ -9,9 +9,8 @@ import view.screen.AbstractScreenInterface;
 
 public class CreatorMapSliders extends MapSliders {
 
-	public CreatorMapSliders(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,
-			Workspace workspace) {
-		super(pane, home, title, screen);
+	public CreatorMapSliders(GridPane home, String title, AbstractScreenInterface screen, Workspace workspace) {
+		super(home, title, screen);
 		workspace.addListener((ov, oldTab, newTab) -> {
 			load(workspace.getCurrentLevel());
 		});
