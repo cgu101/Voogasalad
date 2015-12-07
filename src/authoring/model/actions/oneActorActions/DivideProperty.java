@@ -1,20 +1,16 @@
 package authoring.model.actions.oneActorActions;
 
-import authoring.model.actions.AOneActorAction;
-import authoring.model.actors.Actor;
-import authoring.model.tree.Parameters;
-import engine.State;
+import authoring.model.actions.AChangeProperty;
 
-public class DivideProperty extends AOneActorAction {
+public class DivideProperty extends AChangeProperty {
 	/**
 	 * Generated serial version ID
 	 */
 	private static final long serialVersionUID = 4564193728400194606L;
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
-//		Double divisor = (Double) value;
-//		property.setValue((Double)property.getValue() / divisor);
+	protected Double calculateValue(Double value, Double divisor, Double minimum) {
+		value /= divisor;
+		return minimum != null && Double.compare(value, minimum) < 0 ? minimum : value;
 	}
 }

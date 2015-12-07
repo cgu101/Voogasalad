@@ -12,12 +12,12 @@ public class Parameters<V> {
 		parameter_values = new HashMap<String, V>();
 	}
 
-	public V getParameter(String identifier) {
-		return parameter_values.get(identifier);
-	}
-
 	public Parameters(Map<String, V> map) {
 		parameter_values = new HashMap<String, V>(map);
+	}
+
+	public V getParameter(String parameter) {
+		return parameter_values.get(parameter);
 	}
 
 	public Set<Entry<String, V>> getParameterAndValues() {
