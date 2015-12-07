@@ -1,33 +1,44 @@
 package authoring.model.actions.oneActorActions;
 
-import authoring.model.actions.AActionOneActor;
+import authoring.files.properties.ActorProperties;
+import authoring.model.actions.AOneActorAction;
 import authoring.model.actors.Actor;
-import authoring.model.actors.ActorGroups;
-import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import engine.State;
 
-/**
- * @author Inan
- *
- */
-public class Move extends AActionOneActor{
+public class Move extends AOneActorAction {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = 2860378104198650581L;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void run(Parameters parameters, State state, Actor actor) {
-
-		Double angle = ((Property<Double>) actor.getProperty("angle")).getValue();
-		Double speed = ((Property<Double>) actor.getProperty("speed")).getValue();
-		Double x = ((Property<Double>) actor.getProperty("xLocation")).getValue();
-		Double y = ((Property<Double>) actor.getProperty("yLocation")).getValue();
+		Double angle = actor.getPropertyValue(ActorProperties.ANGLE.getKey());
+		Double speed = actor.getPropertyValue(ActorProperties.SPEED.getKey());
+		Double x = actor.getPropertyValue(ActorProperties.X_LOCATION.getKey());
+		Double y = actor.getPropertyValue(ActorProperties.Y_LOCATION.getKey());
 		
 		x = x + Math.cos(Math.toRadians(angle)) * speed; 
 		y = y + Math.sin(Math.toRadians(angle)) * speed;
 
-		((Property<Double>)actor.getProperty("xLocation")).setValue(x);
-		((Property<Double>)actor.getProperty("yLocation")).setValue(y);
-		ActorGroups actorGroup = state.getActorMap();
-		actorGroup.addActor(actor);
+		if (actor.hasProperty(ActorProperties.DISTANCE_TRAVELED.getKey())) {
+			//		TODO REFACTOR....
+			actor.setProperty("distanceTraveled", (Double) actor.getPropertyValue("distanceTraveled") + speed);
+		}
+		
+//		TODO UPDATE
+		x = checkBoundary(x, 1100-400);
+		y = checkBoundary(y, 528);
+
+		actor.setProperty(ActorProperties.X_LOCATION.getKey(), x);
+		actor.setProperty(ActorProperties.Y_LOCATION.getKey(), y);
+	}
+
+	private double checkBoundary(double coordinate, int bound) {
+		if (coordinate < 0 || coordinate > bound)
+			return (coordinate + bound) % bound;
+		return coordinate;
 	}
 }

@@ -13,11 +13,13 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import view.screen.AbstractScreenInterface;
+
 /**
  * @author David
  * 
- * This class allows for elements that can be docked
- * In addition to a pane to house the contents, this class uses a home pane that contains the location of the element when docked.
+ *         This class allows for elements that can be docked In addition to a
+ *         pane to house the contents, this class uses a home pane that contains
+ *         the location of the element when docked.
  * 
  */
 public abstract class AbstractDockElement extends AbstractElement {
@@ -26,19 +28,38 @@ public abstract class AbstractDockElement extends AbstractElement {
 	protected Label title;
 	protected AbstractScreenInterface screen;
 	protected GridPane home;
+	protected GridPane titlePane;
 	protected BooleanProperty showing;
+	private BooleanProperty docked;
 
-	public AbstractDockElement(GridPane pane, GridPane home, String title, AbstractScreenInterface screen) {
-		super(pane);
+	public AbstractDockElement(GridPane home, String title, AbstractScreenInterface screen) {
+		super(new GridPane());
 		this.screen = screen;
 		this.home = home;
 		this.title = new Label(title);
 		this.title.setFont(headerFont);
+		configureCursors();
+		showing = new SimpleBooleanProperty(false);
+		docked = new SimpleBooleanProperty(false);
+		showing.addListener(e -> toggleShowing(showing.getValue()));
+		titlePane = new GridPane();
+		titlePane.add(this.title, 0, 0);
+		titlePane.setAlignment(Pos.CENTER);
+	}
+
+	private void configureCursors() {
+		this.title.setOnMouseEntered(me -> {
+			screen.getScene().setCursor(Cursor.OPEN_HAND);
+		});
+		this.title.setOnMousePressed(me -> {
+			screen.getScene().setCursor(Cursor.CLOSED_HAND);
+		});
 		this.title.setOnMouseDragged(me -> {
 			screen.getScene().setCursor(Cursor.CLOSED_HAND);
 		});
-		showing = new SimpleBooleanProperty(false);
-		showing.addListener(e -> toggleShowing(showing.getValue()));
+		this.title.setOnMouseExited(me -> {
+			screen.getScene().setCursor(Cursor.DEFAULT);
+		});
 	}
 
 	private void toggleShowing(boolean input) {
@@ -68,7 +89,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 		}
 	}
 
-	public void launch(double x, double y) {
+	private void launch(double x, double y) {
 		home.getChildren().clear();
 		stage = new Stage();
 		stage.setScene(new Scene(pane));
@@ -80,14 +101,16 @@ public abstract class AbstractDockElement extends AbstractElement {
 		stage.setOnCloseRequest(e -> showing.setValue(false));
 		stage.setAlwaysOnTop(true);
 		this.title.setOnMouseReleased(me -> reposition(me, false));
+		docked.setValue(false);
 	}
 
-	public void dock() {
+	private void dock() {
 		if (stage != null) {
 			stage.close();
 		}
 		home.add(pane, 0, 0);
 		this.title.setOnMouseReleased(me -> reposition(me, true));
+		docked.setValue(true);
 	}
 
 	private void hide() {
@@ -95,17 +118,14 @@ public abstract class AbstractDockElement extends AbstractElement {
 			stage.close();
 		}
 		home.getChildren().clear();
-	}
-
-	public GridPane makeLabelPane() {
-		GridPane labelPane = new GridPane();
-		labelPane.add(title, 0, 0);
-		labelPane.setAlignment(Pos.CENTER);
-		return labelPane;
+		docked.setValue(false);
 	}
 
 	public BooleanProperty getShowingProperty() {
 		return showing;
 	}
 
+	public BooleanProperty getDockedProperty() {
+		return docked;
+	}
 }

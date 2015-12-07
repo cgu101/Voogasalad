@@ -1,10 +1,8 @@
 package authoring.model.tree;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class ParameterTreeNode extends InteractionTreeNode {
-	
+
+	private static final long serialVersionUID = -889435400554146354L;
 	protected Parameters parameters;
 
 	public ParameterTreeNode(String value) {
@@ -16,11 +14,16 @@ public class ParameterTreeNode extends InteractionTreeNode {
 		return parameters;
 	}
 	
-	public <T> void setParameters(String parameterType, T parameter) {
-		setParameters(parameterType, Arrays.asList(parameter));
+	public <T> void setParameters(Parameters p) {
+		parameters = p;
 	}
 	
-	public void setParameters(String parameterType, List<?> parameterList) {
-		parameters.setParameters(parameterType, parameterList);
+	public <T> void setParameters(String parameter, T value) {
+		parameters.addParameter(parameter, value);
 	}
+	
+//	@Override
+//	public String getValue () {
+//		return String.format("%s.%s", super.getValue(), parameters.toString());
+//	}
 }

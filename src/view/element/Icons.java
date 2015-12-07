@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import view.controlbar.ControlBarCreator;
 import view.screen.*;
 
 public class Icons extends AbstractElement {
@@ -65,6 +66,12 @@ public class Icons extends AbstractElement {
 		private void handleAction() {
 			if (selected == this) {
 				try {
+					
+					/**
+					 * TODO: David, talk to me about this... this is TEMPORARY!
+					 */
+					if (testIfCreator(iconName)) { ControlBarCreator creatorController = new ControlBarCreator(); currentScreen.setNextScreen(creatorController.getScreen()); return; };
+					
 					Class<?> c = Class.forName("view.screen." + iconName + "Screen");
 					currentScreen.setNextScreen((AbstractScreen) c.newInstance());
 				} catch (Exception e) {
@@ -89,6 +96,10 @@ public class Icons extends AbstractElement {
 			} else {
 				selector.setText(selected.iconName);
 			}
+		}
+		
+		private boolean testIfCreator (String s) {
+			return s.equals("Creator");
 		}
 	}
 }

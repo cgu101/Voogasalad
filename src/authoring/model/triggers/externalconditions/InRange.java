@@ -1,30 +1,23 @@
 package authoring.model.triggers.externalconditions;
 
-import authoring.model.actions.ActionTriggerHelper;
+import authoring.files.properties.ActorProperties;
+import authoring.model.ActionTriggerHelper;
 import authoring.model.actors.Actor;
-import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
-import authoring.model.triggers.externaltriggers.AExternalTrigger;
-import player.InputManager;
+import authoring.model.triggers.externaltriggers.ATwoActorExternalTrigger;
 
-public class InRange extends AExternalTrigger {
+public class InRange extends ATwoActorExternalTrigger {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = 5865539801335555374L;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean condition(Parameters parameters, InputManager inputManager, Actor... actors) {
-
-		Actor actorA = actors[0];
-		Actor actorB = actors[1];
-
-		Double rangeA = ((Property<Double>) actorA.getProperties().getComponents().get("range")).getValue();
-		Double sizeB = ((Property<Double>) actorB.getProperties().getComponents().get("size")).getValue();
-
-		double distanceToActorB = ActionTriggerHelper.distance(actorA, actorB) - sizeB;
-
-		if (Double.compare(distanceToActorB, rangeA) <= 0) {
-			return true;
-		}
-		return false;
+	public boolean condition(Parameters parameters, Actor a, Actor b) {
+		Double rangeA = a.getPropertyValue(ActorProperties.RANGE.getKey());
+		Double sizeB = b.getPropertyValue(ActorProperties.SIZE.getKey());
+		Double distanceToActorB = ActionTriggerHelper.distance(a, b) - sizeB;
+		return Double.compare(distanceToActorB, rangeA) <= 0;
 	}
-
 }

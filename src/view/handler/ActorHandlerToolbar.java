@@ -2,17 +2,17 @@ package view.handler;
 
 import javafx.scene.layout.GridPane;
 import view.element.AbstractDockElement;
-import view.level.LevelInterface;
 import view.level.LevelMap;
+import view.level.LevelType;
 import view.level.Workspace;
 import view.map.Map;
 import view.screen.AbstractScreenInterface;
 
 public class ActorHandlerToolbar extends AbstractDockElement {
 	private Map map;
-	
-	public ActorHandlerToolbar(GridPane pane, GridPane home, String title, AbstractScreenInterface screen, Workspace w) {
-		super(pane, home, title, screen);
+
+	public ActorHandlerToolbar(GridPane home, String title, AbstractScreenInterface screen, Workspace w) {
+		super(home, title, screen);
 		w.addListener((ov, oldTab, newTab) -> {
 			load(w.getCurrentLevel());
 		});
@@ -20,14 +20,13 @@ public class ActorHandlerToolbar extends AbstractDockElement {
 
 	@Override
 	protected void makePane() {
-		GridPane labelPane = makeLabelPane();
-		pane.add(labelPane, 0, 0);
+		pane.add(titlePane, 0, 0);
 		pane.add(map.getToolbar(), 1, 0);
 	}
-	
-	private void load(LevelInterface currentLevel) {
+
+	private void load(LevelMap currentLevel) {
 		pane.getChildren().clear();
-		if (currentLevel instanceof LevelMap) {
+		if (currentLevel.getType() == LevelType.LEVEL) {
 			this.map = (LevelMap) currentLevel;
 			makePane();
 			showing.setValue(true);

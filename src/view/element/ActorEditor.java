@@ -3,13 +3,18 @@ package view.element;
 import java.io.File;
 import java.util.ArrayList;
 import authoring.controller.AuthoringController;
+import authoring.model.tree.ActorTreeNode;
+import authoring.model.tree.InteractionTreeNode;
+import authoring.model.tree.ParameterTreeNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -21,13 +26,15 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
 import view.actor.PropertyCell;
 import view.actor.TriggerCell;
+import view.interactions.InteractionCell;
 import view.level.Workspace;
 import view.screen.AbstractScreenInterface;
+
 /**
  * @author David
  * 
- * Allows for modification of a single actor type.
- * Loads the actor information when they are selected in the actor browser.
+ *         Allows for modification of a single actor type. Loads the actor
+ *         information when they are selected in the actor browser.
  * 
  */
 public class ActorEditor extends AbstractDockElement {
@@ -38,9 +45,9 @@ public class ActorEditor extends AbstractDockElement {
 	private ImageView image;
 	private GridPane contentPane;
 
-	public ActorEditor(GridPane pane, GridPane home, String title, AbstractScreenInterface screen, ActorBrowser browser,
+	public ActorEditor(GridPane home, String title, AbstractScreenInterface screen, ActorBrowser browser,
 			Workspace workspace) {
-		super(pane, home, title, screen);
+		super(home, title, screen);
 		findResources();
 		this.controller = null;
 		this.browser = browser;
@@ -57,8 +64,7 @@ public class ActorEditor extends AbstractDockElement {
 		pane.prefWidthProperty().bind(browser.getPane().widthProperty());
 		pane.maxWidthProperty().bind(browser.getPane().widthProperty());
 		pane.setAlignment(Pos.CENTER);
-		GridPane labelPane = makeLabelPane();
-		pane.add(labelPane, 0, 0);
+		pane.add(titlePane, 0, 0);
 		contentPane = new GridPane();
 		pane.add(contentPane, 0, 1);
 		load();
@@ -117,25 +123,39 @@ public class ActorEditor extends AbstractDockElement {
 	}
 
 	private void editInteraction(String leftItem, String rightItem) {
-		contentPane.add(makeImage(leftItem), 0, 1);
+		contentPane.add(makeImage(leftItem), 0, 0);
 		contentPane.add(makeInteractionText(leftItem, rightItem), 1, 1);
-		contentPane.add(makeImage(rightItem), 2, 1);
-		contentPane.add(makeExternalTriggerEditor(leftItem, rightItem), 0, 2);
+		contentPane.add(makeImage(rightItem), 2, 0);
+		contentPane.add(makeTriggerEditor(leftItem, rightItem), 0, 2);
 	}
 
-	private ListView<String> makeExternalTriggerEditor(String leftItem, String rightItem) {
-		ObservableList<String> triggers = FXCollections.observableArrayList(new ArrayList<String>());
-		triggers.addAll(controller.getAuthoringActorConstructor().getEventTriggerList(leftItem, rightItem));
-		ListView<String> list = new ListView<String>(triggers);
-		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+	private void populateTree (TreeItem<InteractionTreeNode> frontNode, InteractionTreeNode backNode) {
+		for (InteractionTreeNode backChild : backNode.children()) {
+			if (!backChild.getIdentifier().equals(ActorTreeNode.class.getSimpleName())) {
+				TreeItem<InteractionTreeNode> frontChild = new TreeItem<InteractionTreeNode>(backChild);
+				frontNode.getChildren().add(frontChild);
+				populateTree(frontChild,backChild);
+			}
+		}
+	}
+	private TreeView<InteractionTreeNode> makeTriggerEditor(String... items) {
+		InteractionTreeNode branch = controller.getLevelConstructor().getTreeConstructor().getActorBaseNode(items);
+		TreeItem<InteractionTreeNode> rootItem = new TreeItem<InteractionTreeNode>(branch);
+		populateTree(rootItem, branch);
+
+		rootItem.setExpanded(true);
+		TreeView<InteractionTreeNode> treeView = new TreeView<InteractionTreeNode>(rootItem);
+		treeView.setEditable(true);
+		treeView.setCellFactory(new Callback<TreeView<InteractionTreeNode>, TreeCell<InteractionTreeNode>>() {
 			@Override
-			public ListCell<String> call(ListView<String> list) {
-				return new TriggerCell(controller, leftItem, rightItem);
+			public TreeCell<InteractionTreeNode> call(TreeView<InteractionTreeNode> p) {
+				InteractionCell cell = new InteractionCell(pane, controller, items);
+				return cell;
 			}
 		});
-		GridPane.setColumnSpan(list, 3);
-		list.setFocusTraversable(false);
-		return list;
+		treeView.setFocusTraversable(false);
+		GridPane.setColumnSpan(treeView, 3);
+		return treeView;
 	}
 
 	private VBox makeInteractionText(String left, String right) {
@@ -158,7 +178,7 @@ public class ActorEditor extends AbstractDockElement {
 		contentPane.add(makeImage(item), 0, 1);
 		contentPane.add(makeName(item), 1, 1);
 		contentPane.add(makePropertyEditor(item), 1, 2);
-		contentPane.add(makeSelfTriggerEditor(item), 0, 3);
+		contentPane.add(makeTriggerEditor(item), 0, 3);
 	}
 
 	private ListView<String> makePropertyEditor(String item) {
@@ -175,20 +195,20 @@ public class ActorEditor extends AbstractDockElement {
 		return list;
 	}
 
-	private ListView<String> makeSelfTriggerEditor(String item) {
-		ObservableList<String> triggers = FXCollections.observableArrayList(new ArrayList<String>());
-		triggers.addAll(controller.getAuthoringActorConstructor().getSelfTriggerList(item));
-		ListView<String> list = new ListView<String>(triggers);
-		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-			@Override
-			public ListCell<String> call(ListView<String> list) {
-				return new TriggerCell(controller, item);
-			}
-		});
-		GridPane.setColumnSpan(list, 2);
-		list.setFocusTraversable(false);
-		return list;
-	}
+//	private ListView<String> makeSelfTriggerEditor(String item) {
+//		ObservableList<String> triggers = FXCollections.observableArrayList(new ArrayList<String>());
+//		triggers.addAll(controller.getAuthoringActorConstructor().getTriggerList(item));
+//		ListView<String> list = new ListView<String>(triggers);
+//		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+//			@Override
+//			public ListCell<String> call(ListView<String> list) {
+//				return new TriggerCell(controller, item);
+//			}
+//		});
+//		GridPane.setColumnSpan(list, 2);
+//		list.setFocusTraversable(false);
+//		return list;
+//	}
 
 	private ImageView makeImage(String item) {
 		image = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(

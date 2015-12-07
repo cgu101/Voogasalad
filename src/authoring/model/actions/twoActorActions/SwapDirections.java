@@ -1,10 +1,9 @@
 package authoring.model.actions.twoActorActions;
 
-import authoring.model.actions.AActionTwoActors;
-import authoring.model.actions.ActionTriggerHelper;
+import authoring.files.properties.ActorProperties;
+import authoring.model.ActionTriggerHelper;
+import authoring.model.actions.ATwoActorAction;
 import authoring.model.actors.Actor;
-import authoring.model.actors.ActorGroups;
-import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import engine.State;
 
@@ -12,28 +11,19 @@ import engine.State;
  * @author Inan
  *
  */
-public class SwapDirections extends AActionTwoActors {
+public class SwapDirections extends ATwoActorAction {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = 4981001366273988038L;
 
+	@SuppressWarnings("rawtypes")
 	@Override
-	@SuppressWarnings("unchecked")
 	public void run(Parameters parameters, State state, Actor a, Actor b) {
-		ActorGroups actorGroup = state.getActorMap();
-
-		Property<Double> a_angleP = (Property<Double>) a.getProperties().getComponents().get("angle");
-		Property<Double> b_angleP = (Property<Double>) b.getProperties().getComponents().get("angle");
-
-		Double temp = a_angleP.getValue();
-		a_angleP.setValue(b_angleP.getValue());
-		b_angleP.setValue(temp);
-
-		new MoveActorsToAvoidCollisions().run(null, state, a, b);
-		
-		if (ActionTriggerHelper.collision(a, b)) {
-			System.out.println("STILL COLLIDING AFTER ADJUSTMENT");
-		}
-		
-		actorGroup.addActor(a);
-		actorGroup.addActor(b);
+		Double angleA = a.getPropertyValue(ActorProperties.ANGLE.getKey());
+		Double angleB = b.getPropertyValue(ActorProperties.ANGLE.getKey());
+		a.setProperty(ActorProperties.ANGLE.getKey(), angleB);
+		b.setProperty(ActorProperties.ANGLE.getKey(), angleA);
+		ActionTriggerHelper.moveToAvoidCollision(a, b);
 	}
-
 }

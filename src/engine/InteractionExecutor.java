@@ -43,7 +43,7 @@ public class InteractionExecutor {
 	private InteractionTreeNode triggerTree;
 	private Map<String, NodeLambda<InteractionTreeNode,List<?>>> lambdaMap;
 
-	public InteractionExecutor () {
+	private InteractionExecutor () {
 		this.currentLevelIdentifier = null;
 		this.triggerTree = new InteractionTreeNode();
 		this.inputMap = new InputManager();
@@ -71,7 +71,7 @@ public class InteractionExecutor {
 	}
 	/**
 	 * Runs a single step of the level. Resolves all self-triggers before external triggers.
-	 * @return A {@link EngineHeartbeat} that allows the engine to communicate with the player controller.
+	 * @return A {@link State} that allows the executor to communicate with the engine and player controller.
 	 * @throws EngineException 
 	 */
 	public State run () throws EngineException {
@@ -103,7 +103,7 @@ public class InteractionExecutor {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void initLambdaMap () {
+	private <V> void initLambdaMap () {
 		lambdaMap = new HashMap<String,NodeLambda<InteractionTreeNode,List<?>>>();
 		lambdaMap.put(ACTOR_IDENTIFIER, (node, list) -> {
 			for(InteractionTreeNode child : node.children()){
@@ -133,8 +133,9 @@ public class InteractionExecutor {
 			Actor[] actors = ((List<Actor>) list).stream().map(a -> {
 				return nextState.getActorMap().getGroup(a.getGroupName()).get(a.getUniqueID());
 			}).toArray(Actor[]::new);
+			
 			action.run(((ParameterTreeNode) node).getParameters(), nextState, actors);
-
+//			action.run(new HashMap<String, V>(), nextState, actors);
 		});
 	}
 	private <T> List<T> cloneListAndAdd (List<T> list, T value) {

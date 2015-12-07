@@ -7,7 +7,6 @@ import authoring.model.tree.Parameters;
 import player.InputManager;
 
 public interface ITriggerEvent extends Serializable {
-	
+	@SuppressWarnings("rawtypes")
 	public boolean condition(Parameters parameters, InputManager inputManager, Actor... actors);
-
 }

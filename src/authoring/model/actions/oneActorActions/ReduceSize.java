@@ -1,8 +1,7 @@
 package authoring.model.actions.oneActorActions;
 
-import authoring.model.actions.AActionOneActor;
+import authoring.model.actions.AOneActorAction;
 import authoring.model.actors.Actor;
-import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import engine.State;
@@ -11,18 +10,14 @@ import engine.State;
  * @author Inan
  *
  */
-public class ReduceSize extends AActionOneActor{
+public class ReduceSize extends AOneActorAction {
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
-		
+	public void run(Parameters parameters, State state, Actor a) {
 		Double decrement = 1.0;
-		
-		Property<Double> size = (Property<Double>) actor.getProperty("size");
+
+		Property<Double> size = (Property<Double>) a.getProperty("size");
 		size.setValue(size.getValue() - decrement);
 
-		ActorGroups actorGroup = state.getActorMap();
-		actorGroup.addActor(actor);
 	}
 }

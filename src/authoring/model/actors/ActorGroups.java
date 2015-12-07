@@ -12,6 +12,11 @@ import authoring.model.bundles.Bundle;
  *
  */
 public class ActorGroups implements Serializable{
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = 6727959403408489555L;
+
 	private Map<String,Bundle<Actor>> actorMap;
 	
 	private Map<String,Bundle<Actor>> newActors;
@@ -66,6 +71,12 @@ public class ActorGroups implements Serializable{
 	
 	public void addActor (Actor actor) {
 		addActorToMap(actor, actorMap);
+	}
+	
+	public void addActor (Actor... actor) {
+		for(Actor a: actor){
+			addActorToMap(a, actorMap);
+		}
 	}
 	
 	public void removeActor (Actor actor) {

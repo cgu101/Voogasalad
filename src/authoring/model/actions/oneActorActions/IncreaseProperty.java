@@ -1,11 +1,16 @@
 package authoring.model.actions.oneActorActions;
 
-import authoring.model.actions.AActionProperty;
-import authoring.model.properties.Property;
+import authoring.model.actions.AChangeProperty;
 
-public class IncreaseProperty extends AActionProperty {
+public class IncreaseProperty extends AChangeProperty {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = -3612830585385260543L;
+
 	@Override
-	protected void ExecuteOperation(Double increment, Property<Double> property) {
-		property.setValue(property.getValue() + increment);
+	protected Double calculateValue(Double value, Double increment, Double maximum) {
+		value += increment;
+		return maximum != null && Double.compare(value, maximum) > 0 ? maximum : value;
 	}
 }

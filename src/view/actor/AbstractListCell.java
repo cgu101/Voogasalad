@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import javafx.scene.control.ListCell;
 import javafx.scene.text.Font;
 
-public abstract class AbstractListCell extends ListCell<String> {
+public abstract class AbstractListCell<T> extends ListCell<T> {
 	/**
 	 * @author David
 	 * 
@@ -33,7 +33,7 @@ public abstract class AbstractListCell extends ListCell<String> {
 	}
 
 	@Override
-	public void updateItem(String item, boolean empty) {
+	public void updateItem(T item, boolean empty) {
 		super.updateItem(item, empty);
 		if (item != null) {
 			try {
@@ -46,5 +46,5 @@ public abstract class AbstractListCell extends ListCell<String> {
 		}
 	}
 
-	protected abstract void makeCell(String item);
+	protected abstract void makeCell(T item);
 }

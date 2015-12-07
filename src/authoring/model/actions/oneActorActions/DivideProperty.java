@@ -1,11 +1,16 @@
 package authoring.model.actions.oneActorActions;
 
-import authoring.model.actions.AActionProperty;
-import authoring.model.properties.Property;
+import authoring.model.actions.AChangeProperty;
 
-public class DivideProperty extends AActionProperty {
+public class DivideProperty extends AChangeProperty {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = 4564193728400194606L;
+
 	@Override
-	protected void ExecuteOperation(Double divisor, Property<Double> property) {
-		property.setValue(property.getValue() / divisor);
+	protected Double calculateValue(Double value, Double divisor, Double minimum) {
+		value /= divisor;
+		return minimum != null && Double.compare(value, minimum) < 0 ? minimum : value;
 	}
 }

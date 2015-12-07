@@ -1,10 +1,10 @@
 package authoring.model.actions.oneActorActions;
 
-import authoring.model.actions.AActionOneActor;
-import authoring.model.actions.twoActorActions.MoveActorsToAvoidCollisions;
+import authoring.files.properties.ActorProperties;
+import authoring.model.ActionTriggerHelper;
+import authoring.model.actions.AOneActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
-import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import engine.State;
 
@@ -12,40 +12,32 @@ import engine.State;
  * @author Inan
  *
  */
-public class SplitAndReduceSize extends AActionOneActor{
+public class SplitAndReduceSize extends AOneActorAction {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = -6897408900633928326L;
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void run(Parameters parameters, State state, Actor actor) {
-//		Create a copy of the property Bundle and create 2 new actors with these properties
-		Double size = ((Property<Double>)actor.getProperty("size")).getValue();
-		Double health = ((Property<Double>)actor.getProperty("health")).getValue();
-		Double angle = ((Property<Double>)actor.getProperty("angle")).getValue();
-		
-		Actor futureActor1 = new Actor(actor.getProperties(), actor.getUniqueID()+".baby1");
-		Actor futureActor2 = new Actor(actor.getProperties(), actor.getUniqueID()+".baby2");
-		
-		((Property<Double>)futureActor1.getProperty("size")).setValue(size/2);
-		((Property<Double>)futureActor2.getProperty("size")).setValue(size/2);
-		((Property<Double>)futureActor1.getProperty("health")).setValue(health/2);
-		((Property<Double>)futureActor2.getProperty("health")).setValue(health/2);
-		((Property<Double>)futureActor1.getProperty("angle")).setValue(angle+45);
-		((Property<Double>)futureActor2.getProperty("angle")).setValue(angle-45);
-		
-		new MoveActorsToAvoidCollisions().move(futureActor1, futureActor2, size);
-		ActorGroups actorGroup = state.getActorMap();
-//		System.out.println("Change implementation to change the ID of the new children. "
-//							+ "And change some property so that the children are not the exact same (change size and angle?)");
-		
-		
-		// TODO: Change angles?  So that new actors aren't headed in the exact same direction side by side.
-		actorGroup.removeActor(futureActor2);		
-		actorGroup.addActor(futureActor1);
-		actorGroup.addActor(futureActor2);
-		
-		
-		actorGroup.killActor(actor);
-		actorGroup.createActor(futureActor1);
-		actorGroup.createActor(futureActor2);
+		Double size = actor.getPropertyValue(ActorProperties.SIZE.getKey());
+		Double health = actor.getPropertyValue(ActorProperties.HEALTH.getKey());
+		Double angle = actor.getPropertyValue(ActorProperties.ANGLE.getKey());
+
+		Actor futureActor1 = new Actor(actor.getProperties(), ActionTriggerHelper.createActorID());
+		Actor futureActor2 = new Actor(actor.getProperties(), ActionTriggerHelper.createActorID());
+		futureActor1.setProperty(ActorProperties.SIZE.getKey(), size / 2);
+		futureActor2.setProperty(ActorProperties.SIZE.getKey(), size / 2);
+		futureActor1.setProperty(ActorProperties.HEALTH.getKey(), health / 2);
+		futureActor2.setProperty(ActorProperties.HEALTH.getKey(), health / 2);
+		futureActor1.setProperty(ActorProperties.ANGLE.getKey(), angle + 45);
+		futureActor2.setProperty(ActorProperties.ANGLE.getKey(), angle - 45);
+		ActionTriggerHelper.moveToAvoidCollision(futureActor1, futureActor2);
+
+		ActorGroups actorGroups = state.getActorMap();
+		actorGroups.killActor(actor);
+		actorGroups.createActor(futureActor1);
+		actorGroups.createActor(futureActor2);
 	}
 }

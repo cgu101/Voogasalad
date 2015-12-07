@@ -1,23 +1,22 @@
 package authoring.model.actions.oneActorActions;
 
-import authoring.model.actions.AActionOneActor;
+import java.util.Map;
+
+import authoring.model.actions.AOneActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import engine.State;
 
-public class RotateClockwise extends AActionOneActor{
+public class RotateClockwise extends AOneActorAction {
 
-	@SuppressWarnings("unchecked")
+
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
-
+	public void run(Parameters parameters, State state, Actor a) {
 		Double rotation = 20.0;
-		
-		Property<Double> angle = (Property<Double>) actor.getProperty("angle");
-		angle.setValue((angle.getValue() - rotation) % 360);
-		ActorGroups actorGroup = state.getActorMap();
-		actorGroup.addActor(actor);
+
+		Property<Double> angle = (Property<Double>) a.getProperty("angle");
+		angle.setValue((angle.getValue() - rotation) % 360);		
 	}
 }
