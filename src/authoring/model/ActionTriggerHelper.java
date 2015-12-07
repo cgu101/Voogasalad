@@ -5,6 +5,10 @@ import java.util.Calendar;
 import authoring.files.properties.ActorProperties;
 import authoring.model.actors.Actor;
 
+/**
+ * @author Inan
+ *
+ */
 public final class ActionTriggerHelper {
 	public static Double distance(Actor a, Actor b) {
 		Double xA = a.getPropertyValue(ActorProperties.X_LOCATION.getKey());
