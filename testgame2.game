@@ -225,11 +225,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">507.0</myValue>
-=======
-                                <myValue class="double">340.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">614.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -257,33 +253,21 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">261.0</myValue>
-=======
-                                <myValue class="double">244.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">315.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">509.0</myValue>
-=======
-                                <myValue class="double">87.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">580.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">18.0</myValue>
-=======
-                                <myValue class="double">20.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">10.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -309,11 +293,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">12.0</myValue>
-=======
-                                <myValue class="double">138.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">315.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -341,33 +321,21 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">245.0</myValue>
-=======
-                                <myValue class="double">73.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">56.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">567.0</myValue>
-=======
-                                <myValue class="double">327.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">55.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">12.0</myValue>
-=======
-                                <myValue class="double">16.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">10.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -393,11 +361,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">112.0</myValue>
-=======
-                                <myValue class="double">518.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">200.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -425,29 +389,21 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">253.0</myValue>
-=======
-                                <myValue class="double">304.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">329.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">506.0</myValue>
-=======
-                                <myValue class="double">2.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">175.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">19.0</myValue>
+                                <myValue class="double">17.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -473,11 +429,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">352.0</myValue>
-=======
-                                <myValue class="double">180.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">3.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -505,33 +457,21 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">23.0</myValue>
-=======
-                                <myValue class="double">84.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">202.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">415.0</myValue>
-=======
-                                <myValue class="double">549.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">364.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-<<<<<<< HEAD
-                                <myValue class="double">17.0</myValue>
-=======
-                                <myValue class="double">18.0</myValue>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
+                                <myValue class="double">12.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -641,145 +581,6 @@
               <authoring.model.triggers.selfconditions.UpArrowKey/>
             </entry>
             <entry>
-<<<<<<< HEAD
-              <string>TrueExternalTrigger</string>
-              <authoring.model.triggers.externalconditions.TrueExternalTrigger/>
-            </entry>
-            <entry>
-              <string>TrueSelfTrigger</string>
-              <authoring.model.triggers.selfconditions.TrueSelfTrigger/>
-            </entry>
-            <entry>
-              <string>InRange</string>
-              <authoring.model.triggers.externalconditions.InRange/>
-            </entry>
-            <entry>
-              <string>LeftArrowKey</string>
-              <authoring.model.triggers.selfconditions.LeftArrowKey/>
-            </entry>
-            <entry>
-              <string>CircleCollision</string>
-              <authoring.model.triggers.externalconditions.CircleCollision/>
-            </entry>
-            <entry>
-              <string>SpaceBarKey</string>
-              <authoring.model.triggers.selfconditions.SpaceBarKey/>
-            </entry>
-            <entry>
-              <string>DistanceTraveledCheck</string>
-              <authoring.model.triggers.selfconditions.DistanceTraveledCheck/>
-            </entry>
-            <entry>
-              <string>DownArrowKey</string>
-              <authoring.model.triggers.selfconditions.DownArrowKey/>
-            </entry>
-            <entry>
-              <string>RightArrowKey</string>
-              <authoring.model.triggers.selfconditions.RightArrowKey/>
-            </entry>
-          </triggerMap>
-          <actionMap>
-            <entry>
-              <string>DivideProperty</string>
-              <authoring.model.actions.parameterActions.DivideProperty/>
-            </entry>
-            <entry>
-              <string>ShootBullet</string>
-              <authoring.model.actions.actorActions.oneActorActions.ShootBullet/>
-            </entry>
-            <entry>
-              <string>DecreaseProperty</string>
-              <authoring.model.actions.parameterActions.DecreaseProperty/>
-            </entry>
-            <entry>
-              <string>SwapDirections</string>
-              <authoring.model.actions.actorActions.twoActorActions.SwapDirections/>
-            </entry>
-            <entry>
-              <string>MultiplyProperty</string>
-              <authoring.model.actions.parameterActions.MultiplyProperty/>
-            </entry>
-            <entry>
-              <string>SplitAndReduceSize</string>
-              <authoring.model.actions.actorActions.oneActorActions.SplitAndReduceSize/>
-            </entry>
-            <entry>
-              <string>RemoveActor</string>
-              <authoring.model.actions.actorActions.oneActorActions.RemoveActor/>
-            </entry>
-            <entry>
-              <string>DecreaseSpeed</string>
-              <authoring.model.actions.actorActions.oneActorActions.DecreaseSpeed/>
-            </entry>
-            <entry>
-              <string>IncreaseSpeed</string>
-              <authoring.model.actions.actorActions.oneActorActions.IncreaseSpeed/>
-            </entry>
-            <entry>
-              <string>LevelTransition</string>
-              <authoring.model.actions.parameterActions.LevelTransition>
-                <levelKey>level</levelKey>
-              </authoring.model.actions.parameterActions.LevelTransition>
-            </entry>
-            <entry>
-              <string>Move</string>
-              <authoring.model.actions.actorActions.oneActorActions.Move/>
-            </entry>
-            <entry>
-              <string>RotateClockwise</string>
-              <authoring.model.actions.actorActions.oneActorActions.RotateClockwise/>
-            </entry>
-            <entry>
-              <string>IncreaseProperty</string>
-              <authoring.model.actions.parameterActions.IncreaseProperty/>
-            </entry>
-            <entry>
-              <string>DamageHealth</string>
-              <authoring.model.actions.actorActions.oneActorActions.DamageHealth/>
-            </entry>
-            <entry>
-              <string>RotateCounterclockwise</string>
-              <authoring.model.actions.actorActions.oneActorActions.RotateCounterclockwise/>
-            </entry>
-            <entry>
-              <string>MoveActorsToAvoidCollisions</string>
-              <authoring.model.actions.actorActions.twoActorActions.MoveActorsToAvoidCollisions/>
-            </entry>
-            <entry>
-              <string>MoveBackwards</string>
-              <authoring.model.actions.actorActions.oneActorActions.MoveBackwards/>
-            </entry>
-            <entry>
-              <string>ReduceSize</string>
-              <authoring.model.actions.actorActions.oneActorActions.ReduceSize/>
-            </entry>
-          </actionMap>
-          <uniqueID>0</uniqueID>
-        </authoring.model.level.Level>
-      </entry>
-      <entry>
-        <string>1</string>
-        <authoring.model.level.Level>
-          <rootTree>
-            <children/>
-          </rootTree>
-          <actorGroups>
-            <actorMap/>
-            <newActors/>
-            <deadActors/>
-          </actorGroups>
-          <triggerMap>
-            <entry>
-              <string>KeyPress</string>
-              <authoring.model.triggers.selfconditions.KeyPress/>
-            </entry>
-            <entry>
-              <string>UpArrowKey</string>
-              <authoring.model.triggers.selfconditions.UpArrowKey/>
-            </entry>
-            <entry>
-=======
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
               <string>TrueExternalTrigger</string>
               <authoring.model.triggers.externalconditions.TrueExternalTrigger/>
             </entry>
@@ -855,13 +656,7 @@
             </entry>
             <entry>
               <string>LevelTransition</string>
-<<<<<<< HEAD
-              <authoring.model.actions.parameterActions.LevelTransition>
-                <levelKey>level</levelKey>
-              </authoring.model.actions.parameterActions.LevelTransition>
-=======
               <authoring.model.actions.oneActorActions.LevelTransition/>
->>>>>>> 6f5f50069b40ba989b710e11b53ec044d07385d5
             </entry>
             <entry>
               <string>Move</string>
