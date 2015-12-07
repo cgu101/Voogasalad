@@ -7,7 +7,10 @@ import authoring.model.bundles.Identifiable;
 import authoring.model.properties.Property;
 
 public class Actor implements Identifiable, IActor, Serializable {
-
+	/**
+	 * Generated serial version iD
+	 */
+	private static final long serialVersionUID = 9139664644586189227L;
 	private Bundle<Property<?>> myPropertyBundle;
 	private String identifier;
 

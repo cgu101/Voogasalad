@@ -30,6 +30,7 @@ public interface IActor {
 	/**
 	 * @param property Properties that you want to add to the actor
 	 */
+	@SuppressWarnings("unchecked")
 	<T> void setProperty(Property<T>... property);
 	
 	/**

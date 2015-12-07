@@ -127,7 +127,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 	//	pane.getChildren().clear();
 		pane.getChildren().remove(observableIndividualActorList);
 		pane.getChildren().remove(checkComboBox);
-
+		
 		individualActorList = FXCollections.observableArrayList(new ArrayList<String>());
 		for(Actor a : controller.getIndividualActorsList()){
 			if(currentlySelected.contains(a.getGroupName()) || currentlySelected.isEmpty()){
@@ -151,7 +151,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 	}
 
 	/**
-	 * This method allows properties of Actor's to be refreshed.
+	 * This method allows properties of Actor's to be refreshed without the whole pane resetting.
 	 */
 	public void refresh(){
 		observableIndividualActorList.refresh();

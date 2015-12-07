@@ -2,12 +2,9 @@ package view.screen;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import authoring.controller.AuthoringController;
-import authoring.controller.constructor.levelwriter.LevelConstructor;
 import authoring.model.game.Game;
 import data.XMLManager;
 import exceptions.data.GameFileException;
@@ -15,14 +12,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import network.test.GameWindow;
+import network.framework.GameWindow;
+import network.framework.format.Mail;
 import util.FileChooserUtility;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.element.ActorEditor;
 import view.handler.ActorHandlerToolbar;
 import view.level.Workspace;
-import view.map.MapSliders;
+import view.map.CreatorMapSliders;
 
 /**
  * Screen for authoring environment
@@ -36,14 +34,14 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	private Workspace w;
 	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
-	
+
 	private Game game;
 
 	public CreatorScreen() {
-		this(null);
+		this(new Game());
 	}
-	
-	public CreatorScreen (Game game) {
+
+	public CreatorScreen(Game game) {
 		this.game = game;
 		findResources();
 		WIDTH = Integer.parseInt(myResources.getString("width"));
@@ -53,15 +51,14 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		root.prefWidthProperty().bind(scene.widthProperty());
 		this.title = myResources.getString("title");
 	}
-	
-	public CreatorScreen (Game game, GameWindow gw) {
+
+	public CreatorScreen(Game game, GameWindow gw) {
 		this(game);
-		w.addNetwork(gw);
+		// w.addNetwork(gw);
 	}
 
 	@Override
 	public void run() {
-		//System.out.println("test run");
 	}
 
 	@Override
@@ -70,7 +67,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		root = r;
 		scene = new Scene(root, WIDTH, HEIGHT);
 		makePanes(2);
-		w = new Workspace(myPanes.get(1), this);
+		w = new Workspace(myPanes.get(1), this, this.game);
 		r.setTop(myPanes.get(0));
 		GridPane mapPane = new GridPane();
 		mapPane.add(myPanes.get(1), 0, 1);
@@ -95,23 +92,52 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		ActorEditor editor = new ActorEditor(dockPanes.get(1), homePanes.get(1), myResources.getString("editorname"),
 				this, browser, w);
 		components.add(editor);
-		MapSliders slider = new MapSliders(dockPanes.get(2), homePanes.get(2), myResources.getString("slidername"),
-				this, w);
+		CreatorMapSliders slider = new CreatorMapSliders(dockPanes.get(2), homePanes.get(2),
+				myResources.getString("slidername"), this, w);
 		components.add(slider);
-		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3), myResources.getString("toolbarname"), this, w);
+		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3),
+				myResources.getString("toolbarname"), this, w);
 		components.add(aet);
-		
-//		t = new ControlBarCreator(myPanes.get(0), this);
+		configureMap(browser, editor);
+	}
+
+	private void configureMap(ActorBrowser browser, ActorEditor editor) {
+		fullscreen.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
+				editor.getDockedProperty().getValue()));
+		browser.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
+				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
+		editor.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
+				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
+		w.addListener((ov, oldTab, newTab) -> manageMapSize(fullscreen.getValue(),
+				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
+	}
+
+	public void manageMapSize(boolean fullscreen, boolean browser, boolean editor) {
+		if (w.getCurrentLevel() == null) {
+			return;
+		} else if (!fullscreen) {
+			if (!browser && !editor) {
+				System.out.println("hi");
+				w.getCurrentLevel().setMapDimensions(1000, 724);
+			} else {
+				System.out.println("bye");
+				w.getCurrentLevel().setMapDimensions(700, 724);
+			}
+		} else {
+			if (!browser && !editor) {
+				w.getCurrentLevel().setMapDimensions(1920, 1006);
+			} else {
+				w.getCurrentLevel().setMapDimensions(1620, 1006);
+			}
+		}
 	}
 
 	// TODO
 	public void saveGame() {
 		System.out.println("Testing saving game ");
 
-		List<LevelConstructor> levelConstructors = w.getLevels();
-
 		try {
-			Game game = AuthoringController.getGameWithLevels(levelConstructors);
+			Game game = this.game;
 			File saveFile = FileChooserUtility.save(scene.getWindow());
 
 			String fileLocation = saveFile.getAbsolutePath();
@@ -126,20 +152,29 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	public void loadGame() {
 		System.out.println("Testing loading game ");
 	}
-	
-	public Workspace getWorkspace () {
+
+	public Workspace getWorkspace() {
 		return w;
 	}
-	
-	public GridPane getDefaultPane () {
+
+	public GridPane getDefaultPane() {
 		return myPanes.get(DEFAULT_MAP_PANE_INDEX);
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public void setGame(Game game) {
+		this.game = game;
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("OBserver update");
-		
-		Game receivedGame = (Game) arg;
-		w.updateVisual((GameWindow) o, (Game) arg);
+		System.out.println("Observer update");
+
+		Mail mail = (Mail) arg;
+
+		w.forward(mail.getPath(), (Mail) arg);
 	}
 }

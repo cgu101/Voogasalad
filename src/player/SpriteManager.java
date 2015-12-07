@@ -31,7 +31,7 @@ public class SpriteManager {
 		//bp.setCenter(group);
 		GridPane gp = new GridPane();
 
-		myMap = new view.map.Map(gp);
+		myMap = new PlayerMap(gp);
 //		myCamera.createTheMap(); this should not be called because it gets called in the constructor
 
 		bp.setCenter(gp);
@@ -128,6 +128,13 @@ public class SpriteManager {
 		for(Sprite s : sprites.values()){
 			s.play();
 		}
+	}
+	
+	/**
+	 * Returns the current map where Actors are placed.
+	 */
+	public view.map.Map getMap(){
+		return myMap;
 	}
 
 }

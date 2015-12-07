@@ -36,7 +36,13 @@ public class ParameterCell extends AbstractListCell<ParameterData> {
 		String actor = actors[Integer.parseInt(getItem().getActorIndex())];
 		comboBox.getItems()
 		.addAll(controller.getAuthoringActorConstructor().getPropertyList(actor));
-		if (item != null) comboBox.setValue(item);
+		if (item != null && !item.isEmpty()){
+			comboBox.setValue(item);
+		} else {
+			String val = comboBox.getItems().get(0);
+			comboBox.setValue(val);
+			getItem().setValue(val);
+		}
 		comboBox.setOnAction(e -> {
 			getItem().setValue(comboBox.getValue());
 		});

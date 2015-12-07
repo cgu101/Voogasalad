@@ -204,7 +204,7 @@ public class Main extends Application {
 		//MegaMan Actor
 		ActorPropertyMap apmMegaMan1 = new ActorPropertyMap();
 		apmMegaMan1.addProperty("groupID", "player");
-		apmMegaMan1.addProperty("image", "megaman.png");
+		apmMegaMan1.addProperty("image", "rcd.jpg");
 		apmMegaMan1.addProperty("xLocation", "0");
 		apmMegaMan1.addProperty("yLocation", "0");
 		apmMegaMan1.addProperty("angle", "45");
@@ -212,7 +212,7 @@ public class Main extends Application {
 		apmMegaMan1.addProperty("size", "50");
 		apmMegaMan1.addProperty("range", "40");
 		apmMegaMan1.addProperty("health", "20");
-		ac.updateActor("testActor", apmMegaMan1);
+		ac1.updateActor("testActor", apmMegaMan1);
 		
 		List<String> actorList1 = new ArrayList<String>();
 		actorList1.add("player");
