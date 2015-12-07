@@ -2,11 +2,12 @@ package view.controlbar;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
 import authoring.model.game.Game;
-import authoring.model.level.Level;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -97,7 +98,11 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				KeyCode.T, KeyCombination.CONTROL_DOWN);
 		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> screen.getWorkspace().addSplash(), KeyCode.R,
 				KeyCombination.CONTROL_DOWN);
-		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(),
+		Map<String, String> props = new HashMap<String, String>(){{
+	        put("image","duvall");
+	        put("size", "10");
+	    }};
+		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor("newActor", props),
 				KeyCode.N, KeyCombination.CONTROL_DOWN);
 		MenuItem changeBackground = makeMenuItem(myResources.getString("background"), e -> updateBackground());
 		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addLevel, addSplash, addActor, changeBackground);
@@ -121,7 +126,12 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	}
 
 	private void addActor() {
-		findActorBrowser().addNewActor();
+		Map<String, String> props = new HashMap<String, String>(){{
+	        put("image","rcd.jpg");
+	        put("groupID","NewActor");
+	        put("size","10");
+	    }};
+		findActorBrowser().addNewActor("NewActor", props);
 		if (!findActorBrowser().getShowingProperty().getValue()) {
 			findActorBrowser().getShowingProperty().setValue(true);
 		}
