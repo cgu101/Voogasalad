@@ -145,11 +145,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
 		screen.getWorkspace().updateObservers(dataMail);
 		if (screen.getGame().getLevels().size() == 1) {
-			for (AbstractDockElement c : screen.getComponents()) {
-				if (!c.getShowingProperty().getValue()) {
-					c.getShowingProperty().setValue(true);
-				}
-			}
+			toggleComponents(true);
 		}
 	}
 
@@ -193,6 +189,10 @@ public class ControlBarCreator extends ControlBar implements Observer {
 			item.selectedProperty().bindBidirectional(c.getShowingProperty());
 			addToMenu(window, item);
 		}
+		MenuItem show = makeMenuItem(myResources.getString("show"), e -> toggleComponents(true));
+		MenuItem hide = makeMenuItem(myResources.getString("hide"), e -> toggleComponents(false));
+		addToMenu(window, show);
+		addToMenu(window, hide);
 	}
 
 	private ActorBrowser findActorBrowser() {
@@ -202,6 +202,14 @@ public class ControlBarCreator extends ControlBar implements Observer {
 			}
 		}
 		return null;
+	}
+
+	private void toggleComponents(boolean showing) {
+		for (AbstractDockElement c : screen.getComponents()) {
+			if (c.getShowingProperty().getValue() != showing) {
+				c.getShowingProperty().setValue(showing);
+			}
+		}
 	}
 
 	public GameWindow getGameWindow() {

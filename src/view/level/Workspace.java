@@ -119,6 +119,12 @@ public class Workspace extends AbstractElement implements Anscestral {
 		}
 	}
 
+	public void refresh() {
+		// deals with resizing problems
+		addLevel(new Level(""));
+		deleteVisual(levelInfo.get(""));
+	}
+
 	public void addSplashScreen(Level level) {
 		addScreenElement(level);
 
