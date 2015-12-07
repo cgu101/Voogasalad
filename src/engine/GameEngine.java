@@ -1,5 +1,7 @@
 package engine;
 
+import authoring.model.actors.Actor;
+import authoring.model.actors.ActorType;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.ActorDependencyInjector;
 import authoring.model.game.Game;
@@ -76,9 +78,9 @@ public class GameEngine implements IEngine {
 		return game.getLevel(nextLevelName);
 	}
 	private void setExecutor(Level level, State state) {
-		levelExecutor = new InteractionExecutor(level, inputManager, state);
+		levelExecutor = new InteractionExecutor(level, inputManager, state, depInjector);
 	}
-	
+
 	/**
 	 * Loads the first level of the game (level with ID "0")
 	 */
@@ -133,7 +135,7 @@ public class GameEngine implements IEngine {
 	public void loadState (State state) throws EngineException {
 		if (state.getProperty(gameKey).getValue().equals(game.getProperty(gameKey).getValue())) {
 			Level level = game.getLevel((String) state.getProperty(levelKey).getValue());
-			levelExecutor = new InteractionExecutor(level, inputManager, state);
+			levelExecutor = new InteractionExecutor(level, inputManager, state, depInjector);
 		} else {
 			throw new EngineStateException("Wrong game", null);
 		}
@@ -142,8 +144,8 @@ public class GameEngine implements IEngine {
 	// This method shouldn't really be used
 	@Override 
 	public void nextLevel() throws EngineException {
-		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID()),levelExecutor.getCurrentState());
 		changeDependencies();
+		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID()),levelExecutor.getCurrentState());
 	}
 	
 	private void changeDependencies () {
