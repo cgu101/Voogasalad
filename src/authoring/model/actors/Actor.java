@@ -1,29 +1,49 @@
 package authoring.model.actors;
 
 import java.io.Serializable;
+import java.util.Observable;
 
 import authoring.model.bundles.Bundle;
 import authoring.model.bundles.Identifiable;
 import authoring.model.properties.Property;
 
-public class Actor implements Identifiable, IActor, Serializable {
+public class Actor extends Observable implements Identifiable, IActor, Serializable {
 	/**
 	 * Generated serial version iD
 	 */
 	private static final long serialVersionUID = 9139664644586189227L;
+	
 	private Bundle<Property<?>> myPropertyBundle;
 	private String identifier;
+	private ActorType actorType;
 
 	public Actor(Bundle<Property<?>> myPropertyBundle, String identifier) {
 		this.myPropertyBundle = myPropertyBundle;
 		this.identifier = identifier;
+		
+		setupType(identifier);
 	}
 
 	public Actor (Actor a) {
 		this.myPropertyBundle = new Bundle<Property<?>>(a.getProperties());
 		this.identifier = a.getUniqueID();
+		
+		setupType(identifier);
+	}
+	
+	private void setupType (String id) {
+		if (id.startsWith(ActorType.GLOBAL.toString())) {
+			this.actorType = ActorType.GLOBAL;
+		} else {
+			this.actorType = ActorType.LOCAL;
+		}
 	}
 
+	public void updateObservers (ActionType a) {
+		setChanged();
+		notifyObservers(a);
+	}
+	
 	@Override
 	public Bundle<Property<?>> getProperties() {
 		return myPropertyBundle;

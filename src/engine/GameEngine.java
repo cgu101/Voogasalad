@@ -1,6 +1,7 @@
 package engine;
 
 import authoring.model.bundles.Bundle;
+import authoring.model.game.ActorDependencyInjector;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
 import authoring.model.properties.Property;
@@ -25,11 +26,13 @@ public class GameEngine implements IEngine {
 	private Game game;
 	private InteractionExecutor levelExecutor;
 	private InputManager inputManager;
+	private ActorDependencyInjector depInjector;
 	
 	public GameEngine (InputManager inputManager) {
 		this.inputManager = inputManager;
 		this.game = null;
 		this.levelExecutor = null;
+		this.depInjector = new ActorDependencyInjector(this);
 	}
 	
 	/**
@@ -137,10 +140,14 @@ public class GameEngine implements IEngine {
 	}
 
 	// This method shouldn't really be used
-	@Override
+	@Override 
 	public void nextLevel() throws EngineException {
 		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID()),levelExecutor.getCurrentState());
-		
+		changeDependencies();
+	}
+	
+	private void changeDependencies () {
+		this.depInjector = new ActorDependencyInjector(this);
 	}
 
 	@Override
@@ -155,4 +162,9 @@ public class GameEngine implements IEngine {
 //		properties.add((Property<?>) b.getValue());
 //	}
 //	return properties;
+	
+	public void displayError (String errorMessage) {
+		//TODO
+		System.err.println(errorMessage);
+	}
 }
