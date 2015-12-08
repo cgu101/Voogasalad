@@ -2,6 +2,8 @@ package view.element;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
+
 import authoring.controller.AuthoringController;
 import authoring.model.tree.ActorTreeNode;
 import authoring.model.tree.InteractionTreeNode;
@@ -24,6 +26,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
+import util.Sprite;
 import view.actor.PropertyCell;
 import view.actor.TriggerCell;
 import view.interactions.InteractionCell;
@@ -42,7 +45,7 @@ public class ActorEditor extends AbstractDockElement {
 	private ActorBrowser browser;
 	private AuthoringController controller;
 	private Workspace workspace;
-	private ImageView image;
+	private Sprite image;
 	private GridPane contentPane;
 
 	public ActorEditor(GridPane home, String title, AbstractScreenInterface screen, ActorBrowser browser,
@@ -211,8 +214,8 @@ public class ActorEditor extends AbstractDockElement {
 //	}
 
 	private ImageView makeImage(String item) {
-		image = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(
-				controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image"))));
+		image = new Sprite(controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image"));
+		image.play();
 		image.setFitHeight(Double.parseDouble(myResources.getString("imagesize")));
 		image.setPreserveRatio(true);
 		image.setSmooth(true);
