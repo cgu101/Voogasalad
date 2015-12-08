@@ -42,9 +42,9 @@ public class Actor extends Observable implements Identifiable, IActor, Serializa
 		return actorType;
 	}
 
-	public void updateObservers(ActionType a) {
+	public void updateObservers(ActionMail mail) {
 		setChanged();
-		notifyObservers(a);
+		notifyObservers(mail);
 	}
 
 	@Override
