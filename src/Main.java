@@ -21,6 +21,8 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import resources.keys.PropertyKey;
+import resources.keys.PropertyKeyResource;
 
 public class Main extends Application {
 
@@ -57,7 +59,9 @@ public class Main extends Application {
 		/* Create a test game */
 		Game testGame = new Game();
 		Property p = new Property("name", "Awesome Game");
+		Property p2 = new Property(PropertyKeyResource.getKey(PropertyKey.GAME_LEVEL_COUNT_KEY), "2");
 		testGame.addProperty(p);
+		testGame.addProperty(p2);
 		Level testLevel = new Level("0");
 		TreeConstructor tc = new TreeConstructor();  //Changed constructor from none to public
 		MapConstructor m = new MapConstructor();
@@ -105,6 +109,14 @@ public class Main extends Application {
 		apmAsteroid.addProperty("speed", Integer.toString(10 + generator.nextInt(11)));
 		ac.updateActor("testActor5", apmAsteroid);
 		
+		//Global Level Transition Actor
+		ActorPropertyMap apmGlobal = new ActorPropertyMap();
+		apmGlobal.addProperty("groupID", "LevelTransition");
+		apmGlobal.addProperty("image", "rcd.jpg");
+		apmGlobal.addProperty("xLocation", "300");
+		apmGlobal.addProperty("yLocation", "300");
+		apmGlobal.addProperty("size", "300");
+		ac.updateActor("GlobalActor", apmGlobal);
 		
 		// Mega Man Self Triggers
 		List<String> actorList = new ArrayList<String>();
@@ -145,9 +157,26 @@ public class Main extends Application {
 		actionList.add("Move");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
+		
+		// LevelTransition Self Triggers
+		actorList.clear();
+		actorList.add("LevelTransition");
+		triggerList.clear();
+		triggerList.add("DownArrowKey");
+		actionList.clear();
+		actionList.add("NextLevel");
+		tc.addTreeNode(actorList, triggerList, actionList);
+		
+		
 		// Asteroid Self Triggers
 		actorList.clear();
 		actorList.add("asteroid");
+//		triggerList.clear();
+//		triggerList.add("authoring.model.triggers.selfconditions.DownArrowKey");
+//		actionList.clear();
+//		actionList.add("authoring.model.actions.oneActorActions.Move");
+//		tc.addTreeNode(actorList, triggerList, actionList);
+		
 		triggerList.clear();
 		triggerList.add("TrueSelfTrigger");
 		actionList.clear();
@@ -196,6 +225,10 @@ public class Main extends Application {
 		
 		testGame.addLevel(testLevel);
 		
+		
+		
+		
+		
 		Level testLevel1 = new Level("1");
 		TreeConstructor tc1 = new TreeConstructor();  //Changed constructor from none to public
 		MapConstructor m1 = new MapConstructor();
@@ -212,7 +245,20 @@ public class Main extends Application {
 		apmMegaMan1.addProperty("size", "50");
 		apmMegaMan1.addProperty("range", "40");
 		apmMegaMan1.addProperty("health", "20");
-		ac1.updateActor("testActor", apmMegaMan1);
+		ac1.updateActor("testActor7", apmMegaMan1);
+		
+//		//Asteroid Actors
+//		ActorPropertyMap apmAsteroid1 = new ActorPropertyMap();
+//		apmAsteroid1.addProperty("groupID", "asteroid");
+//		apmAsteroid1.addProperty("image", "asteroids.png");
+//		apmAsteroid1.addProperty("size", "128");
+//		apmAsteroid1.addProperty("health", "20");
+//		apmAsteroid1.addProperty("xLocation", Integer.toString(generator.nextInt(701)));
+//		apmAsteroid1.addProperty("yLocation", Integer.toString(generator.nextInt(601)));
+//		apmAsteroid1.addProperty("angle", Integer.toString(generator.nextInt(360)));
+//		apmAsteroid1.addProperty("speed", Integer.toString(10 + generator.nextInt(11)));
+//		ac1.updateActor("testActor8", apmAsteroid1);
+		
 		
 		List<String> actorList1 = new ArrayList<String>();
 		actorList1.add("player");

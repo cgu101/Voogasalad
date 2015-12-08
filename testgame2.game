@@ -101,6 +101,26 @@
                     <children>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
+                        <value>NextLevel</value>
+                        <parameters>
+                          <parameter__values/>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                    </children>
+                    <value>DownArrowKey</value>
+                    <parameters>
+                      <parameter__values/>
+                    </parameters>
+                  </authoring.model.tree.TriggerTreeNode>
+                </children>
+                <value>LevelTransition</value>
+              </authoring.model.tree.ActorTreeNode>
+              <authoring.model.tree.ActorTreeNode>
+                <children>
+                  <authoring.model.tree.TriggerTreeNode>
+                    <children>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
                         <value>Move</value>
                         <parameters>
                           <parameter__values/>
@@ -195,6 +215,65 @@
           <actorGroups>
             <actorMap>
               <entry>
+                <string>LevelTransition</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components>
+                    <entry>
+                      <string>GlobalActor</string>
+                      <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">rcd.jpg</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">300.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>size</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">300.0</myValue>
+                                <identifier>size</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">LevelTransition</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">300.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>GlobalActor</identifier>
+                        <actorType>GLOBAL</actorType>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                  </components>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
                 <string>bullet</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
@@ -211,6 +290,8 @@
                     <entry>
                       <string>testActor4</string>
                       <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
                         <myPropertyBundle>
                           <changed>false</changed>
                           <obs/>
@@ -225,7 +306,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">371.0</myValue>
+                                <myValue class="double">463.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -253,32 +334,35 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">186.0</myValue>
+                                <myValue class="double">216.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">38.0</myValue>
+                                <myValue class="double">532.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">14.0</myValue>
+                                <myValue class="double">17.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                           </components>
                         </myPropertyBundle>
                         <identifier>testActor4</identifier>
+                        <actorType>LOCAL</actorType>
                       </authoring.model.actors.Actor>
                     </entry>
                     <entry>
                       <string>testActor3</string>
                       <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
                         <myPropertyBundle>
                           <changed>false</changed>
                           <obs/>
@@ -293,7 +377,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">665.0</myValue>
+                                <myValue class="double">119.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -321,32 +405,35 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">323.0</myValue>
+                                <myValue class="double">34.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">302.0</myValue>
+                                <myValue class="double">113.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">13.0</myValue>
+                                <myValue class="double">18.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                           </components>
                         </myPropertyBundle>
                         <identifier>testActor3</identifier>
+                        <actorType>LOCAL</actorType>
                       </authoring.model.actors.Actor>
                     </entry>
                     <entry>
                       <string>testActor5</string>
                       <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
                         <myPropertyBundle>
                           <changed>false</changed>
                           <obs/>
@@ -361,7 +448,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">96.0</myValue>
+                                <myValue class="double">266.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -389,32 +476,35 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">143.0</myValue>
+                                <myValue class="double">198.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">169.0</myValue>
+                                <myValue class="double">15.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">12.0</myValue>
+                                <myValue class="double">17.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                           </components>
                         </myPropertyBundle>
                         <identifier>testActor5</identifier>
+                        <actorType>LOCAL</actorType>
                       </authoring.model.actors.Actor>
                     </entry>
                     <entry>
                       <string>testActor2</string>
                       <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
                         <myPropertyBundle>
                           <changed>false</changed>
                           <obs/>
@@ -429,7 +519,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">278.0</myValue>
+                                <myValue class="double">133.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -457,27 +547,28 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">77.0</myValue>
+                                <myValue class="double">46.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">392.0</myValue>
+                                <myValue class="double">573.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">19.0</myValue>
+                                <myValue class="double">17.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                           </components>
                         </myPropertyBundle>
                         <identifier>testActor2</identifier>
+                        <actorType>LOCAL</actorType>
                       </authoring.model.actors.Actor>
                     </entry>
                   </components>
@@ -492,6 +583,8 @@
                     <entry>
                       <string>testActor</string>
                       <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
                         <myPropertyBundle>
                           <changed>false</changed>
                           <obs/>
@@ -562,6 +655,7 @@
                           </components>
                         </myPropertyBundle>
                         <identifier>testActor</identifier>
+                        <actorType>LOCAL</actorType>
                       </authoring.model.actors.Actor>
                     </entry>
                   </components>
@@ -679,12 +773,12 @@
               <authoring.model.actions.oneActorActions.RotateCounterclockwise/>
             </entry>
             <entry>
-              <string>MoveActorsToAvoidCollisions</string>
-              <authoring.model.actions.twoActorActions.MoveActorsToAvoidCollisions/>
-            </entry>
-            <entry>
               <string>MoveBackwards</string>
               <authoring.model.actions.oneActorActions.MoveBackwards/>
+            </entry>
+            <entry>
+              <string>NextLevel</string>
+              <authoring.model.actions.oneActorActions.NextLevel/>
             </entry>
             <entry>
               <string>ReduceSize</string>
@@ -709,8 +803,10 @@
                   <obs/>
                   <components>
                     <entry>
-                      <string>testActor</string>
+                      <string>testActor7</string>
                       <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
                         <myPropertyBundle>
                           <changed>false</changed>
                           <obs/>
@@ -780,7 +876,8 @@
                             </entry>
                           </components>
                         </myPropertyBundle>
-                        <identifier>testActor</identifier>
+                        <identifier>testActor7</identifier>
+                        <actorType>LOCAL</actorType>
                       </authoring.model.actors.Actor>
                     </entry>
                   </components>
@@ -898,12 +995,12 @@
               <authoring.model.actions.oneActorActions.RotateCounterclockwise/>
             </entry>
             <entry>
-              <string>MoveActorsToAvoidCollisions</string>
-              <authoring.model.actions.twoActorActions.MoveActorsToAvoidCollisions/>
-            </entry>
-            <entry>
               <string>MoveBackwards</string>
               <authoring.model.actions.oneActorActions.MoveBackwards/>
+            </entry>
+            <entry>
+              <string>NextLevel</string>
+              <authoring.model.actions.oneActorActions.NextLevel/>
             </entry>
             <entry>
               <string>ReduceSize</string>
@@ -919,6 +1016,13 @@
     <changed>false</changed>
     <obs/>
     <components>
+      <entry>
+        <string>levelCount</string>
+        <authoring.model.properties.Property>
+          <myValue class="string">2</myValue>
+          <identifier>levelCount</identifier>
+        </authoring.model.properties.Property>
+      </entry>
       <entry>
         <string>name</string>
         <authoring.model.properties.Property>

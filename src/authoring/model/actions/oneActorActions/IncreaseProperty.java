@@ -1,20 +1,16 @@
 package authoring.model.actions.oneActorActions;
 
-import authoring.model.actions.AOneActorAction;
-import authoring.model.actors.Actor;
-import authoring.model.tree.Parameters;
-import engine.State;
+import authoring.model.actions.AChangeProperty;
 
-public class IncreaseProperty extends AOneActorAction {
+public class IncreaseProperty extends AChangeProperty {
 	/**
 	 * Generated serial version ID
 	 */
 	private static final long serialVersionUID = -3612830585385260543L;
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
-		// Double increment = (Double) value;
-		// property.setValue((Double)property.getValue() + increment);
+	protected Double calculateValue(Double value, Double increment, Double maximum) {
+		value += increment;
+		return maximum != null && Double.compare(value, maximum) > 0 ? maximum : value;
 	}
 }

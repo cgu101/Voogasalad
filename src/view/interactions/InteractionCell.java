@@ -1,9 +1,15 @@
 package view.interactions;
 
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import authoring.controller.AuthoringController;
+import authoring.model.tree.ActionTreeNode;
+import authoring.model.tree.InteractionTreeNode;
+import authoring.model.tree.ParameterTreeNode;
+import authoring.model.tree.TriggerTreeNode;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tooltip;
@@ -15,30 +21,34 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
-public class InteractionCell extends TreeCell<InteractionData>{
+public class InteractionCell extends TreeCell<InteractionTreeNode>{
 
 	private GridPane pane;
 	private AuthoringController controller;
+	private String[] actors;
 	private ResourceBundle resources = ResourceBundle.getBundle("resources/InteractionCell");
 
-	public InteractionCell (GridPane pane, AuthoringController controller) {
+	public InteractionCell (GridPane pane, AuthoringController controller, String... actors) {
 		this.pane = pane;
 		this.controller = controller;
+		this.actors = actors;
 
 	}
+	@SuppressWarnings("unchecked")
 	@Override
-	public void updateItem(InteractionData item, boolean empty) {
+	public void updateItem(InteractionTreeNode item, boolean empty) {
 		super.updateItem(item, empty);
 
 		if (empty || item == null) {
 			setText(null);
 			setGraphic(null);
 		} else {
-			setText(getItem() == null ? "" : getItem().getType());
+			boolean root = getTreeItem().getParent() == null;
+			setText(getItem() == null || root ? "" : getItem().getIdentifier().split("TreeNode")[0]);
 			HBox box = new HBox(2);
 			ImageView icon;
 			try {
-				String iconName = resources.getString(getItem().getType() + "Icon");
+				String iconName = resources.getString(getItem().getIdentifier() + "Icon");
 				icon = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(iconName)));
 			} catch (Exception e) {
 				icon = new ImageView();
@@ -46,11 +56,11 @@ public class InteractionCell extends TreeCell<InteractionData>{
 			icon.setPreserveRatio(true);
 			icon.setFitHeight(Double.parseDouble(resources.getString("IconHeight")));
 			box.getChildren().add(icon);
-			box.getChildren().add(new Text(getItem().getID()));
+			box.getChildren().add(new Text(root ? "Interaction" : getItem().getValue()));
 			setGraphic(box);
 			ContextMenu menu = new ContextMenu();
-			if (getTreeItem().getParent()!= null){
-				if (getItem() != null && getItem().getType().equals("Trigger")) {
+			if (!root){
+				if (getItem() != null && getItem().getIdentifier().equals(TriggerTreeNode.class.getSimpleName())) {
 					menu.getItems().add(makeAddTriggerItem());
 					menu.getItems().add(makeAddActionItem());
 				}
@@ -62,10 +72,14 @@ public class InteractionCell extends TreeCell<InteractionData>{
 			setContextMenu(menu);
 			String tooltext;
 			try {
-				tooltext = item.getValues().stream()
-												.map(e -> {return e.getText() + ": " + e.getValue();})
-												.collect(Collectors.joining("\n"));
-			} catch (NullPointerException n) {
+				if (!root) {
+					ParameterTreeNode paramItem = (ParameterTreeNode) getItem();
+					tooltext = ((Set<Entry<String,Object>>)paramItem.getParameters().getParameterAndValues()).stream()
+							.map(e -> {return e.getKey() + ": " + e.getValue().toString();})
+							.collect(Collectors.joining("\n"));
+				} else tooltext = "";
+			} catch (Exception n) {
+				n.printStackTrace();
 				tooltext = "";
 			}
 			setTooltip(new Tooltip(tooltext));
@@ -74,10 +88,12 @@ public class InteractionCell extends TreeCell<InteractionData>{
 	private MenuItem makeAddTriggerItem () {
 		MenuItem triggerItem = new MenuItem("Add Trigger");
 		triggerItem.setOnAction(e -> {
-			TriggerParametersView view = new TriggerParametersView(getItem(), pane, controller);
-			TreeItem<InteractionData> newTrigger = 
-					new TreeItem<InteractionData>(new InteractionData("Trigger", "notlikethis",null, null));
+			TriggerTreeNode triggerNode = new TriggerTreeNode("");
+			ParametersView view = new ParametersView(triggerNode, pane, controller, actors);
+			TreeItem<InteractionTreeNode> newTrigger = 
+					new TreeItem<InteractionTreeNode>(triggerNode);
 			newTrigger.setExpanded(true);
+			getItem().addChild(triggerNode);
 			getTreeItem().getChildren().add(newTrigger);
 
 		});
@@ -86,8 +102,11 @@ public class InteractionCell extends TreeCell<InteractionData>{
 	private MenuItem makeAddActionItem () {
 		MenuItem actionItem = new MenuItem("Add Action");
 		actionItem.setOnAction(e -> {
-			TreeItem<InteractionData> newAction = 
-					new TreeItem<InteractionData>(new InteractionData("Action", "a",null,null));
+			ActionTreeNode actionNode = new ActionTreeNode("");
+			ParametersView view = new ParametersView(actionNode, pane, controller, actors);
+			TreeItem<InteractionTreeNode> newAction = 
+					new TreeItem<InteractionTreeNode>(actionNode);
+			getItem().addChild(actionNode);
 			getTreeItem().getChildren().add(newAction);
 		});
 		return actionItem;
@@ -95,17 +114,21 @@ public class InteractionCell extends TreeCell<InteractionData>{
 	private MenuItem makeEditItem () {
 		MenuItem editItem = new MenuItem("Edit");
 		editItem.setOnAction(e -> {
-			TriggerParametersView view = new TriggerParametersView(getItem(), pane, controller);
+			ParametersView view = new ParametersView((ParameterTreeNode) getItem(), pane, controller, actors);
 		});
 		return editItem;
 	}
 	private MenuItem makeDeleteItem () {
 		MenuItem deleteItem = new MenuItem("Delete");
 		deleteItem.setOnAction(e -> {
-			TreeItem<InteractionData> treeItem = getTreeItem();
+			TreeItem<InteractionTreeNode> treeItem = getTreeItem();
+			treeItem.getParent().getValue().remove(getItem());
 			treeItem.getParent().getChildren().remove(treeItem);
 		});
 		return deleteItem;
+	}
+	public String[] getActors() {
+		return actors;
 	}
 }
 

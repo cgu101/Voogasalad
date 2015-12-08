@@ -1,8 +1,15 @@
 package view.element;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Properties;
 
 import authoring.controller.AuthoringController;
+import authoring.controller.constructor.configreader.AuthoringConfigManager;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -35,8 +42,7 @@ public class ActorBrowser extends AbstractDockElement {
 	private AuthoringController controller;
 	private GridPane listPane;
 
-	public ActorBrowser(GridPane home, String title, AbstractScreenInterface screen,
-			Workspace workspace) {
+	public ActorBrowser(GridPane home, String title, AbstractScreenInterface screen, Workspace workspace) {
 		super(home, title, screen);
 		findResources();
 		doubleLists = new SimpleBooleanProperty(true);
@@ -77,6 +83,7 @@ public class ActorBrowser extends AbstractDockElement {
 		rightlist.setItems(actors);
 		if (controller != null) {
 			actors.addAll(controller.getAuthoringActorConstructor().getActorList());
+			System.out.println(actors.toString());
 		}
 	}
 
@@ -117,11 +124,58 @@ public class ActorBrowser extends AbstractDockElement {
 		event.consume();
 	}
 
-	public void addNewActor() {
-		// actors.add("Actor " + actors.size());
-		// TODO: add backend implementation
+	public void addNewActor(String actorName, Map<String, String> properties) {
 		System.out.println("add actor");
+		Properties prop = new Properties();
+		OutputStream output = null;
+		try {
+			output = new FileOutputStream("src/authoring/files/actors/" + actorName + ".properties");
+			String props = "";
+			for (Map.Entry<String, String> property : properties.entrySet()) {
+				props += property.getKey() + ",";
+				prop.setProperty(property.getKey(), property.getValue());
+			}
+			prop.setProperty("properties", props);
+			prop.store(output, "New User Defined Actor Added");
+		} catch (IOException io) {
+			io.printStackTrace();
+		} finally {
+			try {
+				output.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		FileInputStream in;
+		Properties props = new Properties();
+		try {
+			in = new FileInputStream("src/authoring/files/configuration.properties");
+			props.load(in);
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			FileOutputStream out = new FileOutputStream("src/authoring/files/configuration.properties");
+			String actors = props.getProperty("actors") + "," + actorName;
+			props.setProperty("actors", actors);
+			props.store(out, null);
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		AuthoringConfigManager.getInstance().refresh();
+		load(controller);
+
 	}
+
+	// private void externalModify() {
+	// IProject project = root.getProject(currentProjectName);
+	// project.refreshLocal(IResource.DEPTH_INFINITE, null);
+	// }
 
 	public BooleanProperty getDoubleListsProperty() {
 		return doubleLists;
