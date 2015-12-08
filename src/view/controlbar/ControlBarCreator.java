@@ -166,6 +166,8 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		Map<String, String> props = new HashMap<String, String>(){{
 	        put("image","rcd.jpg");
 	        put("groupID","NewActor");
+	        put("width","10");
+	        put("height","10");
 	        put("size","10");
 	    }};
 		findActorBrowser().addNewActor("NewActor", props);
