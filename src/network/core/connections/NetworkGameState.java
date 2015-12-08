@@ -38,7 +38,6 @@ public class NetworkGameState implements Identifiable, Closeable  {
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	private void initializeHeartbeat() {

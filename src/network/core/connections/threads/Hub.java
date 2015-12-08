@@ -23,8 +23,8 @@ public class Hub {
 		this.port = port;
 		serverSocket = new ServerSocket(port);
 		System.out.println("Listening for client connections on port " + port);
-
 		serverThread = new ServerThread();
+		serverThread.start();
 	}
 
 	/**
@@ -76,6 +76,7 @@ public class Hub {
 		
 		private ServerThread() {
 			controller = new ConnectionController();
+			controller.start();
 		}
 		
 		public void run() {
@@ -86,8 +87,13 @@ public class Hub {
 				}
 			} catch (Exception e) {
 				if (shutdown) {
-					System.out.println("Listener socket has shut down.");
-					controller.close();
+					try {
+						System.out.println("Listener socket has shut down.");
+						controller.close();
+						join();
+					} catch (InterruptedException e1) {
+						System.out.println("Error shutting down server thread: " + e);
+					}
 				} else {
 					System.out.println("Listener socket has been shut down by error: " + e + "\nAttempting to restart server.");
 					try {

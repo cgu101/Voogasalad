@@ -11,15 +11,15 @@ import authoring.model.triggers.ITriggerEvent;
 import voogasalad.util.reflection.Reflection;
 
 public class MapConstructor {
-
-	private Map<String, ITriggerEvent> triggerMap;
-	private Map<String, IAction> actionMap;
+	
+	private Map<String, Map> itemsMap;
 	
 	public MapConstructor() {
-		triggerMap = new HashMap<String, ITriggerEvent>();
-		actionMap = new HashMap<String, IAction>();		
-		addValueToMap(triggerMap, AuthoringConfigManager.getInstance().getKeyList(ResourceType.TRIGGERS), ResourceType.TRIGGERS);
-		addValueToMap(actionMap, AuthoringConfigManager.getInstance().getKeyList(ResourceType.ACTIONS), ResourceType.ACTIONS);
+		itemsMap = new HashMap<String, Map>();
+		itemsMap.put(ResourceType.TRIGGERS, new HashMap<String, ITriggerEvent>());
+		itemsMap.put(ResourceType.ACTIONS, new HashMap<String, IAction>());	
+		addValueToMap(AuthoringConfigManager.getInstance().getKeyList(ResourceType.TRIGGERS), ResourceType.TRIGGERS);
+		addValueToMap(AuthoringConfigManager.getInstance().getKeyList(ResourceType.ACTIONS), ResourceType.ACTIONS);
 	}
 	
 	/**
@@ -28,7 +28,7 @@ public class MapConstructor {
 	 * @return Map<String, ITriggerEvent>
 	 */
 	public Map<String, ITriggerEvent> getTriggerMap() {
-		return triggerMap;
+		return itemsMap.get(ResourceType.TRIGGERS);
 	}
 	
 	/**
@@ -37,12 +37,19 @@ public class MapConstructor {
 	 * @return Map<String, IAction> 
 	 */
 	public Map<String, IAction> getActionMap() {
-		return actionMap;
+		return itemsMap.get(ResourceType.ACTIONS);
+	}
+	
+	public <T> void addValueToMap(String toAdd, String type) {
+		Map<String, T> map = itemsMap.get(type);
+		if (!map.containsKey(toAdd)) {
+			map.put(toAdd, (T) Reflection.createInstance(toAdd));
+		}
 	}
 
-	private <T> void addValueToMap(Map<String, T> map, List<String> actions, String type) {
+	private <T> void addValueToMap(List<String> actions, String type) {
 		for (String action : actions) {
-			addValueToMap(map, action, type);
+			addValueToMap(itemsMap.get(type), action, type);
 		}
 	}
 	

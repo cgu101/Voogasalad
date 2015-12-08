@@ -38,8 +38,13 @@ public class ConnectionController extends ConnectionThread {
 	@Override
 	public void close() {
 		super.close();
-		games.close();
-		clients.close();
+		try {
+			games.close();
+			clients.close();
+			join();
+		} catch (InterruptedException e) {
+			System.out.println("Error closing connection: " + e);
+		}
 	}
 	
 	public void addConnection(Socket connection) {
@@ -48,6 +53,7 @@ public class ConnectionController extends ConnectionThread {
 	
 	private void handshake(Socket connection) {
 		// TODO the actual handshake
+		System.out.println("Hub just connected to: " + connection.getLocalAddress());
 		
 		// Then create the client
 		try {

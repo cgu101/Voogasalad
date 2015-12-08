@@ -80,7 +80,6 @@ public class ClientConnection implements Identifiable, Closeable {
 			@Override
 			public void heartbeat() {
 				// TODO Auto-generated method stub
-				
 			}			
 		};
 	}

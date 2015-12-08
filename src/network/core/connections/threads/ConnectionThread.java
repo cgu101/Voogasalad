@@ -1,6 +1,8 @@
 package network.core.connections.threads;
 
-public abstract class ConnectionThread extends Thread {
+import network.core.connections.Closeable;
+
+public abstract class ConnectionThread extends Thread implements Closeable {
 	
 	private Boolean closed = false;
 	

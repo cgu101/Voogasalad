@@ -31,6 +31,7 @@ public class SendThread extends ConnectionThread {
 					out = new ObjectOutputStream(connection.getOutputStream());
 				} catch (IOException e1) {
 					System.out.println("Failure trying to reopen outputstream: " + e);
+					close();
 				};
 			}
 		}	 
@@ -41,7 +42,8 @@ public class SendThread extends ConnectionThread {
 		super.close();
 		try {
 			out.close();
-		} catch(IOException e) {
+			join();
+		} catch(IOException | InterruptedException e) {
 			System.out.println("Error while trying to close output stream: " + e);
 		}
 	}
