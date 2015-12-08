@@ -24,16 +24,24 @@ public class MessageHandler {
 	
 	private void init() {
 		// TODO Handle add request
-		myExecuters.put(Request.ADD, null);
+		myExecuters.put(Request.ADD, (message, clients, games)-> {
+			System.out.println("ADD");
+		});
 		
 		// TODO Handle delete request
-		myExecuters.put(Request.DELETE, null);
+		myExecuters.put(Request.DELETE, (message, clients, games)-> {
+			System.out.println("DELETE");
+		});
 		
 		// TODO Handle modify request
-		myExecuters.put(Request.MODIFY, null);
+		myExecuters.put(Request.MODIFY, (message, clients, games)-> {
+			System.out.println("MODIFY");
+		});
 		
 		// TODO Handle transition request
-		myExecuters.put(Request.TRANSITION, null);
+		myExecuters.put(Request.TRANSITION, (message, clients, games)-> {
+			System.out.println("TRANSITION");
+		});
 	}
 	
 	interface ExecuteHandler {	

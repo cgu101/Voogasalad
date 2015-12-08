@@ -12,7 +12,7 @@ import network.core.connections.threads.ReceiveThread;
 import network.core.connections.threads.SendThread;
 import network.framework.format.Mail;
 
-public class ClientConnection implements Identifiable {
+public class ClientConnection implements Identifiable, Closeable {
 	
 	private static final Long DELAY = 1800000l;
 	
@@ -51,6 +51,7 @@ public class ClientConnection implements Identifiable {
     	this.gameId = gameId;
     }
     
+    @Override
     public void close() {
     	sendThread.close();
     	receiveThread.close();
@@ -82,5 +83,9 @@ public class ClientConnection implements Identifiable {
 				
 			}			
 		};
+	}
+	
+	public HeartbeatValue getHeartbeatValue() {
+		return heartbeatVal;
 	}
 }

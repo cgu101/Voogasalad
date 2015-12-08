@@ -38,7 +38,8 @@ public class ConnectionController extends ConnectionThread {
 	@Override
 	public void close() {
 		super.close();
-		// Shutdown all of the threads and save the game states
+		games.close();
+		clients.close();
 	}
 	
 	public void addConnection(Socket connection) {

@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import authoring.model.bundles.Identifiable;
+import network.core.connections.Closeable;
 
-public class NetworkContainer<T extends Identifiable> {
+public class NetworkContainer<T extends Identifiable & Closeable> {
 
 	private Map<String, T> container;
 	
@@ -25,5 +26,11 @@ public class NetworkContainer<T extends Identifiable> {
 		
 	public void addObject(T t) {
 		container.put(t.getUniqueID(), t);
+	}
+	
+	public void close() {
+		for(T t : container.values()) {
+			t.close();
+		}
 	}
 }

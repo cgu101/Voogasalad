@@ -6,7 +6,7 @@ import java.util.List;
 import authoring.model.bundles.Identifiable;
 import network.deprecated.GameState;
 
-public class NetworkGameState implements Identifiable  {
+public class NetworkGameState implements Identifiable, Closeable  {
 	
 	private static final Long DELAY = 2700000l;
 	
@@ -34,6 +34,12 @@ public class NetworkGameState implements Identifiable  {
 	public Identifiable getCopy() {
 		return null;
 	}
+
+	@Override
+	public void close() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	private void initializeHeartbeat() {
 		heartbeat = new Heartbeat(DELAY) {
@@ -43,6 +49,10 @@ public class NetworkGameState implements Identifiable  {
 				// TODO Auto-generated method stub
 			}			
 		};
+	}
+	
+	public HeartbeatValue getHeartbeatValue() {
+		return heartbeatVal;
 	}
 		
 }
