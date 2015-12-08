@@ -55,7 +55,7 @@ public class ParametersView {
 		this.controller = controller;
 		this.actors = actors;
 
-		type = node.getIdentifier().equals(TRIGGER_IDENTIFIER) ? ResourceType.TRIGGERS : ResourceType.ACTIONS;
+		type = node.getIdentifier().equals(TRIGGER_IDENTIFIER) ? ResourceType.TRIGGERS.toString() : ResourceType.ACTIONS.toString();
 		makePane();
 		init();
 	}
@@ -152,7 +152,7 @@ public class ParametersView {
 	}
 
 	private ListView<ParameterData> makeParamList(String identifier) {
-		int numParams = Integer.parseInt(AuthoringConfigManager.getInstance().getTypeInfo(type, identifier, ResourceType.NUM_PARAMS));
+		int numParams = Integer.parseInt(AuthoringConfigManager.getInstance().getTypeInfo(type, identifier, ResourceType.NUM_PARAMS.toString()));
 		paramList = FXCollections.observableArrayList();
 		for (int i = 0; i < numParams; i++) {
 			String paramPrefix = PARAM_PREFIX + Integer.toString(i);

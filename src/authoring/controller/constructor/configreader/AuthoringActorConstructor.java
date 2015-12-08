@@ -17,7 +17,7 @@ public class AuthoringActorConstructor {
 
 	private void reload() {
 		actorMap = new HashMap<String, ActorObject>();
-		for (String actor : AuthoringConfigManager.getInstance().getKeyList(ResourceType.ACTORS)) {
+		for (String actor : AuthoringConfigManager.getInstance().getKeyList(ResourceType.ACTORS.toString())) {
 			System.out.println("actor="+actor);
 			if(actorMap.containsKey(actor)) continue;
 			actorMap.put(actor, new ActorObject(actor, AuthoringConfigManager.getInstance().getPropertyList(actor)));
@@ -94,7 +94,7 @@ public class AuthoringActorConstructor {
 	 * @return List<String>
 	 */
 	public List<String> getTriggerList(String actor, String... otherActors) {	
-		return getListForEverything(ResourceType.TRIGGERS, actor, otherActors);
+		return getListForEverything(ResourceType.TRIGGERS.toString(), actor, otherActors);
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class AuthoringActorConstructor {
 	 * @return List<String>
 	 */
 	public List<String> getActionList(String actor) {
-		return getListForEverything(ResourceType.ACTIONS, actor, new String[]{});
+		return getListForEverything(ResourceType.ACTIONS.toString(), actor, new String[]{});
 	}
 	
 	/**
@@ -114,7 +114,7 @@ public class AuthoringActorConstructor {
 	 * @return
 	 */
 	public List<String> getActionList(String actor, String...otherActors) {
-		return getListForEverything(ResourceType.ACTIONS, actor, otherActors);
+		return getListForEverything(ResourceType.ACTIONS.toString(), actor, otherActors);
 	}
 	
 	private List<String> getListForEverything(String type, String actor, String...otherActors) {	
@@ -127,7 +127,7 @@ public class AuthoringActorConstructor {
 		List<String> toRemove = new ArrayList<String>();
 		
 		for(String action : actions) {
-			String num = AuthoringConfigManager.getInstance().getTypeInfo(type, action, ResourceType.NUM_ACTORS);
+			String num = AuthoringConfigManager.getInstance().getTypeInfo(type, action, ResourceType.NUM_ACTORS.toString());
 			Integer val = new Integer(num);				
 			if(val > otherActors.length) {
 				toRemove.add(action);
