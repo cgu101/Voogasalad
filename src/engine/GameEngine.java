@@ -71,9 +71,11 @@ public class GameEngine implements IEngine {
 	}
 	private Level makeDefaultNextLevel (String currentLevelID) {
 		int nextLevelID = Integer.parseInt(currentLevelID) + 1;
+		// TODO end game
 		if (nextLevelID >= Integer.parseInt((String)game.getProperty(levelCountKey).getValue())) {
 			return null;
 		}
+		System.out.println("id "+nextLevelID);
 		String nextLevelName = Integer.toString(nextLevelID);
 		return game.getLevel(nextLevelName);
 	}
@@ -144,8 +146,8 @@ public class GameEngine implements IEngine {
 	// This method shouldn't really be used
 	@Override 
 	public void nextLevel() throws EngineException {
-		changeDependencies();
-		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID()),levelExecutor.getCurrentState());
+//		changeDependencies();
+//		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID()),levelExecutor.getCurrentState());
 	}
 	
 	private void changeDependencies () {
