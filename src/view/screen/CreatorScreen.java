@@ -114,16 +114,16 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 			return;
 		} else if (!fullscreen) {
 			if (!browser && !editor) {
-				w.getCurrentLevel().setMapDimensions(1000, 724);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("med1width")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			} else {
-				w.getCurrentLevel().setMapDimensions(700, 724);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("smallestwidth")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			}
 		} else {
 			w.refresh();
 			if (!browser && !editor) {
-				w.getCurrentLevel().setMapDimensions(1920, 1006);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("largestwidth")), Double.parseDouble(myResources.getString("bigscreenheight")));
 			} else {
-				w.getCurrentLevel().setMapDimensions(1620, 1006);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("med2width")), Double.parseDouble(myResources.getString("bigscreeneheight")));
 			}
 		}
 	}

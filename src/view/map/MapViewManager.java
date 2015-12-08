@@ -13,7 +13,6 @@ import view.visual.AbstractVisual;
  */
 public class MapViewManager extends AbstractVisual {
 	private Group mapLayout;
-	private MapZoomSlider slider;
 
 	public MapViewManager(Group layout) {// , AuthoringController ac) {
 		mapLayout = layout;

@@ -10,6 +10,9 @@ import java.util.Observer;
 import java.util.Observer;
 
 import authoring.model.level.Level;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,6 +29,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
 import network.framework.format.Request;
@@ -94,14 +98,26 @@ public class ControlBarCreator extends ControlBar implements Observer {
 			}
 			screen.setNextScreen(new StartScreen());
 		});
+		setHoverAndExitAnimations(backButton);
+			
 		Button addButton = makeButton("add", e -> addNewLevel());
+		setHoverAndExitAnimations(addButton);
+
 		Button leftButton = makeButton("left", e -> screen.getWorkspace().moveLevel(true));
+		setHoverAndExitAnimations(leftButton);
+		
 		Button rightButton = makeButton("right", e -> screen.getWorkspace().moveLevel(false));
+		setHoverAndExitAnimations(rightButton);
+
 		Button splashButton = makeButton("splash", e -> addNewSplash());
-
+		setHoverAndExitAnimations(splashButton);
+		
 		Button backgroundButton = makeButton("background", e -> updateBackground());
+		setHoverAndExitAnimations(backgroundButton);
+		
 		Button newActor = makeButton("new", e -> addActor());
-
+		setHoverAndExitAnimations(newActor);
+		
 		toolBar.getItems().addAll(backButton, new Separator(), addButton, splashButton, new Separator(), leftButton,
 				rightButton, new Separator(), newActor, new Separator(), backgroundButton);
 	}
@@ -160,6 +176,61 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		Level newSplash = new Level(Integer.toString(screen.getGame().getLevels().size()));
 		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, new ArrayDeque<String>());
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
+	}
+	
+	private void handleHover(Button b) {
+		FadeTransition fadeTransition = 
+				new FadeTransition(Duration.millis(300), b);
+		fadeTransition.setFromValue(0.5);
+		fadeTransition.setToValue(1.0);
+		fadeTransition.setCycleCount(1);
+		fadeTransition.setAutoReverse(true);
+		fadeTransition.play();
+		
+		ScaleTransition scaleTransition = 
+				new ScaleTransition(Duration.millis(300), b);
+		scaleTransition.setToX(1.1);
+		scaleTransition.setToY(1.1);
+		scaleTransition.setCycleCount(1);
+		scaleTransition.setAutoReverse(true);
+
+		ParallelTransition parallelTransition = new ParallelTransition();
+		parallelTransition.getChildren().addAll(
+				fadeTransition,
+				scaleTransition
+				);
+		parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+	}
+	
+	private void handleExit(Button b) {
+		FadeTransition fadeTransition = 
+				new FadeTransition(Duration.millis(300), b);
+		fadeTransition.setFromValue(1.0);
+		fadeTransition.setToValue(0.5);
+		fadeTransition.setCycleCount(1);
+		fadeTransition.setAutoReverse(true);
+		
+		ScaleTransition scaleTransition = 
+				new ScaleTransition(Duration.millis(300), b);
+		scaleTransition.setToX(1);
+		scaleTransition.setToY(1);
+		scaleTransition.setCycleCount(1);
+		scaleTransition.setAutoReverse(true);
+
+		ParallelTransition parallelTransition = new ParallelTransition();
+		parallelTransition.getChildren().addAll(
+				fadeTransition,
+				scaleTransition
+				);
+		parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+	}
+	
+	private void setHoverAndExitAnimations(Button b) {
+		b.setOpacity(0.5);
+		b.setOnMouseEntered(e -> handleHover(b));
+		b.setOnMouseExited(e -> handleExit(b));
 	}
 
 	private void addActor() {

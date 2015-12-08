@@ -231,15 +231,15 @@ public class PlayerScreen extends AbstractScreen {
 	private void manageMapSize(boolean fullscreen, boolean monitor, boolean editor) {
 		if (!fullscreen) {
 			if (!monitor && !editor) {
-				map.setMapDimensions(1100, 520);
+				map.setMapDimensions(Double.parseDouble(myResources.getString("mediumsmallwidth")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			} else {
-				map.setMapDimensions(700, 520);
+				map.setMapDimensions(Double.parseDouble(myResources.getString("smallestwidth")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			}
 		} else {
 			if (!monitor && !editor) {
-				map.setMapDimensions(1920, 956);
+				map.setMapDimensions(Double.parseDouble(myResources.getString("suffrage")), Double.parseDouble(myResources.getString("fullscreenheight")));
 			} else {
-				map.setMapDimensions(1520, 956);
+				map.setMapDimensions(Double.parseDouble(myResources.getString("mediumbigwidth")), Double.parseDouble(myResources.getString("fullscreenheight")));
 			}
 		}
 	}
