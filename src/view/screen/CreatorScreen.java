@@ -93,35 +93,33 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		ActorHandlerToolbar aet = new ActorHandlerToolbar(homePanes.get(3), myResources.getString("toolbarname"), this,
 				w);
 		components.add(aet);
-		configureMap(browser, editor, slider);
+		configureMap(browser, editor);
 	}
 
-	private void configureMap(ActorBrowser browser, ActorEditor editor, CreatorMapSliders slider) {
+	private void configureMap(ActorBrowser browser, ActorEditor editor) {
 		fullscreen.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
-				editor.getDockedProperty().getValue(), slider.getDockedProperty().getValue()));
-		browser.getDockedProperty()
-				.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
-						editor.getDockedProperty().getValue(), slider.getDockedProperty().getValue()));
-		editor.getDockedProperty()
-				.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
-						editor.getDockedProperty().getValue(), slider.getDockedProperty().getValue()));
+				editor.getDockedProperty().getValue()));
+		browser.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
+				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
+		editor.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
+				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
 	}
 
-	private void manageMapSize(boolean fullscreen, boolean browser, boolean editor, boolean slider) {
+	private void manageMapSize(boolean fullscreen, boolean browser, boolean editor) {
 		if (w.getCurrentLevel() == null) {
 			return;
 		} else if (!fullscreen) {
 			if (!browser && !editor) {
-				w.getCurrentLevel().setMapDimensions(1000, 724);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("med1width")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			} else {
-				w.getCurrentLevel().setMapDimensions(700, 724);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("smallestwidth")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			}
 		} else {
 			w.refresh();
 			if (!browser && !editor) {
-				w.getCurrentLevel().setMapDimensions(1920, 1006);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("largestwidth")), Double.parseDouble(myResources.getString("bigscreenheight")));
 			} else {
-				w.getCurrentLevel().setMapDimensions(1620, 1006);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("med2width")), Double.parseDouble(myResources.getString("bigscreeneheight")));
 			}
 		}
 	}

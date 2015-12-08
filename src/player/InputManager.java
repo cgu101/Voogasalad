@@ -2,7 +2,6 @@ package player;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,7 +10,6 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.Set;
 
-import javafx.collections.FXCollections;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -77,7 +75,9 @@ public class InputManager {
 	 */
 	public void keyPressed(KeyEvent ke) {
 		KeyCode code = ke.getCode();
-		inputMap.put(code.getName(), true);
+		if (inputMap.containsKey(code.getName())) {
+			inputMap.put(code.getName(), true);
+		}
 	}
 
 	/**
@@ -88,7 +88,9 @@ public class InputManager {
 	 */
 	public void keyReleased(KeyEvent ke) {
 		KeyCode code = ke.getCode();
-		inputMap.put(code.getName(), false);
+		if (inputMap.containsKey(code.getName())) {
+			inputMap.put(code.getName(), false);
+		}
 	}
 
 	/**
@@ -110,7 +112,10 @@ public class InputManager {
 	 * @return assignment value
 	 */
 	public boolean getValue(KeyCode keyCode) {
-		return inputMap.get(keyCode.getName());
+		if (inputMap.containsKey(keyCode.getName())) {
+			return inputMap.get(keyCode.getName());
+		}
+		return false;
 	}
 
 	// TODO

@@ -16,6 +16,6 @@ public class KeyPress extends AInputSelfTrigger {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean condition(Parameters parameters, InputManager inputManager, Actor actor) {
-		return inputManager.getValue((String) parameters.getParameter(ParametersKey.STRING_VALUE + "0"));
+		return inputManager.getValue((String) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0"));
 	}
 }

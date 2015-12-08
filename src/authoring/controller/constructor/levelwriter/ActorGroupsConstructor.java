@@ -74,7 +74,7 @@ public class ActorGroupsConstructor {
 	 * @param className
 	 * @param ids
 	 */
-	public void deleteActor(String className, List<String> ids) {
+	public void deleteActor(String className, String... ids) {
 		Bundle<Actor> actorBundle = actorGroups.addGroup(className);
 		if(actorBundle != null) {
 			for(String id: ids) {

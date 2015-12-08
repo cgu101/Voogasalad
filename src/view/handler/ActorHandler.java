@@ -34,8 +34,8 @@ import view.visual.AbstractVisual;
 
 /**
  * This class essentially creates a) the context menu of an actor's imageview to
- * enable on-screen editing, with the assistance of the ActorEditingMenu and 
- * b) maintains a list of current ActorViews
+ * enable on-screen editing, with the assistance of the ActorEditingMenu and b)
+ * maintains a list of current ActorViews
  * 
  * @author Bridget
  *
@@ -50,7 +50,8 @@ public class ActorHandler extends AbstractVisual {
 	private ActorEditingToolbar myEditMenu;
 	private AuthoringController myAC;
 
-	public ActorHandler(Group layout, ToolBar tb, Map map, MiniMap miniMap, MapZoomSlider zoomSlider, AuthoringController ac) {
+	public ActorHandler(Group layout, ToolBar tb, Map map, MiniMap miniMap, MapZoomSlider zoomSlider,
+			AuthoringController ac) {
 		viewManager = new MapViewManager(layout);
 		myToolbar = tb;
 		this.map = map;
@@ -67,7 +68,7 @@ public class ActorHandler extends AbstractVisual {
 			ActorView av = new ActorView(a, map, actorType, x, y, myAC);
 			addActor(av, x, y);
 		} else {
-			// TODO: delete Actor
+			myAC.getLevelConstructor().getActorGroupsConstructor().deleteActor(a.getGroupName(), a.getUniqueID());
 			Alert alert = new Alert(AlertType.ERROR, myResources.getString("whileeditingerror"), ButtonType.OK);
 			alert.showAndWait();
 		}
@@ -77,7 +78,7 @@ public class ActorHandler extends AbstractVisual {
 		if (!checkOutOfBounds(av, x, y)) {
 			if (!myAVs.contains(av)) {
 				myAVs.add(av);
-				ImageView image = av.getImageView();
+				ImageView image = av.getSprite();
 				ContextMenu cm = makeContextMenu(av);
 				image.setOnContextMenuRequested(e -> {
 					if (!myEditMenu.isEditing()) {
@@ -86,19 +87,19 @@ public class ActorHandler extends AbstractVisual {
 				});
 			}
 			addToScale(av, x, y);
-			viewManager.addElements(av.getImageView());
+			viewManager.addElements(av.getSprite());
 		}
 	}
-	
+
 	private void addToScale(ActorView a, double x, double y) {
 		double scale = theZoomSlider.getSlider().valueProperty().doubleValue();
 		scale = 100 / (scale + 100);
 		double xOffset = theMiniMap.getRectangleX();
 		double yOffset = theMiniMap.getRectangleY();
-		
+
 		double scaleOffset = Double.parseDouble(myResources.getString("minimapscaleratio"));
-		double newX = xOffset*scaleOffset + x * scale;
-		double newY = yOffset*scaleOffset + y * scale;
+		double newX = xOffset * scaleOffset + x * scale;
+		double newY = yOffset * scaleOffset + y * scale;
 		a.restoreXY(newX, newY);
 	}
 
@@ -109,10 +110,10 @@ public class ActorHandler extends AbstractVisual {
 		MenuItem rotateActor = makeMenuItem(myResources.getString("rotate"), event -> rotateActor(a));
 		MenuItem resizeActor = makeMenuItem(myResources.getString("resize"), event -> resizeActor(a));
 		MenuItem deleteActor = makeMenuItem(myResources.getString("delete"), event -> removeActor(a));
-		MenuItem editParam = makeMenuItem(myResources.getString("editparams"), event -> editParams());
-		MenuItem editShip = makeMenuItem(myResources.getString("editship"), event -> editShip());
+//		MenuItem editParam = makeMenuItem(myResources.getString("editparams"), event -> editParams());
+//		MenuItem editShip = makeMenuItem(myResources.getString("editship"), event -> editShip());
 
-		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, deleteActor, editParam, editShip);
+		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, deleteActor); //, editParam, editShip);
 
 		return cm;
 	}
@@ -132,7 +133,7 @@ public class ActorHandler extends AbstractVisual {
 		r.setOnDragOver(e -> duringMoveDrag(e));
 		r.setOnDragDone(e -> endMoveDrag(e, a, r));
 		r.setOnDragDropped(e -> dropMoveDrag(e, a, r));
-		
+
 		myEditMenu.makeMoveActorToolbar(a, r, e -> a.restoreXY(origX, origY));
 	}
 
@@ -147,8 +148,8 @@ public class ActorHandler extends AbstractVisual {
 		ClipboardContent content = new ClipboardContent();
 		content.putString(a.getXCoor() + " " + a.getYCoor());
 		db.setContent(content);
-		db.setDragView(a.getImageView().getImage(), a.getImageView().getImage().getWidth() / 2,
-				a.getImageView().getImage().getHeight() / 2);
+		db.setDragView(a.getSprite().getCroppedImage(), a.getSprite().getCroppedImage().getWidth() / 2,
+				a.getSprite().getCroppedImage().getHeight() / 2);
 	}
 
 	private void dropMoveDrag(DragEvent event, ActorView a, Rectangle r) {
@@ -157,7 +158,7 @@ public class ActorHandler extends AbstractVisual {
 		if (!checkOutOfBounds(a, event.getX(), event.getY())) {
 			a.restoreXY(event.getX(), event.getY());
 		}
-		viewManager.addElements(a.getImageView(), r);
+		viewManager.addElements(a.getSprite(), r);
 		event.setDropCompleted(true);
 		event.consume();
 	}
@@ -179,10 +180,11 @@ public class ActorHandler extends AbstractVisual {
 		map.setPanEnabled(false);
 		Rectangle r = makeFilterRectangle();
 		r.setOnScroll(e -> handleScroll(e, a));
-		Node currNode = a.getImageView();
+		Node currNode = a.getSprite();
 		double heading = currNode.getRotate();
 		int rotateInc = Integer.parseInt(myResources.getString("rotateIncrement"));
-		myEditMenu.makeRotateActorToolbar(a, heading, r, e -> rotateRight(a, rotateInc), e -> rotateRight(a, -1 * rotateInc));
+		myEditMenu.makeRotateActorToolbar(a, heading, r, e -> rotateRight(a, rotateInc),
+				e -> rotateRight(a, -1 * rotateInc));
 	}
 
 	private void handleScroll(ScrollEvent e, ActorView a) {
@@ -198,13 +200,14 @@ public class ActorHandler extends AbstractVisual {
 		Rectangle r = makeFilterRectangle();
 		r.setOnScroll(e -> handleResize(e, a));
 		int growInc = Integer.parseInt(myResources.getString("growIncrement"));
-		myEditMenu.makeResizeActorToolbar(a, r, e -> increaseActorSize(a, growInc), e -> increaseActorSize(a, -1 * growInc));
+		myEditMenu.makeResizeActorToolbar(a, r, e -> increaseActorSize(a, growInc),
+				e -> increaseActorSize(a, -1 * growInc));
 	}
-	
+
 	private void handleResize(ScrollEvent e, ActorView a) {
 		increaseActorSize(a, e.getDeltaY());
 	}
-	
+
 	private void increaseActorSize(ActorView a, double increase) {
 		a.addDimensions(increase);
 		if (checkOutOfBounds(a, a.getXCoor(), a.getYCoor()) || a.getWidth() <= 0) {
@@ -212,21 +215,23 @@ public class ActorHandler extends AbstractVisual {
 		}
 	}
 
-	protected void removeActor(ActorView a) {
-		viewManager.removeElements(a.getImageView()); 
+	private void removeActor(ActorView a) {
+		myAVs.remove(a);
+		myAC.getLevelConstructor().getActorGroupsConstructor().deleteActor(a.getActor().getGroupName(), a.getActor().getUniqueID());
+		viewManager.removeElements(a.getSprite()); 
 	}
 
 	public void removeActor(Node element) {
 		viewManager.removeElements(element);
 	}
 
-	private void editParams() {
-
-	}
-
-	private void editShip() {
-
-	}
+//	private void editParams() {
+//
+//	}
+//
+//	private void editShip() {
+//
+//	}
 	
 	private Rectangle makeFilterRectangle() {
 		Rectangle rect = new Rectangle(map.getMapWidth(), map.getMapHeight());
@@ -237,12 +242,13 @@ public class ActorHandler extends AbstractVisual {
 		myEditMenu.setEditing(true);
 		return rect;
 	}
-	
+
 	protected void finish(Node... elementsToRemove) {
 		viewManager.removeElements(elementsToRemove);
 		myEditMenu.restoreToolbar();
 		map.setPanEnabled(true);
-		myEditMenu.setEditing(false);;
+		myEditMenu.setEditing(false);
+		;
 	}
 
 	// returns true if out-of-bounds
