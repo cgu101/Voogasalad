@@ -18,8 +18,8 @@ public class GameInfoMonitor extends AbstractDockElement {
 
 	private PlayerController controller;
 
-	public GameInfoMonitor(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,  PlayerController controller) {
-		super(pane, home, title, screen);
+	public GameInfoMonitor(GridPane home, String title, AbstractScreenInterface screen,  PlayerController controller) {
+		super(home, title, screen);
 		findResources();
 		this.controller = controller;
 	}
@@ -47,9 +47,7 @@ public class GameInfoMonitor extends AbstractDockElement {
 	}
 
 	private void addLabelPane() {
-		GridPane labelPane = makeLabelPane();
-		labelPane.setAlignment(Pos.CENTER);
-		pane.add(labelPane, 0, 0);
+		pane.add(titlePane, 0, 0);
 	}
 	
 	private Label makeImage(String pic, String name, String level) {

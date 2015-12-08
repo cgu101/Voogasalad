@@ -45,9 +45,9 @@ public class ActorEditor extends AbstractDockElement {
 	private ImageView image;
 	private GridPane contentPane;
 
-	public ActorEditor(GridPane pane, GridPane home, String title, AbstractScreenInterface screen, ActorBrowser browser,
+	public ActorEditor(GridPane home, String title, AbstractScreenInterface screen, ActorBrowser browser,
 			Workspace workspace) {
-		super(pane, home, title, screen);
+		super(home, title, screen);
 		findResources();
 		this.controller = null;
 		this.browser = browser;
@@ -64,8 +64,7 @@ public class ActorEditor extends AbstractDockElement {
 		pane.prefWidthProperty().bind(browser.getPane().widthProperty());
 		pane.maxWidthProperty().bind(browser.getPane().widthProperty());
 		pane.setAlignment(Pos.CENTER);
-		GridPane labelPane = makeLabelPane();
-		pane.add(labelPane, 0, 0);
+		pane.add(titlePane, 0, 0);
 		contentPane = new GridPane();
 		pane.add(contentPane, 0, 1);
 		load();

@@ -11,9 +11,8 @@ import view.screen.AbstractScreenInterface;
 public class ActorHandlerToolbar extends AbstractDockElement {
 	private Map map;
 
-	public ActorHandlerToolbar(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,
-			Workspace w) {
-		super(pane, home, title, screen);
+	public ActorHandlerToolbar(GridPane home, String title, AbstractScreenInterface screen, Workspace w) {
+		super(home, title, screen);
 		w.addListener((ov, oldTab, newTab) -> {
 			load(w.getCurrentLevel());
 		});
@@ -21,8 +20,7 @@ public class ActorHandlerToolbar extends AbstractDockElement {
 
 	@Override
 	protected void makePane() {
-		GridPane labelPane = makeLabelPane();
-		pane.add(labelPane, 0, 0);
+		pane.add(titlePane, 0, 0);
 		pane.add(map.getToolbar(), 1, 0);
 	}
 

@@ -28,13 +28,12 @@ public class PlayerScreen extends AbstractScreen {
 
 	private ControlBarPlayer controlBarPlayer;
 	private PlayerController playerController;
-	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
 	private ActorMonitor actorMonitor;
 	private GameInfoMonitor gameInfoMonitor;
 	private view.map.Map map;
 	PlayerMapSliders mapSlider;
-	//	private Workspace w;
+	// private Workspace w;
 
 	public PlayerScreen() {
 		findResources();
@@ -46,23 +45,23 @@ public class PlayerScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Causes the PlayerControllers game loop to be resumed. 
+	 * Causes the PlayerControllers game loop to be resumed.
 	 */
 	public void resume() {
-		try{
+		try {
 			playerController.resume();
-		} catch (GameFileException e){
+		} catch (GameFileException e) {
 			showWarning("Resume Game Error", "No game has been loaded yet!");
 		}
 	}
 
 	/**
-	 * Causes the PlayerControllers game loop to be paused. 
+	 * Causes the PlayerControllers game loop to be paused.
 	 */
 	public void pause() {
-		try{
+		try {
 			playerController.pause();
-		} catch (GameFileException e){
+		} catch (GameFileException e) {
 			showWarning("Pause Game Error", "No game has been loaded yet!");
 		}
 	}
@@ -75,12 +74,10 @@ public class PlayerScreen extends AbstractScreen {
 		makePanes(2);
 		controlBarPlayer = new ControlBarPlayer(myPanes.get(0), this, WIDTH);
 		r.setTop(myPanes.get(0));
-		dockPanes = new ArrayList<GridPane>();
 		homePanes = new ArrayList<GridPane>();
 		this.playerController = new PlayerController(scene);
 		map = playerController.getMap();
 		for (int i = 0; i < 3; i++) {
-			dockPanes.add(new GridPane());
 			homePanes.add(new GridPane());
 		}
 		GridPane rightPane = new GridPane();
@@ -88,15 +85,13 @@ public class PlayerScreen extends AbstractScreen {
 		rightPane.add(homePanes.get(1), 0, 1);
 		rightPane.setAlignment(Pos.CENTER);
 		r.setRight(rightPane);
-		
-		components = new ArrayList<AbstractDockElement>(); //No components yet! 
-		gameInfoMonitor = new GameInfoMonitor(dockPanes.get(0), homePanes.get(0),
-				myResources.getString("gameinfoname"), this, playerController);
-		
-		actorMonitor = new ActorMonitor(dockPanes.get(1), homePanes.get(1),
-				myResources.getString("monitorname"), this, playerController);
-		mapSlider = new PlayerMapSliders(dockPanes.get(2), homePanes.get(2), myResources.getString("slidername"),
-				this);
+
+		components = new ArrayList<AbstractDockElement>(); // No components yet!
+		gameInfoMonitor = new GameInfoMonitor(homePanes.get(0), myResources.getString("gameinfoname"), this,
+				playerController);
+
+		actorMonitor = new ActorMonitor(homePanes.get(1), myResources.getString("monitorname"), this, playerController);
+		mapSlider = new PlayerMapSliders(homePanes.get(2), myResources.getString("slidername"), this);
 		r.setBottom(homePanes.get(2));
 		homePanes.get(2).setAlignment(Pos.BASELINE_CENTER);
 		mapSlider.initializeMap(map);
@@ -106,10 +101,12 @@ public class PlayerScreen extends AbstractScreen {
 		playerController.addMonitor(actorMonitor);
 	}
 
-	// TODO: David: need a stage eventually for the line: fileChooser.showOpenDialog(null);
+	// TODO: David: need a stage eventually for the line:
+	// fileChooser.showOpenDialog(null);
 	// You want to force the user to choose
 	/**
-	 * Method that allows for a game to be loaded. Brings up a file selector using 'FileChooser' class 
+	 * Method that allows for a game to be loaded. Brings up a file selector
+	 * using 'FileChooser' class
 	 */
 	public void loadGame() {
 		System.out.println("Testing");
@@ -125,7 +122,7 @@ public class PlayerScreen extends AbstractScreen {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EngineException ee) {
-			//			ee.printStackTrace();
+			// ee.printStackTrace();
 			System.err.println("Level exception!");
 		}
 		gameInfoMonitor.initializePane();
@@ -139,9 +136,9 @@ public class PlayerScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Method that calls for the player to save the game state. 
+	 * Method that calls for the player to save the game state.
 	 */
-	public void saveState () {
+	public void saveState() {
 		System.out.println("Testing saving game state ");
 
 		try {
@@ -153,10 +150,10 @@ public class PlayerScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Method that calls for the player to load a game state. 
+	 * Method that calls for the player to load a game state.
 	 */
-	public void loadState () {
-		//TODO: do gui stuff
+	public void loadState() {
+		// TODO: do gui stuff
 		try {
 			File loadFile = FileChooserUtility.load(scene.getWindow());
 			playerController.loadState(loadFile.getPath());
@@ -165,26 +162,30 @@ public class PlayerScreen extends AbstractScreen {
 		}
 	}
 
-	//TODO: Implement, check the controller to see
+	// TODO: Implement, check the controller to see
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	private void configureObserverRelationships() {
 		playerController.getState().addObserver(actorMonitor);
 	}
 
 	public void resetOrReplay(String type) {
 		try {
-		     switch (type) {
-		         case "Replay Level":  playerController.replayLevel();;
-		         	break;
-		         case "Reset Game": playerController.resetGame();;
-		         	break;
-		     }
-			//TODO: Needs to reset the map as well
+			switch (type) {
+			case "Replay Level":
+				playerController.replayLevel();
+				;
+				break;
+			case "Reset Game":
+				playerController.resetGame();
+				;
+				break;
+			}
+			// TODO: Needs to reset the map as well
 		} catch (NullPointerException e) {
 			showWarning("Game Reset Error", "No Game Laoded!");
 		} catch (GameFileException e) {
@@ -192,19 +193,19 @@ public class PlayerScreen extends AbstractScreen {
 			e.printStackTrace();
 		}
 	}
-	
-	public void confirmRestartOrReplay(String type){
+
+	public void confirmRestartOrReplay(String type) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation");
 		alert.setHeaderText(type);
 		alert.setContentText("Are you sure you'd like to?");
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK){
-		    alert.hide();
-		    resetOrReplay(type);
+		if (result.get() == ButtonType.OK) {
+			alert.hide();
+			resetOrReplay(type);
 		} else {
-		    alert.hide();
+			alert.hide();
 		}
 	}
 

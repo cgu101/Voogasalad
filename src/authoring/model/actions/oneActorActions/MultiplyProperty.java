@@ -1,20 +1,16 @@
 package authoring.model.actions.oneActorActions;
 
-import authoring.model.actions.AOneActorAction;
-import authoring.model.actors.Actor;
-import authoring.model.tree.Parameters;
-import engine.State;
+import authoring.model.actions.AChangeProperty;
 
-public class MultiplyProperty extends AOneActorAction  {
+public class MultiplyProperty extends AChangeProperty {
 	/**
 	 * Generated serial version ID
 	 */
 	private static final long serialVersionUID = -3335946607966237844L;
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
-//		Double multiplier = (Double) value;
-//		property.setValue((Double)property.getValue() * multiplier);
+	protected Double calculateValue(Double value, Double factor, Double maximum) {
+		value *= factor;
+		return maximum != null && Double.compare(value, maximum) > 0 ? maximum : value;
 	}
 }

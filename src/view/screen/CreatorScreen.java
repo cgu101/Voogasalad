@@ -32,7 +32,6 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	private static final int DEFAULT_MAP_PANE_INDEX = 0;
 
 	private Workspace w;
-	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
 
 	private Game game;
@@ -72,10 +71,8 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		GridPane mapPane = new GridPane();
 		mapPane.add(myPanes.get(1), 0, 1);
 		r.setCenter(mapPane);
-		dockPanes = new ArrayList<GridPane>();
 		homePanes = new ArrayList<GridPane>();
 		for (int i = 0; i < 4; i++) {
-			dockPanes.add(new GridPane());
 			homePanes.add(new GridPane());
 		}
 		mapPane.add(homePanes.get(3), 0, 0);
@@ -86,44 +83,41 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		rightPane.setAlignment(Pos.CENTER);
 		r.setRight(rightPane);
 		components = new ArrayList<AbstractDockElement>();
-		ActorBrowser browser = new ActorBrowser(dockPanes.get(0), homePanes.get(0),
-				myResources.getString("browsername"), this, w);
+		ActorBrowser browser = new ActorBrowser(homePanes.get(0), myResources.getString("browsername"), this, w);
 		components.add(browser);
-		ActorEditor editor = new ActorEditor(dockPanes.get(1), homePanes.get(1), myResources.getString("editorname"),
-				this, browser, w);
+		ActorEditor editor = new ActorEditor(homePanes.get(1), myResources.getString("editorname"), this, browser, w);
 		components.add(editor);
-		CreatorMapSliders slider = new CreatorMapSliders(dockPanes.get(2), homePanes.get(2),
-				myResources.getString("slidername"), this, w);
+		CreatorMapSliders slider = new CreatorMapSliders(homePanes.get(2), myResources.getString("slidername"), this,
+				w);
 		components.add(slider);
-		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3),
-				myResources.getString("toolbarname"), this, w);
+		ActorHandlerToolbar aet = new ActorHandlerToolbar(homePanes.get(3), myResources.getString("toolbarname"), this,
+				w);
 		components.add(aet);
-		configureMap(browser, editor);
+		configureMap(browser, editor, slider);
 	}
 
-	private void configureMap(ActorBrowser browser, ActorEditor editor) {
+	private void configureMap(ActorBrowser browser, ActorEditor editor, CreatorMapSliders slider) {
 		fullscreen.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
-				editor.getDockedProperty().getValue()));
-		browser.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
-				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
-		editor.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
-				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
-		w.addListener((ov, oldTab, newTab) -> manageMapSize(fullscreen.getValue(),
-				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
+				editor.getDockedProperty().getValue(), slider.getDockedProperty().getValue()));
+		browser.getDockedProperty()
+				.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
+						editor.getDockedProperty().getValue(), slider.getDockedProperty().getValue()));
+		editor.getDockedProperty()
+				.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
+						editor.getDockedProperty().getValue(), slider.getDockedProperty().getValue()));
 	}
 
-	public void manageMapSize(boolean fullscreen, boolean browser, boolean editor) {
+	private void manageMapSize(boolean fullscreen, boolean browser, boolean editor, boolean slider) {
 		if (w.getCurrentLevel() == null) {
 			return;
 		} else if (!fullscreen) {
 			if (!browser && !editor) {
-				System.out.println("hi");
 				w.getCurrentLevel().setMapDimensions(1000, 724);
 			} else {
-				System.out.println("bye");
 				w.getCurrentLevel().setMapDimensions(700, 724);
 			}
 		} else {
+			w.refresh();
 			if (!browser && !editor) {
 				w.getCurrentLevel().setMapDimensions(1920, 1006);
 			} else {

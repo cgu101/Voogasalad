@@ -1,7 +1,5 @@
 package engine;
 
-import authoring.model.triggers.selfconditions.DistanceTraveledCheck;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
