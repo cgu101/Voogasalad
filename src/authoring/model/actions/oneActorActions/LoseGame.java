@@ -2,19 +2,14 @@ package authoring.model.actions.oneActorActions;
 
 import authoring.model.actions.AOneActorAction;
 import authoring.model.actors.Actor;
-import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import engine.State;
-import resources.keys.PropertyKey;
-import resources.keys.PropertyKeyResource;
 
 public class LoseGame extends AOneActorAction {
 	/**
 	 * Generated serial version ID
 	 */
 	private static final long serialVersionUID = -5800650791757585890L;
-	private String levelKey = PropertyKeyResource.getKey(PropertyKey.LEVEL_ID_KEY);
-	private String nextLevelKey = PropertyKeyResource.getKey(PropertyKey.NEXT_LEVEL_KEY);
 
 	@SuppressWarnings("rawtypes")
 	@Override
