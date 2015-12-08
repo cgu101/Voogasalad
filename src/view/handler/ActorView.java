@@ -6,7 +6,6 @@ import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import util.Sprite;
 import view.visual.AbstractVisual;
 
@@ -73,6 +72,10 @@ public class ActorView extends AbstractVisual {
 		setRotation(copy.getRotation());
 	}
 
+	protected Actor getActor() {
+		return myActor;
+	}
+	
 	private String getActorType() {
 		return myType;
 	}
@@ -145,11 +148,17 @@ public class ActorView extends AbstractVisual {
 
 	protected void scaleDimensions(double percent) {
 		myFitWidth *= percent; // TODO: size?
+		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
+		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
+		mapChanged();
 		preserveCenter();
 	}
 
 	protected void addDimensions(double increase) {
 		myFitWidth += increase;
+		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
+		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
+		mapChanged();
 		preserveCenter();
 	}
 
