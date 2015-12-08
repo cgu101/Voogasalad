@@ -4,8 +4,11 @@ import authoring.controller.AuthoringController;
 import authoring.controller.parameters.ParameterData;
 import authoring.model.properties.Property;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import view.actor.AbstractListCell;
@@ -15,14 +18,15 @@ public class ParameterCell extends AbstractListCell<ParameterData> {
 	private String[] actors;
 	private HBox box;
 
-	public ParameterCell (AuthoringController controller, String[] actors) {
+	public ParameterCell(AuthoringController controller, String[] actors) {
 		this.controller = controller;
 		this.actors = actors;
 		findResources();
 	}
 
 	private TextField makeTextField(String item) {
-		if(item == null) item = "";
+		if (item == null)
+			item = "";
 		TextField field = new TextField(item);
 		field.setMaxWidth(Double.parseDouble(myResources.getString("width")));
 		field.setFont(textFont);
@@ -31,12 +35,12 @@ public class ParameterCell extends AbstractListCell<ParameterData> {
 		});
 		return field;
 	}
-	private ComboBox<String> makeComboBox (String item) {
+
+	private ComboBox<String> makeComboBox(String item) {
 		ComboBox<String> comboBox = new ComboBox<String>();
 		String actor = actors[Integer.parseInt(getItem().getActorIndex())];
-		comboBox.getItems()
-		.addAll(controller.getAuthoringActorConstructor().getPropertyList(actor));
-		if (item != null && !item.isEmpty()){
+		comboBox.getItems().addAll(controller.getAuthoringActorConstructor().getPropertyList(actor));
+		if (item != null && !item.isEmpty()) {
 			comboBox.setValue(item);
 		} else {
 			String val = comboBox.getItems().get(0);
@@ -56,12 +60,26 @@ public class ParameterCell extends AbstractListCell<ParameterData> {
 		box.getChildren().add(new Text(data.getText()));
 		if (data.getType().equals(Property.class.getName())) {
 			box.getChildren().add(makeComboBox(data.getValue()));
+		} else if (data.getType().equals(KeyCode.class.getName())) {
+			box.getChildren().add(makeKeySelectorButton());
 		} else {
 			box.getChildren().add(makeTextField(data.getValue()));
 		}
 		setGraphic(box);
 	}
 
+	private Button makeKeySelectorButton() {
+		Button button = new Button();
+		button.setText(myResources.getString("select"));
+		button.setOnAction(e -> {
+			controller.getKeyLibrary().returnKey(actors[0], KeyCode.getKeyCode(getItem().getValue()));
+			KeyCode key = controller.getKeyLibrary().checkoutKey(actors[0]);
+			if (key == null) {
+				key = KeyCode.SPACE;
+			}
+			getItem().setValue(key.toString());
+		});
+		return button;
+	}
+
 }
-
-
