@@ -62,6 +62,9 @@ public class PlayerController implements IPlayer {
 
 	// should be called by front end
 	public void loadGame(String fileName) throws GameFileException, EngineException {
+		if (myGameLoop != null) {
+			pause();
+		}
 		System.out.println("PlayController.loadGame(" + fileName + ")");
 		Game game = XMLManager.loadGame(fileName);
 		myEngine.init(game);
@@ -84,6 +87,7 @@ public class PlayerController implements IPlayer {
 		myGameLoop.setCycleCount(Timeline.INDEFINITE);
 		myGameLoop.getKeyFrames().add(frame);
 		myGameLoop.play();
+		mySpriteManager.resume();
 		System.out.println("Game started...");
 	}
 
