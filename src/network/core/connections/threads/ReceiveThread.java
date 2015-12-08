@@ -46,7 +46,7 @@ public class ReceiveThread extends ConnectionThread {
 		super.close();
 		try {
 			in.close();
-			join();
+			join(5);
 		} catch(IOException | InterruptedException e) {
 			System.out.println("Error while trying to close input stream: " + e);
 		}

@@ -42,7 +42,7 @@ public class SendThread extends ConnectionThread {
 		super.close();
 		try {
 			out.close();
-			join();
+			join(5);
 		} catch(IOException | InterruptedException e) {
 			System.out.println("Error while trying to close output stream: " + e);
 		}

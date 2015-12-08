@@ -1,6 +1,8 @@
 package network.framework.format;
 
 public enum Request {
+	DISCONNECT("Disconnect"),
+	EXAMINE("Examine"),
 	ADD("Add"), 
 	DELETE("Delete"), 
 	MODIFY("Modify"),

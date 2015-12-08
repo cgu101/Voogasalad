@@ -4,25 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 import authoring.model.bundles.Identifiable;
-import network.deprecated.GameState;
+import authoring.model.game.Game;
 
 public class NetworkGameState implements Identifiable, Closeable  {
 	
 	private static final Long DELAY = 2700000l;
 	
 	private String gameIdentifier;
-	private GameState state;
+	private Game game;
 	private HeartbeatValue heartbeatVal;
 	private Heartbeat heartbeat;
-	private List<String> clientIds;
+	private List<String> clients;
 	
-	public NetworkGameState(String gameIdentifier, GameState state, String client) {
+	public NetworkGameState(String gameIdentifier, Game game, String client) {
 		this.gameIdentifier = gameIdentifier;
-		this.state = state;
+		this.game = game;
 		heartbeatVal = new HeartbeatValue();
-		clientIds = new ArrayList<String>();
-		clientIds.add(client);
+		clients = new ArrayList<String>();
+		clients.add(client);
 		initializeHeartbeat();
+	}
+	
+	public void addClient(String client) {
+		clients.add(client);
+	}
+	
+	public void removeClient(String client) {
+		clients.remove(client);
+	}
+	
+	public List<String> getClients() {
+		return clients;
+	}
+	
+	public Game getGame() {
+		return game;
 	}
 
 	@Override

@@ -28,6 +28,10 @@ public class NetworkContainer<T extends Identifiable & Closeable> {
 		container.put(t.getUniqueID(), t);
 	}
 	
+	public void removeObject(String id) {
+		container.remove(id);
+	}
+	
 	public void close() {
 		for(T t : container.values()) {
 			t.close();
