@@ -4,7 +4,6 @@ import authoring.controller.AuthoringController;
 import authoring.controller.parameters.ParameterData;
 import authoring.model.properties.Property;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -71,13 +70,23 @@ public class ParameterCell extends AbstractListCell<ParameterData> {
 	private Button makeKeySelectorButton() {
 		Button button = new Button();
 		button.setText(myResources.getString("select"));
+		if (!(getItem().getValue().equals(""))) {
+			button.setText(getItem().getValue());
+		}
 		button.setOnAction(e -> {
-			controller.getKeyLibrary().returnKey(actors[0], KeyCode.getKeyCode(getItem().getValue()));
-			KeyCode key = controller.getKeyLibrary().checkoutKey(actors[0]);
-			if (key == null) {
-				key = KeyCode.SPACE;
+			KeyCode key = KeyCode.getKeyCode(getItem().getValue());
+			try {
+				System.out.println(actors[0] + " " + key);
+				controller.getKeyLibrary().returnKey(actors[0], key);
+			} catch (IllegalArgumentException err) {
+				System.out.println("whoops");
 			}
-			getItem().setValue(key.toString());
+			key = controller.getKeyLibrary().checkoutKey(actors[0]);
+			if (key == null) {
+				key = KeyCode.DEAD_GRAVE;
+			}
+			button.setText(key.getName());
+			getItem().setValue(key.getName());
 		});
 		return button;
 	}
