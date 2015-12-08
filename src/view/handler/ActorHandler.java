@@ -66,7 +66,6 @@ public class ActorHandler extends AbstractVisual {
 		if (!myEditMenu.isEditing()) {
 			ActorView av = new ActorView(a, map, actorType, x, y, myAC);
 			addActor(av, x, y);
-			System.out.println("HELLO");
 		} else {
 			// TODO: delete Actor
 			Alert alert = new Alert(AlertType.ERROR, myResources.getString("whileeditingerror"), ButtonType.OK);

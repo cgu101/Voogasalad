@@ -1,7 +1,5 @@
 package view.handler;
 
-import java.util.function.Function;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -31,7 +29,6 @@ public class ActorEditingToolbar extends AbstractVisual {
 	private MapViewManager meep;
 //	private Function<Node, Node> exitKey;
 
-	// TODO: RESOURCE FILE!!!!!!
 	public ActorEditingToolbar(ToolBar tb, Map map, MapViewManager mvm) {
 		findResources();
 		myToolbar = tb;
@@ -39,7 +36,6 @@ public class ActorEditingToolbar extends AbstractVisual {
 		defaultLabel = makeLabel(myResources.getString("defaultPrompt"));
 		restoreToolbar();
 		meep = mvm;
-//		exitKey = exitFunction;
 		rectangleOn = false;
 	}
 	
