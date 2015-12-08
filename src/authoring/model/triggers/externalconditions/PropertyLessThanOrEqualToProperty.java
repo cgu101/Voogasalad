@@ -2,7 +2,7 @@ package authoring.model.triggers.externalconditions;
 
 import authoring.model.triggers.externaltriggers.ATwoPropertyTest;
 
-public abstract class PropertyLessThanOrEqualToProperty extends ATwoPropertyTest {
+public class PropertyLessThanOrEqualToProperty extends ATwoPropertyTest {
 	/**
 	 * Generated serial version ID
 	 */

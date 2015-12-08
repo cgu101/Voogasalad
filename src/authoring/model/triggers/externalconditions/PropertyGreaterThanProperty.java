@@ -2,7 +2,7 @@ package authoring.model.triggers.externalconditions;
 
 import authoring.model.triggers.externaltriggers.ATwoPropertyTest;
 
-public abstract class PropertyGreaterThanProperty extends ATwoPropertyTest {
+public class PropertyGreaterThanProperty extends ATwoPropertyTest {
 	/**
 	 * Generated serial 
 	 */
