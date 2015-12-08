@@ -115,6 +115,10 @@ public class PlayerScreen extends AbstractScreen {
 		fileChooser.setInitialDirectory(new File("."));
 		System.out.println(playerController);
 		File file = fileChooser.showOpenDialog(null);
+		
+		if (file == null) {
+			return;
+		}
 
 		try {
 			playerController.loadGame(file.getAbsolutePath());
