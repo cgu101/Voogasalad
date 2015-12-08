@@ -19,13 +19,12 @@ import view.visual.AbstractVisual;
  */
 public class ActorView extends AbstractVisual {
 	private Actor myActor;
-	private Sprite sprite;
+	private Sprite mySprite;
 	private double myFitWidth;
 	private double dimensionRatio;
 	private double myRotation;
 	private double myXCoor;
 	private double myYCoor;
-	private boolean itsAlive;
 	private String myType;
 	private ActorPropertyMap myMap;
 	private AuthoringController myController;
@@ -39,11 +38,10 @@ public class ActorView extends AbstractVisual {
 		myXCoor = x;
 		myYCoor = y;
 		findResources();
-		myFitWidth = Double.parseDouble(myResources.getString("defaultWidth"));
-		myRotation = Double.parseDouble(myResources.getString("defaultRotation"));
-		sprite = createImage();
+		myFitWidth = a.getPropertyValue(myResources.getString("width"));
+		myRotation = a.getPropertyValue(myResources.getString("angle"));
+		mySprite = createImage();
 		setupNode();
-		itsAlive = true;
 	}
 
 	public ActorView(ActorView copy) {
@@ -59,17 +57,19 @@ public class ActorView extends AbstractVisual {
 		Double offset = Double.parseDouble(myResources.getString("copyoffset"));
 		myXCoor = copy.getXCoor() + offset;
 		myYCoor = copy.getYCoor() + offset;
-
-		myFitWidth = copy.getWidth(); // TODO: update properties file for size
+		myFitWidth = copy.getWidth(); 
 		String img = (String) myActor.getProperties().getComponents().get("image").getValue();
+		
+		myMap.addProperty(myResources.getString("width"), "" + getWidth());
 		myMap.addProperty(myResources.getString("image"), img);
-		myMap.addProperty(myResources.getString("x"), "" + myXCoor);
-		myMap.addProperty(myResources.getString("y"), "" + myYCoor);
+		myMap.addProperty(myResources.getString("x"), "" + getXCoor());
+		myMap.addProperty(myResources.getString("y"), "" + getYCoor());
 
-		hasChanged();
-		sprite = createImage();
-		setupNode();
+		mySprite = createImage();
 		setRotation(copy.getRotation());
+		setupNode();
+		myMap.addProperty(myResources.getString("height"), "" + getHeight());
+		mapChanged();
 	}
 
 	protected Actor getActor() {
@@ -100,15 +100,15 @@ public class ActorView extends AbstractVisual {
 	}
 
 	private void setupNode() {
-		sprite.setTranslateX(myXCoor - getWidth() / 2);
-		sprite.setTranslateY(myYCoor - getHeight() / 2);
-		sprite.setRotate(myRotation);
-		sprite.setFitWidth(myFitWidth);
-		sprite.setPreserveRatio(true);
+		mySprite.setTranslateX(myXCoor - getWidth() / 2);
+		mySprite.setTranslateY(myYCoor - getHeight() / 2);
+		mySprite.setRotate(myRotation);
+		mySprite.setFitWidth(myFitWidth);
+		mySprite.setPreserveRatio(true);
 	}
 
 	protected Sprite getSprite() {
-		return sprite;
+		return mySprite;
 	}
 
 	protected double getXCoor() {
@@ -119,7 +119,7 @@ public class ActorView extends AbstractVisual {
 		myXCoor = newX;
 		myMap.addProperty(myResources.getString("x"), "" + myXCoor);
 		mapChanged();
-		sprite.setTranslateX(myXCoor - getWidth() / 2);
+		mySprite.setTranslateX(myXCoor - getWidth() / 2);
 	}
 
 	protected double getYCoor() {
@@ -130,7 +130,7 @@ public class ActorView extends AbstractVisual {
 		myYCoor = newY;
 		myMap.addProperty(myResources.getString("y"), "" + myYCoor);
 		mapChanged();
-		sprite.setTranslateY(myYCoor - getHeight() / 2);
+		mySprite.setTranslateY(myYCoor - getHeight() / 2);
 	}
 
 	protected void restoreXY(double xCoor, double yCoor) {
@@ -163,8 +163,8 @@ public class ActorView extends AbstractVisual {
 	}
 
 	private void preserveCenter() {
-		sprite.setFitWidth(myFitWidth);
-		sprite.setPreserveRatio(true);
+		mySprite.setFitWidth(myFitWidth);
+		mySprite.setPreserveRatio(true);
 		restoreXY(myXCoor, myYCoor);
 	}
 
@@ -172,19 +172,11 @@ public class ActorView extends AbstractVisual {
 		return myRotation;
 	}
 
-	protected void setLife(boolean alive) {
-		itsAlive = alive;
-	}
-
-	protected boolean getLife() {
-		return itsAlive;
-	}
-
 	protected void setRotation(double rotate) {
 		myRotation = rotate;
 		myMap.addProperty(myResources.getString("angle"), "" + rotate);
 		mapChanged();
-		sprite.setRotate(rotate);
+		mySprite.setRotate(rotate);
 	}
 
 	private void mapChanged() {
