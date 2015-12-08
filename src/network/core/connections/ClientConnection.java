@@ -12,12 +12,15 @@ import network.core.connections.threads.ReceiveThread;
 import network.core.connections.threads.SendThread;
 import network.framework.format.Mail;
 
-public class ClientConnection implements Identifiable, Heartbeat {
+public class ClientConnection implements Identifiable {
+	
+	private static final Long DELAY = 1800000l;
 	
     private String playerId;
     private String gameId;
     private Socket connection;
-    private HeartbeatValue heartbeat;
+    private HeartbeatValue heartbeatVal;
+    private Heartbeat heartbeat;
     private LinkedBlockingQueue<Mail> outgoingMessages;
     private BlockingQueue<Message> incomingMessages;
     private ConnectionThread sendThread;
@@ -26,13 +29,14 @@ public class ClientConnection implements Identifiable, Heartbeat {
     public ClientConnection(String playerId, BlockingQueue<Message> receivedMessageQueue, Socket connection) throws IOException  {
         this.playerId = playerId;
     	this.connection = connection;
-    	heartbeat = new HeartbeatValue();
+    	heartbeatVal = new HeartbeatValue();
         incomingMessages = receivedMessageQueue;
         outgoingMessages = new LinkedBlockingQueue<Mail>();
         sendThread =  new SendThread(connection, outgoingMessages);
         receiveThread = new ReceiveThread(playerId, connection, incomingMessages);
         sendThread.start();
         receiveThread.start();
+        initializeHeartbeat();
     }
     
     public String getId() {
@@ -67,11 +71,16 @@ public class ClientConnection implements Identifiable, Heartbeat {
 	@Override
 	public Identifiable getCopy() {
 		return null;
-	}
+	} 
+	
+	private void initializeHeartbeat() {
+		heartbeat = new Heartbeat(DELAY) {
 
-	@Override
-	public void heartbeat() {
-		// TODO Auto-generated method stub
-		heartbeat.update();
-	}     
+			@Override
+			public void heartbeat() {
+				// TODO Auto-generated method stub
+				
+			}			
+		};
+	}
 }

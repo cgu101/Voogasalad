@@ -6,7 +6,7 @@ import java.util.Map;
 import network.core.Message;
 import network.core.connections.ClientConnection;
 import network.core.connections.NetworkGameState;
-import network.core.containers.ANetworkContainer;
+import network.core.containers.NetworkContainer;
 import network.framework.format.Request;
 
 public class MessageHandler {
@@ -37,7 +37,7 @@ public class MessageHandler {
 	}
 	
 	interface ExecuteHandler {	
-		void executeMessage(Message message, ANetworkContainer<ClientConnection> clients, ANetworkContainer<NetworkGameState> games);		
+		void executeMessage(Message message, NetworkContainer<ClientConnection> clients, NetworkContainer<NetworkGameState> games);		
 	}
 
 }

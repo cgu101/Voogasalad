@@ -6,13 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import authoring.model.bundles.Identifiable;
-import network.core.connections.Heartbeat;
 
-public abstract class ANetworkContainer<T extends Identifiable> implements Heartbeat {
+public class NetworkContainer<T extends Identifiable> {
 
 	private Map<String, T> container;
 	
-	public ANetworkContainer() {
+	public NetworkContainer() {
 		container = new HashMap<String, T>();
 	}
 	

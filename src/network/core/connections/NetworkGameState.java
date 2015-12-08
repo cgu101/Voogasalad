@@ -6,19 +6,23 @@ import java.util.List;
 import authoring.model.bundles.Identifiable;
 import network.deprecated.GameState;
 
-public class NetworkGameState implements Identifiable, Heartbeat {
+public class NetworkGameState implements Identifiable  {
+	
+	private static final Long DELAY = 2700000l;
 	
 	private String gameIdentifier;
 	private GameState state;
-	private HeartbeatValue heartbeat;
+	private HeartbeatValue heartbeatVal;
+	private Heartbeat heartbeat;
 	private List<String> clientIds;
 	
 	public NetworkGameState(String gameIdentifier, GameState state, String client) {
 		this.gameIdentifier = gameIdentifier;
 		this.state = state;
-		heartbeat = new HeartbeatValue();
+		heartbeatVal = new HeartbeatValue();
 		clientIds = new ArrayList<String>();
 		clientIds.add(client);
+		initializeHeartbeat();
 	}
 
 	@Override
@@ -30,10 +34,15 @@ public class NetworkGameState implements Identifiable, Heartbeat {
 	public Identifiable getCopy() {
 		return null;
 	}
+	
+	private void initializeHeartbeat() {
+		heartbeat = new Heartbeat(DELAY) {
 
-	@Override
-	public void heartbeat() {
-		heartbeat.update();		
+			@Override
+			public void heartbeat() {
+				// TODO Auto-generated method stub
+			}			
+		};
 	}
 		
 }
