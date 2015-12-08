@@ -1,6 +1,7 @@
 package authoring.model.level;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 import authoring.controller.constructor.levelwriter.ActorGroupsConstructor;
@@ -29,6 +30,11 @@ public class Level implements Identifiable, Serializable {
 	
 	public Level (String levelID) {
 		this.uniqueID = levelID;
+		rootTree = new InteractionTreeNode();
+		actorGroups = new ActorGroups();
+		triggerMap = new HashMap<String, ITriggerEvent>();
+		actionMap = new HashMap<String, IAction>();
+		propertyBundle = new Bundle<Property<?>>();
 	}
 	
 	public void setMapConstructorValues(MapConstructor map) {

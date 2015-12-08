@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
+import authoring.model.properties.Property;
 import data.XMLManager;
 import exceptions.data.GameFileException;
 import javafx.geometry.Pos;
@@ -14,6 +16,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
+import resources.keys.PropertyKey;
+import resources.keys.PropertyKeyResource;
 import util.FileChooserUtility;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
@@ -123,13 +127,20 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 			}
 		}
 	}
-
+	private void setProperties (Game game) {
+		Bundle<Property<?>> bundle = new Bundle<Property<?>>();
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_ID_KEY), "name"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_DESCRIPTION_KEY), "description"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.INITIAL_LEVEL_KEY), "0"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_LEVEL_COUNT_KEY), "1"));
+		game.addAllProperties(bundle);
+	}
 	// TODO
 	public void saveGame() {
 		System.out.println("Testing saving game ");
 
 		try {
-			Game game = this.game;
+			setProperties(game);
 			File saveFile = FileChooserUtility.save(scene.getWindow());
 
 			String fileLocation = saveFile.getAbsolutePath();

@@ -54,10 +54,10 @@ public class GameEngine implements IEngine {
 		setExecutor(initialLevel, new State(propertyBundle,null));
 	}
 	private String getFirstLevelName (Game g) {
-		Object levelProperty = g.getProperty(initialLevelKey);
+		Property<?> levelProperty = g.getProperty(initialLevelKey);
 		String levelID = INITIAL_LEVEL;
 		if (levelProperty != null) {
-			levelID = levelProperty.toString();
+			levelID = (String) levelProperty.getValue();
 		}
 		return levelID;
 	}
@@ -80,8 +80,6 @@ public class GameEngine implements IEngine {
 		}
 		System.out.println("id "+nextLevelID);
 		String nextLevelName = Integer.toString(nextLevelID);
-		
-		state.getPropertyBundle().add(new Property<String>(levelKey, nextLevelName));
 		
 		return game.getLevel(nextLevelName);
 	}

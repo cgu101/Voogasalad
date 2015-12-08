@@ -147,7 +147,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	}
 
 	private void addNewLevel() {
-		Level newLevel = new Level(LEVEL_ID + Integer.toString(screen.getGame().getLevels().size() + 1));
+		Level newLevel = new Level(Integer.toString(screen.getGame().getLevels().size()));
 		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, new ArrayDeque<String>());
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
 		screen.getWorkspace().updateObservers(dataMail);
@@ -157,7 +157,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	}
 
 	private void addNewSplash() {
-		Level newSplash = new Level(SPLASH_ID + Integer.toString(screen.getGame().getLevels().size() + 1));
+		Level newSplash = new Level(Integer.toString(screen.getGame().getLevels().size()));
 		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, new ArrayDeque<String>());
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
 	}

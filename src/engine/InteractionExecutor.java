@@ -12,6 +12,7 @@ import authoring.model.actors.ActorType;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.ActorDependencyInjector;
 import authoring.model.level.Level;
+import authoring.model.properties.Property;
 import authoring.model.tree.ActionTreeNode;
 import authoring.model.tree.ActorTreeNode;
 import authoring.model.tree.InteractionTreeNode;
@@ -21,6 +22,8 @@ import authoring.model.triggers.ITriggerEvent;
 import exceptions.EngineException;
 import exceptions.engine.InteractionTreeException;
 import player.InputManager;
+import resources.keys.PropertyKey;
+import resources.keys.PropertyKeyResource;
 
 /**
  * The InteractionExecutor runs a single level for the engine.
@@ -59,11 +62,12 @@ public class InteractionExecutor {
 	public InteractionExecutor (Level level, InputManager inputMap, State state, ActorDependencyInjector depInjector) {
 		this();
 		this.inputMap = inputMap;
-		System.out.println("level "+level);
+		System.out.println("level"+level);
 		if (level != null) {
 			this.currentLevelIdentifier = level.getUniqueID();
 			this.triggerTree = level.getRootTree();
 			this.currentState = state;
+			currentState.getPropertyBundle().add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.LEVEL_ID_KEY), currentLevelIdentifier));
 			currentState.setActorMap(level.getActorGroups());
 			
 			this.triggerMap = level.getTriggerMap();
