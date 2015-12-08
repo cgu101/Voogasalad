@@ -4,7 +4,6 @@ import authoring.controller.AuthoringController;
 import authoring.controller.parameters.ParameterData;
 import authoring.model.properties.Property;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
