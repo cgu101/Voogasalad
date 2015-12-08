@@ -129,13 +129,13 @@ public class AuthoringActorConstructor {
 		for(String action : actions) {
 			String num = AuthoringConfigManager.getInstance().getTypeInfo(type, action, ResourceType.NUM_ACTORS);
 			Integer val = new Integer(num);				
-			if(val > otherActors.length) {
+			if(val > otherActors.length + 1) {
 				toRemove.add(action);
 			} else {
 				for(int i=0; i < val; i++) {
-					String current = i==0 ? actor : otherActors[i];
+					String current = i==0 ? actor : otherActors[i-1];
 					List<String> requiredProperties = AuthoringConfigManager.getInstance()
-							.getRequiredPropertyList(type, otherActors[i], String.format("%s.%s", ResourceType.ACTORS, i));
+							.getRequiredPropertyList(type, action, String.format("%s.%s", ResourceType.ACTORS, i));
 					List<String> actorProperties = getPropertyList(current);
 					
 					if(!actorProperties.containsAll(requiredProperties)) {
