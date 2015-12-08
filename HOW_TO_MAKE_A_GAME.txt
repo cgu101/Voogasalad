@@ -1,0 +1,10 @@
+Create a new actor:
+	configuration.properties
+	* new actor properties file
+
+Create a new Trigger:
+	* new trigger property file
+
+Add stuff to the map constructor
+
+Lose hope
