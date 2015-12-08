@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -72,6 +73,7 @@ public class ParametersView {
 		stage.setAlwaysOnTop(true);
 		stage.setOnCloseRequest(e -> {
 //			e.consume();
+			assign();
 		});
 		stage.initOwner(pane.getScene().getWindow());
 		stage.setTitle(myResources.getString("title") + type);

@@ -306,7 +306,11 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">53.0</myValue>
+=======
+                                <myValue class="double">463.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -334,21 +338,33 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">301.0</myValue>
+=======
+                                <myValue class="double">216.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">52.0</myValue>
+=======
+                                <myValue class="double">532.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">10.0</myValue>
+=======
+                                <myValue class="double">17.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -377,7 +393,11 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">249.0</myValue>
+=======
+                                <myValue class="double">119.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -405,21 +425,33 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">110.0</myValue>
+=======
+                                <myValue class="double">34.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">522.0</myValue>
+=======
+                                <myValue class="double">113.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">12.0</myValue>
+=======
+                                <myValue class="double">18.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -448,7 +480,11 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">155.0</myValue>
+=======
+                                <myValue class="double">266.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -476,14 +512,22 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">62.0</myValue>
+=======
+                                <myValue class="double">198.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">403.0</myValue>
+=======
+                                <myValue class="double">15.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -519,7 +563,11 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">673.0</myValue>
+=======
+                                <myValue class="double">133.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -547,21 +595,33 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">16.0</myValue>
+=======
+                                <myValue class="double">46.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">320.0</myValue>
+=======
+                                <myValue class="double">573.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
+<<<<<<< HEAD
                                 <myValue class="double">16.0</myValue>
+=======
+                                <myValue class="double">17.0</myValue>
+>>>>>>> cca178ec7ac0f7b9f218b3fa67e4efe6df90b375
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
