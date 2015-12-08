@@ -7,6 +7,7 @@ import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import util.Sprite;
 import view.visual.AbstractVisual;
 
 /**
@@ -90,7 +91,10 @@ public class ActorView extends AbstractVisual {
 		double height = image.getHeight();
 		dimensionRatio = height / width;
 
-		return new ImageView(image);
+		//return new ImageView(image);
+		Sprite ret = new Sprite(img);
+		ret.play();
+		return ret;
 	}
 
 	private void setupNode() {
