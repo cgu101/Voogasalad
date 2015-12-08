@@ -71,7 +71,14 @@ public class ParameterCell extends AbstractListCell<ParameterData> {
 	private Button makeKeySelectorButton() {
 		Button button = new Button();
 		button.setText(myResources.getString("select"));
-		button.setOnAction(e -> controller.getKeyLibrary().checkoutKey(actors[0]));
+		button.setOnAction(e -> {
+			controller.getKeyLibrary().returnKey(actors[0], KeyCode.getKeyCode(getItem().getValue()));
+			KeyCode key = controller.getKeyLibrary().checkoutKey(actors[0]);
+			if (key == null) {
+				key = KeyCode.SPACE;
+			}
+			getItem().setValue(key.toString());
+		});
 		return button;
 	}
 
