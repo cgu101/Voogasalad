@@ -81,9 +81,9 @@ public class ParameterCell extends AbstractListCell<ParameterData> {
 			} catch (IllegalArgumentException err) {
 				System.out.println("whoops");
 			}
-			key = controller.getKeyLibrary().checkoutKey(actors[0]);
-			if (key == null) {
-				key = KeyCode.DEAD_GRAVE;
+			KeyCode chosen = controller.getKeyLibrary().checkoutKey(actors[0]);
+			if (chosen != null) {
+				key = chosen;
 			}
 			button.setText(key.getName());
 			getItem().setValue(key.getName());
