@@ -14,9 +14,9 @@ public abstract class APropertyTest extends AActorSelfTrigger {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean condition(Parameters parameters, Actor actor) {
-		String propertyName = (String) parameters.getParameter(ParametersKey.PROPERTY + "0");
+		String propertyName = (String) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0");
 		Double property = actor.getPropertyValue(propertyName);
-		Double value = (Double) parameters.getParameter(ParametersKey.DOUBLE_VALUE + "0");
+		Double value = (Double) parameters.getParameter(ParametersKey.PARAM_PREFIX + "1");
 		return actor.hasProperty(propertyName) ? checkCondition(property, value) : false;
 	}
 
