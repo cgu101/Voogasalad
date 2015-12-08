@@ -35,6 +35,7 @@ public class GameEngine implements IEngine {
 		this.game = null;
 		this.levelExecutor = null;
 		this.depInjector = new ActorDependencyInjector(this);
+		
 	}
 	
 	/**
@@ -63,18 +64,25 @@ public class GameEngine implements IEngine {
 	private Level makeLevel(Game g, String levelID) {
 		return g.getLevel(levelID);
 	}
-	private Level makeLevel(String levelID) {
+	
+	
+	private Level makeLevel(String levelID, State state) {
 		if (levelID.equals(nextLevelKey)) {
-			return makeDefaultNextLevel(levelExecutor.getLevelID());
+			return makeDefaultNextLevel(levelExecutor.getLevelID(), state);
 		}
 		return game.getLevel(levelID);
 	}
-	private Level makeDefaultNextLevel (String currentLevelID) {
+	private Level makeDefaultNextLevel (String currentLevelID, State state) {
 		int nextLevelID = Integer.parseInt(currentLevelID) + 1;
+		// TODO end game
 		if (nextLevelID >= Integer.parseInt((String)game.getProperty(levelCountKey).getValue())) {
 			return null;
 		}
+		System.out.println("id "+nextLevelID);
 		String nextLevelName = Integer.toString(nextLevelID);
+		
+		state.getPropertyBundle().add(new Property<String>(levelKey, nextLevelName));
+		
 		return game.getLevel(nextLevelName);
 	}
 	private void setExecutor(Level level, State state) {
@@ -104,7 +112,7 @@ public class GameEngine implements IEngine {
 		String levelID = (String) state.getProperty(levelKey).getValue();
 		if (!levelID.equals(levelExecutor.getLevelID())) {
 			// SWITCH LEVEL
-			setExecutor(makeLevel(levelID), state);
+			setExecutor(makeLevel(levelID, state), state);
 		}
 		
 	}
@@ -145,7 +153,10 @@ public class GameEngine implements IEngine {
 	@Override 
 	public void nextLevel() throws EngineException {
 		changeDependencies();
-		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID()),levelExecutor.getCurrentState());
+//		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID(), this.getState()),levelExecutor.getCurrentState());
+		
+		levelExecutor.getCurrentState().getPropertyBundle().add(new Property<String>(levelKey, nextLevelKey));
+		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID(), this.getState()),this.getState());
 	}
 	
 	private void changeDependencies () {

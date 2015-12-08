@@ -8,12 +8,12 @@ import view.screen.AbstractScreen;
 import view.screen.StartScreen;
 
 public class ControlBarGeneral extends ControlBar {
-	private AbstractScreen currentScreen;
+	private AbstractScreen screen;
 	private double width;
 
 	public ControlBarGeneral(GridPane pane, AbstractScreen screen, double width) {
 		super(pane);
-		this.currentScreen = screen;
+		this.screen = screen;
 		this.width = width;
 		makePane();
 	}
@@ -29,7 +29,7 @@ public class ControlBarGeneral extends ControlBar {
 	}
 
 	private void makeTools(ToolBar toolBar) {
-		Button backButton = makeButton("back", e -> currentScreen.setNextScreen(new StartScreen()));
+		Button backButton = makeButton("back", e -> screen.setNextScreen(new StartScreen()));
 		toolBar.getItems().addAll(backButton);
 	}
 }

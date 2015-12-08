@@ -59,7 +59,7 @@ public class InteractionExecutor {
 	public InteractionExecutor (Level level, InputManager inputMap, State state, ActorDependencyInjector depInjector) {
 		this();
 		this.inputMap = inputMap;
-
+		System.out.println("level "+level);
 		if (level != null) {
 			this.currentLevelIdentifier = level.getUniqueID();
 			this.triggerTree = level.getRootTree();

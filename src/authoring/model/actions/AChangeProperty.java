@@ -14,10 +14,10 @@ public abstract class AChangeProperty extends AOneActorAction {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void run(Parameters parameters, State state, Actor actor) {
-		String name = (String) parameters.getParameter(ParametersKey.PROPERTY + "0");
+		String name = (String) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0");
 		Double value = actor.getPropertyValue(name);
-		Double operand = (Double) parameters.getParameter(ParametersKey.DOUBLE_VALUE + "0");
-		Double extremum = (Double) parameters.getParameter(ParametersKey.DOUBLE_VALUE + "1");
+		Double operand = (Double) parameters.getParameter(ParametersKey.PARAM_PREFIX + "1");
+		Double extremum = (Double) parameters.getParameter(ParametersKey.PARAM_PREFIX + "2");
 		actor.setProperty(name, calculateValue(value, operand, extremum));
 	}
 
