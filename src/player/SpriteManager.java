@@ -42,6 +42,8 @@ public class SpriteManager {
 				Sprite s = sprites.get(a.getUniqueID());
 				s.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
 				s.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
+				if (a.getProperties().getComponents().get("angle")!=null)
+					s.setRotate((double)a.getProperties().getComponents().get("angle").getValue());
 			//}else if((Boolean)a.getProperties().getComponents().get("_visible").getValue()){
 			}else{
 				Sprite newsp = createSprite(a);
@@ -49,6 +51,8 @@ public class SpriteManager {
 				myMap.getGroup().getChildren().add(newsp);
 				newsp.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
 				newsp.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
+				if (a.getProperties().getComponents().get("angle")!=null)
+					newsp.setRotate((double)a.getProperties().getComponents().get("angle").getValue());
 				newsp.play(0);
 			}
 			stillAlive.put(a.getUniqueID(), true);
