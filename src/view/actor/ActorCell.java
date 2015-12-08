@@ -65,7 +65,6 @@ public class ActorCell extends AbstractListCell<String> {
 		ClipboardContent content = new ClipboardContent();
 		content.putString(this.actor);
 		db.setContent(content);
-		// is there any way to use an ImageView rather than an image?
 		db.setDragView(image.getCroppedImage(), image.getCroppedImage().getWidth() / 2, image.getCroppedImage().getHeight() / 2);
 	}
 
