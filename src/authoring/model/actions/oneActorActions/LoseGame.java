@@ -5,15 +5,15 @@ import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import engine.State;
 
-public class LevelTransitionToNext extends AOneActorAction {
+public class LoseGame extends AOneActorAction {
 	/**
 	 * Generated serial version ID
 	 */
-	private static final long serialVersionUID = 4542051448186712167L;
+	private static final long serialVersionUID = -5800650791757585890L;
 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void run(Parameters parameters, State state, Actor a) {
-		// TODO Auto-generated method stub
+		//TODO
 	}
 }

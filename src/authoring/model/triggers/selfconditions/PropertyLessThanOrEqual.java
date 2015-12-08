@@ -8,7 +8,7 @@ public abstract class PropertyLessThanOrEqual extends APropertyTest {
 	 */
 	private static final long serialVersionUID = 8170266574784510102L;
 
-	protected boolean checkCondition(int property, Double value) {
+	protected boolean checkCondition(Double property, Double value) {
 		return Double.compare(property, value) <= 0;
 	}
 }

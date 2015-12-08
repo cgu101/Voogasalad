@@ -28,15 +28,15 @@ import view.screen.PlayerScreen;
 import view.screen.StartScreen;
 
 public class ControlBarPlayer extends ControlBar {
-	private PlayerScreen currentScreen;
+	private PlayerScreen screen;
 	private double width;
 	private VBox box;
 	private ToolBar toolBar;
-	Menu hideAndShow;
+	private Menu hideAndShow;
 
 	public ControlBarPlayer(GridPane pane, PlayerScreen screen, double width) {
 		super(pane);
-		this.currentScreen = screen;
+		this.screen = screen;
 		this.width = width;
 		makePane();
 	}
@@ -44,7 +44,7 @@ public class ControlBarPlayer extends ControlBar {
 	@Override
 	protected void makePane() {
 		box = new VBox();
-		box.setPrefWidth(width);
+		box.minWidthProperty().bind(screen.getScene().widthProperty());
 		MenuBar mainMenu = new MenuBar();
 		createMenuBar(mainMenu);
 		box.getChildren().add(mainMenu);
@@ -57,43 +57,31 @@ public class ControlBarPlayer extends ControlBar {
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
-		MenuItem load = makeMenuItem(myResources.getString("loadGame"), e -> currentScreen.loadGame());
-		MenuItem save = makeMenuItem(myResources.getString("saveGame"), e -> currentScreen.saveState());
+		MenuItem load = makeMenuItem(myResources.getString("loadGame"), e -> screen.loadGame());
+		MenuItem save = makeMenuItem(myResources.getString("saveGame"), e -> screen.saveState());
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save);
 
 		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
-		fullscreen.selectedProperty().bindBidirectional(currentScreen.getFullscreenProperty());
+		fullscreen.selectedProperty().bindBidirectional(screen.getFullscreenProperty());
 		
 		CheckMenuItem toolbar = new CheckMenuItem(myResources.getString("toolbar"));
 		toolbar.selectedProperty().setValue(true);
 		toolbar.selectedProperty().addListener(e -> toggleToolbar(toolbar.selectedProperty().getValue()));
 		
-		CheckMenuItem highScore = new CheckMenuItem(myResources.getString("highscore"));
-		highScore.selectedProperty().setValue(false);
-		highScore.selectedProperty().addListener(e -> System.out.println("High Score not implemented yet"));
-		
-		CheckMenuItem headsUpDisplay = new CheckMenuItem(myResources.getString("hud"));
-		headsUpDisplay.selectedProperty().setValue(false);
-		headsUpDisplay.selectedProperty().addListener(e -> System.out.println("HeadsUpDisplay not implemented yet"));
-		
-		CheckMenuItem preferences = new CheckMenuItem(myResources.getString("preferences"));
-		preferences.selectedProperty().setValue(false);
-		preferences.selectedProperty().addListener(e -> System.out.println("Game Preferences not implemented yet"));
-		
-		hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar, highScore, headsUpDisplay, preferences);
-		
+		hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar);
+		makeComponentCheckMenus(hideAndShow, screen);
 		Menu window = addToMenu(new Menu(myResources.getString("window")), fullscreen, hideAndShow);
 		makeMenuBar(mainMenu, file, window);
 	}
 	
 	private void makeTools() {
-		Button backButton = makeButton("back", e -> currentScreen.setNextScreen(new StartScreen()));
-		Button playButton = makeButton("play", e -> currentScreen.resume());
-		Button pauseButton = makeButton("pause", e -> currentScreen.pause());
-		Button saveButton = makeButton("save", e -> currentScreen.saveState()); //TODO
-		Button loadButton = makeButton("load", e -> currentScreen.loadState()); // TODO
-		Button replayButton = makeButton("replay", e -> currentScreen.confirmRestartOrReplay("Replay Level"));
-		Button resetButton = makeButton("reset", e -> currentScreen.confirmRestartOrReplay("Reset Game"));
+		Button backButton = makeButton("back", e -> screen.setNextScreen(new StartScreen()));
+		Button playButton = makeButton("play", e -> screen.resume());
+		Button pauseButton = makeButton("pause", e -> screen.pause());
+		Button saveButton = makeButton("save", e -> screen.saveState()); //TODO
+		Button loadButton = makeButton("load", e -> screen.loadState()); // TODO
+		Button replayButton = makeButton("replay", e -> screen.confirmRestartOrReplay("Replay Level"));
+		Button resetButton = makeButton("reset", e -> screen.confirmRestartOrReplay("Reset Game"));
 		toolBar.getItems().addAll(backButton, playButton, pauseButton, saveButton, loadButton, replayButton, resetButton);
 	}
 	
@@ -111,8 +99,8 @@ public class ControlBarPlayer extends ControlBar {
 	 * i.e. ActorMonitor and HUD
 	 */
 	public void initializeComponents() {
-		if(currentScreen.getComponents() != null){
-			for (AbstractDockElement c : currentScreen.getComponents()) {
+		if(screen.getComponents() != null){
+			for (AbstractDockElement c : screen.getComponents()) {
 				CheckMenuItem item = new CheckMenuItem(myResources.getString(c.getClass().getSimpleName()));
 				item.selectedProperty().bindBidirectional(c.getShowingProperty());
 				item.selectedProperty().set(false);

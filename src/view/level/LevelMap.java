@@ -139,9 +139,7 @@ public class LevelMap extends Map implements Anscestral {
 	private ContextMenu createContextMenu() {
 		ContextMenu cm = new ContextMenu();
 		MenuItem rename = makeMenuItem(myResources.getString("rename"), e -> renameLevel());
-		MenuItem delete = makeMenuItem(myResources.getString("delete"), e -> deleteLevel());
-		MenuItem copy = makeMenuItem(myResources.getString("copy"), e -> copyLevel());
-		cm.getItems().addAll(rename, copy, delete);
+		cm.getItems().addAll(rename);
 		return cm;
 	}
 	
@@ -153,14 +151,6 @@ public class LevelMap extends Map implements Anscestral {
 		
 		String s = dialog.getEditor().getText();
 		myTab.setText(s);
-	}
-	
-	private void deleteLevel() {
-		//TODO:
-	}
-	
-	private void copyLevel() {
-		//TODO:
 	}
 	
 	private MenuItem makeMenuItem(String title, EventHandler<ActionEvent> handler) {

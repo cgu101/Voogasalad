@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -30,7 +31,6 @@ public class ParametersView {
 	private static final String ZERO = "0";
 	private static final String TRIGGER_IDENTIFIER = TriggerTreeNode.class.getSimpleName();
 	private static final String ACTION_IDENTIFIER = ActionTreeNode.class.getSimpleName();
-	private static final String PARAM_PREFIX = "param.";
 	private static final String TEXT_SUFFIX = ".string";
 	private static final String TYPE_SUFFIX = ".type";
 	private static final String INDEX_SUFFIX = ".actorindex";
@@ -60,7 +60,6 @@ public class ParametersView {
 		init();
 	}
 	protected void init() {
-		// TODO Auto-generated method stub
 		scene = new Scene(mainPane);
 		finishButton = new Button(myResources.getString("finish"));
 		finishButton.setOnAction(e -> assign());
@@ -72,6 +71,7 @@ public class ParametersView {
 		stage.setAlwaysOnTop(true);
 		stage.setOnCloseRequest(e -> {
 //			e.consume();
+			assign();
 		});
 		stage.initOwner(pane.getScene().getWindow());
 		stage.setTitle(myResources.getString("title") + type);
@@ -79,31 +79,25 @@ public class ParametersView {
 	}
 
 	private void assign () {
-		Parameters<Object> params = new Parameters<Object>();
+		Parameters params = node.getParameters();
 		Map<String, Integer> indices = new HashMap<String,Integer>();
-		paramList.forEach(e -> {
-			String pType = e.getType();
+		for (int i = 0; i < paramList.size(); i++) {
+			ParameterData parameter = paramList.get(i);
+			String pType = parameter.getType();
 			if (pType.equals(Double.class.getName())) {
 				double val;
 				try {
-					val = Double.parseDouble(e.getValue());
+					val = Double.parseDouble(parameter.getValue());
 				} catch (Exception ex) {
 					val = 0;
-					e.setValue(ZERO);
+					parameter.setValue(ZERO);
 				}
-				params.addParameter(ParametersKey.DOUBLE_VALUE 
-						+ Integer.toString(updateMap(indices, ParametersKey.DOUBLE_VALUE)), val);
-			} else if (pType.equals(String.class.getName())) {
-				params.addParameter(ParametersKey.STRING_VALUE
-						+ Integer.toString(updateMap(indices, ParametersKey.STRING_VALUE)), e.getValue());
+				params.addParameter(ParametersKey.PARAM_PREFIX + Integer.toString(i), val);
 			} else {
-				params.addParameter(ParametersKey.PROPERTY
-						+ Integer.toString(updateMap(indices, ParametersKey.PROPERTY)), e.getValue());
+				params.addParameter(ParametersKey.PARAM_PREFIX + Integer.toString(i), parameter.getValue());
 			}
-
-		});
+		}
 		node.setValue(mainOptions.getValue());
-		node.setParameters(params);
 		stage.close();
 	}
 	private int updateMap (Map<String, Integer> map, String key) {
@@ -118,7 +112,6 @@ public class ParametersView {
 	}
 
 	private void makePane() {
-		// TODO Auto-generated method stub
 		mainPane = new BorderPane();
 		mainOptions = makeComboBox();
 		mainPane.setTop(mainOptions);
@@ -147,7 +140,11 @@ public class ParametersView {
 			paramListView = makeParamList(options.getValue());
 			mainPane.setCenter(paramListView);
 		});
-		options.setValue(options.getItems().get(0));
+		if (options.getItems().contains(node.getValue())) {
+			options.setValue(node.getValue());
+		} else {
+			options.setValue(options.getItems().get(0));
+		}
 		return options;
 	}
 
@@ -155,7 +152,7 @@ public class ParametersView {
 		int numParams = Integer.parseInt(AuthoringConfigManager.getInstance().getTypeInfo(type, identifier, ResourceType.NUM_PARAMS.toString()));
 		paramList = FXCollections.observableArrayList();
 		for (int i = 0; i < numParams; i++) {
-			String paramPrefix = PARAM_PREFIX + Integer.toString(i);
+			String paramPrefix = ParametersKey.PARAM_PREFIX + Integer.toString(i);
 			String paramText = AuthoringConfigManager.getInstance()
 					.getTypeInfo(type, identifier, paramPrefix + TEXT_SUFFIX);
 			String paramType = AuthoringConfigManager.getInstance()
@@ -163,7 +160,12 @@ public class ParametersView {
 			String paramIndex = AuthoringConfigManager.getInstance()
 					.getTypeInfo(type, identifier, paramPrefix + INDEX_SUFFIX);
 			// TODO
-			ParameterData data = new ParameterData(paramText, paramType, paramIndex, "");
+			ParameterData data;
+			if (node.getParameters().getParameter(paramPrefix) != null) {
+				data = new ParameterData(paramText, paramType, paramIndex, node.getParameters().getParameter(paramPrefix).toString());
+			} else {
+				data = new ParameterData(paramText, paramType, paramIndex, "");
+			}
 			paramList.add(data);
 		}
 

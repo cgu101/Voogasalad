@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
+import authoring.model.properties.Property;
 import data.XMLManager;
 import exceptions.data.GameFileException;
 import javafx.geometry.Pos;
@@ -14,6 +16,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
+import resources.keys.PropertyKey;
+import resources.keys.PropertyKeyResource;
 import util.FileChooserUtility;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
@@ -93,45 +97,50 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		ActorHandlerToolbar aet = new ActorHandlerToolbar(homePanes.get(3), myResources.getString("toolbarname"), this,
 				w);
 		components.add(aet);
-		configureMap(browser, editor, slider);
+		configureMap(browser, editor);
 	}
 
-	private void configureMap(ActorBrowser browser, ActorEditor editor, CreatorMapSliders slider) {
+	private void configureMap(ActorBrowser browser, ActorEditor editor) {
 		fullscreen.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
-				editor.getDockedProperty().getValue(), slider.getDockedProperty().getValue()));
-		browser.getDockedProperty()
-				.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
-						editor.getDockedProperty().getValue(), slider.getDockedProperty().getValue()));
-		editor.getDockedProperty()
-				.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
-						editor.getDockedProperty().getValue(), slider.getDockedProperty().getValue()));
+				editor.getDockedProperty().getValue()));
+		browser.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
+				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
+		editor.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
+				browser.getDockedProperty().getValue(), editor.getDockedProperty().getValue()));
 	}
 
-	private void manageMapSize(boolean fullscreen, boolean browser, boolean editor, boolean slider) {
+	private void manageMapSize(boolean fullscreen, boolean browser, boolean editor) {
 		if (w.getCurrentLevel() == null) {
 			return;
 		} else if (!fullscreen) {
 			if (!browser && !editor) {
-				w.getCurrentLevel().setMapDimensions(1000, 724);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("med1width")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			} else {
-				w.getCurrentLevel().setMapDimensions(700, 724);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("smallestwidth")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			}
 		} else {
 			w.refresh();
 			if (!browser && !editor) {
-				w.getCurrentLevel().setMapDimensions(1920, 1006);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("largestwidth")), Double.parseDouble(myResources.getString("bigscreenheight")));
 			} else {
-				w.getCurrentLevel().setMapDimensions(1620, 1006);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("med2width")), Double.parseDouble(myResources.getString("bigscreeneheight")));
 			}
 		}
 	}
-
+	private void setProperties (Game game) {
+		Bundle<Property<?>> bundle = new Bundle<Property<?>>();
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_ID_KEY), "name"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_DESCRIPTION_KEY), "description"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.INITIAL_LEVEL_KEY), "0"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_LEVEL_COUNT_KEY), "1"));
+		game.addAllProperties(bundle);
+	}
 	// TODO
 	public void saveGame() {
 		System.out.println("Testing saving game ");
 
 		try {
-			Game game = this.game;
+			setProperties(game);
 			File saveFile = FileChooserUtility.save(scene.getWindow());
 
 			String fileLocation = saveFile.getAbsolutePath();

@@ -6,7 +6,7 @@ import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import util.Sprite;
 import view.visual.AbstractVisual;
 
 /**
@@ -19,7 +19,7 @@ import view.visual.AbstractVisual;
  */
 public class ActorView extends AbstractVisual {
 	private Actor myActor;
-	private ImageView myNode;
+	private Sprite sprite;
 	private double myFitWidth;
 	private double dimensionRatio;
 	private double myRotation;
@@ -30,8 +30,7 @@ public class ActorView extends AbstractVisual {
 	private ActorPropertyMap myMap;
 	private AuthoringController myController;
 
-	public ActorView(Actor a, ActorPropertyMap map, String actorType, 
-			double x, double y, AuthoringController ac) {
+	public ActorView(Actor a, ActorPropertyMap map, String actorType, double x, double y, AuthoringController ac) {
 		myMap = map;
 		myController = ac;
 		myType = actorType;
@@ -42,7 +41,7 @@ public class ActorView extends AbstractVisual {
 		findResources();
 		myFitWidth = Double.parseDouble(myResources.getString("defaultWidth"));
 		myRotation = Double.parseDouble(myResources.getString("defaultRotation"));
-		myNode = createImage();
+		sprite = createImage();
 		setupNode();
 		itsAlive = true;
 	}
@@ -52,7 +51,7 @@ public class ActorView extends AbstractVisual {
 		myController = copy.getController();
 		myType = copy.getActorType();
 		myMap = myController.getAuthoringActorConstructor().getActorPropertyMap(myType);
-		
+
 		String uniqueID = new Date().toString();
 		myController.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, myMap);
 		myActor = myController.getLevelConstructor().getActorGroupsConstructor().getActor(myType, uniqueID);
@@ -60,28 +59,32 @@ public class ActorView extends AbstractVisual {
 		Double offset = Double.parseDouble(myResources.getString("copyoffset"));
 		myXCoor = copy.getXCoor() + offset;
 		myYCoor = copy.getYCoor() + offset;
-		
-		myFitWidth = copy.getWidth(); 		// TODO: update properties file for size
+
+		myFitWidth = copy.getWidth(); // TODO: update properties file for size
 		String img = (String) myActor.getProperties().getComponents().get("image").getValue();
 		myMap.addProperty(myResources.getString("image"), img);
 		myMap.addProperty(myResources.getString("x"), "" + myXCoor);
 		myMap.addProperty(myResources.getString("y"), "" + myYCoor);
-		
+
 		hasChanged();
-		myNode = createImage();
+		sprite = createImage();
 		setupNode();
 		setRotation(copy.getRotation());
+	}
+
+	protected Actor getActor() {
+		return myActor;
 	}
 	
 	private String getActorType() {
 		return myType;
 	}
-	
+
 	private AuthoringController getController() {
 		return myController;
 	}
 
-	private ImageView createImage() {
+	private Sprite createImage() {
 		String img = (String) myActor.getProperties().getComponents().get("image").getValue();
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
 
@@ -90,19 +93,22 @@ public class ActorView extends AbstractVisual {
 		double height = image.getHeight();
 		dimensionRatio = height / width;
 
-		return new ImageView(image);
+		// return new ImageView(image);
+		Sprite ret = new Sprite(img);
+		ret.play();
+		return ret;
 	}
 
 	private void setupNode() {
-		myNode.setTranslateX(myXCoor - getWidth() / 2);
-		myNode.setTranslateY(myYCoor - getHeight() / 2);
-		myNode.setRotate(myRotation);
-		myNode.setFitWidth(myFitWidth);
-		myNode.setPreserveRatio(true);
+		sprite.setTranslateX(myXCoor - getWidth() / 2);
+		sprite.setTranslateY(myYCoor - getHeight() / 2);
+		sprite.setRotate(myRotation);
+		sprite.setFitWidth(myFitWidth);
+		sprite.setPreserveRatio(true);
 	}
 
-	protected ImageView getImageView() {
-		return myNode;
+	protected Sprite getSprite() {
+		return sprite;
 	}
 
 	protected double getXCoor() {
@@ -113,7 +119,7 @@ public class ActorView extends AbstractVisual {
 		myXCoor = newX;
 		myMap.addProperty(myResources.getString("x"), "" + myXCoor);
 		mapChanged();
-		myNode.setTranslateX(myXCoor - getWidth()/2);
+		sprite.setTranslateX(myXCoor - getWidth() / 2);
 	}
 
 	protected double getYCoor() {
@@ -124,7 +130,7 @@ public class ActorView extends AbstractVisual {
 		myYCoor = newY;
 		myMap.addProperty(myResources.getString("y"), "" + myYCoor);
 		mapChanged();
-		myNode.setTranslateY(myYCoor - getHeight() / 2);
+		sprite.setTranslateY(myYCoor - getHeight() / 2);
 	}
 
 	protected void restoreXY(double xCoor, double yCoor) {
@@ -142,17 +148,23 @@ public class ActorView extends AbstractVisual {
 
 	protected void scaleDimensions(double percent) {
 		myFitWidth *= percent; // TODO: size?
+		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
+		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
+		mapChanged();
 		preserveCenter();
 	}
 
 	protected void addDimensions(double increase) {
 		myFitWidth += increase;
+		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
+		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
+		mapChanged();
 		preserveCenter();
 	}
 
 	private void preserveCenter() {
-		myNode.setFitWidth(myFitWidth);
-		myNode.setPreserveRatio(true);
+		sprite.setFitWidth(myFitWidth);
+		sprite.setPreserveRatio(true);
 		restoreXY(myXCoor, myYCoor);
 	}
 
@@ -163,18 +175,18 @@ public class ActorView extends AbstractVisual {
 	protected void setLife(boolean alive) {
 		itsAlive = alive;
 	}
-	
+
 	protected boolean getLife() {
 		return itsAlive;
 	}
-	
+
 	protected void setRotation(double rotate) {
 		myRotation = rotate;
 		myMap.addProperty(myResources.getString("angle"), "" + rotate);
 		mapChanged();
-		myNode.setRotate(rotate);
+		sprite.setRotate(rotate);
 	}
-	
+
 	private void mapChanged() {
 		myController.getLevelConstructor().getActorGroupsConstructor().updateActor(myActor.getUniqueID(), myMap);
 	}

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -115,7 +116,7 @@ public class KeyLibrary {
 	 */
 
 	public boolean returnKey(String s, KeyCode selection) {
-		if (library.get(selection).contains(s)) {
+		if (library.keySet().contains(selection) && library.get(selection).contains(s)) {
 			library.get(selection).remove(s);
 			if (library.get(selection).isEmpty()) {
 				mainPane.getChildren().remove(keys.get(selection));
@@ -154,6 +155,10 @@ public class KeyLibrary {
 	public void show() {
 		showStage();
 		stage.show();
+	}
+	
+	public Set<KeyCode> getKeySet() {
+		return library.keySet();
 	}
 
 	private void showStage() {

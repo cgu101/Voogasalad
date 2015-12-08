@@ -2,11 +2,17 @@ package view.element;
 
 import java.util.ArrayList;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 import view.controlbar.ControlBarCreator;
 import view.screen.*;
 
@@ -56,6 +62,7 @@ public class Icons extends AbstractElement {
 			image.setSmooth(true);
 			image.setCache(true);
 			setGraphic(image);
+			this.setOpacity(0.5);
 			iconName = s;
 			this.setOnAction(e -> this.handleAction());
 			this.setOnMouseEntered(e -> this.handleHover());
@@ -66,12 +73,12 @@ public class Icons extends AbstractElement {
 		private void handleAction() {
 			if (selected == this) {
 				try {
-					
+
 					/**
 					 * TODO: David, talk to me about this... this is TEMPORARY!
 					 */
 					if (testIfCreator(iconName)) { ControlBarCreator creatorController = new ControlBarCreator(); currentScreen.setNextScreen(creatorController.getScreen()); return; };
-					
+
 					Class<?> c = Class.forName("view.screen." + iconName + "Screen");
 					currentScreen.setNextScreen((AbstractScreen) c.newInstance());
 				} catch (Exception e) {
@@ -88,6 +95,29 @@ public class Icons extends AbstractElement {
 
 		private void handleHover() {
 			selector.setText(iconName);
+
+			FadeTransition fadeTransition = 
+					new FadeTransition(Duration.millis(300), this);
+			fadeTransition.setFromValue(0.5);
+			fadeTransition.setToValue(1.0);
+			fadeTransition.setCycleCount(1);
+			fadeTransition.setAutoReverse(true);
+			fadeTransition.play();
+			
+			ScaleTransition scaleTransition = 
+					new ScaleTransition(Duration.millis(300), this);
+			scaleTransition.setToX(1.1);
+			scaleTransition.setToY(1.1);
+			scaleTransition.setCycleCount(1);
+			scaleTransition.setAutoReverse(true);
+
+			ParallelTransition parallelTransition = new ParallelTransition();
+			parallelTransition.getChildren().addAll(
+					fadeTransition,
+					scaleTransition
+					);
+			parallelTransition.setCycleCount(1);
+	        parallelTransition.play();
 		}
 
 		private void handleExit() {
@@ -96,8 +126,30 @@ public class Icons extends AbstractElement {
 			} else {
 				selector.setText(selected.iconName);
 			}
+
+			FadeTransition fadeTransition = 
+					new FadeTransition(Duration.millis(300), this);
+			fadeTransition.setFromValue(1.0);
+			fadeTransition.setToValue(0.5);
+			fadeTransition.setCycleCount(1);
+			fadeTransition.setAutoReverse(true);
+			
+			ScaleTransition scaleTransition = 
+					new ScaleTransition(Duration.millis(300), this);
+			scaleTransition.setToX(1);
+			scaleTransition.setToY(1);
+			scaleTransition.setCycleCount(1);
+			scaleTransition.setAutoReverse(true);
+
+			ParallelTransition parallelTransition = new ParallelTransition();
+			parallelTransition.getChildren().addAll(
+					fadeTransition,
+					scaleTransition
+					);
+			parallelTransition.setCycleCount(1);
+	        parallelTransition.play();
 		}
-		
+
 		private boolean testIfCreator (String s) {
 			return s.equals("Creator");
 		}
