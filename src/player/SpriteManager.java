@@ -27,13 +27,8 @@ public class SpriteManager {
 		myResources = ResourceBundle.getBundle("resources/SpriteManager");
 		stillAlive = new HashMap<String, Boolean>();
 		BorderPane bp = (BorderPane)s.getRoot();
-		//group = new Group();
-		//bp.setCenter(group);
 		GridPane gp = new GridPane();
-
 		myMap = new PlayerMap(gp);
-//		myCamera.createTheMap(); this should not be called because it gets called in the constructor
-
 		bp.setCenter(gp);
 	}
 	
@@ -43,20 +38,18 @@ public class SpriteManager {
 	 * @param scene
 	 */
 	public void updateSprites(ArrayList<Actor> actors, Scene scene){
-		removeDeadActors(actors);
 		for(Actor a : actors){
 			if(sprites.containsKey(a.getUniqueID())){
 				Sprite s = sprites.get(a.getUniqueID());
-				centerSprite(a, s);
-//				System.out.println(s.getX() + ", " + s.getY() + " - " + s.getImage());
+				s.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
+				s.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
 			//}else if((Boolean)a.getProperties().getComponents().get("_visible").getValue()){
 			}else{
 				Sprite newsp = createSprite(a);
 				sprites.put(a.getUniqueID(), newsp);
 				myMap.getGroup().getChildren().add(newsp);
-				centerSprite(a, newsp);
-//				newsp.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
-//				newsp.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
+				newsp.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
+				newsp.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
 				newsp.play(0);
 			}
 			stillAlive.put(a.getUniqueID(), true);
@@ -73,31 +66,9 @@ public class SpriteManager {
 		stillAlive.entrySet().removeIf(e -> !e.getValue() );
 		for(String id : stillAlive.keySet()){
 			stillAlive.put(id,  false);
-		}
-		
+		}	
 	}
 	
-	private void centerSprite(Actor a, Sprite s) {
-		double x = a.getPropertyValue("xLocation");
-		double y = a.getPropertyValue("yLocation");
-		double size = a.getPropertyValue("size");
-		
-		s.setX(x - size/2);
-		s.setY(y - size/2);
-	}
-	
-	private void removeDeadActors(ArrayList<Actor> actors) {
-		List<String> removeList = new ArrayList<String>();;
-		for (String actorID : sprites.keySet()) {
-			if (!actors.contains(actorID)) {
-				removeList.add(actorID);
-			}
-		}
-		for (String actorID : removeList) {
-			myMap.getGroup().getChildren().remove(sprites.remove(actorID));
-		}
-	}
-
 	/**
 	 * Creates a visual sprite object based on a back-end actor object
 	 * 
