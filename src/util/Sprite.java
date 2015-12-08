@@ -8,6 +8,7 @@
 package util;
 
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
@@ -15,6 +16,8 @@ import javafx.animation.Transition;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.util.Duration;
 
 public class Sprite extends ImageView {
@@ -26,6 +29,10 @@ public class Sprite extends ImageView {
 	private int fps = 8;
 	private SpriteAnimation currentAnimation;
 	private int lastRowPlayed = 0;
+	
+	//for drag and drop in the authoring environment
+	private static HashMap<String, Image> thumbnails = new HashMap<String, Image>();
+	private String myThumbnailKey;
 
 	/**
 	 * Initializes a sprite from a javafx Image. This is not the recommended
@@ -82,6 +89,21 @@ public class Sprite extends ImageView {
 		for (int i = 0; i < (int) (this.getImage().getHeight() / this.rect.getHeight()); i++) {
 			this.limitRowColumns(i, (int) (this.getImage().getWidth() / this.rect.getWidth()));
 		}
+		
+		this.myThumbnailKey = sheet;
+		if (this.thumbnails.get(sheet)==null) 
+			this.thumbnails.put(sheet, createThumbnailImage(width, height));
+	}
+	
+	private Image createThumbnailImage(int width, int height) {
+		PixelReader reader = this.getImage().getPixelReader();
+		WritableImage newImage = new WritableImage(reader, 0, 0, width, height);
+		return newImage;
+	}
+
+	public Sprite(String sheet) {
+		this(sheet, Integer.parseInt(ResourceBundle.getBundle("resources/SpriteManager").getString(sheet).split(",")[0]),
+				Integer.parseInt(ResourceBundle.getBundle("resources/SpriteManager").getString(sheet).split(",")[1]));
 	}
 
 	// Below are all the different API calls for playing, pausing, restarting,
@@ -229,5 +251,9 @@ public class Sprite extends ImageView {
 			Sprite.this.setViewport(new Rectangle2D(Sprite.this.rect.getMinX() + xoffset,
 					Sprite.this.rect.getMinY() + yoffset, Sprite.this.rect.getWidth(), Sprite.this.rect.getHeight()));
 		}
+	}
+
+	public Image getCroppedImage() {
+		return this.thumbnails.get(myThumbnailKey);
 	}
 }

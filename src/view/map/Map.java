@@ -79,7 +79,7 @@ public abstract class Map extends AbstractElement {
 		// it
 		controller = new AuthoringController();
 		editToolbar = new ToolBar();
-		actorHandler = new ActorHandler(layout, editToolbar, this, theMiniMap, zoomSliderArea);
+		actorHandler = new ActorHandler(layout, editToolbar, this, theMiniMap, zoomSliderArea, controller);
 		// TODO: actorHandler = new ActorHandler(layout, zoomSliderArea,
 		// controller, editToolbar);
 
@@ -127,12 +127,7 @@ public abstract class Map extends AbstractElement {
 	 */
 	public void addActor(Actor element, ActorPropertyMap map, String actorType, double x, double y) {
 		// Use this method to add an actor to the StackPane.
-		if (!actorHandler.rectangleOn()) {
-			actorHandler.addActor(element, map, actorType, x, y, controller);
-		} else {
-			Alert alert = new Alert(AlertType.ERROR, myResources.getString("rectangleOn"), ButtonType.OK);
-			alert.showAndWait();
-		}
+		actorHandler.addActor(element, map, actorType, x, y);
 	}
 
 	/**
@@ -328,7 +323,7 @@ public abstract class Map extends AbstractElement {
 		// Create the map after adding elements you want
 		createTheMap();
 		
-		actorHandler = new ActorHandler(layout, editToolbar, this, theMiniMap, zoomSliderArea);
+		actorHandler = new ActorHandler(layout, editToolbar, this, theMiniMap, zoomSliderArea, controller);
 
 		// remove pesky key event handlers
 		addEventFilters();
