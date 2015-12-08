@@ -68,7 +68,7 @@ public class ActorHandler extends AbstractVisual {
 			ActorView av = new ActorView(a, map, actorType, x, y, myAC);
 			addActor(av, x, y);
 		} else {
-			// TODO: delete Actor
+			myAC.getLevelConstructor().getActorGroupsConstructor().deleteActor(a.getGroupName(), a.getUniqueID());
 			Alert alert = new Alert(AlertType.ERROR, myResources.getString("whileeditingerror"), ButtonType.OK);
 			alert.showAndWait();
 		}
@@ -110,10 +110,10 @@ public class ActorHandler extends AbstractVisual {
 		MenuItem rotateActor = makeMenuItem(myResources.getString("rotate"), event -> rotateActor(a));
 		MenuItem resizeActor = makeMenuItem(myResources.getString("resize"), event -> resizeActor(a));
 		MenuItem deleteActor = makeMenuItem(myResources.getString("delete"), event -> removeActor(a));
-		MenuItem editParam = makeMenuItem(myResources.getString("editparams"), event -> editParams());
-		MenuItem editShip = makeMenuItem(myResources.getString("editship"), event -> editShip());
+//		MenuItem editParam = makeMenuItem(myResources.getString("editparams"), event -> editParams());
+//		MenuItem editShip = makeMenuItem(myResources.getString("editship"), event -> editShip());
 
-		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, deleteActor, editParam, editShip);
+		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, deleteActor); //, editParam, editShip);
 
 		return cm;
 	}
@@ -215,22 +215,24 @@ public class ActorHandler extends AbstractVisual {
 		}
 	}
 
-	protected void removeActor(ActorView a) {
-		viewManager.removeElements(a.getSprite());
+	private void removeActor(ActorView a) {
+		myAVs.remove(a);
+		myAC.getLevelConstructor().getActorGroupsConstructor().deleteActor(a.getActor().getGroupName(), a.getActor().getUniqueID());
+		viewManager.removeElements(a.getSprite()); 
 	}
 
 	public void removeActor(Node element) {
 		viewManager.removeElements(element);
 	}
 
-	private void editParams() {
-
-	}
-
-	private void editShip() {
-
-	}
-
+//	private void editParams() {
+//
+//	}
+//
+//	private void editShip() {
+//
+//	}
+	
 	private Rectangle makeFilterRectangle() {
 		Rectangle rect = new Rectangle(map.getMapWidth(), map.getMapHeight());
 		double opacity = Double.parseDouble(myResources.getString("opacity"));

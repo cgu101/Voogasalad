@@ -6,7 +6,6 @@ import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import util.Sprite;
 import view.visual.AbstractVisual;
 
@@ -73,6 +72,10 @@ public class ActorView extends AbstractVisual {
 		setRotation(copy.getRotation());
 	}
 
+	protected Actor getActor() {
+		return myActor;
+	}
+	
 	private String getActorType() {
 		return myType;
 	}
