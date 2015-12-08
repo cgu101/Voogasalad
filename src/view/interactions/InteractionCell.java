@@ -64,26 +64,31 @@ public class InteractionCell extends TreeCell<InteractionTreeNode>{
 					menu.getItems().add(makeAddTriggerItem());
 					menu.getItems().add(makeAddActionItem());
 				}
-				menu.getItems().add(makeEditItem());
+				menu.getItems().add(makeEditItem(root));
 				menu.getItems().add(makeDeleteItem());
 			} else {
 				menu.getItems().add(makeAddTriggerItem());
 			}
 			setContextMenu(menu);
-			String tooltext;
-			try {
-				if (!root) {
-					ParameterTreeNode paramItem = (ParameterTreeNode) getItem();
-					tooltext = ((Set<Entry<String,Object>>)paramItem.getParameters().getParameterAndValues()).stream()
-							.map(e -> {return e.getKey() + ": " + e.getValue().toString();})
-							.collect(Collectors.joining("\n"));
-				} else tooltext = "";
-			} catch (Exception n) {
-				n.printStackTrace();
-				tooltext = "";
-			}
-			setTooltip(new Tooltip(tooltext));
+			setParamToolTip(root);
 		}
+	}
+	@SuppressWarnings("unchecked")
+	private void setParamToolTip(boolean root) {
+		String tooltext;
+		try {
+			if (!root) {
+				ParameterTreeNode paramItem = (ParameterTreeNode) getItem();
+				tooltext = ((Set<Entry<String,Object>>)paramItem.getParameters().getParameterAndValues()).stream()
+						.map(e -> {return e.getKey() + ": " + e.getValue().toString();})
+						.collect(Collectors.joining("\n"));
+			} else tooltext = "";
+		} catch (Exception n) {
+			n.printStackTrace();
+			tooltext = "";
+		}
+		setTooltip(new Tooltip(tooltext));
+		
 	}
 	private MenuItem makeAddTriggerItem () {
 		MenuItem triggerItem = new MenuItem("Add Trigger");
@@ -111,10 +116,11 @@ public class InteractionCell extends TreeCell<InteractionTreeNode>{
 		});
 		return actionItem;
 	}
-	private MenuItem makeEditItem () {
+	private MenuItem makeEditItem (boolean root) {
 		MenuItem editItem = new MenuItem("Edit");
 		editItem.setOnAction(e -> {
 			ParametersView view = new ParametersView((ParameterTreeNode) getItem(), pane, controller, actors);
+			setParamToolTip(root);
 		});
 		return editItem;
 	}

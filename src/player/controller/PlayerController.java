@@ -20,6 +20,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import player.IPlayer;
 import player.InputManager;
@@ -41,13 +42,14 @@ public class PlayerController implements IPlayer {
 	
 
 	/**
-	 * Player Controller Constructor
+	 * 	 * Player Controller Constructor
 	 * This method creates a new instance of a PlayerController.
 	 *
-	 * @param  screen The Screen used to determine dimensions of the component
+	 * @param s the Scene used to determine size
+	 * @param pane the pane to make the map
 	 */
-	public PlayerController(Scene s) {
-		mySpriteManager = new SpriteManager(s);
+	public PlayerController(Scene s, GridPane pane) {
+		mySpriteManager = new SpriteManager(s, pane);
 		myScene = s;
 		myInputManager = new InputManager();
 		myEngine = new GameEngine(myInputManager);

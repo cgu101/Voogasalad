@@ -22,14 +22,13 @@ public class SpriteManager {
 	//private Group group;
 	private view.map.Map myMap;
 	
-	public SpriteManager(Scene s){
+	public SpriteManager(Scene s, GridPane pane){
 		sprites = new HashMap<String, Sprite>();
 		myResources = ResourceBundle.getBundle("resources/SpriteManager");
 		stillAlive = new HashMap<String, Boolean>();
 		BorderPane bp = (BorderPane)s.getRoot();
-		GridPane gp = new GridPane();
-		myMap = new PlayerMap(gp);
-		bp.setCenter(gp);
+		myMap = new PlayerMap(pane);
+		bp.setCenter(pane);
 	}
 	
 	/**

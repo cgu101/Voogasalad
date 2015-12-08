@@ -132,7 +132,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		toolbar.selectedProperty().addListener(e -> toggleToolbar(toolbar.selectedProperty().getValue()));
 
 		Menu hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar);
-		makeComponentCheckMenus(hideAndShow);
+		makeComponentCheckMenus(hideAndShow, screen);
 
 		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
 		fullscreen.setAccelerator(new KeyCodeCombination(KeyCode.F6));
@@ -152,7 +152,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
 		screen.getWorkspace().updateObservers(dataMail);
 		if (screen.getGame().getLevels().size() == 1) {
-			toggleComponents(true);
+			toggleComponents(true, screen);
 		}
 	}
 
@@ -195,18 +195,6 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		}
 	}
 
-	private void makeComponentCheckMenus(Menu window) {
-		for (AbstractDockElement c : screen.getComponents()) {
-			CheckMenuItem item = new CheckMenuItem(myResources.getString(c.getClass().getSimpleName()));
-			item.selectedProperty().bindBidirectional(c.getShowingProperty());
-			addToMenu(window, item);
-		}
-		MenuItem show = makeMenuItem(myResources.getString("show"), e -> toggleComponents(true));
-		MenuItem hide = makeMenuItem(myResources.getString("hide"), e -> toggleComponents(false));
-		addToMenu(window, show);
-		addToMenu(window, hide);
-	}
-
 	private ActorBrowser findActorBrowser() {
 		for (AbstractDockElement c : screen.getComponents()) {
 			if (c instanceof ActorBrowser) {
@@ -216,13 +204,6 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		return null;
 	}
 
-	private void toggleComponents(boolean showing) {
-		for (AbstractDockElement c : screen.getComponents()) {
-			if (c.getShowingProperty().getValue() != showing) {
-				c.getShowingProperty().setValue(showing);
-			}
-		}
-	}
 
 	public GameWindow getGameWindow() {
 		return gameWindow;
