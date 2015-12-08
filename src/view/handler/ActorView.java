@@ -148,11 +148,17 @@ public class ActorView extends AbstractVisual {
 
 	protected void scaleDimensions(double percent) {
 		myFitWidth *= percent; // TODO: size?
+		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
+		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
+		mapChanged();
 		preserveCenter();
 	}
 
 	protected void addDimensions(double increase) {
 		myFitWidth += increase;
+		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
+		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
+		mapChanged();
 		preserveCenter();
 	}
 
