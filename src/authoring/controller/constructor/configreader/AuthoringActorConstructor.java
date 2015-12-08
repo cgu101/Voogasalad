@@ -12,12 +12,14 @@ public class AuthoringActorConstructor {
 	private Map<String, ActorObject> actorMap;
 
 	public AuthoringActorConstructor() {
-		load();
+		reload();
 	}
 
-	private void load() {
+	private void reload() {
 		actorMap = new HashMap<String, ActorObject>();
 		for (String actor : AuthoringConfigManager.getInstance().getKeyList(ResourceType.ACTORS)) {
+			System.out.println("actor="+actor);
+			if(actorMap.containsKey(actor)) continue;
 			actorMap.put(actor, new ActorObject(actor, AuthoringConfigManager.getInstance().getPropertyList(actor)));
 		}
 	}
@@ -28,6 +30,7 @@ public class AuthoringActorConstructor {
 	 * @return List<String>
 	 */
 	public List<String> getActorList() {
+		reload();
 		return new ArrayList<String>(actorMap.keySet());
 	}
 	

@@ -4,6 +4,10 @@ import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import engine.State;
 
+/**
+ * @author Inan
+ *
+ */
 public abstract class ATwoActorAction implements IAction {
 	/**
 	 * Generated serial version ID

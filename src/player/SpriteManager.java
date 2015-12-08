@@ -76,7 +76,7 @@ public class SpriteManager {
 		}
 		
 	}
-
+	
 	private void centerSprite(Actor a, Sprite s) {
 		double x = a.getPropertyValue("xLocation");
 		double y = a.getPropertyValue("yLocation");

@@ -14,11 +14,6 @@ public class CircleCollision extends ATwoActorExternalTrigger {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean condition(Parameters parameters, Actor a, Actor b) {
-		Double distance = ActionTriggerHelper.distance(a, b);
-		Double sizeA = a.getPropertyValue("size");
-		Double sizeB = b.getPropertyValue("size");
-		Double radiusSum = sizeA + sizeB;
-		return Double.compare(distance, radiusSum) <= 0;
+		return ActionTriggerHelper.collision(a, b);
 	}
-
 }

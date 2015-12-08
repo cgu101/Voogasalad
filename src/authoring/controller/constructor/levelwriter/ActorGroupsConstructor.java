@@ -47,7 +47,7 @@ public class ActorGroupsConstructor {
 	}
 	
 	/**
-	 * This method will create a new instanc of an actor if it doesn't exist. Otherwise, it will update all of the actors
+	 * This method will create a new instance of an actor if it doesn't exist. Otherwise, it will update all of the actors
 	 * identified by the id's in the String list. 
 	 * 
 	 * @param ids

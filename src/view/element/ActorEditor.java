@@ -2,10 +2,10 @@ package view.element;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import authoring.controller.AuthoringController;
-import authoring.controller.parameters.ParameterData;
+import authoring.model.tree.ActorTreeNode;
+import authoring.model.tree.InteractionTreeNode;
+import authoring.model.tree.ParameterTreeNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -27,7 +27,6 @@ import javafx.util.Callback;
 import view.actor.PropertyCell;
 import view.actor.TriggerCell;
 import view.interactions.InteractionCell;
-import view.interactions.InteractionData;
 import view.level.Workspace;
 import view.screen.AbstractScreenInterface;
 
@@ -130,26 +129,32 @@ public class ActorEditor extends AbstractDockElement {
 		contentPane.add(makeTriggerEditor(leftItem, rightItem), 0, 2);
 	}
 
-	private TreeView<InteractionData> makeTriggerEditor(String... items) {
-		// TODO use items, hook up backend
-		TreeItem<InteractionData> rootItem = new TreeItem<InteractionData>(
-				new InteractionData("Interaction", "", Arrays.asList(new ParameterData("text", null, null, "value"),
-						new ParameterData("text2", null, null, "value2")), new String[] { "Asteroid" }));
+	private void populateTree (TreeItem<InteractionTreeNode> frontNode, InteractionTreeNode backNode) {
+		for (InteractionTreeNode backChild : backNode.children()) {
+			if (!backChild.getIdentifier().equals(ActorTreeNode.class.getSimpleName())) {
+				TreeItem<InteractionTreeNode> frontChild = new TreeItem<InteractionTreeNode>(backChild);
+				frontNode.getChildren().add(frontChild);
+				populateTree(frontChild,backChild);
+			}
+		}
+	}
+	private TreeView<InteractionTreeNode> makeTriggerEditor(String... items) {
+		InteractionTreeNode branch = controller.getLevelConstructor().getTreeConstructor().getActorBaseNode(items);
+		TreeItem<InteractionTreeNode> rootItem = new TreeItem<InteractionTreeNode>(branch);
+		populateTree(rootItem, branch);
+
 		rootItem.setExpanded(true);
-		TreeView<InteractionData> treeView = new TreeView<InteractionData>(rootItem);
+		TreeView<InteractionTreeNode> treeView = new TreeView<InteractionTreeNode>(rootItem);
 		treeView.setEditable(true);
-		treeView.setCellFactory(new Callback<TreeView<InteractionData>, TreeCell<InteractionData>>() {
+		treeView.setCellFactory(new Callback<TreeView<InteractionTreeNode>, TreeCell<InteractionTreeNode>>() {
 			@Override
-			public TreeCell<InteractionData> call(TreeView<InteractionData> p) {
-				InteractionCell cell = new InteractionCell(pane, controller);
-				// new TriggerParametersView(null, controller);
+			public TreeCell<InteractionTreeNode> call(TreeView<InteractionTreeNode> p) {
+				InteractionCell cell = new InteractionCell(pane, controller, items);
 				return cell;
 			}
 		});
 		treeView.setFocusTraversable(false);
 		GridPane.setColumnSpan(treeView, 3);
-		// TODO
-		rootItem.getChildren().add(new TreeItem<InteractionData>(new InteractionData("Action", "next", null, null)));
 		return treeView;
 	}
 
@@ -173,8 +178,6 @@ public class ActorEditor extends AbstractDockElement {
 		contentPane.add(makeImage(item), 0, 1);
 		contentPane.add(makeName(item), 1, 1);
 		contentPane.add(makePropertyEditor(item), 1, 2);
-		// TODO
-		// contentPane.add(makeSelfTriggerEditor(item), 0, 3);
 		contentPane.add(makeTriggerEditor(item), 0, 3);
 	}
 
@@ -192,20 +195,20 @@ public class ActorEditor extends AbstractDockElement {
 		return list;
 	}
 
-	private ListView<String> makeSelfTriggerEditor(String item) {
-		ObservableList<String> triggers = FXCollections.observableArrayList(new ArrayList<String>());
-		triggers.addAll(controller.getAuthoringActorConstructor().getTriggerList(item));
-		ListView<String> list = new ListView<String>(triggers);
-		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-			@Override
-			public ListCell<String> call(ListView<String> list) {
-				return new TriggerCell(controller, item);
-			}
-		});
-		GridPane.setColumnSpan(list, 2);
-		list.setFocusTraversable(false);
-		return list;
-	}
+//	private ListView<String> makeSelfTriggerEditor(String item) {
+//		ObservableList<String> triggers = FXCollections.observableArrayList(new ArrayList<String>());
+//		triggers.addAll(controller.getAuthoringActorConstructor().getTriggerList(item));
+//		ListView<String> list = new ListView<String>(triggers);
+//		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+//			@Override
+//			public ListCell<String> call(ListView<String> list) {
+//				return new TriggerCell(controller, item);
+//			}
+//		});
+//		GridPane.setColumnSpan(list, 2);
+//		list.setFocusTraversable(false);
+//		return list;
+//	}
 
 	private ImageView makeImage(String item) {
 		image = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream(

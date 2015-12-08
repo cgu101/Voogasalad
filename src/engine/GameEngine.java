@@ -1,6 +1,9 @@
 package engine;
 
+import authoring.model.actors.Actor;
+import authoring.model.actors.ActorType;
 import authoring.model.bundles.Bundle;
+import authoring.model.game.ActorDependencyInjector;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
 import authoring.model.properties.Property;
@@ -25,11 +28,13 @@ public class GameEngine implements IEngine {
 	private Game game;
 	private InteractionExecutor levelExecutor;
 	private InputManager inputManager;
+	private ActorDependencyInjector depInjector;
 	
 	public GameEngine (InputManager inputManager) {
 		this.inputManager = inputManager;
 		this.game = null;
 		this.levelExecutor = null;
+		this.depInjector = new ActorDependencyInjector(this);
 	}
 	
 	/**
@@ -73,9 +78,9 @@ public class GameEngine implements IEngine {
 		return game.getLevel(nextLevelName);
 	}
 	private void setExecutor(Level level, State state) {
-		levelExecutor = new InteractionExecutor(level, inputManager, state);
+		levelExecutor = new InteractionExecutor(level, inputManager, state, depInjector);
 	}
-	
+
 	/**
 	 * Loads the first level of the game (level with ID "0")
 	 */
@@ -130,17 +135,21 @@ public class GameEngine implements IEngine {
 	public void loadState (State state) throws EngineException {
 		if (state.getProperty(gameKey).getValue().equals(game.getProperty(gameKey).getValue())) {
 			Level level = game.getLevel((String) state.getProperty(levelKey).getValue());
-			levelExecutor = new InteractionExecutor(level, inputManager, state);
+			levelExecutor = new InteractionExecutor(level, inputManager, state, depInjector);
 		} else {
 			throw new EngineStateException("Wrong game", null);
 		}
 	}
 
 	// This method shouldn't really be used
-	@Override
+	@Override 
 	public void nextLevel() throws EngineException {
+		changeDependencies();
 		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID()),levelExecutor.getCurrentState());
-		
+	}
+	
+	private void changeDependencies () {
+		this.depInjector = new ActorDependencyInjector(this);
 	}
 
 	@Override
@@ -155,4 +164,9 @@ public class GameEngine implements IEngine {
 //		properties.add((Property<?>) b.getValue());
 //	}
 //	return properties;
+	
+	public void displayError (String errorMessage) {
+		//TODO
+		System.err.println(errorMessage);
+	}
 }

@@ -1,7 +1,5 @@
 package engine;
 
-import authoring.model.triggers.selfconditions.DistanceTraveledCheck;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,7 +8,9 @@ import java.util.Map;
 
 import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorType;
 import authoring.model.bundles.Bundle;
+import authoring.model.game.ActorDependencyInjector;
 import authoring.model.level.Level;
 import authoring.model.tree.ActionTreeNode;
 import authoring.model.tree.ActorTreeNode;
@@ -44,6 +44,7 @@ public class InteractionExecutor {
 
 	private InteractionTreeNode triggerTree;
 	private Map<String, NodeLambda<InteractionTreeNode,List<?>>> lambdaMap;
+	private ActorDependencyInjector depInjector;
 
 	private InteractionExecutor () {
 		this.currentLevelIdentifier = null;
@@ -55,7 +56,7 @@ public class InteractionExecutor {
 		initLambdaMap();
 	}
 
-	public InteractionExecutor (Level level, InputManager inputMap, State state) {
+	public InteractionExecutor (Level level, InputManager inputMap, State state, ActorDependencyInjector depInjector) {
 		this();
 		this.inputMap = inputMap;
 
@@ -69,8 +70,22 @@ public class InteractionExecutor {
 			this.actionMap = level.getActionMap();
 
 			nextState = new State(currentState);
+			
+			this.depInjector = depInjector;
+			setObservableActors(nextState);
 		}
 	}
+	
+	private void setObservableActors(State state) {
+		for (String actorType : state.getActorMap().getMap().keySet()) {
+			for (Actor actor : state.getActorMap().getMap().get(actorType)) {
+				if (actor.getActorType() == ActorType.GLOBAL) {
+					depInjector.hookRelation(actor);
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Runs a single step of the level. Resolves all self-triggers before external triggers.
 	 * @return A {@link State} that allows the executor to communicate with the engine and player controller.
@@ -78,6 +93,7 @@ public class InteractionExecutor {
 	 */
 	public State run () throws EngineException {
 		nextState = new State(currentState);
+		setObservableActors(nextState);
 		try {
 			runTriggers();
 		} catch (Exception e) {
