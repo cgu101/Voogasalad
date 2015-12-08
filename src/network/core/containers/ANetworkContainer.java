@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import authoring.model.bundles.Identifiable;
+import network.core.connections.Heartbeat;
 
-public abstract class ANetworkContainer<T extends Identifiable> {
+public abstract class ANetworkContainer<T extends Identifiable> implements Heartbeat {
 
 	private Map<String, T> container;
 	
@@ -26,7 +27,4 @@ public abstract class ANetworkContainer<T extends Identifiable> {
 	public void addObject(T t) {
 		container.put(t.getUniqueID(), t);
 	}
-	
-	public abstract void heartbeat();
-	
 }

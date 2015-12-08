@@ -12,18 +12,21 @@ import network.core.connections.threads.ReceiveThread;
 import network.core.connections.threads.SendThread;
 import network.framework.format.Mail;
 
-public class ClientConnection implements Identifiable {
+public class ClientConnection implements Identifiable, Heartbeat {
 	
     private String playerId;
+    private String gameId;
+    private Socket connection;
+    private HeartbeatValue heartbeat;
     private LinkedBlockingQueue<Mail> outgoingMessages;
     private BlockingQueue<Message> incomingMessages;
-    private Socket connection;
     private ConnectionThread sendThread;
     private ConnectionThread receiveThread;
     
     public ClientConnection(String playerId, BlockingQueue<Message> receivedMessageQueue, Socket connection) throws IOException  {
         this.playerId = playerId;
     	this.connection = connection;
+    	heartbeat = new HeartbeatValue();
         incomingMessages = receivedMessageQueue;
         outgoingMessages = new LinkedBlockingQueue<Mail>();
         sendThread =  new SendThread(connection, outgoingMessages);
@@ -34,6 +37,14 @@ public class ClientConnection implements Identifiable {
     
     public String getId() {
         return playerId;
+    }
+    
+    public String getGameId() {
+    	return gameId;
+    }
+    
+    public void setGameId(String gameId) {
+    	this.gameId = gameId;
     }
     
     public void close() {
@@ -50,12 +61,17 @@ public class ClientConnection implements Identifiable {
 
 	@Override
 	public String getUniqueID() {
-		// TODO Auto-generated method stub
 		return playerId;
 	}
 
 	@Override
 	public Identifiable getCopy() {
 		return null;
+	}
+
+	@Override
+	public void heartbeat() {
+		// TODO Auto-generated method stub
+		heartbeat.update();
 	}     
 }

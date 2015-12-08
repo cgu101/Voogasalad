@@ -1,29 +1,39 @@
 package network.core.connections;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import authoring.model.bundles.Identifiable;
 import network.deprecated.GameState;
 
-public class NetworkGameState implements Identifiable {
+public class NetworkGameState implements Identifiable, Heartbeat {
 	
-	private String identifier;
-	private Heartbeat heartbeat;
-	private GameState myGame;
+	private String gameIdentifier;
+	private GameState state;
+	private HeartbeatValue heartbeat;
 	private List<String> clientIds;
 	
-	public NetworkGameState(String identifier) {
-		this.identifier = identifier;
+	public NetworkGameState(String gameIdentifier, GameState state, String client) {
+		this.gameIdentifier = gameIdentifier;
+		this.state = state;
+		heartbeat = new HeartbeatValue();
+		clientIds = new ArrayList<String>();
+		clientIds.add(client);
 	}
 
 	@Override
 	public String getUniqueID() {
-		return identifier;
+		return gameIdentifier;
 	}
 
 	@Override
 	public Identifiable getCopy() {
 		return null;
+	}
+
+	@Override
+	public void heartbeat() {
+		heartbeat.update();		
 	}
 		
 }

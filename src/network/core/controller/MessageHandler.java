@@ -4,15 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import network.core.Message;
-import network.core.containers.ClientConnectionContainer;
-import network.core.containers.NetworkGameStateContainer;
+import network.core.connections.ClientConnection;
+import network.core.connections.NetworkGameState;
+import network.core.containers.ANetworkContainer;
 import network.framework.format.Request;
 
-public class MessageExecuter {
+public class MessageHandler {
 	
 	private Map<Request, ExecuteHandler> myExecuters;
 	
-	public MessageExecuter() {
+	public MessageHandler() {
 		myExecuters = new HashMap<Request, ExecuteHandler>();
 		init();
 	}
@@ -35,8 +36,8 @@ public class MessageExecuter {
 		myExecuters.put(Request.TRANSITION, null);
 	}
 	
-	private interface ExecuteHandler {	
-		public void executeMessage(Message message, ClientConnectionContainer clients, NetworkGameStateContainer games);		
+	interface ExecuteHandler {	
+		void executeMessage(Message message, ANetworkContainer<ClientConnection> clients, ANetworkContainer<NetworkGameState> games);		
 	}
 
 }
