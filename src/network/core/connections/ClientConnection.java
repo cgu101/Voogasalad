@@ -4,19 +4,24 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import network.framework.format.Mail;
-import network.game.Message;
 
-public class ConnectionToClient {
+import authoring.model.bundles.Identifiable;
+import network.core.Message;
+import network.core.connections.threads.ConnectionThread;
+import network.core.connections.threads.ReceiveThread;
+import network.core.connections.threads.SendThread;
+import network.framework.format.Mail;
+
+public class ClientConnection implements Identifiable {
 	
-    private Integer playerId;
+    private String playerId;
     private LinkedBlockingQueue<Mail> outgoingMessages;
     private BlockingQueue<Message> incomingMessages;
     private Socket connection;
     private ConnectionThread sendThread;
     private ConnectionThread receiveThread;
     
-    public ConnectionToClient(Integer playerId, BlockingQueue<Message> receivedMessageQueue, Socket connection)  {
+    public ClientConnection(String playerId, BlockingQueue<Message> receivedMessageQueue, Socket connection) throws IOException  {
         this.playerId = playerId;
     	this.connection = connection;
         incomingMessages = receivedMessageQueue;
@@ -27,15 +32,13 @@ public class ConnectionToClient {
         receiveThread.start();
     }
     
-    public int getPlayer() {
+    public String getId() {
         return playerId;
     }
     
     public void close() {
     	sendThread.close();
     	receiveThread.close();
-    	sendThread.interrupt();
-    	receiveThread.interrupt();
         try {
         	connection.close();
         } catch (IOException e) {}
@@ -44,4 +47,15 @@ public class ConnectionToClient {
     public void send(Mail obj) {
         outgoingMessages.add(obj);
     }
+
+	@Override
+	public String getUniqueID() {
+		// TODO Auto-generated method stub
+		return playerId;
+	}
+
+	@Override
+	public Identifiable getCopy() {
+		return null;
+	}     
 }

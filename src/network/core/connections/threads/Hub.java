@@ -1,17 +1,10 @@
-package network.core;
+package network.core.connections.threads;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
-import network.core.connections.ConnectionToClient;
-import network.core.connections.MessageHandlerThread;
-import network.game.Message;
-
+import network.core.controller.ConnectionController;
 
 /**
  * A Hub is a server for a "netgame".  When a Hub is created, it will
@@ -72,14 +65,11 @@ public class Hub {
 	 * it is placed in this queue.  A separate thread takes messages from the
 	 * queue and processes them (in the order in which they were received).
 	 */
-	private LinkedBlockingQueue<Message> incomingMessages;
 	private ServerSocket serverSocket;  
 	private Thread serverThread;
-	private Thread messageHandlerThread;
+	private Integer port;
 	volatile private boolean shutdown;
-	private int nextClientId = 0;  
-	private int port;
-
+	
 	/**
 	 * Creates a Hub listening on a specified port, and starts a thread for
 	 * processing messages that are received from clients.
@@ -88,13 +78,10 @@ public class Hub {
 	 */
 	public Hub(Integer port) throws IOException {
 		this.port = port;
-		incomingMessages = new LinkedBlockingQueue<Message>();
 		serverSocket = new ServerSocket(port);
 		System.out.println("Listening for client connections on port " + port);
-		messageHandlerThread = new MessageHandlerThread(incomingMessages);
+
 		serverThread = new ServerThread();
-		messageHandlerThread.start();
-		serverThread.start();
 	}
 
 	/**
@@ -104,7 +91,6 @@ public class Hub {
 	 */
 	public void shutdownServerSocket() {
 		if (serverThread != null) {
-			incomingMessages.clear();
 			shutdown = true;
 			try {
 				serverSocket.close();
@@ -113,7 +99,6 @@ public class Hub {
 			serverSocket = null;
 		}
 	}
-
 
 	/**
 	 *  Disconnects all currently connected clients and stops accepting new client
@@ -125,7 +110,6 @@ public class Hub {
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {}
-		// TODO Need to set a method for killing all connections and saving all states
 	}
 	
 	/**
@@ -134,7 +118,7 @@ public class Hub {
 	 * @param port the port on which the server should listen.
 	 * @throws IOException if it is impossible to create a listening socket on the specified port.
 	 */
-	public void restartServer(int port) throws IOException {
+	public void restartServer() throws IOException {
 		if (serverThread != null && serverThread.isAlive())
 			throw new IllegalStateException("Server is already listening for connections.");
 		shutdown = false;
@@ -143,22 +127,31 @@ public class Hub {
 		serverThread.start();
 	}
 
-
 	private class ServerThread extends Thread {
+		
+		private ConnectionController controller;
+		
+		private ServerThread() {
+			controller = new ConnectionController();
+		}
+		
 		public void run() {
 			try {
 				while (!shutdown) {
-					ConnectionToClient toAdd = new ConnectionToClient(nextClientId++, incomingMessages, serverSocket.accept());
-					((MessageHandlerThread) messageHandlerThread).addConnectionToClient(toAdd);
+					Socket connection = serverSocket.accept();
+					controller.addConnection(connection);
 				}
 			} catch (Exception e) {
 				if (shutdown) {
 					System.out.println("Listener socket has shut down.");
+					controller.close();
 				} else {
-					System.out.println("Listener socket has been shut down by error: " + e);
+					System.out.println("Listener socket has been shut down by error: " + e + "\nAttempting to restart server.");
 					try {
-						restartServer(port);
-					} catch (IOException e1) {}
+						restartServer();
+					} catch (IOException e1) {
+						System.out.println("Restart has encountered an error, shutting down: " + e);
+					}
 				}
 			}
 		}

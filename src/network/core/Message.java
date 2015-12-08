@@ -1,13 +1,13 @@
-package network.game;
+package network.core;
 
 import network.framework.format.Mail;
 
 public class Message {
 	
-    private Integer client;
+    private String client;
     private Mail mail;
     
-    public Message(Integer client, Mail mail) {
+    public Message(String client, Mail mail) {
     	this.client = client;
     	this.mail = mail;
     }
@@ -16,7 +16,7 @@ public class Message {
     	return mail;
     }
     
-    public Integer getConnectionToClient() {
+    public String getClient() {
     	return client;
     }
 }

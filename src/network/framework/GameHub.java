@@ -2,8 +2,7 @@ package network.framework;
 
 import java.io.IOException;
 
-import network.core.Hub;
-import network.core.TempHub;
+import network.core.connections.threads.Hub;
 
 public class GameHub {
 	private final static int PORT = 6969;
