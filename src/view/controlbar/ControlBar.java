@@ -3,6 +3,7 @@ package view.controlbar;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -13,12 +14,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination.Modifier;
 import javafx.scene.layout.GridPane;
+import view.element.AbstractDockElement;
 import view.element.AbstractElement;
+import view.screen.AbstractScreen;
+
 /**
  * @author David
  * @author Bridget
  * 
- * This class is used to make control bars at the top of Screens
+ *         This class is used to make control bars at the top of Screens
  * 
  */
 public abstract class ControlBar extends AbstractElement {
@@ -57,7 +61,7 @@ public abstract class ControlBar extends AbstractElement {
 		}
 		return menu;
 	}
-	
+
 	protected MenuItem makeMenuItem(String s, EventHandler<ActionEvent> handler) {
 		MenuItem m = new MenuItem(s);
 		m.setOnAction(handler);
@@ -74,6 +78,26 @@ public abstract class ControlBar extends AbstractElement {
 	protected void makeMenuBar(MenuBar init, Menu... ms) {
 		for (Menu m : ms) {
 			init.getMenus().add(m);
+		}
+	}
+
+	protected void makeComponentCheckMenus(Menu window, AbstractScreen screen) {
+		for (AbstractDockElement c : screen.getComponents()) {
+			CheckMenuItem item = new CheckMenuItem(myResources.getString(c.getClass().getSimpleName()));
+			item.selectedProperty().bindBidirectional(c.getShowingProperty());
+			addToMenu(window, item);
+		}
+		MenuItem show = makeMenuItem(myResources.getString("show"), e -> toggleComponents(true, screen));
+		MenuItem hide = makeMenuItem(myResources.getString("hide"), e -> toggleComponents(false, screen));
+		addToMenu(window, show);
+		addToMenu(window, hide);
+	}
+
+	protected void toggleComponents(boolean showing, AbstractScreen screen) {
+		for (AbstractDockElement c : screen.getComponents()) {
+			if (c.getShowingProperty().getValue() != showing) {
+				c.getShowingProperty().setValue(showing);
+			}
 		}
 	}
 }

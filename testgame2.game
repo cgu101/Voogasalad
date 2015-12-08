@@ -306,7 +306,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">688.0</myValue>
+                                <myValue class="double">588.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -334,21 +334,21 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">121.0</myValue>
+                                <myValue class="double">176.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">347.0</myValue>
+                                <myValue class="double">59.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">10.0</myValue>
+                                <myValue class="double">11.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -377,7 +377,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">335.0</myValue>
+                                <myValue class="double">349.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -405,21 +405,21 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">227.0</myValue>
+                                <myValue class="double">222.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">81.0</myValue>
+                                <myValue class="double">5.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">13.0</myValue>
+                                <myValue class="double">20.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -448,7 +448,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">561.0</myValue>
+                                <myValue class="double">497.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -476,21 +476,21 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">274.0</myValue>
+                                <myValue class="double">42.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">298.0</myValue>
+                                <myValue class="double">151.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">20.0</myValue>
+                                <myValue class="double">18.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -519,7 +519,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">629.0</myValue>
+                                <myValue class="double">469.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -547,21 +547,21 @@
                             <entry>
                               <string>angle</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">37.0</myValue>
+                                <myValue class="double">308.0</myValue>
                                 <identifier>angle</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">91.0</myValue>
+                                <myValue class="double">528.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">16.0</myValue>
+                                <myValue class="double">18.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
