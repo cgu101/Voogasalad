@@ -86,7 +86,7 @@ public class PlayerScreen extends AbstractScreen {
 		rightPane.setAlignment(Pos.CENTER);
 		r.setRight(rightPane);
 
-		components = new ArrayList<AbstractDockElement>(); // No components yet!
+		components = new ArrayList<AbstractDockElement>();
 		gameInfoMonitor = new GameInfoMonitor(homePanes.get(0), myResources.getString("gameinfoname"), this,
 				playerController);
 
