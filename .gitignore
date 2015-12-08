@@ -80,6 +80,9 @@ DerivedData
 !default.mode2v3
 !default.perspectivev3
 
+#TESTGAME
+testgame.game
+testgame2.game
 
 #Eclipse gitignore
 *.pydevproject
