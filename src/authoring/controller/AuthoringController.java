@@ -1,7 +1,5 @@
 package authoring.controller;
 
-import java.util.List;
-
 import KeyLibrary.KeyLibrary;
 import authoring.controller.constructor.configreader.AuthoringActorConstructor;
 import authoring.controller.constructor.levelwriter.LevelConstructor;

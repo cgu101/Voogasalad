@@ -21,7 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -78,9 +77,9 @@ public class ParametersView {
 		stage.showAndWait();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void assign () {
 		Parameters params = node.getParameters();
-		Map<String, Integer> indices = new HashMap<String,Integer>();
 		for (int i = 0; i < paramList.size(); i++) {
 			ParameterData parameter = paramList.get(i);
 			String pType = parameter.getType();
@@ -99,16 +98,6 @@ public class ParametersView {
 		}
 		node.setValue(mainOptions.getValue());
 		stage.close();
-	}
-	private int updateMap (Map<String, Integer> map, String key) {
-		int i;
-		if (!map.containsKey(key)) {
-			i = 0;
-		} else {
-			i = map.get(key) + 1;
-		}
-		map.put(key, i);
-		return i;
 	}
 
 	private void makePane() {
@@ -159,7 +148,6 @@ public class ParametersView {
 					.getTypeInfo(type, identifier, paramPrefix + TYPE_SUFFIX);
 			String paramIndex = AuthoringConfigManager.getInstance()
 					.getTypeInfo(type, identifier, paramPrefix + INDEX_SUFFIX);
-			// TODO
 			ParameterData data;
 			if (node.getParameters().getParameter(paramPrefix) != null) {
 				data = new ParameterData(paramText, paramType, paramIndex, node.getParameters().getParameter(paramPrefix).toString());

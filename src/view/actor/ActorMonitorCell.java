@@ -3,7 +3,6 @@ package view.actor;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import authoring.model.actors.Actor;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;

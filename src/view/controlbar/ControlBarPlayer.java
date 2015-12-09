@@ -1,7 +1,5 @@
 package view.controlbar;
 
-import java.util.Optional;
-
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.control.Button;

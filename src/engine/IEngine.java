@@ -1,8 +1,6 @@
 package engine;
 
-import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
-import authoring.model.properties.Property;
 import exceptions.EngineException;
 import exceptions.engine.EngineStateException;
 
