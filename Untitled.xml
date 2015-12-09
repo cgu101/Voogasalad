@@ -9,62 +9,13 @@
           <rootTree>
             <children>
               <authoring.model.tree.ActorTreeNode>
+                <children/>
+                <value>Asteroid</value>
+              </authoring.model.tree.ActorTreeNode>
+              <authoring.model.tree.ActorTreeNode>
                 <children>
                   <authoring.model.tree.TriggerTreeNode>
                     <children>
-                      <authoring.model.tree.ActionTreeNode>
-                        <children/>
-                        <value>IncreaseProperty</value>
-                        <parameters>
-                          <parameter__values>
-                            <entry>
-                              <string>param.1</string>
-                              <double>0.0</double>
-                            </entry>
-                            <entry>
-                              <string>param.2</string>
-                              <double>0.0</double>
-                            </entry>
-                            <entry>
-                              <string>param.0</string>
-                              <string>speed</string>
-                            </entry>
-                          </parameter__values>
-                        </parameters>
-                      </authoring.model.tree.ActionTreeNode>
-                    </children>
-                    <value>KeyPress</value>
-                    <parameters>
-                      <parameter__values>
-                        <entry>
-                          <string>param.0</string>
-                          <string>Up</string>
-                        </entry>
-                      </parameter__values>
-                    </parameters>
-                  </authoring.model.tree.TriggerTreeNode>
-                  <authoring.model.tree.TriggerTreeNode>
-                    <children>
-                      <authoring.model.tree.ActionTreeNode>
-                        <children/>
-                        <value>DecreaseProperty</value>
-                        <parameters>
-                          <parameter__values>
-                            <entry>
-                              <string>param.1</string>
-                              <double>0.0</double>
-                            </entry>
-                            <entry>
-                              <string>param.2</string>
-                              <double>0.0</double>
-                            </entry>
-                            <entry>
-                              <string>param.0</string>
-                              <string>speed</string>
-                            </entry>
-                          </parameter__values>
-                        </parameters>
-                      </authoring.model.tree.ActionTreeNode>
                       <authoring.model.tree.ActionTreeNode>
                         <children/>
                         <value>Move</value>
@@ -73,7 +24,7 @@
                         </parameters>
                       </authoring.model.tree.ActionTreeNode>
                     </children>
-                    <value>TrueSelfTrigger</value>
+                    <value>LeftClickTrigger</value>
                     <parameters>
                       <parameter__values/>
                     </parameters>
@@ -116,7 +67,7 @@
                   <obs/>
                   <components>
                     <entry>
-                      <string>Tue Dec 08 23:01:25 EST 2015</string>
+                      <string>Wed Dec 09 04:50:51 EST 2015</string>
                       <authoring.model.actors.Actor>
                         <changed>false</changed>
                         <obs/>
@@ -134,7 +85,7 @@
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">428.0</myValue>
+                                <myValue class="double">336.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -155,7 +106,7 @@
                             <entry>
                               <string>width</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">90.0</myValue>
+                                <myValue class="double">70.0</myValue>
                                 <identifier>width</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -183,7 +134,7 @@
                             <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">225.0</myValue>
+                                <myValue class="double">264.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -197,13 +148,13 @@
                             <entry>
                               <string>height</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">10.0</myValue>
+                                <myValue class="double">70.0</myValue>
                                 <identifier>height</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                           </components>
                         </myPropertyBundle>
-                        <identifier>Tue Dec 08 23:01:25 EST 2015</identifier>
+                        <identifier>Wed Dec 09 04:50:51 EST 2015</identifier>
                         <actorType>LOCAL</actorType>
                       </authoring.model.actors.Actor>
                     </entry>
@@ -228,8 +179,16 @@
               <authoring.model.triggers.selfconditions.KeyPress/>
             </entry>
             <entry>
+              <string>PropertyGreaterThan</string>
+              <authoring.model.triggers.selfconditions.PropertyGreaterThan/>
+            </entry>
+            <entry>
               <string>PropertyLessThanOrEqualToProperty</string>
               <authoring.model.triggers.externalconditions.PropertyLessThanOrEqualToProperty/>
+            </entry>
+            <entry>
+              <string>LeftClickTrigger</string>
+              <authoring.model.triggers.selfconditions.LeftClickTrigger/>
             </entry>
             <entry>
               <string>TrueExternalTrigger</string>
@@ -244,40 +203,40 @@
               <authoring.model.triggers.externalconditions.PropertyEqualToProperty/>
             </entry>
             <entry>
-              <string>DownArrowKey</string>
-              <authoring.model.triggers.selfconditions.DownArrowKey/>
-            </entry>
-            <entry>
-              <string>RightArrowKey</string>
-              <authoring.model.triggers.selfconditions.RightArrowKey/>
+              <string>PropertyGreaterThanOrEqual</string>
+              <authoring.model.triggers.selfconditions.PropertyGreaterThanOrEqual/>
             </entry>
             <entry>
               <string>PropertyLessThanProperty</string>
               <authoring.model.triggers.externalconditions.PropertyLessThanProperty/>
             </entry>
             <entry>
-              <string>UpArrowKey</string>
-              <authoring.model.triggers.selfconditions.UpArrowKey/>
+              <string>PercentChance</string>
+              <authoring.model.triggers.selfconditions.PercentChance/>
+            </entry>
+            <entry>
+              <string>PropertyEqual</string>
+              <authoring.model.triggers.selfconditions.PropertyEqual/>
+            </entry>
+            <entry>
+              <string>PropertyLessThan</string>
+              <authoring.model.triggers.selfconditions.PropertyLessThan/>
             </entry>
             <entry>
               <string>InRange</string>
               <authoring.model.triggers.externalconditions.InRange/>
             </entry>
             <entry>
-              <string>LeftArrowKey</string>
-              <authoring.model.triggers.selfconditions.LeftArrowKey/>
-            </entry>
-            <entry>
               <string>CircleCollision</string>
               <authoring.model.triggers.externalconditions.CircleCollision/>
             </entry>
             <entry>
-              <string>SpaceBarKey</string>
-              <authoring.model.triggers.selfconditions.SpaceBarKey/>
+              <string>PropertyLessThanOrEqual</string>
+              <authoring.model.triggers.selfconditions.PropertyLessThanOrEqual/>
             </entry>
             <entry>
-              <string>DistanceTraveledCheck</string>
-              <authoring.model.triggers.selfconditions.DistanceTraveledCheck/>
+              <string>RightClickTrigger</string>
+              <authoring.model.triggers.selfconditions.RightClickTrigger/>
             </entry>
             <entry>
               <string>PropertyGreaterThanProperty</string>

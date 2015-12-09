@@ -7,6 +7,7 @@ import authoring.model.actors.Actor;
 import authoring.model.actors.ActorGroups;
 import authoring.model.tree.Parameters;
 import engine.State;
+import player.InputManager;
 
 /**
  * @author Inan
@@ -20,7 +21,7 @@ public class SplitAndReduceSize extends AOneActorAction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor actor) {
 		Double size = actor.getPropertyValue(ActorProperties.SIZE.getKey());
 		Double health = actor.getPropertyValue(ActorProperties.HEALTH.getKey());
 		Double angle = actor.getPropertyValue(ActorProperties.ANGLE.getKey());

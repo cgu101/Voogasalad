@@ -5,6 +5,7 @@ import authoring.model.actors.Actor;
 import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import engine.State;
+import player.InputManager;
 import resources.keys.PropertyKey;
 import resources.keys.PropertyKeyResource;
 
@@ -19,7 +20,7 @@ public class NextLevel extends AOneActorAction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor a) {
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor actor) {
 		state.getPropertyBundle().add(new Property<String>(levelKey, nextLevelKey));
 	}
 }

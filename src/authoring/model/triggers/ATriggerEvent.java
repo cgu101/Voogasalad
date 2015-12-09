@@ -5,9 +5,7 @@ import authoring.model.tree.Parameters;
 import player.InputManager;
 
 public abstract class ATriggerEvent implements ITriggerEvent {
-	/**
-	 * Generated serial version ID
-	 */
+
 	private static final long serialVersionUID = 143065301018200501L;
 
 	@SuppressWarnings("rawtypes")

@@ -4,6 +4,7 @@ import authoring.model.actions.AOneActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import engine.State;
+import player.InputManager;
 
 public class LevelTransition extends AOneActorAction {
 	/**
@@ -13,6 +14,6 @@ public class LevelTransition extends AOneActorAction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor actor) {
 	}
 }

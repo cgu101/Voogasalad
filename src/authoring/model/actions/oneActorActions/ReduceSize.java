@@ -5,6 +5,7 @@ import authoring.model.actors.Actor;
 import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import engine.State;
+import player.InputManager;
 
 /**
  * @author Inan
@@ -13,10 +14,10 @@ import engine.State;
 public class ReduceSize extends AOneActorAction {
 
 	@Override
-	public void run(Parameters parameters, State state, Actor a) {
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor actor) {
 		Double decrement = 1.0;
 
-		Property<Double> size = (Property<Double>) a.getProperty("size");
+		Property<Double> size = (Property<Double>) actor.getProperty("size");
 		size.setValue(size.getValue() - decrement);
 
 	}
