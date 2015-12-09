@@ -46,7 +46,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 		this.levels = new HashMap<>();
 		this.currentLevel = null; // TODO Make current level connect to
 									// the server's current level (or
-									// default to 1... Essentially load
+									// default to 0.. Essentially load
 									// game!)
 
 		this.game = game;
@@ -57,6 +57,11 @@ public class Workspace extends AbstractElement implements Anscestral {
 		anscestors.add(game.getUniqueID());
 		
 		makePane();
+		
+		for (Level level:levelInfo) {
+			System.out.println(level);
+			addVisual(level);
+		}
 	}
 
 	public Workspace(GridPane pane, AbstractScreen screen) {
@@ -203,6 +208,9 @@ public class Workspace extends AbstractElement implements Anscestral {
 		case TRANSITION: {
 			addSplashScreen(data);
 			break;
+		}
+		case LOAD: {
+			addVisual(data);
 		}
 		default: {
 			break;
