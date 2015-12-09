@@ -181,7 +181,6 @@ public class ControlBarCreator extends ControlBar implements Observer {
 			CreatorScreen screen = new CreatorScreen(game);
 			
 			this.pane = screen.getDefaultPane();
-			
 			this.gameWindow = new GameWindow(DEFAULT_IP);
 			this.screen = screen;
 
@@ -189,7 +188,6 @@ public class ControlBarCreator extends ControlBar implements Observer {
 			makePane();
 			System.out.println("Load Succcess");
 		} catch (GameFileException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("Something wrong with the game load");
 		}

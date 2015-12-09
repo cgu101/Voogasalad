@@ -57,6 +57,10 @@ public class Workspace extends AbstractElement implements Anscestral {
 		anscestors.add(game.getUniqueID());
 		
 		makePane();
+		
+		for (Level level:levelInfo) {
+			addVisual(level);
+		}
 	}
 
 	public Workspace(GridPane pane, AbstractScreen screen) {
