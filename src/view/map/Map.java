@@ -340,5 +340,6 @@ public abstract class Map extends AbstractElement {
 	public ImageView getBackground() {
 		return background;
 	}
+	
 
 }

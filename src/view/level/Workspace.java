@@ -210,12 +210,21 @@ public class Workspace extends AbstractElement implements Anscestral {
 			break;
 		}
 		case LOAD: {
-			addVisual(data);
+			loadVisual(data);
+			break;
 		}
 		default: {
 			break;
 		}
 		}
+	}
+
+	private void loadVisual(Level data) {
+		// TODO Auto-generated method stub
+		addVisual(data);
+		LevelMap levelmap = levels.get(data.getUniqueID());
+		levelmap.buildLevel();
+		
 	}
 
 	public Game getGame() {

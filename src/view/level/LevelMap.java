@@ -1,13 +1,16 @@
 package view.level;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Deque;
+import java.util.Map.Entry;
 
 import authoring.controller.AuthoringController;
 import authoring.model.Anscestral;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
+import authoring.model.bundles.Bundle;
 import authoring.model.level.Level;
 import authoring.model.properties.Property;
 import authoring.model.tree.InteractionTreeNode;
@@ -193,12 +196,19 @@ public class LevelMap extends Map implements Anscestral {
 
 	public void redraw(Level modelLevel) {
 		// TODO Auto-generated method stub
-		System.out.println("I am redrawing");
+		
+		ArrayList<Actor> actors = new ArrayList<Actor>();
+		for (Entry<String,Bundle<Actor>> b : myLevel.getActorGroups().getMap().entrySet()) {
+			for (Actor actor : b.getValue().getComponents().values()) {
+				ActorPropertyMap map = controller.getAuthoringActorConstructor().getActorPropertyMap(b.getKey());
+				addActor(actor, map, b.getKey(), (double) actor.getProperties().getComponents().get("xLocation").getValue(),
+						(double) actor.getProperties().getComponents().get("yLocation").getValue());
+			}
+		}
 	}
-
-	public Level buildLevel() {
-		// TODO Auto-generated method stub
-		return myLevel;
+	// used in loading
+	public void buildLevel() {
+		redraw(myLevel);
 	}
 
 	@Override
