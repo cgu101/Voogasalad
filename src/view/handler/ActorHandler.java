@@ -14,6 +14,8 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Dialog;
@@ -21,8 +23,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -248,7 +248,7 @@ public class ActorHandler extends AbstractVisual {
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(20, 150, 10, 10));
-
+		System.out.println("Old Actor:"+a.getActor().getGroupName()+ ":"+a.getXCoor()+","+a.getYCoor());
 		int i = 0;
 		for(Property<?> p : a.getActor().getProperties()){
 			if(p.getUniqueID() != "groupID"){
@@ -259,10 +259,12 @@ public class ActorHandler extends AbstractVisual {
 				i++;
 				t.textProperty().addListener((observable, oldValue, newValue) -> {
 					p.setValue(newValue);
+//					removeActor(a);
+//					addActor(a, a.getXCoor(), a.getYCoor());
+//					System.out.println("Actor:"+a.getActor().getGroupName()+ ":"+a.getXCoor()+","+a.getYCoor());
 				});
 			}
 		}
-
 		dialog.getDialogPane().setContent(grid);
 		dialog.showAndWait();
 	}
