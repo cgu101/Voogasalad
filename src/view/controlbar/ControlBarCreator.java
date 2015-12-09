@@ -5,10 +5,9 @@ import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Observer;
 
+import authoring.files.properties.ActorProperties;
 import authoring.model.level.Level;
 import authoring.model.tree.InteractionTreeNode;
 import javafx.animation.FadeTransition;
@@ -232,14 +231,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	}
 
 	private void addActor() {
-		Map<String, String> props = new HashMap<String, String>(){{
-	        put("image","rcd.jpg");
-	        put("groupID","NewActor");
-	        put("width","10");
-	        put("height","10");
-	        put("size","12");
-	    }};
-		findActorBrowser().requestGroupName(props);
+		findActorBrowser().createCustomGroup();
 		if (!findActorBrowser().getShowingProperty().getValue()) {
 			findActorBrowser().getShowingProperty().setValue(true);
 		}
