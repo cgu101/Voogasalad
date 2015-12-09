@@ -20,6 +20,7 @@ import javafx.animation.Timeline;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import player.IPlayer;
@@ -28,8 +29,6 @@ import player.SpriteManager;
 import view.element.ActorMonitor;
 
 public class PlayerController implements IPlayer {
-
-	private static final String DEFAULT_INPUTS_FILENAME = "resources/gameplayer/Inputs";
 
 	private Scene myScene;
 	private IEngine myEngine;
@@ -60,6 +59,9 @@ public class PlayerController implements IPlayer {
 	private void attachInputs(Scene s) {
 		s.addEventFilter(KeyEvent.KEY_PRESSED, e -> myInputManager.keyPressed(e));
 		s.addEventFilter(KeyEvent.KEY_RELEASED, e -> myInputManager.keyReleased(e));
+		
+		s.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> myInputManager.mousePressed(e));
+		s.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> myInputManager.mouseReleased(e));
 	}
 
 	// should be called by front end
@@ -128,7 +130,6 @@ public class PlayerController implements IPlayer {
 			actorMonitor.refresh();	
 		} catch (EngineException e) {
 			e.printStackTrace();
-			// TODO: handle this
 		}
 	}
 
