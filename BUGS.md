@@ -21,6 +21,8 @@
 
 * Load Game File from authoring environment doesnt work
 
+* Minimap serves essentially no purpose
+
 
 #Considerations
 

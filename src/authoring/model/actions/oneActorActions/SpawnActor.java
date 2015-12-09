@@ -33,8 +33,7 @@ public class SpawnActor extends AOneActorAction {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void run(Parameters parameters, State state, Actor actor) {
-//		String groupID = (String) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0");
-		String groupID = "Asteroid";		//Currently hardcoded to spawn Asteroids
+		String groupID = (String) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0");
 		actors = ResourceBundle.getBundle(ACTOR_FOLDER + groupID);
 		List<String> propertyList = Arrays.asList(actors.getString(PROPERTIES).split(REGEX));
 		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>();
