@@ -232,6 +232,11 @@ public class ActorHandler extends AbstractVisual {
 	public void removeActor(Node element) {
 		viewManager.removeElements(element);
 	}
+	
+	public void clearMap() {
+		myAVs.clear();
+		viewManager.removeAll();
+	}
 
 	private void editParams(ActorView a) {
 		// Create the custom dialog.
@@ -251,23 +256,45 @@ public class ActorHandler extends AbstractVisual {
 		System.out.println("Old Actor:"+a.getActor().getGroupName()+ ":"+a.getXCoor()+","+a.getYCoor());
 		int i = 0;
 		for(Property<?> p : a.getActor().getProperties()){
-			if(p.getUniqueID() != "groupID"){
+			if(!p.getUniqueID().equals("groupID")&&!p.getUniqueID().equals("image")){
 				TextField t = new TextField();
 				t.insertText(0, p.getValue().toString());
 				grid.add(new Label(p.getUniqueID()), 0, i);
 				grid.add(t, 1, i);
 				i++;
 				t.textProperty().addListener((observable, oldValue, newValue) -> {
-					p.setValue(newValue);
-//					removeActor(a);
-//					addActor(a, a.getXCoor(), a.getYCoor());
-//					System.out.println("Actor:"+a.getActor().getGroupName()+ ":"+a.getXCoor()+","+a.getYCoor());
+					try {
+						double newVal = Double.parseDouble(newValue);
+						p.setValue(newVal);
+						updateNode(a, p.getUniqueID(), newVal);
+					} catch (Exception e) {
+						Alert alert = new Alert(AlertType.ERROR, myResources.getString("doubleerror"), ButtonType.OK);
+						alert.showAndWait();
+					}
 				});
 			}
 		}
 		dialog.getDialogPane().setContent(grid);
 		dialog.showAndWait();
 	}
+	
+	private void updateNode(ActorView a, String uniqueID, double newVal) {
+
+		// basically a switch/case tree but allows us to use resources file
+		// sorry i couldn't think of a better thing.
+		if (uniqueID.equals(myResources.getString("x"))) {
+			a.setXCoor(newVal);
+		} else if (uniqueID.equals(myResources.getString("y"))) {
+			a.setYCoor(newVal);
+		} else if (uniqueID.equals(myResources.getString("angle"))) {
+			a.setRotation(newVal);
+		} else if (uniqueID.equals(myResources.getString("width"))) {
+			a.setWidth(newVal);
+		} else if (uniqueID.equals(myResources.getString("height"))) {
+			a.setHeight(newVal);
+		}
+	}
+
 //
 //	private void editShip() {
 //
