@@ -240,11 +240,9 @@ public class ActorHandler extends AbstractVisual {
 		dialog.setTitle("Actor: " + a.getActor().getUniqueID());
 		dialog.setHeaderText("Edit Parameters");
 
-		// Set the icon (must be included in the project).
-
 		// Set the button types.
-		ButtonType loginButtonType = new ButtonType("Login", ButtonData.OK_DONE);
-		dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+		ButtonType okayButton = new ButtonType("Okay", ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().addAll(okayButton);
 
 		// Create the username and password labels and fields.
 		GridPane grid = new GridPane();
@@ -254,30 +252,17 @@ public class ActorHandler extends AbstractVisual {
 
 		int i = 0;
 		for(Property<?> p : a.getActor().getProperties()){
-			TextField t = new TextField();
-			t.insertText(0, p.getValue().toString());
-			grid.add(new Label(p.getUniqueID()), 0, i);
-			grid.add(t, 1, i);
-			i++;
+			if(p.getUniqueID() != "groupID"){
+				TextField t = new TextField();
+				t.insertText(0, p.getValue().toString());
+				grid.add(new Label(p.getUniqueID()), 0, i);
+				grid.add(t, 1, i);
+				i++;
+				t.textProperty().addListener((observable, oldValue, newValue) -> {
+					p.setValue(newValue);
+				});
+			}
 		}
-//		TextField username = new TextField();
-//		username.setPromptText("Username");
-//		TextField password = new TextField();
-//		password.setPromptText("Password");
-//
-//		grid.add(new Label("Username:"), 0, 0);
-//		grid.add(username, 1, 0);
-//		grid.add(new Label("Password:"), 0, 1);
-//		grid.add(password, 1, 1);
-
-		// Enable/Disable login button depending on whether a username was entered.
-		Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
-		loginButton.setDisable(true);
-
-		// Do some validation (using the Java 8 lambda syntax).
-//		username.textProperty().addListener((observable, oldValue, newValue) -> {
-//		    loginButton.setDisable(newValue.trim().isEmpty());
-//		});
 
 		dialog.getDialogPane().setContent(grid);
 		dialog.showAndWait();
