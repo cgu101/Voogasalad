@@ -73,8 +73,9 @@ public class LevelMap extends Map implements Anscestral {
 		 * Add level triggers, ...
 		 */
 		// TODO: Chris: might mess with networking:
+		
+		this.controller.getLevelConstructor().buildLevel(myLevel);
 		this.controller.getLevelConstructor().buildConstructor(myLevel);
-//		this.controller.getLevelConstructor().buildLevel(myLevel);
 
 		setLevelType();
 

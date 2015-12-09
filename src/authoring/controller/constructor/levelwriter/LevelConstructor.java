@@ -45,8 +45,8 @@ public class LevelConstructor {
 	 * @return Level
 	 */
 	public Level buildLevel(Level ret) {
-		ret.setActorGroupsValues(actorConstructor);
-		ret.setTreeConstructorValues(treeConstructor);
+//		ret.setActorGroupsValues(actorConstructor);
+//		ret.setTreeConstructorValues(treeConstructor);
 		ret.setMapConstructorValues(mapConstructor);
 		return ret;
 	}
@@ -55,9 +55,9 @@ public class LevelConstructor {
 		actorConstructor.setActorGroups(level.getActorGroups());
 		((TreeConstructor) treeConstructor).setRootTree(level.getRootTree());
 		Map<ResourceType, Map> myMap = new HashMap<ResourceType, Map>();
-		myMap.put(ResourceType.TRIGGERS, level.getTriggerMap());
-		myMap.put(ResourceType.ACTIONS, level.getActionMap());
-		
-		mapConstructor.setItemsMap(myMap);
+//		myMap.put(ResourceType.TRIGGERS, level.getTriggerMap());
+//		myMap.put(ResourceType.ACTIONS, level.getActionMap());
+//		
+//		mapConstructor.setItemsMap(myMap);
 	}
 }

@@ -141,6 +141,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	public void saveGame() {
 		try {
 			setProperties(game);
+			
 			File saveFile = FileChooserUtility.save(scene.getWindow());
 
 			String fileLocation = saveFile.getAbsolutePath();
