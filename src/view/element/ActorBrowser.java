@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 import authoring.controller.AuthoringController;
@@ -17,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
@@ -171,6 +173,17 @@ public class ActorBrowser extends AbstractDockElement {
 		AuthoringConfigManager.getInstance().refresh();
 		load(controller);
 
+	}
+
+
+	public void requestGroupName(Map<String, String> properties) {
+		TextInputDialog dialog = new TextInputDialog("walter");
+		dialog.setTitle("Group Name Input");
+		dialog.setHeaderText("Your new actor!");
+		dialog.setContentText("Please enter your actor's name:");
+
+		Optional<String> result = dialog.showAndWait();
+		result.ifPresent(name -> addNewActor(name, properties));
 	}
 
 	public BooleanProperty getDoubleListsProperty() {

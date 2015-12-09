@@ -6,17 +6,24 @@ import java.util.List;
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
+import authoring.model.bundles.Bundle;
+import authoring.model.properties.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -24,8 +31,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Pair;
 import view.map.Map;
 import view.map.MapViewManager;
 import view.map.MapZoomSlider;
@@ -110,10 +119,10 @@ public class ActorHandler extends AbstractVisual {
 		MenuItem rotateActor = makeMenuItem(myResources.getString("rotate"), event -> rotateActor(a));
 		MenuItem resizeActor = makeMenuItem(myResources.getString("resize"), event -> resizeActor(a));
 		MenuItem deleteActor = makeMenuItem(myResources.getString("delete"), event -> removeActor(a));
-//		MenuItem editParam = makeMenuItem(myResources.getString("editparams"), event -> editParams());
+		MenuItem editParam = makeMenuItem(myResources.getString("editparams"), event -> editParams(a));
 //		MenuItem editShip = makeMenuItem(myResources.getString("editship"), event -> editShip());
 
-		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, deleteActor); //, editParam, editShip);
+		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, editParam, deleteActor); //, editParam, editShip);
 
 		return cm;
 	}
@@ -225,9 +234,54 @@ public class ActorHandler extends AbstractVisual {
 		viewManager.removeElements(element);
 	}
 
-//	private void editParams() {
+	private void editParams(ActorView a) {
+		// Create the custom dialog.
+		Dialog<Pair<String, String>> dialog = new Dialog<>();
+		dialog.setTitle("Actor: " + a.getActor().getUniqueID());
+		dialog.setHeaderText("Edit Parameters");
+
+		// Set the icon (must be included in the project).
+
+		// Set the button types.
+		ButtonType loginButtonType = new ButtonType("Login", ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+		// Create the username and password labels and fields.
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new Insets(20, 150, 10, 10));
+
+		int i = 0;
+		for(Property<?> p : a.getActor().getProperties()){
+			TextField t = new TextField();
+			t.insertText(0, p.getValue().toString());
+			grid.add(new Label(p.getUniqueID()), 0, i);
+			grid.add(t, 1, i);
+			i++;
+		}
+//		TextField username = new TextField();
+//		username.setPromptText("Username");
+//		TextField password = new TextField();
+//		password.setPromptText("Password");
 //
-//	}
+//		grid.add(new Label("Username:"), 0, 0);
+//		grid.add(username, 1, 0);
+//		grid.add(new Label("Password:"), 0, 1);
+//		grid.add(password, 1, 1);
+
+		// Enable/Disable login button depending on whether a username was entered.
+		Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+		loginButton.setDisable(true);
+
+		// Do some validation (using the Java 8 lambda syntax).
+//		username.textProperty().addListener((observable, oldValue, newValue) -> {
+//		    loginButton.setDisable(newValue.trim().isEmpty());
+//		});
+
+		dialog.getDialogPane().setContent(grid);
+		dialog.showAndWait();
+	}
 //
 //	private void editShip() {
 //

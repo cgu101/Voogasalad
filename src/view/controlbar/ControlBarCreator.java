@@ -133,11 +133,8 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				KeyCombination.CONTROL_DOWN);
 		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> addNewSplash(), KeyCode.R,
 				KeyCombination.CONTROL_DOWN);
-		Map<String, String> props = new HashMap<String, String>(){{
-	        put("image","duvall");
-	        put("size", "10");
-	    }};
-		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor("newActor", props),
+		
+		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> addActor(),
 				KeyCode.N, KeyCombination.CONTROL_DOWN);
 		MenuItem changeBackground = makeMenuItem(myResources.getString("background.message"), e -> updateBackground());
 		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addActor, new SeparatorMenuItem(), addLevel,
@@ -241,7 +238,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	        put("height","10");
 	        put("size","12");
 	    }};
-		findActorBrowser().addNewActor("NewActor", props);
+		findActorBrowser().requestGroupName(props);
 		if (!findActorBrowser().getShowingProperty().getValue()) {
 			findActorBrowser().getShowingProperty().setValue(true);
 		}
