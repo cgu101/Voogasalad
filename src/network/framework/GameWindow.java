@@ -12,8 +12,9 @@ import network.framework.format.Proxy;
 
 public class GameWindow extends Observable implements Proxy {
 
-	private static final String HOST = "localhost";
-	private static final int PORT = 6969;
+	private static final String HOST = "52.20.247.225";
+	//private static final String HOST = "localhost";
+	private static final int PORT = 5055;
 	private GameClient connection; 
 	private volatile boolean connected;
 	private Game gameData; 
@@ -32,11 +33,6 @@ public class GameWindow extends Observable implements Proxy {
 					connection = new GameClient(HOST);
 					connected = true;
 					connection.send("I have connected to " + HOST);
-
-					/**
-					 * Instead of creating a new game as the game data, we want to try to obtain a Game object from the server side
-					 * using a obtainFromServer() method --> gameData = obtainFromServer();
-					 */
 				}
 				catch (IOException e) {
 					addToTranscript("Connection attempt failed.");
@@ -83,16 +79,16 @@ public class GameWindow extends Observable implements Proxy {
 		}
 
 		protected void messageReceived(Object message) {
-			ForwardedMessage msg = (ForwardedMessage) message;
-			addToTranscript("I HAVE RECEIVED! Sender ID is: " + msg.senderID + " and says:  " + msg.message.getClass());
-			if (isMessageValid(msg)) {
+
+			//addToTranscript("I HAVE RECEIVED! Sender ID is: " + msg.senderID + " and says:  " + msg.message.getClass());
+
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						updateObservers((Mail) msg.message);
+						updateObservers((Mail) message);
 					}
 				});
-			}
+
 		}
 
 		private boolean isMessageValid (ForwardedMessage m) {
