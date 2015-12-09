@@ -132,7 +132,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_ID_KEY), "name"));
 		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_DESCRIPTION_KEY), "description"));
 		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.INITIAL_LEVEL_KEY), "0"));
-		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_LEVEL_COUNT_KEY), "1"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_LEVEL_COUNT_KEY), Integer.toString(game.getBundleLevels().getSize())));
 		game.addAllProperties(bundle);
 	}
 	// TODO
