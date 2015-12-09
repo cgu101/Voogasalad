@@ -257,6 +257,26 @@
                           <parameter__values/>
                         </parameters>
                       </authoring.model.tree.ActionTreeNode>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>IncreaseProperty</value>
+                        <parameters>
+                          <parameter__values>
+                            <entry>
+                              <string>param.1</string>
+                              <double>0.05</double>
+                            </entry>
+                            <entry>
+                              <string>param.2</string>
+                              <double>1000.0</double>
+                            </entry>
+                            <entry>
+                              <string>param.0</string>
+                              <string>speed</string>
+                            </entry>
+                          </parameter__values>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
                     </children>
                     <value>TrueSelfTrigger</value>
                     <parameters>
@@ -315,6 +335,14 @@
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
+                <string>Raindrop</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
                 <string>Spaceship</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
@@ -346,7 +374,7 @@
                             <entry>
                               <string>size</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">35.0</myValue>
+                                <myValue class="double">25.0</myValue>
                                 <identifier>size</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -866,6 +894,14 @@
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
+                <string>Raindrop</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
                 <string>Spaceship</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
@@ -1286,7 +1322,7 @@
                             <entry>
                               <string>health</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">100.0</myValue>
+                                <myValue class="double">40.0</myValue>
                                 <identifier>health</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -1325,6 +1361,14 @@
                       </authoring.model.actors.Actor>
                     </entry>
                   </components>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Raindrop</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
@@ -1588,6 +1632,14 @@
               </entry>
               <entry>
                 <string>Asteroid</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Raindrop</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
                   <obs/>
