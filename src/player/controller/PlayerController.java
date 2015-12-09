@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import authoring.model.actors.Actor;
-import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.properties.Property;
@@ -64,12 +63,14 @@ public class PlayerController implements IPlayer {
 
 	// should be called by front end
 	public void loadGame(String fileName) throws GameFileException, EngineException {
-		if (myGameLoop != null) {
+		boolean first = myGameLoop != null;
+		if (first) {
 			pause();
 		}
 		System.out.println("PlayController.loadGame(" + fileName + ")");
 		Game game = XMLManager.loadGame(fileName);
 		myEngine.init(game);
+		if (first) actorMonitor.resetData();
 		start();
 	}
 
@@ -84,7 +85,7 @@ public class PlayerController implements IPlayer {
 	 * This method starts a GameLoop.
 	 */
 	public void start() {
-		KeyFrame frame = new KeyFrame(new Duration(1000 / this.fps), e -> this.run());
+		KeyFrame frame = new KeyFrame(new Duration(1000 / fps), e -> this.run());
 		myGameLoop = new Timeline();
 		myGameLoop.setCycleCount(Timeline.INDEFINITE);
 		myGameLoop.getKeyFrames().add(frame);
@@ -119,15 +120,14 @@ public class PlayerController implements IPlayer {
 
 	private void run() {
 		try {
-			// TODO: myEngine.play() returns a State
 			myEngine.play();
 			mySpriteManager.updateSprites(getIndividualActorsList(), this.myScene);
 			myEngine.getState().areThereNewOrDeadActors();
 			refreshPlayerComponents();
 			actorMonitor.refresh();	
 		} catch (EngineException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			// TODO: handle this
 		}
 	}
 
@@ -263,6 +263,7 @@ public class PlayerController implements IPlayer {
 		State saveState = XMLManager.loadState(fileName);
 		try {
 			myEngine.loadState(saveState);
+			actorMonitor.resetData();
 		} catch (EngineException e) {
 			throw new GameFileException(e.getMessage());
 		}
@@ -296,12 +297,14 @@ public class PlayerController implements IPlayer {
 	}
 	
 	public void replayLevel() throws GameFileException{
+		pause();
 		try {
 			myEngine.replayLevel();
 			actorMonitor.resetData();
 		} catch (EngineException e) {
 			throw new GameFileException(e.getMessage());
 		}
+		resume();
 	}
 	
 	public view.map.Map getMap(){
