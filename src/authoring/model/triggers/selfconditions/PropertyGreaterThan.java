@@ -2,7 +2,7 @@ package authoring.model.triggers.selfconditions;
 
 import authoring.model.triggers.selftriggers.APropertyTest;
 
-public abstract class PropertyGreaterThan extends APropertyTest {
+public class PropertyGreaterThan extends APropertyTest {
 	/**
 	 * Generated serial version ID
 	 */
