@@ -5,12 +5,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
 import authoring.controller.AuthoringController;
 import authoring.controller.constructor.configreader.AuthoringConfigManager;
+import authoring.files.properties.ActorProperties;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -36,6 +38,12 @@ import view.screen.AbstractScreenInterface;
  */
 public class ActorBrowser extends AbstractDockElement {
 
+	private static final String ACTOR_CONFIGURATION_DIRECTORY = "src/authoring/files/actors/%s.properties";
+	private static final String CONFIGURATION_DIRECTORY = "src/authoring/files/%s.properties";
+	private static final String CONFIGURATION = "configuration";
+	private static final String DEFAULT_IMAGE = "rcd.jpg";
+	
+	
 	private ListView<String> rightlist;
 	private ListView<String> leftlist;
 	private ArrayList<ListView<String>> lists;
@@ -130,18 +138,22 @@ public class ActorBrowser extends AbstractDockElement {
 		event.consume();
 	}
 
-	public void addNewActor(String actorName, Map<String, String> properties) {
+	/**
+	 * @param actorGroupID Group ID of the new actor group that you want to create
+	 * @param properties Properties of the new actor group
+	 */
+	public void addNewActor(String actorGroupID, Map<String, String> properties) {
 		Properties prop = new Properties();
 		OutputStream output = null;
 		try {
-			output = new FileOutputStream("src/authoring/files/actors/" + actorName + ".properties");
+			output = new FileOutputStream(String.format(ACTOR_CONFIGURATION_DIRECTORY, actorGroupID));
 			String props = "";
 			for (Map.Entry<String, String> property : properties.entrySet()) {
 				props += property.getKey() + ",";
-				prop.setProperty(property.getKey(), property.getValue());
+				prop.setProperty(property.getKey(), property.getValue().substring(0, property.getValue().length()));
 			}
 			prop.setProperty("properties", props);
-			prop.store(output, "New User Defined Actor Added");
+			prop.store(output, "New Actor Group: "+actorGroupID);
 		} catch (IOException io) {
 			io.printStackTrace();
 		} finally {
@@ -155,15 +167,15 @@ public class ActorBrowser extends AbstractDockElement {
 		FileInputStream in;
 		Properties props = new Properties();
 		try {
-			in = new FileInputStream("src/authoring/files/configuration.properties");
+			in = new FileInputStream(String.format(CONFIGURATION_DIRECTORY, CONFIGURATION));
 			props.load(in);
 			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
-			FileOutputStream out = new FileOutputStream("src/authoring/files/configuration.properties");
-			String actors = props.getProperty("actors") + "," + actorName;
+			FileOutputStream out = new FileOutputStream(String.format(CONFIGURATION_DIRECTORY, CONFIGURATION));
+			String actors = props.getProperty("actors") + "," + actorGroupID;
 			props.setProperty("actors", actors);
 			props.store(out, null);
 			out.close();
@@ -172,18 +184,25 @@ public class ActorBrowser extends AbstractDockElement {
 		}
 		AuthoringConfigManager.getInstance().refresh();
 		load(controller);
-
 	}
 
 
-	public void requestGroupName(Map<String, String> properties) {
+	public void createCustomGroup() {
+		Map<String, String> properties = new HashMap<String, String>();
+	    for(ActorProperties property: ActorProperties.values()){
+	    	properties.put(property.getKey(), "0");
+	    }
 		TextInputDialog dialog = new TextInputDialog("walter");
 		dialog.setTitle("Group Name Input");
 		dialog.setHeaderText("Your new actor!");
 		dialog.setContentText("Please enter your actor's name:");
-
 		Optional<String> result = dialog.showAndWait();
-		result.ifPresent(name -> addNewActor(name, properties));
+		result.ifPresent(name -> {
+			properties.put("groupID", name);
+//			TODO Add image_name from image selector
+			properties.put("image", DEFAULT_IMAGE);
+			addNewActor(name, properties);
+		});
 	}
 
 	public BooleanProperty getDoubleListsProperty() {

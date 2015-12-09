@@ -2,28 +2,17 @@ package view.controlbar;
 
 import java.util.Optional;
 
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.VBoxBuilder;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import view.element.AbstractDockElement;
-import view.screen.AbstractScreen;
 import view.screen.PlayerScreen;
 import view.screen.StartScreen;
 
@@ -57,16 +46,25 @@ public class ControlBarPlayer extends ControlBar {
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
-		MenuItem load = makeMenuItem(myResources.getString("loadGame"), e -> screen.loadGame());
-		MenuItem save = makeMenuItem(myResources.getString("saveGame"), e -> screen.saveState());
+		MenuItem load = makeMenuItem(myResources.getString("loadGame"), e -> screen.loadGame(), KeyCode.L,
+				KeyCombination.CONTROL_DOWN);
+		MenuItem save = makeMenuItem(myResources.getString("saveGame"), e -> screen.saveState(), KeyCode.S,
+				KeyCombination.CONTROL_DOWN);
 		Menu file = addToMenu(new Menu(myResources.getString("file")), load, save);
 
-		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
+		CheckMenuItem fullscreen = makeCheckMenuItem(myResources.getString("fullscreen"), KeyCode.F,
+				KeyCombination.CONTROL_DOWN);
 		fullscreen.selectedProperty().bindBidirectional(screen.getFullscreenProperty());
 		
 		CheckMenuItem toolbar = new CheckMenuItem(myResources.getString("toolbar"));
 		toolbar.selectedProperty().setValue(true);
 		toolbar.selectedProperty().addListener(e -> toggleToolbar(toolbar.selectedProperty().getValue()));
+		
+		CheckMenuItem highScore = new CheckMenuItem(myResources.getString("highscore"));
+		highScore.selectedProperty().setValue(false);
+		highScore.selectedProperty().addListener(e -> System.out.println("High Score not implemented yet"));
+		
+		hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar, highScore);
 		
 		hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar);
 		makeComponentCheckMenus(hideAndShow, screen);
