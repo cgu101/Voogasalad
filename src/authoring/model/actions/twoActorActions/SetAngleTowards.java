@@ -5,6 +5,7 @@ import authoring.model.actions.ATwoActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import engine.State;
+import player.InputManager;
 
 public class SetAngleTowards extends ATwoActorAction {
 	/**
@@ -17,7 +18,7 @@ public class SetAngleTowards extends ATwoActorAction {
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor a, Actor b) {
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor a, Actor b) {
 		Double xA = a.getPropertyValue(ActorProperties.X_LOCATION.getKey());
 		Double yA = a.getPropertyValue(ActorProperties.Y_LOCATION.getKey());
 		Double xB = b.getPropertyValue(ActorProperties.X_LOCATION.getKey());

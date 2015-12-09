@@ -159,7 +159,7 @@ public class InteractionExecutor {
 				return nextState.getActorMap().getGroup(a.getGroupName()).get(a.getUniqueID());
 			}).toArray(Actor[]::new);
 			
-			action.run(((ParameterTreeNode) node).getParameters(), nextState, actors);
+			action.run(inputMap, ((ParameterTreeNode) node).getParameters(), nextState, actors);
 //			action.run(new HashMap<String, V>(), nextState, actors);
 		});
 	}

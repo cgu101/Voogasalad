@@ -13,6 +13,7 @@ import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import authoring.model.tree.ParametersKey;
 import engine.State;
+import player.InputManager;
 
 public class SpawnActor extends AOneActorAction {
 	/**
@@ -32,7 +33,7 @@ public class SpawnActor extends AOneActorAction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor actor) {
 		String groupID = (String) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0");
 		actors = ResourceBundle.getBundle(ACTOR_FOLDER + groupID);
 		List<String> propertyList = Arrays.asList(actors.getString(PROPERTIES).split(REGEX));

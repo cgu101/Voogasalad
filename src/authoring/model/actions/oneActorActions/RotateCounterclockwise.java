@@ -1,10 +1,15 @@
 package authoring.model.actions.oneActorActions;
 
+import java.util.Map;
+
+import authoring.files.properties.ActorProperties;
 import authoring.model.actions.AOneActorAction;
 import authoring.model.actors.Actor;
+import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import authoring.model.tree.ParametersKey;
 import engine.State;
+import player.InputManager;
 
 public class RotateCounterclockwise extends AOneActorAction {
 	/**
@@ -15,9 +20,9 @@ public class RotateCounterclockwise extends AOneActorAction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
-		Double rotation = (Double) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0");
-		Double angle = actor.getPropertyValue(ANGLE);
-		actor.setProperty(ANGLE, (angle - rotation) % 360);
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor actor) {
+		Double rotation = 20.0;
+		Property<Double> angle = (Property<Double>) actor.getProperty(ActorProperties.ANGLE.getKey());
+		angle.setValue((angle.getValue() + rotation) % 360);
 	}
 }
