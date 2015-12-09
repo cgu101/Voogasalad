@@ -11,14 +11,14 @@ import network.framework.format.Mail;
 import network.framework.format.Proxy;
 
 public class GameWindow extends Observable implements Proxy {
-	
+
 	private static final String HOST = "localhost";
 	private static final int PORT = 6969;
 	private GameClient connection; 
 	private volatile boolean connected;
 	private Game gameData; 
 	private static final GameWindow window = new GameWindow();
-	
+
 	public static GameWindow getInstance() {
 		return window;
 	}
@@ -44,10 +44,10 @@ public class GameWindow extends Observable implements Proxy {
 				}
 			}
 		}.start();
-		
+
 		gameData = new Game();
 	}
-	
+
 	public Game requestServerObject () {
 		return gameData;
 	}
@@ -55,22 +55,27 @@ public class GameWindow extends Observable implements Proxy {
 	private void addToTranscript (String message) {
 		System.out.println(message);
 	}
-	
+
 	public void updateObservers (Object o) {
 		setChanged();
 		notifyObservers(o);
 	}
 	
-	public void send (Object message) {
+	@Override
+	public void send(Object o) {
+		send((Mail) o);
+	}
+
+	public void send (Mail message) {
 		if (connection != null) {
 			connection.send(message);
 		}
 	}
-	
+
 	public boolean isConnected () {
 		return connected;
 	}
-	
+
 	private class GameClient extends Client {
 
 		GameClient(String host) throws IOException {
@@ -78,47 +83,35 @@ public class GameWindow extends Observable implements Proxy {
 		}
 
 		protected void messageReceived(Object message) {
-			if (message instanceof ForwardedMessage) {
-				ForwardedMessage bm = (ForwardedMessage)message;
-				addToTranscript("I HAVE RECEIVED! Sender ID is: " + bm.senderID + " and says:  " + bm.message.getClass());
-				
-//				if (bm.message instanceof Game && bm.senderID != this.getID()) {
-//					Platform.runLater(new Runnable() {
-//					    @Override
-//					    public void run() {
-//					    	updateObservers((Game) bm.message);
-//					    }
-//					});
-//				}
-				
-				if (isMessageValid(bm)) {
-					Platform.runLater(new Runnable() {
-					    @Override
-					    public void run() {
-					    	updateObservers((Mail) bm.message);
-					    }
-					});
-				}
+			ForwardedMessage msg = (ForwardedMessage) message;
+			addToTranscript("I HAVE RECEIVED! Sender ID is: " + msg.senderID + " and says:  " + msg.message.getClass());
+			if (isMessageValid(msg)) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						updateObservers((Mail) msg.message);
+					}
+				});
 			}
 		}
-		
+
 		private boolean isMessageValid (ForwardedMessage m) {
 			return (m.message instanceof Mail && m.senderID != this.getID());
 		}
-
+	
 		protected void connectionClosedByError(String message) {
 			addToTranscript("Sorry, communication has shut down due to an error:\n     " + message);
 			connected = false;
 			connection = null;
 		}
-
+	
 		protected void playerConnected(int newPlayerID) {
 			addToTranscript("Someone new has joined the authoring environment, with ID number " + newPlayerID);
 		}
-
+	
 		protected void playerDisconnected(int departingPlayerID) {
 			addToTranscript("The person with ID number " + departingPlayerID + " has left the authoring environment");
 		}
-
+	
 	}
 }

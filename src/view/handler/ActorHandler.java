@@ -8,7 +8,6 @@ import java.util.List;
 import authoring.controller.AuthoringController;
 import authoring.model.Anscestral;
 import authoring.model.actors.Actor;
-import authoring.model.actors.ActorGroups;
 import authoring.model.actors.ActorPropertyMap;
 import authoring.model.properties.Property;
 import javafx.event.ActionEvent;
@@ -38,6 +37,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
+import network.framework.GameWindow;
 import network.framework.format.Mail;
 import network.framework.format.Request;
 import network.instances.DataDecorator;
@@ -64,7 +64,6 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 	private List<ActorView> myAVs;
 	private ActorEditingToolbar myEditMenu;
 	private AuthoringController myAC;
-	private ActorGroups myActorGroups;
 	private Deque<String> anscestors;
 
 	public ActorHandler(Group layout, ToolBar tb, Map map, MiniMap miniMap, MapZoomSlider zoomSlider,
@@ -78,7 +77,6 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		findResources();
 		myEditMenu = new ActorEditingToolbar(myToolbar, map, viewManager);
 		myAVs = new ArrayList<ActorView>();
-		myActorGroups = myAC.getLevelConstructor().getActorGroupsConstructor().getActorGroups();
 	}
 
 	public void addActor(Actor a, ActorPropertyMap map, String actorType, double x, double y) {
@@ -107,21 +105,28 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 			addToScale(av, x, y);
 			viewManager.addElements(av.getSprite());
 			// TODO send the actor here
-			DataDecorator dataMail = new DataDecorator(Request.ADD, av, anscestors);
-			
+			ActorSerializable actor = new ActorSerializable(av.getActor(), av.getMap(), av.getType(), x, y);
+			DataDecorator dataMail = new DataDecorator(Request.ADD, actor, anscestors);
+			GameWindow.getInstance().send(dataMail);
 		}
 	}
-	
-	private void addActor(ActorView av) {
-		myAVs.add(av);
-		ImageView image = av.getSprite();
-		ContextMenu cm = makeContextMenu(av);
-		image.setOnContextMenuRequested(e -> {
-			if (!myEditMenu.isEditing()) {
-				cm.show(image, e.getScreenX(), e.getScreenY());
+
+	private void addActor(ActorSerializable av) {
+		ActorView actor = new ActorView(av.a, av.map, av.actorType, av.x, av.y, myAC);
+		if (!checkOutOfBounds(actor, av.x, av.y)) {
+			if (!myAVs.contains(av)) {
+				myAVs.add(actor);
+				ImageView image = actor.getSprite();
+				ContextMenu cm = makeContextMenu(actor);
+				image.setOnContextMenuRequested(e -> {
+					if (!myEditMenu.isEditing()) {
+						cm.show(image, e.getScreenX(), e.getScreenY());
+					}
+				});
 			}
-		});
-		viewManager.addElements(av.getSprite());
+			addToScale(actor, av.x, av.y);
+			viewManager.addElements(actor.getSprite());
+		}
 	}
 
 	private void addToScale(ActorView a, double x, double y) {
@@ -144,7 +149,7 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		MenuItem resizeActor = makeMenuItem(myResources.getString("resize"), event -> resizeActor(a));
 		MenuItem deleteActor = makeMenuItem(myResources.getString("delete"), event -> removeActor(a));
 		MenuItem editParam = makeMenuItem(myResources.getString("editparams"), event -> editParams(a));
-//		MenuItem editShip = makeMenuItem(myResources.getString("editship"), event -> editShip());
+		//		MenuItem editShip = makeMenuItem(myResources.getString("editship"), event -> editShip());
 
 		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, editParam, deleteActor); //, editParam, editShip);
 
@@ -176,7 +181,7 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 
 	private void startMoveDrag(MouseEvent e, ActorView a, Rectangle r) {
 		removeActor(a);
-		
+
 		// TODO Send to network to remove the actor
 		r.setCursor(Cursor.CLOSED_HAND);
 		Dragboard db = r.startDragAndDrop(TransferMode.MOVE);
@@ -259,7 +264,7 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 	public void removeActor(Node element) {
 		viewManager.removeElements(element);
 	}
-	
+
 	public void clearMap() {
 		myAVs.clear();
 		viewManager.removeAll();
@@ -304,7 +309,7 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		dialog.getDialogPane().setContent(grid);
 		dialog.showAndWait();
 	}
-	
+
 	private void updateNode(ActorView a, String uniqueID, double newVal) {
 
 		// basically a switch/case tree but allows us to use resources file
@@ -322,11 +327,11 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		}
 	}
 
-//
-//	private void editShip() {
-//
-//	}
-	
+	//
+	//	private void editShip() {
+	//
+	//	}
+
 	private Rectangle makeFilterRectangle() {
 		Rectangle rect = new Rectangle(map.getMapWidth(), map.getMapHeight());
 		double opacity = Double.parseDouble(myResources.getString("opacity"));
@@ -367,26 +372,26 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 
 	@Override
 	public void process(Mail mail) {
-		ActorView actor = (ActorView) mail.getData();
+		ActorSerializable actor = (ActorSerializable) mail.getData();
 		Request request = mail.getRequest();
 
 		switch (request) {
-			case ADD: {
-				addActor(actor);
-				break;
-			}
-			case DELETE: {
-				removeActor(actor);
-				break;
-			}
-			case MODIFY: {
-				removeActor(actor);
-				addActor(actor);
-				break;
-			}
-			default: {
-				break;
-			}
+		case ADD: {
+			addActor(actor);
+			break;
+		}
+		case DELETE: {
+//			removeActor(actor);
+			break;
+		}
+		case MODIFY: {
+//			removeActor(actor);
+//			addActor(actor);
+			break;
+		}
+		default: {
+			break;
+		}
 		}
 	}
 
@@ -395,12 +400,12 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		// Doesn't have any children
 		return null;
 	}
-	
+
 	public void setDeque(Deque<String> anscestors) {
 		this.anscestors = new ArrayDeque<String>(anscestors);
 		this.anscestors.add(ActorHandler.class.getName());
 	}
-	
+
 	public void updateObservers(Object o) {
 		setChanged();
 		notifyObservers(o);

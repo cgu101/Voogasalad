@@ -16,6 +16,7 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
+import network.framework.GameWindow;
 import network.framework.format.Mail;
 import network.framework.format.Request;
 import network.instances.DataDecorator;
@@ -54,7 +55,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 		propertyInfo = game.getProperties();
 
 		this.anscestors = new ArrayDeque<String>();
-		anscestors.add(game.getUniqueID());
+		this.anscestors.add(game.getUniqueID());
 		
 		makePane();
 		
@@ -155,7 +156,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 		newTab.setOnClosed(e -> {
 			removeLevel(level);
 			DataDecorator d = new DataDecorator(Request.DELETE, level, this.anscestors);
-			updateObservers(d);
+			GameWindow.getInstance().send(d);
 		});
 		tabManager.getTabs().add(levels.size() - 1, newTab);
 		tabManager.getSelectionModel().select(newTab);
