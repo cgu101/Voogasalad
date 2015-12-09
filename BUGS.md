@@ -25,7 +25,6 @@
 #Considerations
 
 * Make Parameter Objects Immutable
-* Why do keycode triggers use "keycode" as the key to the parameter? Please use ParametersKey type + index
 
 #Resolved
 * Sprites are not centered over their location.  Instead, the location is the top left corner of the sprite.

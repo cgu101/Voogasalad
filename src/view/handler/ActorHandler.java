@@ -6,7 +6,6 @@ import java.util.List;
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
-import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

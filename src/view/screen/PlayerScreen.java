@@ -101,19 +101,14 @@ public class PlayerScreen extends AbstractScreen {
 		map.setPanEnabled(false);
 	}
 
-	// TODO: David: need a stage eventually for the line:
-	// fileChooser.showOpenDialog(null);
-	// You want to force the user to choose
 	/**
 	 * Method that allows for a game to be loaded. Brings up a file selector
 	 * using 'FileChooser' class
 	 */
 	public void loadGame() {
-		System.out.println("Testing");
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Game File Loader");
 		fileChooser.setInitialDirectory(new File("."));
-		System.out.println(playerController);
 		File file = fileChooser.showOpenDialog(null);
 
 		if (file == null) {
@@ -123,10 +118,10 @@ public class PlayerScreen extends AbstractScreen {
 		try {
 			playerController.loadGame(file.getAbsolutePath());
 		} catch (GameFileException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EngineException ee) {
 			// ee.printStackTrace();
+			// TODO: handle these exceptions
 			System.err.println("Level exception!");
 		}
 		gameInfoMonitor.initializePane();
@@ -157,7 +152,6 @@ public class PlayerScreen extends AbstractScreen {
 	 * Method that calls for the player to load a game state.
 	 */
 	public void loadState() {
-		// TODO: do gui stuff
 		try {
 			File loadFile = FileChooserUtility.load(scene.getWindow());
 			playerController.loadState(loadFile.getPath());

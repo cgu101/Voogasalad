@@ -34,7 +34,6 @@ public class InteractionCell extends TreeCell<InteractionTreeNode>{
 		this.actors = actors;
 
 	}
-	@SuppressWarnings("unchecked")
 	@Override
 	public void updateItem(InteractionTreeNode item, boolean empty) {
 		super.updateItem(item, empty);

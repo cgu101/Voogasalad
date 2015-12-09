@@ -137,10 +137,8 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_LEVEL_COUNT_KEY), Integer.toString(game.getBundleLevels().getSize())));
 		game.addAllProperties(bundle);
 	}
-	// TODO
+	
 	public void saveGame() {
-		System.out.println("Testing saving game ");
-
 		try {
 			setProperties(game);
 			File saveFile = FileChooserUtility.save(scene.getWindow());
@@ -155,6 +153,14 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 
 	// TODO
 	public void loadGame() {
+		System.out.println("Testing loading game ");
+		try {
+			File loadFile = FileChooserUtility.load(scene.getWindow());
+			Game loaded = XMLManager.loadGame(loadFile);
+			setGame(loaded);
+		} catch (GameFileException e) {
+			System.out.println("Unable to load game");
+		}
 	}
 
 	public Workspace getWorkspace() {
