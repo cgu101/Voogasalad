@@ -194,8 +194,7 @@ public class LevelMap extends Map implements Anscestral {
 	}
 
 	public void redraw(Level modelLevel) {
-		// TODO Auto-generated method stub
-		
+		clearActors();
 		ArrayList<Actor> actors = new ArrayList<Actor>();
 		for (Entry<String,Bundle<Actor>> b : myLevel.getActorGroups().getMap().entrySet()) {
 			for (Actor actor : b.getValue().getComponents().values()) {

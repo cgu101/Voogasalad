@@ -336,8 +336,11 @@ public abstract class Map extends AbstractElement {
 	public void removeMiniMap () {
 		removeElement(this.theMiniMap.getMiniMap());
 	}
+	public void clearActors () {
+		this.actorHandler.clearMap();
+	}
 	
-	public ImageView getBackground() {
+	public ImageView getBackground () {
 		return background;
 	}
 	
