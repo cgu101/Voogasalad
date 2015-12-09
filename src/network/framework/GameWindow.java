@@ -11,8 +11,60 @@ import network.framework.format.Mail;
 import network.framework.format.Proxy;
 
 public class GameWindow extends Observable implements Proxy {
+	
 	private final static int PORT = 6969;
+	private GameClient connection; 
+	private volatile boolean connected;
+	private Game gameData; 
 
+	public GameWindow(final String host) {
+
+		new Thread() {
+			public void run() {
+				try {
+					addToTranscript("Connecting to " + host + " ...");
+					connection = new GameClient(host);
+					connected = true;
+					connection.send("I have connected to " + host);
+
+					/**
+					 * Instead of creating a new game as the game data, we want to try to obtain a Game object from the server side
+					 * using a obtainFromServer() method --> gameData = obtainFromServer();
+					 */
+				}
+				catch (IOException e) {
+					addToTranscript("Connection attempt failed.");
+					addToTranscript("Error: " + e);
+				}
+			}
+		}.start();
+		
+		gameData = new Game();
+	}
+	
+	public Game requestServerObject () {
+		return gameData;
+	}
+
+	private void addToTranscript (String message) {
+		System.out.println(message);
+	}
+	
+	public void updateObservers (Object o) {
+		setChanged();
+		notifyObservers(o);
+	}
+	
+	public void send (Object message) {
+		if (connection != null) {
+			connection.send(message);
+		}
+	}
+	
+	public boolean isConnected () {
+		return connected;
+	}
+	
 	private class GameClient extends Client {
 
 		GameClient(String host) throws IOException {
@@ -62,58 +114,5 @@ public class GameWindow extends Observable implements Proxy {
 			addToTranscript("The person with ID number " + departingPlayerID + " has left the authoring environment");
 		}
 
-	}
-
-	private GameClient connection; 
-	private volatile boolean connected;
-	
-	private Game gameData; //Require this for local builds
-
-	public GameWindow(final String host) {
-
-		new Thread() {
-			public void run() {
-				try {
-					addToTranscript("Connecting to " + host + " ...");
-					connection = new GameClient(host);
-					connected = true;
-					connection.send("I have connected to " + host);
-
-					/**
-					 * Instead of creating a new game as the game data, we want to try to obtain a Game object from the server side
-					 * using a obtainFromServer() method --> gameData = obtainFromServer();
-					 */
-				}
-				catch (IOException e) {
-					addToTranscript("Connection attempt failed.");
-					addToTranscript("Error: " + e);
-				}
-			}
-		}.start();
-		
-		gameData = new Game();
-	}
-	
-	public Game requestServerObject () {
-		return gameData;
-	}
-
-	private void addToTranscript (String message) {
-		System.out.println(message);
-	}
-	
-	public void updateObservers (Object o) {
-		setChanged();
-		notifyObservers(o);
-	}
-	
-	public void send (Object message) {
-		if (connection != null) {
-			connection.send(message);
-		}
-	}
-	
-	public boolean isConnected () {
-		return connected;
 	}
 }

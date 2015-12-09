@@ -2,9 +2,11 @@ package view.screen;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.Observable;
 import java.util.Observer;
 
+import authoring.model.Anscestral;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.properties.Property;
@@ -34,7 +36,7 @@ import view.map.CreatorMapSliders;
  * @author David
  *
  */
-public class CreatorScreen extends AbstractScreen implements Observer {
+public class CreatorScreen extends AbstractScreen implements Observer, Anscestral {
 	private static final int DEFAULT_MAP_PANE_INDEX = 0;
 
 	private Workspace w;
@@ -47,6 +49,10 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	}
 
 	public CreatorScreen(Game game) {
+		refresh(game);
+	}
+	
+	public void refresh(Game game) {
 		this.game = game;
 		findResources();
 		WIDTH = Integer.parseInt(myResources.getString("width"));
@@ -183,10 +189,23 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		System.out.println("Observer update");
-
-		Mail mail = (Mail) arg;
-
 		
-		w.forward(mail.getPath(), (Mail) arg);
+		Mail mail = (Mail) arg;		
+		forward(mail.getPath(), (Mail) arg);
+	}
+
+	@Override
+	public Deque<String> getAnscestralPath() {
+		return null;
+	}
+
+	@Override
+	public void process(Mail mail) {
+		// Do nothing for now
+	}
+
+	@Override
+	public Anscestral getChild(String id) {
+		return w;
 	}
 }

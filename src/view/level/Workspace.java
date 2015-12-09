@@ -73,7 +73,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 		removeLevel(l);
 	}
 
-	private void addVisual(Level l) {
+	public void addVisual(Level l) {
 		addScreenElement(l);
 	}
 
@@ -112,8 +112,10 @@ public class Workspace extends AbstractElement implements Anscestral {
 		if (levels.size() == 0) {
 			initializeVisualLevelComponents();
 		}
-
-		levels.put(level.getUniqueID(), new LevelMap(new GridPane(), level, screen));
+		LevelMap toAdd = new LevelMap(new GridPane(), level, screen);
+		toAdd.setDeque(anscestors);
+		
+		levels.put(level.getUniqueID(), toAdd);
 		levelInfo.add(level);
 
 		configureTab(level);
@@ -139,7 +141,8 @@ public class Workspace extends AbstractElement implements Anscestral {
 
 	private void addScreenElement(Level level) {
 		LevelMap newLevel = new LevelMap(new GridPane(), level, screen);
-
+		newLevel.setDeque(anscestors);
+		
 		levels.put(level.getUniqueID(), newLevel);
 		levelInfo.add(level);
 
@@ -193,29 +196,25 @@ public class Workspace extends AbstractElement implements Anscestral {
 		Request request = mail.getRequest();
 
 		switch (request) {
-		case ADD: {
-			addVisual(data);
-			break;
-		}
-		case DELETE: {
-			deleteVisual(data);
-			break;
-		}
-		case MODIFY: {
-			updateVisual(data);
-			break;
-		}
-		case TRANSITION: {
-			addSplashScreen(data);
-			break;
-		}
-		case LOAD: {
-			loadVisual(data);
-			break;
-		}
-		default: {
-			break;
-		}
+			case ADD: {
+				addVisual(data);
+				break;
+			}
+			case DELETE: {
+				deleteVisual(data);
+				break;
+			}
+			case MODIFY: {
+				updateVisual(data);
+				break;
+			}
+			case TRANSITION: {
+				addSplashScreen(data);
+				break;
+			}
+			default: {
+				break;
+			}
 		}
 	}
 

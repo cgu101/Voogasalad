@@ -82,6 +82,10 @@ public class Level implements Identifiable, Serializable {
 	public Map<String, IAction> getActionMap() {
 		return actionMap;
 	}
+	
+	public void overWriteTree(InteractionTreeNode newRoot) {
+		rootTree = newRoot;
+	}
 
 	@Override
 	public String getUniqueID() {

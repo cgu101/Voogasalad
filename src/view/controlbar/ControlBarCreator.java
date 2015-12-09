@@ -215,8 +215,9 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	private void addNewLevel() {
 		Level newLevel = new Level(Integer.toString(screen.getGame().getLevels().size()));
 		newLevel.getPropertyBundle().add(new Property<String>(myResources.getString("type"), myResources.getString("leveltype")) );
-		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, new ArrayDeque<String>());
-		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
+		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, screen.getWorkspace().getAnscestralPath());
+		screen.forward(dataMail.getPath(), dataMail);
+
 		screen.getWorkspace().updateObservers(dataMail);
 		if (screen.getGame().getLevels().size() == 1) {
 			toggleComponents(true, screen);
@@ -226,8 +227,8 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	private void addNewSplash() {
 		Level newSplash = new Level(Integer.toString(screen.getGame().getLevels().size()));
 		newSplash.getPropertyBundle().add(new Property<String>(myResources.getString("type"), myResources.getString("splashtype")) );
-		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, new ArrayDeque<String>());
-		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
+		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, screen.getWorkspace().getAnscestralPath());
+		screen.forward(dataMail.getPath(), dataMail);
 	}
 
 	private void handleHover(Button b) {
@@ -344,7 +345,6 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		screen.setGame(screen.getWorkspace().getGame()); // TODO perhaps
-		// unneeded
 
 		if (arg instanceof Observable) {
 			((Observable) arg).addObserver(this);

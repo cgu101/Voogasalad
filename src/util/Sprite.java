@@ -7,6 +7,7 @@
  */
 package util;
 
+import java.io.Serializable;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,8 +25,10 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.util.Duration;
 
-public class Sprite extends ImageView {
+public class Sprite extends ImageView implements Serializable {
 
+	private static final long serialVersionUID = -7218693879020524806L;
+	
 	private static HashMap<String, Image> images = new HashMap<String, Image>();
 	private Rectangle2D rect;
 	private HashMap<String, Integer> labels;
@@ -243,8 +246,10 @@ public class Sprite extends ImageView {
 		this.labels.put(lab, row);
 	}
 
-	public class SpriteAnimation extends Transition {
+	public class SpriteAnimation extends Transition implements Serializable {
 
+		private static final long serialVersionUID = 2600332704606246760L;
+		
 		private int row;
 		private int cols;
 

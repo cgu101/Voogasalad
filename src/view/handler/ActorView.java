@@ -1,5 +1,6 @@
 package view.handler;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import authoring.controller.AuthoringController;
@@ -18,7 +19,10 @@ import view.visual.AbstractVisual;
  * @author Bridget
  *
  */
-public class ActorView extends AbstractVisual {
+public class ActorView extends AbstractVisual implements Serializable {
+
+	private static final long serialVersionUID = -1658010950951262660L;
+	
 	private Actor myActor;
 	private Sprite mySprite;
 	private double myFitWidth;
@@ -28,7 +32,7 @@ public class ActorView extends AbstractVisual {
 	private double myYCoor;
 	private String myType;
 	private ActorPropertyMap myMap;
-	private AuthoringController myController;
+	private transient AuthoringController myController;
 
 	public ActorView(Actor a, ActorPropertyMap map, String actorType, double x, double y, AuthoringController ac) {
 		myMap = map;

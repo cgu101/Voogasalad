@@ -1,10 +1,14 @@
 package view.handler;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 import authoring.controller.AuthoringController;
+import authoring.model.Anscestral;
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorGroups;
 import authoring.model.actors.ActorPropertyMap;
 import authoring.model.properties.Property;
 import javafx.event.ActionEvent;
@@ -34,6 +38,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
+import network.framework.format.Mail;
+import network.framework.format.Request;
+import network.instances.DataDecorator;
 import view.map.Map;
 import view.map.MapViewManager;
 import view.map.MapZoomSlider;
@@ -48,7 +55,7 @@ import view.visual.AbstractVisual;
  * @author Bridget
  *
  */
-public class ActorHandler extends AbstractVisual {
+public class ActorHandler extends AbstractVisual implements Anscestral {
 	private MapViewManager viewManager;
 	private ToolBar myToolbar;
 	private Map map;
@@ -57,6 +64,8 @@ public class ActorHandler extends AbstractVisual {
 	private List<ActorView> myAVs;
 	private ActorEditingToolbar myEditMenu;
 	private AuthoringController myAC;
+	private ActorGroups myActorGroups;
+	private Deque<String> anscestors;
 
 	public ActorHandler(Group layout, ToolBar tb, Map map, MiniMap miniMap, MapZoomSlider zoomSlider,
 			AuthoringController ac) {
@@ -69,6 +78,7 @@ public class ActorHandler extends AbstractVisual {
 		findResources();
 		myEditMenu = new ActorEditingToolbar(myToolbar, map, viewManager);
 		myAVs = new ArrayList<ActorView>();
+		myActorGroups = myAC.getLevelConstructor().getActorGroupsConstructor().getActorGroups();
 	}
 
 	public void addActor(Actor a, ActorPropertyMap map, String actorType, double x, double y) {
@@ -96,7 +106,22 @@ public class ActorHandler extends AbstractVisual {
 			}
 			addToScale(av, x, y);
 			viewManager.addElements(av.getSprite());
+			// TODO send the actor here
+			DataDecorator dataMail = new DataDecorator(Request.ADD, av, anscestors);
+			
 		}
+	}
+	
+	private void addActor(ActorView av) {
+		myAVs.add(av);
+		ImageView image = av.getSprite();
+		ContextMenu cm = makeContextMenu(av);
+		image.setOnContextMenuRequested(e -> {
+			if (!myEditMenu.isEditing()) {
+				cm.show(image, e.getScreenX(), e.getScreenY());
+			}
+		});
+		viewManager.addElements(av.getSprite());
 	}
 
 	private void addToScale(ActorView a, double x, double y) {
@@ -151,6 +176,8 @@ public class ActorHandler extends AbstractVisual {
 
 	private void startMoveDrag(MouseEvent e, ActorView a, Rectangle r) {
 		removeActor(a);
+		
+		// TODO Send to network to remove the actor
 		r.setCursor(Cursor.CLOSED_HAND);
 		Dragboard db = r.startDragAndDrop(TransferMode.MOVE);
 		ClipboardContent content = new ClipboardContent();
@@ -315,7 +342,6 @@ public class ActorHandler extends AbstractVisual {
 		myEditMenu.restoreToolbar();
 		map.setPanEnabled(true);
 		myEditMenu.setEditing(false);
-		;
 	}
 
 	// returns true if out-of-bounds
@@ -332,5 +358,51 @@ public class ActorHandler extends AbstractVisual {
 
 	public void updateBackground(ImageView n) {
 		viewManager.updateBackground(n);
+	}
+
+	@Override
+	public Deque<String> getAnscestralPath() {
+		return anscestors;
+	}
+
+	@Override
+	public void process(Mail mail) {
+		ActorView actor = (ActorView) mail.getData();
+		Request request = mail.getRequest();
+
+		switch (request) {
+			case ADD: {
+				addActor(actor);
+				break;
+			}
+			case DELETE: {
+				removeActor(actor);
+				break;
+			}
+			case MODIFY: {
+				removeActor(actor);
+				addActor(actor);
+				break;
+			}
+			default: {
+				break;
+			}
+		}
+	}
+
+	@Override
+	public Anscestral getChild(String id) {
+		// Doesn't have any children
+		return null;
+	}
+	
+	public void setDeque(Deque<String> anscestors) {
+		this.anscestors = new ArrayDeque<String>(anscestors);
+		this.anscestors.add(ActorHandler.class.getName());
+	}
+	
+	public void updateObservers(Object o) {
+		setChanged();
+		notifyObservers(o);
 	}
 }
