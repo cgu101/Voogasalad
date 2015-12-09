@@ -6,6 +6,7 @@ import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import javafx.scene.image.Image;
+import player.SpriteManager;
 import util.Sprite;
 import view.visual.AbstractVisual;
 
@@ -85,17 +86,23 @@ public class ActorView extends AbstractVisual {
 	}
 
 	private Sprite createImage() {
-		String img = (String) myActor.getProperties().getComponents().get("image").getValue();
+		/*String img = (String) myActor.getProperties().getComponents().get("image").getValue();
 		Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
 
 		// also establish the ratio
 		double width = image.getWidth();
 		double height = image.getHeight();
 		dimensionRatio = height / width;
-
+		 */
 		// return new ImageView(image);
-		Sprite ret = new Sprite(img);
-		ret.play();
+		Sprite ret = SpriteManager.createSprite(myActor);
+		double width = ret.getImage().getWidth();
+		double height = ret.getImage().getHeight();
+		System.out.println("rhea rhea rhea " + width);
+		//myXCoor -= 250;
+		System.out.println("no nanas " + height);
+		System.out.println("woowoo " + width);
+		dimensionRatio = height / width;
 		return ret;
 	}
 

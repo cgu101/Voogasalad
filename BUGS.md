@@ -23,6 +23,8 @@
 
 * Minimap serves essentially no purpose
 
+* In creator, menu > view > Show Map Slider does nothing
+
 
 #Considerations
 

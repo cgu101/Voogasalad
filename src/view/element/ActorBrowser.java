@@ -24,7 +24,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
-import view.actor.ActorCell;
+import view.actor.ActorBrowserCell;
 import view.level.Workspace;
 import view.screen.AbstractScreenInterface;
 
@@ -108,7 +108,7 @@ public class ActorBrowser extends AbstractDockElement {
 		list.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {
-				ActorCell cell = new ActorCell(controller);
+				ActorBrowserCell cell = new ActorBrowserCell(controller);
 				cell.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> handlePress(cell, list, event));
 				cell.addEventFilter(MouseEvent.MOUSE_RELEASED, event -> handleRelease(cell, list, event));
 				cell.setOnDragDetected(e -> cell.drag(e));
@@ -118,7 +118,7 @@ public class ActorBrowser extends AbstractDockElement {
 		});
 	}
 
-	private void handlePress(ActorCell cell, ListView<String> list, MouseEvent event) {
+	private void handlePress(ActorBrowserCell cell, ListView<String> list, MouseEvent event) {
 		if (!cell.isEmpty()) {
 			int index = cell.getIndex();
 			if (list.getSelectionModel().getSelectedIndices().contains(index)) {
@@ -130,7 +130,7 @@ public class ActorBrowser extends AbstractDockElement {
 		}
 	}
 
-	private void handleRelease(ActorCell cell, ListView<String> list, MouseEvent event) {
+	private void handleRelease(ActorBrowserCell cell, ListView<String> list, MouseEvent event) {
 		if (cell.deselect()) {
 			int index = cell.getIndex();
 			list.getSelectionModel().clearSelection(index);

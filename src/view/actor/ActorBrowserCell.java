@@ -11,6 +11,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
+import player.SpriteManager;
 import util.Sprite;
 
 /**
@@ -19,14 +20,14 @@ import util.Sprite;
  *         This class is designed to be used with the ActorBrowser
  * 
  */
-public class ActorCell extends AbstractListCell<String> {
+public class ActorBrowserCell extends AbstractListCell<String> {
 
 	private AuthoringController controller;
 	private boolean deselect;
 	private String actor;
 	private Sprite image;
 
-	public ActorCell(AuthoringController controller) {
+	public ActorBrowserCell(AuthoringController controller) {
 		this.controller = controller;
 	}
 
@@ -34,10 +35,13 @@ public class ActorCell extends AbstractListCell<String> {
 		//image = new Image(getClass().getClassLoader()
 		//		.getResourceAsStream(controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image")));
 		String imageString = controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image");
-		String[] dimensions = ResourceBundle.getBundle("resources/SpriteManager").getString(imageString).split(",");
+		/*String[] dimensions = ResourceBundle.getBundle("resources/SpriteManager").getString(item).split(",");
 		Sprite output = new Sprite(imageString, Integer.parseInt(dimensions[0]), 
-									Integer.parseInt(dimensions[1]));
-		image = output;
+									Integer.parseInt(dimensions[1]));*/
+		System.out.println(item);
+		System.out.println("BACHI DEBUG");
+		image = SpriteManager.createSprite(item, imageString);
+		Sprite output = image;
 		//image.play(); //debugging
 		this.actor = item;
 		output.setFitHeight(25);

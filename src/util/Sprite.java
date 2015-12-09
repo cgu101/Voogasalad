@@ -33,6 +33,10 @@ public class Sprite extends ImageView {
 	//for drag and drop in the authoring environment
 	private static HashMap<String, Image> thumbnails = new HashMap<String, Image>();
 	private String myThumbnailKey;
+	private Rectangle2D lastFrameRect;
+	
+	//for score and seven years ago
+	public String playFlag;
 
 	/**
 	 * Initializes a sprite from a javafx Image. This is not the recommended
@@ -92,13 +96,15 @@ public class Sprite extends ImageView {
 		}
 		
 		this.myThumbnailKey = sheet;
-		if (this.thumbnails.get(sheet)==null) 
-			this.thumbnails.put(sheet, createThumbnailImage(width, height));
 	}
 	
-	private Image createThumbnailImage(int width, int height) {
+	private Image createThumbnailImage() {
 		PixelReader reader = this.getImage().getPixelReader();
-		WritableImage newImage = new WritableImage(reader, 0, 0, width, height);
+		System.out.println(this.rect.getMinX() + "<- wat the fu");
+		System.out.println(this.rect.getMinY() + "<- wat teh feh");
+		if (this.lastFrameRect == null) this.lastFrameRect=this.rect;
+		WritableImage newImage = new WritableImage(reader, (int)this.lastFrameRect.getMinX(), 
+													(int)this.lastFrameRect.getMinY(), (int)this.lastFrameRect.getWidth(), (int)this.lastFrameRect.getHeight());
 		return newImage;
 	}
 
@@ -162,7 +168,7 @@ public class Sprite extends ImageView {
 	 * Pauses the current animation.
 	 */
 	public void pause() {
-		this.currentAnimation.pause();
+		if (this.currentAnimation!=null) this.currentAnimation.pause();
 	}
 	
 	/**
@@ -175,8 +181,10 @@ public class Sprite extends ImageView {
 		this.pause();
 		double yoffset = this.rect.getHeight() * row;
 		double xoffset = this.rect.getWidth() * col;
-		Sprite.this.setViewport(new Rectangle2D(this.rect.getMinX() + xoffset,
-				this.rect.getMinY() + yoffset, this.rect.getWidth(), this.rect.getHeight()));
+		lastFrameRect = new Rectangle2D(this.rect.getMinX() + xoffset,
+				this.rect.getMinY() + yoffset, this.rect.getWidth(), this.rect.getHeight());
+		Sprite.this.setViewport(this.lastFrameRect);
+		System.out.println(" weee ");
 	}
 
 	/**
@@ -255,6 +263,8 @@ public class Sprite extends ImageView {
 	}
 
 	public Image getCroppedImage() {
+		if (this.thumbnails.get(myThumbnailKey)==null) 
+			this.thumbnails.put(myThumbnailKey, createThumbnailImage());
 		return this.thumbnails.get(myThumbnailKey);
 	}
 }

@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import player.SpriteManager;
 import player.controller.PlayerController;
 import util.Sprite;
 
@@ -32,7 +33,8 @@ public class ActorMonitorCell extends AbstractListCell<String> {
 	//TODO: Make a non-default image
 	private VBox makeImage(String pic, String name) {
 		VBox v = new VBox();
-		Sprite sprite = createSpriteFromImg(pic);
+		//Sprite sprite = createSpriteFromImg(pic);
+		Sprite sprite = SpriteManager.createSprite(controller.getActorFromString(name));
 		sprite.setFitHeight(Double.parseDouble(myResources.getString("imagesize")));
 		sprite.setPreserveRatio(true);
 		sprite.setSmooth(true);
