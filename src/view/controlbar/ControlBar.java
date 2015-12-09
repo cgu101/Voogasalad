@@ -105,6 +105,7 @@ public abstract class ControlBar extends AbstractElement {
 
 	protected void toggleComponents(boolean showing, AbstractScreen screen) {
 		for (AbstractDockElement c : screen.getComponents()) {
+			
 			if (c.getShowingProperty().getValue() != showing) {
 				c.getShowingProperty().setValue(showing);
 			}
