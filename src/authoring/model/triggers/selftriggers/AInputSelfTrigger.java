@@ -3,6 +3,7 @@ package authoring.model.triggers.selftriggers;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import authoring.model.triggers.ATriggerEvent;
+import engine.State;
 import player.InputManager;
 
 public abstract class AInputSelfTrigger extends ATriggerEvent {
@@ -16,7 +17,7 @@ public abstract class AInputSelfTrigger extends ATriggerEvent {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public boolean condition(Parameters parameters, InputManager inputManager, Actor... actors) {
+	public boolean condition(Parameters parameters, InputManager inputManager, State state, Actor... actors) {
 		return condition(parameters, inputManager, actors[0]);
 	}
 }

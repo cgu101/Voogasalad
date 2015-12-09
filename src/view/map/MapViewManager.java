@@ -13,7 +13,6 @@ import view.visual.AbstractVisual;
  */
 public class MapViewManager extends AbstractVisual {
 	private Group mapLayout;
-	private MapZoomSlider slider;
 
 	public MapViewManager(Group layout) {// , AuthoringController ac) {
 		mapLayout = layout;
@@ -31,7 +30,11 @@ public class MapViewManager extends AbstractVisual {
 		}
 	}
 
-	// TODO: figure out scaling here
+	public void removeAll() {
+		Node background = mapLayout.getChildren().get(0);
+		mapLayout.getChildren().clear();
+		mapLayout.getChildren().add(background);
+	}
 
 	/**
 	 * Removes the current background and adds the specified background as the

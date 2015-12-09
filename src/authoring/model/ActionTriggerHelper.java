@@ -58,11 +58,11 @@ public final class ActionTriggerHelper {
 		}
 
 		if (yA < yB) {
-			yA = yA - (difference / 2 + 1) * Math.abs(Math.sin(angleAB));
-			yB = yB + (difference / 2 + 1) * Math.abs(Math.sin(angleAB));
+			yA = yA - (difference / 2 + 1) * (Math.sin(angleAB));
+			yB = yB + (difference / 2 + 1) * (Math.sin(angleAB));
 		} else {
-			yA = yA + (difference / 2 + 1) * Math.abs(Math.sin(angleAB));
-			yB = yB - (difference / 2 + 1) * Math.abs(Math.sin(angleAB));
+			yA = yA + (difference / 2 + 1) * (Math.sin(angleAB));
+			yB = yB - (difference / 2 + 1) * (Math.sin(angleAB));
 		}
 		
 		a.setProperty(ActorProperties.X_LOCATION.getKey(), xA);

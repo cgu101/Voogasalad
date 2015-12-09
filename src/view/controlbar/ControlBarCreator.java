@@ -2,14 +2,20 @@ package view.controlbar;
 
 import java.io.File;
 import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Deque;
 import java.util.Observable;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Observer;
 
+import authoring.files.properties.ActorProperties;
+import authoring.model.game.Game;
 import authoring.model.level.Level;
+import authoring.model.properties.Property;
+import authoring.model.tree.InteractionTreeNode;
+import data.XMLManager;
+import exceptions.data.GameFileException;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,21 +32,26 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
+import network.core.ForwardedMessage;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
 import network.framework.format.Request;
 import network.instances.DataDecorator;
 import network.util.PostalNetwork;
+import resources.keys.PropertyKey;
+import resources.keys.PropertyKeyResource;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
+import view.level.LevelType;
 import view.screen.CreatorScreen;
 import view.screen.StartScreen;
 
 public class ControlBarCreator extends ControlBar implements Observer {
 
 	private static final String DEFAULT_IP = "localhost";
-	private static final String LEVEL_ID = "Level ";
-	private static final String SPLASH_ID = "Splash ";
+//	private static final String LEVEL_ID = "Level ";
+//	private static final String SPLASH_ID = "Splash ";
 
 	private CreatorScreen screen;
 	private GameWindow gameWindow;
@@ -58,7 +69,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 
 	public ControlBarCreator(CreatorScreen screen) {
 		super(screen.getDefaultPane());
-		this.gameWindow = new GameWindow(DEFAULT_IP);
+		this.gameWindow = GameWindow.getInstance();
 		this.screen = screen;
 
 		initializeObservers();
@@ -94,20 +105,33 @@ public class ControlBarCreator extends ControlBar implements Observer {
 			}
 			screen.setNextScreen(new StartScreen());
 		});
+		setHoverAndExitAnimations(backButton);
+
 		Button addButton = makeButton("add", e -> addNewLevel());
+		setHoverAndExitAnimations(addButton);
+
 		Button leftButton = makeButton("left", e -> screen.getWorkspace().moveLevel(true));
+		setHoverAndExitAnimations(leftButton);
+
 		Button rightButton = makeButton("right", e -> screen.getWorkspace().moveLevel(false));
+		setHoverAndExitAnimations(rightButton);
+
 		Button splashButton = makeButton("splash", e -> addNewSplash());
+		setHoverAndExitAnimations(splashButton);
 
 		Button backgroundButton = makeButton("background", e -> updateBackground());
+		setHoverAndExitAnimations(backgroundButton);
+
 		Button newActor = makeButton("new", e -> addActor());
+		setHoverAndExitAnimations(newActor);
 
 		toolBar.getItems().addAll(backButton, new Separator(), addButton, splashButton, new Separator(), leftButton,
 				rightButton, new Separator(), newActor, new Separator(), backgroundButton);
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
-		MenuItem load = makeMenuItem(myResources.getString("load"), e -> screen.loadGame());
+		//		MenuItem load = makeMenuItem(myResources.getString("load"), e -> screen.loadGame());
+		MenuItem load = makeMenuItem(myResources.getString("load"), e -> this.loadGame());
 		MenuItem save = makeMenuItem(myResources.getString("save"), e -> screen.saveGame());
 		MenuItem exit = makeMenuItem(myResources.getString("exit"), e -> Platform.exit(), KeyCode.E,
 				KeyCombination.CONTROL_DOWN);
@@ -117,11 +141,8 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				KeyCombination.CONTROL_DOWN);
 		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> addNewSplash(), KeyCode.R,
 				KeyCombination.CONTROL_DOWN);
-		Map<String, String> props = new HashMap<String, String>(){{
-	        put("image","duvall");
-	        put("size", "10");
-	    }};
-		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor("newActor", props),
+
+		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> addActor(),
 				KeyCode.N, KeyCombination.CONTROL_DOWN);
 		MenuItem changeBackground = makeMenuItem(myResources.getString("background.message"), e -> updateBackground());
 		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addActor, new SeparatorMenuItem(), addLevel,
@@ -146,29 +167,128 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		makeMenuBar(mainMenu, file, edit, window);
 	}
 
+	private void loadGame () {
+
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Game File Loader");
+		fileChooser.setInitialDirectory(new File("."));
+		File file = fileChooser.showOpenDialog(null);
+
+		if (file == null) {
+			return;
+		}
+		
+		
+		String fileName = file.getAbsolutePath();
+		try {
+			Game game = XMLManager.loadGame(fileName);
+			
+//			for (AbstractDockElement c : screen.getComponents()) {
+//				c.getShowingProperty().setValue(false);
+//			}
+			
+//			screen.setNextScreen(new CreatorScreen(game));
+			
+			Deque<String> a = new ArrayDeque<String>();
+			
+			for (Level l : game.getBundleLevels()) {
+				Mail mail = new DataDecorator (Request.LOAD, l, a);
+				screen.getWorkspace().forward(mail.getPath(), mail);
+			}
+			
+			
+//			CreatorScreen screen = new CreatorScreen(game);
+			
+//			this.pane = screen.getDefaultPane();
+//			this.gameWindow = new GameWindow(DEFAULT_IP);
+//			this.screen = screen;
+
+//			initializeObservers();
+//			makePane();
+//			System.out.println("Load Succcess");
+		} catch (GameFileException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void addNewLevel() {
-		Level newLevel = new Level(LEVEL_ID + Integer.toString(screen.getGame().getLevels().size() + 1));
-		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, new ArrayDeque<String>());
-		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
-		screen.getWorkspace().updateObservers(dataMail);
+		Level newLevel = new Level(Integer.toString(screen.getGame().getLevels().size()));
+		newLevel.getPropertyBundle().add(new Property<String>(myResources.getString("type"), myResources.getString("leveltype")) );
+		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, screen.getWorkspace().getAnscestralPath());
+		screen.getWorkspace().addVisual(newLevel);
+		//screen.forward(dataMail.getPath(), dataMail);
+		GameWindow.getInstance().send(dataMail);
 		if (screen.getGame().getLevels().size() == 1) {
 			toggleComponents(true, screen);
 		}
 	}
 
 	private void addNewSplash() {
-		Level newSplash = new Level(SPLASH_ID + Integer.toString(screen.getGame().getLevels().size() + 1));
-		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, new ArrayDeque<String>());
-		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
+		Level newSplash = new Level(Integer.toString(screen.getGame().getLevels().size()));
+		newSplash.getPropertyBundle().add(new Property<String>(myResources.getString("type"), myResources.getString("splashtype")) );
+		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, screen.getWorkspace().getAnscestralPath());
+		screen.getWorkspace().addSplashScreen(newSplash);
+		//screen.forward(dataMail.getPath(), dataMail);
+		GameWindow.getInstance().send(dataMail);
+	}
+
+	private void handleHover(Button b) {
+		FadeTransition fadeTransition = 
+				new FadeTransition(Duration.millis(300), b);
+		fadeTransition.setFromValue(0.5);
+		fadeTransition.setToValue(1.0);
+		fadeTransition.setCycleCount(1);
+		fadeTransition.setAutoReverse(true);
+		fadeTransition.play();
+
+		ScaleTransition scaleTransition = 
+				new ScaleTransition(Duration.millis(300), b);
+		scaleTransition.setToX(1.1);
+		scaleTransition.setToY(1.1);
+		scaleTransition.setCycleCount(1);
+		scaleTransition.setAutoReverse(true);
+
+		ParallelTransition parallelTransition = new ParallelTransition();
+		parallelTransition.getChildren().addAll(
+				fadeTransition,
+				scaleTransition
+				);
+		parallelTransition.setCycleCount(1);
+		parallelTransition.play();
+	}
+
+	private void handleExit(Button b) {
+		FadeTransition fadeTransition = 
+				new FadeTransition(Duration.millis(300), b);
+		fadeTransition.setFromValue(1.0);
+		fadeTransition.setToValue(0.5);
+		fadeTransition.setCycleCount(1);
+		fadeTransition.setAutoReverse(true);
+
+		ScaleTransition scaleTransition = 
+				new ScaleTransition(Duration.millis(300), b);
+		scaleTransition.setToX(1);
+		scaleTransition.setToY(1);
+		scaleTransition.setCycleCount(1);
+		scaleTransition.setAutoReverse(true);
+
+		ParallelTransition parallelTransition = new ParallelTransition();
+		parallelTransition.getChildren().addAll(
+				fadeTransition,
+				scaleTransition
+				);
+		parallelTransition.setCycleCount(1);
+		parallelTransition.play();
+	}
+
+	private void setHoverAndExitAnimations(Button b) {
+		b.setOpacity(0.5);
+		b.setOnMouseEntered(e -> handleHover(b));
+		b.setOnMouseExited(e -> handleExit(b));
 	}
 
 	private void addActor() {
-		Map<String, String> props = new HashMap<String, String>(){{
-	        put("image","rcd.jpg");
-	        put("groupID","NewActor");
-	        put("size","10");
-	    }};
-		findActorBrowser().addNewActor("NewActor", props);
+		findActorBrowser().createCustomGroup();
 		if (!findActorBrowser().getShowingProperty().getValue()) {
 			findActorBrowser().getShowingProperty().setValue(true);
 		}
@@ -181,10 +301,16 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				new FileChooser.ExtensionFilter("PNG", "*.png"));
 
 		File file = fileChooser.showOpenDialog(null);
-		Image backgroundImage = new Image(file.toURI().toString());
+		try {
+			String fileString = file.toURI().toString();
+			Image backgroundImage = new Image(fileString);
 
-		this.screen.getWorkspace().getCurrentLevel().updateBackground(backgroundImage);
-
+			this.screen.getWorkspace().getCurrentLevel().updateBackground(backgroundImage);
+			this.screen.getWorkspace().getCurrentLevel().updateLevelProperty(
+					new Property<String>(PropertyKeyResource.getKey(PropertyKey.LEVEL_BACKGROUND_KEY),fileString));
+		} catch (Exception e) {
+			
+		}
 	}
 
 	private void toggleToolbar(Boolean value) {
@@ -220,12 +346,13 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		screen.setGame(screen.getWorkspace().getGame()); // TODO perhaps
-															// unneeded
 
 		if (arg instanceof Observable) {
 			((Observable) arg).addObserver(this);
 		} else if (arg instanceof Mail) {
 			PostalNetwork.packageAndDeliver(this.gameWindow, (Mail) arg);
+		} else if (arg instanceof InteractionTreeNode) {
+			//this.screen.
 		}
 
 	}

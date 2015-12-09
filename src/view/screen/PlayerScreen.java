@@ -6,8 +6,6 @@ import java.util.Optional;
 
 import exceptions.EngineException;
 import exceptions.data.GameFileException;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -19,12 +17,8 @@ import player.controller.PlayerController;
 import util.FileChooserUtility;
 import view.controlbar.ControlBarPlayer;
 import view.element.AbstractDockElement;
-import view.element.ActorBrowser;
-import view.element.ActorEditor;
 import view.element.ActorMonitor;
 import view.element.GameInfoMonitor;
-import view.map.CreatorMapSliders;
-import view.map.MapSliders;
 import view.map.PlayerMapSliders;
 
 public class PlayerScreen extends AbstractScreen {
@@ -107,19 +101,14 @@ public class PlayerScreen extends AbstractScreen {
 		map.setPanEnabled(false);
 	}
 
-	// TODO: David: need a stage eventually for the line:
-	// fileChooser.showOpenDialog(null);
-	// You want to force the user to choose
 	/**
 	 * Method that allows for a game to be loaded. Brings up a file selector
 	 * using 'FileChooser' class
 	 */
 	public void loadGame() {
-		System.out.println("Testing");
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Game File Loader");
 		fileChooser.setInitialDirectory(new File("."));
-		System.out.println(playerController);
 		File file = fileChooser.showOpenDialog(null);
 
 		if (file == null) {
@@ -129,10 +118,10 @@ public class PlayerScreen extends AbstractScreen {
 		try {
 			playerController.loadGame(file.getAbsolutePath());
 		} catch (GameFileException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EngineException ee) {
 			// ee.printStackTrace();
+			// TODO: handle these exceptions
 			System.err.println("Level exception!");
 		}
 		gameInfoMonitor.initializePane();
@@ -149,7 +138,6 @@ public class PlayerScreen extends AbstractScreen {
 	 * Method that calls for the player to save the game state.
 	 */
 	public void saveState() {
-		System.out.println("Testing saving game state ");
 
 		try {
 			File saveFile = FileChooserUtility.save(scene.getWindow());
@@ -163,7 +151,6 @@ public class PlayerScreen extends AbstractScreen {
 	 * Method that calls for the player to load a game state.
 	 */
 	public void loadState() {
-		// TODO: do gui stuff
 		try {
 			File loadFile = FileChooserUtility.load(scene.getWindow());
 			playerController.loadState(loadFile.getPath());
@@ -231,15 +218,15 @@ public class PlayerScreen extends AbstractScreen {
 	private void manageMapSize(boolean fullscreen, boolean monitor, boolean editor) {
 		if (!fullscreen) {
 			if (!monitor && !editor) {
-				map.setMapDimensions(1100, 520);
+				map.setMapDimensions(Double.parseDouble(myResources.getString("mediumsmallwidth")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			} else {
-				map.setMapDimensions(700, 520);
+				map.setMapDimensions(Double.parseDouble(myResources.getString("smallestwidth")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			}
 		} else {
 			if (!monitor && !editor) {
-				map.setMapDimensions(1920, 956);
+				map.setMapDimensions(Double.parseDouble(myResources.getString("suffrage")), Double.parseDouble(myResources.getString("fullscreenheight")));
 			} else {
-				map.setMapDimensions(1520, 956);
+				map.setMapDimensions(Double.parseDouble(myResources.getString("mediumbigwidth")), Double.parseDouble(myResources.getString("fullscreenheight")));
 			}
 		}
 	}

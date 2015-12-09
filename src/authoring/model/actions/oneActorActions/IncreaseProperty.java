@@ -11,6 +11,8 @@ public class IncreaseProperty extends AChangeProperty {
 	@Override
 	protected Double calculateValue(Double value, Double increment, Double maximum) {
 		value += increment;
-		return maximum != null && Double.compare(value, maximum) > 0 ? maximum : value;
+		double val = Double.compare(value, maximum) > 0 ? maximum : value;
+		return val;
+//		return maximum != null && Double.compare(value, maximum) > 0 ? maximum : value;
 	}
 }

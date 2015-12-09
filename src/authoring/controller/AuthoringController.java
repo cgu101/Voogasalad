@@ -1,7 +1,5 @@
 package authoring.controller;
 
-import java.util.List;
-
 import KeyLibrary.KeyLibrary;
 import authoring.controller.constructor.configreader.AuthoringActorConstructor;
 import authoring.controller.constructor.levelwriter.LevelConstructor;
@@ -63,14 +61,14 @@ public class AuthoringController {
 	 * @param levelBuilderList
 	 * @return
 	 */
-	public static Game getGameWithLevels (List<LevelConstructor> levelBuilderList) {
-		Game game = new Game();
-		for (int i = 0 ; i < levelBuilderList.size(); i++) {
-			game.addLevel(levelBuilderList.get(i).buildLevel(Integer.toString(i)));
-		}
-		return game;
-		
-	}
+//	public static Game getGameWithLevels (List<LevelConstructor> levelBuilderList) {
+//		Game game = new Game();
+//		for (int i = 0 ; i < levelBuilderList.size(); i++) {
+//			game.addLevel(levelBuilderList.get(i).buildLevel(Integer.toString(i)));
+//		}
+//		return game;
+//		
+//	}
 
 	public KeyLibrary getKeyLibrary() {
 		return kl;

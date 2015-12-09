@@ -12,7 +12,6 @@ public class KeyPress extends AInputSelfTrigger {
 	 */
 	private static final long serialVersionUID = -84412559723661948L;
 
-	// TODO Fix hard-coded parameter identifier
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean condition(Parameters parameters, InputManager inputManager, Actor actor) {

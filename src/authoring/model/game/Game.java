@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import authoring.model.bundles.Bundle;
+import authoring.model.bundles.Identifiable;
 import authoring.model.level.Level;
 import authoring.model.properties.Property;
 
@@ -14,7 +15,7 @@ import authoring.model.properties.Property;
  *
  */
 
-public class Game implements Serializable {
+public class Game implements Serializable, Identifiable {
 	/**
 	 * Generated Serializable ID 
 	 */
@@ -73,5 +74,17 @@ public class Game implements Serializable {
 		Map<String, Level> myLevelMap = myLevelBundle.getComponents();
 		Collection<Level> myLevels = myLevelMap.values();
 		return myLevels;
+	}
+
+	@Override
+	public String getUniqueID() {
+		Long l = (System.currentTimeMillis()/1000L);
+		return l.toString();
+	}
+
+	@Override
+	public Identifiable getCopy() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -7,7 +7,12 @@
  */
 package util;
 
+import java.io.Serializable;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import javafx.animation.Animation;
@@ -20,8 +25,10 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.util.Duration;
 
-public class Sprite extends ImageView {
+public class Sprite extends ImageView implements Serializable {
 
+	private static final long serialVersionUID = -7218693879020524806L;
+	
 	private static HashMap<String, Image> images = new HashMap<String, Image>();
 	private Rectangle2D rect;
 	private HashMap<String, Integer> labels;
@@ -29,10 +36,15 @@ public class Sprite extends ImageView {
 	private int fps = 8;
 	private SpriteAnimation currentAnimation;
 	private int lastRowPlayed = 0;
-	
+	private static final String SPRITE_MANAGER_DIRECTORY = "src/resources/SpriteManager.properties";
+	private static final String CONFIGURATION = "configuration";
 	//for drag and drop in the authoring environment
 	private static HashMap<String, Image> thumbnails = new HashMap<String, Image>();
 	private String myThumbnailKey;
+	private Rectangle2D lastFrameRect;
+	
+	//for score and seven years ago
+	public String playFlag;
 
 	/**
 	 * Initializes a sprite from a javafx Image. This is not the recommended
@@ -84,6 +96,7 @@ public class Sprite extends ImageView {
 			images.put(sheet, this.getImage());
 		rect = new Rectangle2D(0, 0, width, height);
 		this.setViewport(rect);
+		//initWidthHeight(sheet);
 		labels = new HashMap<String, Integer>();
 		rowLengths = new HashMap<Integer, Integer>();
 		for (int i = 0; i < (int) (this.getImage().getHeight() / this.rect.getHeight()); i++) {
@@ -91,23 +104,37 @@ public class Sprite extends ImageView {
 		}
 		
 		this.myThumbnailKey = sheet;
-		if (this.thumbnails.get(sheet)==null) 
-			this.thumbnails.put(sheet, createThumbnailImage(width, height));
 	}
 	
-	private Image createThumbnailImage(int width, int height) {
+	private Image createThumbnailImage() {
 		PixelReader reader = this.getImage().getPixelReader();
-		WritableImage newImage = new WritableImage(reader, 0, 0, width, height);
+		if (this.lastFrameRect == null) this.lastFrameRect=this.rect;
+		WritableImage newImage = new WritableImage(reader, (int)this.lastFrameRect.getMinX(), 
+													(int)this.lastFrameRect.getMinY(), (int)this.lastFrameRect.getWidth(), (int)this.lastFrameRect.getHeight());
 		return newImage;
 	}
 
 	public Sprite(String sheet) {
-		this(sheet, Integer.parseInt(ResourceBundle.getBundle("resources/SpriteManager").getString(sheet).split(",")[0]),
-				Integer.parseInt(ResourceBundle.getBundle("resources/SpriteManager").getString(sheet).split(",")[1]));
+		this(sheet, getRefreshedImageDimensions(sheet)[0], getRefreshedImageDimensions(sheet)[1]);
+		
 	}
 
 	// Below are all the different API calls for playing, pausing, restarting,
 	// etc. animations
+
+	private static int[] getRefreshedImageDimensions(String sheet) {
+			InputStream input;
+			try {
+				input = new FileInputStream(String.format(SPRITE_MANAGER_DIRECTORY, CONFIGURATION));
+				ResourceBundle myResources = new PropertyResourceBundle(input);
+				String[] dimensionStrings = myResources.getBundle("resources/SpriteManager").getString(sheet).split(",");
+				int[] dimensions = {Integer.parseInt(dimensionStrings[0]), Integer.parseInt(dimensionStrings[1])};
+				return dimensions;
+			} catch ( IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+	}
 
 	/**
 	 * Animates a series of cells from the specified row of the sprite sheeet.
@@ -161,7 +188,7 @@ public class Sprite extends ImageView {
 	 * Pauses the current animation.
 	 */
 	public void pause() {
-		this.currentAnimation.pause();
+		if (this.currentAnimation!=null) this.currentAnimation.pause();
 	}
 	
 	/**
@@ -174,8 +201,9 @@ public class Sprite extends ImageView {
 		this.pause();
 		double yoffset = this.rect.getHeight() * row;
 		double xoffset = this.rect.getWidth() * col;
-		Sprite.this.setViewport(new Rectangle2D(this.rect.getMinX() + xoffset,
-				this.rect.getMinY() + yoffset, this.rect.getWidth(), this.rect.getHeight()));
+		lastFrameRect = new Rectangle2D(this.rect.getMinX() + xoffset,
+				this.rect.getMinY() + yoffset, this.rect.getWidth(), this.rect.getHeight());
+		Sprite.this.setViewport(this.lastFrameRect);
 	}
 
 	/**
@@ -223,8 +251,10 @@ public class Sprite extends ImageView {
 		this.labels.put(lab, row);
 	}
 
-	public class SpriteAnimation extends Transition {
+	public class SpriteAnimation extends Transition implements Serializable {
 
+		private static final long serialVersionUID = 2600332704606246760L;
+		
 		private int row;
 		private int cols;
 
@@ -254,6 +284,9 @@ public class Sprite extends ImageView {
 	}
 
 	public Image getCroppedImage() {
-		return this.thumbnails.get(myThumbnailKey);
+		/*if (this.thumbnails.get(myThumbnailKey)==null) 
+			this.thumbnails.put(myThumbnailKey, createThumbnailImage());
+		return this.thumbnails.get(myThumbnailKey);*/
+		return createThumbnailImage();
 	}
 }

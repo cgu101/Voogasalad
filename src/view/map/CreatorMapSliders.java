@@ -12,7 +12,9 @@ public class CreatorMapSliders extends MapSliders {
 	public CreatorMapSliders(GridPane home, String title, AbstractScreenInterface screen, Workspace workspace) {
 		super(home, title, screen);
 		workspace.addListener((ov, oldTab, newTab) -> {
+//			System.out.println("switching level workspaces");
 			load(workspace.getCurrentLevel());
+//			System.out.println(workspace.getCurrentLevel().getType());
 		});
 	}
 

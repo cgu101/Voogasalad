@@ -25,6 +25,10 @@ public class TreeConstructor implements ITreeConstructor {
 		rootTree = new InteractionTreeNode();
 	}
 	
+	public void setRootTree (InteractionTreeNode root) {
+		this.rootTree = root;
+	}
+	
 	public InteractionTreeNode getActorBaseNode(String...actors) {
 		InteractionTreeNode iterator = rootTree;
 		for(String actor : actors) {			

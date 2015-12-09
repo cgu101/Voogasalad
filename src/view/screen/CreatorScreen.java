@@ -2,18 +2,26 @@ package view.screen;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.Observable;
 import java.util.Observer;
 
+import authoring.model.Anscestral;
+import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
+import authoring.model.properties.Property;
 import data.XMLManager;
+import exceptions.EngineException;
 import exceptions.data.GameFileException;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
+import resources.keys.PropertyKey;
+import resources.keys.PropertyKeyResource;
 import util.FileChooserUtility;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
@@ -28,7 +36,7 @@ import view.map.CreatorMapSliders;
  * @author David
  *
  */
-public class CreatorScreen extends AbstractScreen implements Observer {
+public class CreatorScreen extends AbstractScreen implements Observer, Anscestral {
 	private static final int DEFAULT_MAP_PANE_INDEX = 0;
 
 	private Workspace w;
@@ -41,6 +49,10 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	}
 
 	public CreatorScreen(Game game) {
+		refresh(game);
+	}
+	
+	public void refresh(Game game) {
 		this.game = game;
 		findResources();
 		WIDTH = Integer.parseInt(myResources.getString("width"));
@@ -110,26 +122,32 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 			return;
 		} else if (!fullscreen) {
 			if (!browser && !editor) {
-				w.getCurrentLevel().setMapDimensions(1000, 724);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("med1width")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			} else {
-				w.getCurrentLevel().setMapDimensions(700, 724);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("smallestwidth")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			}
 		} else {
 			w.refresh();
 			if (!browser && !editor) {
-				w.getCurrentLevel().setMapDimensions(1920, 1006);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("largestwidth")), Double.parseDouble(myResources.getString("bigscreenheight")));
 			} else {
-				w.getCurrentLevel().setMapDimensions(1620, 1006);
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("med2width")), Double.parseDouble(myResources.getString("bigscreenheight")));
 			}
 		}
 	}
-
-	// TODO
+	private void setProperties (Game game) {
+		Bundle<Property<?>> bundle = new Bundle<Property<?>>();
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_ID_KEY), "name"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_DESCRIPTION_KEY), "description"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.INITIAL_LEVEL_KEY), "0"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_LEVEL_COUNT_KEY), Integer.toString(game.getBundleLevels().getSize())));
+		game.addAllProperties(bundle);
+	}
+	
 	public void saveGame() {
-		System.out.println("Testing saving game ");
-
 		try {
-			Game game = this.game;
+			setProperties(game);
+			
 			File saveFile = FileChooserUtility.save(scene.getWindow());
 
 			String fileLocation = saveFile.getAbsolutePath();
@@ -141,9 +159,16 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	}
 
 	// TODO
-	public void loadGame() {
-		System.out.println("Testing loading game ");
-	}
+//	public void loadGame() {
+//		System.out.println("Testing loading game ");
+//		try {
+//			File loadFile = FileChooserUtility.load(scene.getWindow());
+//			Game loaded = XMLManager.loadGame(loadFile);
+//			setGame(loaded);
+//		} catch (GameFileException e) {
+//			System.out.println("Unable to load game");
+//		}
+//	}
 
 	public Workspace getWorkspace() {
 		return w;
@@ -163,10 +188,23 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("Observer update");
+		
+		Mail mail = (Mail) arg;		
+		forward(mail.getPath(), (Mail) arg);
+	}
 
-		Mail mail = (Mail) arg;
+	@Override
+	public Deque<String> getAnscestralPath() {
+		return null;
+	}
 
-		w.forward(mail.getPath(), (Mail) arg);
+	@Override
+	public void process(Mail mail) {
+		// Do nothing for now
+	}
+
+	@Override
+	public Anscestral getChild(String id) {
+		return w;
 	}
 }

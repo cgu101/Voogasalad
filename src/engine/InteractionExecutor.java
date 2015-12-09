@@ -12,6 +12,7 @@ import authoring.model.actors.ActorType;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.ActorDependencyInjector;
 import authoring.model.level.Level;
+import authoring.model.properties.Property;
 import authoring.model.tree.ActionTreeNode;
 import authoring.model.tree.ActorTreeNode;
 import authoring.model.tree.InteractionTreeNode;
@@ -21,6 +22,8 @@ import authoring.model.triggers.ITriggerEvent;
 import exceptions.EngineException;
 import exceptions.engine.InteractionTreeException;
 import player.InputManager;
+import resources.keys.PropertyKey;
+import resources.keys.PropertyKeyResource;
 
 /**
  * The InteractionExecutor runs a single level for the engine.
@@ -59,12 +62,17 @@ public class InteractionExecutor {
 	public InteractionExecutor (Level level, InputManager inputMap, State state, ActorDependencyInjector depInjector) {
 		this();
 		this.inputMap = inputMap;
-		System.out.println("level "+level);
 		if (level != null) {
 			this.currentLevelIdentifier = level.getUniqueID();
 			this.triggerTree = level.getRootTree();
 			this.currentState = state;
+			currentState.getPropertyBundle().add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.LEVEL_ID_KEY), currentLevelIdentifier));
 			currentState.setActorMap(level.getActorGroups());
+			if (level.getProperty(PropertyKeyResource.getKey(PropertyKey.LEVEL_BACKGROUND_KEY)) != null) {
+				currentState.setInstruction(c -> {
+					c.updateBackground((String)level.getProperty(PropertyKeyResource.getKey(PropertyKey.LEVEL_BACKGROUND_KEY)).getValue());
+				});
+			}
 			
 			this.triggerMap = level.getTriggerMap();
 			this.actionMap = level.getActionMap();
@@ -137,11 +145,9 @@ public class InteractionExecutor {
 			}
 		});
 		lambdaMap.put(TRIGGER_IDENTIFIER, (node, list) -> {
-//			System.out.println(triggerMap.values());
 			ITriggerEvent triggerEvent = triggerMap.get(node.getValue());
-			if (triggerEvent.condition(((ParameterTreeNode) node).getParameters(), inputMap, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
+			if (triggerEvent.condition(((ParameterTreeNode) node).getParameters(), inputMap, currentState, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
 				for (InteractionTreeNode child : node.children()) {
-//					System.out.println(child.getIdentifier());
 					lambdaMap.get(child.getIdentifier()).apply(child, list);
 				}
 			}
@@ -152,7 +158,7 @@ public class InteractionExecutor {
 				return nextState.getActorMap().getGroup(a.getGroupName()).get(a.getUniqueID());
 			}).toArray(Actor[]::new);
 			
-			action.run(((ParameterTreeNode) node).getParameters(), nextState, actors);
+			action.run(inputMap, ((ParameterTreeNode) node).getParameters(), nextState, actors);
 //			action.run(new HashMap<String, V>(), nextState, actors);
 		});
 	}
@@ -182,7 +188,6 @@ public class InteractionExecutor {
 		public void apply (A a, B b);
 	}
 	protected State getCurrentState() {
-		// TODO Auto-generated method stub
 		return currentState;
 	}
 }

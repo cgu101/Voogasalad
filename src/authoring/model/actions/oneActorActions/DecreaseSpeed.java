@@ -5,6 +5,7 @@ import authoring.model.actors.Actor;
 import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import engine.State;
+import player.InputManager;
 
 public class DecreaseSpeed extends AOneActorAction {
 	/**
@@ -14,7 +15,7 @@ public class DecreaseSpeed extends AOneActorAction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor actor) {
 		Double decrement = 0.5;
 
 		Property<Double> speed = (Property<Double>) actor.getProperty("speed");

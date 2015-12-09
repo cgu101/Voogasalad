@@ -14,11 +14,13 @@ public class DataDecorator implements Mail {
 	private static final long serialVersionUID = -6320582607260270478L;
 	
 	Request request;
+	
 	Serializable data;
 	Deque<String> anscestralPath;
 
 	public DataDecorator (Request r, Serializable data, Deque<String> path) {
 		this.request = r;
+		
 		this.data = data;
 		this.anscestralPath = path;
 	}

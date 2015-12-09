@@ -1,22 +1,31 @@
 package view.handler;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 import authoring.controller.AuthoringController;
+import authoring.model.Anscestral;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
+import authoring.model.properties.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -24,8 +33,14 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Pair;
+import network.framework.GameWindow;
+import network.framework.format.Mail;
+import network.framework.format.Request;
+import network.instances.DataDecorator;
 import view.map.Map;
 import view.map.MapViewManager;
 import view.map.MapZoomSlider;
@@ -40,7 +55,7 @@ import view.visual.AbstractVisual;
  * @author Bridget
  *
  */
-public class ActorHandler extends AbstractVisual {
+public class ActorHandler extends AbstractVisual implements Anscestral {
 	private MapViewManager viewManager;
 	private ToolBar myToolbar;
 	private Map map;
@@ -49,6 +64,7 @@ public class ActorHandler extends AbstractVisual {
 	private List<ActorView> myAVs;
 	private ActorEditingToolbar myEditMenu;
 	private AuthoringController myAC;
+	private Deque<String> anscestors;
 
 	public ActorHandler(Group layout, ToolBar tb, Map map, MiniMap miniMap, MapZoomSlider zoomSlider,
 			AuthoringController ac) {
@@ -68,7 +84,7 @@ public class ActorHandler extends AbstractVisual {
 			ActorView av = new ActorView(a, map, actorType, x, y, myAC);
 			addActor(av, x, y);
 		} else {
-			// TODO: delete Actor
+			myAC.getLevelConstructor().getActorGroupsConstructor().deleteActor(a.getGroupName(), a.getUniqueID());
 			Alert alert = new Alert(AlertType.ERROR, myResources.getString("whileeditingerror"), ButtonType.OK);
 			alert.showAndWait();
 		}
@@ -88,6 +104,28 @@ public class ActorHandler extends AbstractVisual {
 			}
 			addToScale(av, x, y);
 			viewManager.addElements(av.getSprite());
+			// TODO send the actor here
+			ActorSerializable actor = new ActorSerializable(av.getActor(), av.getMap(), av.getType(), x, y);
+			DataDecorator dataMail = new DataDecorator(Request.ADD, actor, new ArrayDeque<String>(anscestors));
+			GameWindow.getInstance().send(dataMail);
+		}
+	}
+
+	private void addActor(ActorSerializable av) {
+		ActorView actor = new ActorView(av.a, av.map, av.actorType, av.x, av.y, myAC);
+		if (!checkOutOfBounds(actor, av.x, av.y)) {
+			if (!myAVs.contains(av)) {
+				myAVs.add(actor);
+				ImageView image = actor.getSprite();
+				ContextMenu cm = makeContextMenu(actor);
+				image.setOnContextMenuRequested(e -> {
+					if (!myEditMenu.isEditing()) {
+						cm.show(image, e.getScreenX(), e.getScreenY());
+					}
+				});
+			}
+			addToScale(actor, av.x, av.y);
+			viewManager.addElements(actor.getSprite());
 		}
 	}
 
@@ -110,10 +148,10 @@ public class ActorHandler extends AbstractVisual {
 		MenuItem rotateActor = makeMenuItem(myResources.getString("rotate"), event -> rotateActor(a));
 		MenuItem resizeActor = makeMenuItem(myResources.getString("resize"), event -> resizeActor(a));
 		MenuItem deleteActor = makeMenuItem(myResources.getString("delete"), event -> removeActor(a));
-		MenuItem editParam = makeMenuItem(myResources.getString("editparams"), event -> editParams());
-		MenuItem editShip = makeMenuItem(myResources.getString("editship"), event -> editShip());
+		MenuItem editParam = makeMenuItem(myResources.getString("editparams"), event -> editParams(a));
+		//		MenuItem editShip = makeMenuItem(myResources.getString("editship"), event -> editShip());
 
-		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, deleteActor, editParam, editShip);
+		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, editParam, deleteActor); //, editParam, editShip);
 
 		return cm;
 	}
@@ -143,6 +181,8 @@ public class ActorHandler extends AbstractVisual {
 
 	private void startMoveDrag(MouseEvent e, ActorView a, Rectangle r) {
 		removeActor(a);
+
+		// TODO Send to network to remove the actor
 		r.setCursor(Cursor.CLOSED_HAND);
 		Dragboard db = r.startDragAndDrop(TransferMode.MOVE);
 		ClipboardContent content = new ClipboardContent();
@@ -214,22 +254,93 @@ public class ActorHandler extends AbstractVisual {
 			a.addDimensions(-1 * increase);
 		}
 	}
+	
+	private void removeActor(Integer i) {
+		ActorView a = myAVs.get(i);
+		myAVs.remove(a);
+		myAC.getLevelConstructor().getActorGroupsConstructor().deleteActor(a.getActor().getGroupName(), a.getActor().getUniqueID());
+		viewManager.removeElements(a.getSprite()); 
+	}
 
-	protected void removeActor(ActorView a) {
-		viewManager.removeElements(a.getSprite());
+	private void removeActor(ActorView a) {
+		Integer i = myAVs.indexOf(a);
+		myAVs.remove(a);
+		myAC.getLevelConstructor().getActorGroupsConstructor().deleteActor(a.getActor().getGroupName(), a.getActor().getUniqueID());
+		viewManager.removeElements(a.getSprite()); 
+		DataDecorator dataMail = new DataDecorator(Request.DELETE, i, new ArrayDeque<String>(anscestors));
+		GameWindow.getInstance().send(dataMail);
 	}
 
 	public void removeActor(Node element) {
 		viewManager.removeElements(element);
 	}
 
-	private void editParams() {
-
+	public void clearMap() {
+		myAVs.clear();
+		viewManager.removeAll();
 	}
 
-	private void editShip() {
+	private void editParams(ActorView a) {
+		// Create the custom dialog.
+		Dialog<Pair<String, String>> dialog = new Dialog<>();
+		dialog.setTitle("Actor: " + a.getActor().getUniqueID());
+		dialog.setHeaderText("Edit Parameters");
 
+		// Set the button types.
+		ButtonType okayButton = new ButtonType("Okay", ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().addAll(okayButton);
+
+		// Create the username and password labels and fields.
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new Insets(20, 150, 10, 10));
+//		System.out.println("Old Actor:"+a.getActor().getGroupName()+ ":"+a.getXCoor()+","+a.getYCoor());
+		int i = 0;
+		for(Property<?> p : a.getActor().getProperties()){
+			if(!p.getUniqueID().equals("groupID")&&!p.getUniqueID().equals("image")){
+				TextField t = new TextField();
+				t.insertText(0, p.getValue().toString());
+				grid.add(new Label(p.getUniqueID()), 0, i);
+				grid.add(t, 1, i);
+				i++;
+				t.textProperty().addListener((observable, oldValue, newValue) -> {
+					try {
+						double newVal = Double.parseDouble(newValue);
+						p.setValue(newVal);
+						updateNode(a, p.getUniqueID(), newVal);
+					} catch (Exception e) {
+						Alert alert = new Alert(AlertType.ERROR, myResources.getString("doubleerror"), ButtonType.OK);
+						alert.showAndWait();
+					}
+				});
+			}
+		}
+		dialog.getDialogPane().setContent(grid);
+		dialog.showAndWait();
 	}
+
+	private void updateNode(ActorView a, String uniqueID, double newVal) {
+
+		// basically a switch/case tree but allows us to use resources file
+		// sorry i couldn't think of a better thing.
+		if (uniqueID.equals(myResources.getString("x"))) {
+			a.setXCoor(newVal);
+		} else if (uniqueID.equals(myResources.getString("y"))) {
+			a.setYCoor(newVal);
+		} else if (uniqueID.equals(myResources.getString("angle"))) {
+			a.setRotation(newVal);
+		} else if (uniqueID.equals(myResources.getString("width"))) {
+			a.setWidth(newVal);
+		} else if (uniqueID.equals(myResources.getString("height"))) {
+			a.setHeight(newVal);
+		}
+	}
+
+	//
+	//	private void editShip() {
+	//
+	//	}
 
 	private Rectangle makeFilterRectangle() {
 		Rectangle rect = new Rectangle(map.getMapWidth(), map.getMapHeight());
@@ -246,7 +357,6 @@ public class ActorHandler extends AbstractVisual {
 		myEditMenu.restoreToolbar();
 		map.setPanEnabled(true);
 		myEditMenu.setEditing(false);
-		;
 	}
 
 	// returns true if out-of-bounds
@@ -263,5 +373,52 @@ public class ActorHandler extends AbstractVisual {
 
 	public void updateBackground(ImageView n) {
 		viewManager.updateBackground(n);
+	}
+
+	@Override
+	public Deque<String> getAnscestralPath() {
+		return anscestors;
+	}
+
+	@Override
+	public void process(Mail mail) {
+		Request request = mail.getRequest();
+
+		switch (request) {
+		case ADD: {
+			ActorSerializable actor = (ActorSerializable) mail.getData();
+			addActor(actor);
+			break;
+		}
+		case DELETE: {
+			Integer index = (Integer) mail.getData();
+			removeActor(index);
+			break;
+		}
+		case MODIFY: {
+//			removeActor(actor);
+//			addActor(actor);
+			break;
+		}
+		default: {
+			break;
+		}
+		}
+	}
+
+	@Override
+	public Anscestral getChild(String id) {
+		// Doesn't have any children
+		return null;
+	}
+
+	public void setDeque(Deque<String> anscestors) {
+		this.anscestors = new ArrayDeque<String>(anscestors);
+		this.anscestors.add(ActorHandler.class.getName());
+	}
+
+	public void updateObservers(Object o) {
+		setChanged();
+		notifyObservers(o);
 	}
 }
