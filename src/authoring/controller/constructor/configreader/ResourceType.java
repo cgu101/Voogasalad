@@ -1,15 +1,26 @@
 package authoring.controller.constructor.configreader;
 
-public interface ResourceType {
-	// TODO: Change to resource file
-	String ACTORS = "actors";
-	String TRIGGERS = "triggers";
-	String PROPERTIES = "properties";
-	String PARAMETERS = "parameters";
-	String ACTIONS = "actions";
+public enum ResourceType {
 	
-	String NUM_PARAMS = "numParams";
-	String NUM_ACTORS = "numActors";
-	String TYPE = "type";	
-	String CLASS_NAME = "className";
+	// TODO: Change to resource file
+	ACTORS("actors"),
+	TRIGGERS("triggers"),
+	PROPERTIES("properties"),
+	PARAMETERS("parameters"),
+	ACTIONS("actions"),	
+	NUM_PARAMS("numParams"),
+	NUM_ACTORS("numActors"),
+	TYPE("type"),	
+	CLASS_NAME("className");
+	
+	private final String resource;
+	
+	ResourceType (String resource) {
+		this.resource = resource;
+	}
+	
+	@Override
+	public String toString () {
+		return resource;
+	}
 }

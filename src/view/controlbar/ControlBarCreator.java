@@ -10,6 +10,7 @@ import java.util.Observer;
 import java.util.Observer;
 
 import authoring.model.level.Level;
+import authoring.model.tree.InteractionTreeNode;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
@@ -299,6 +300,8 @@ public class ControlBarCreator extends ControlBar implements Observer {
 			((Observable) arg).addObserver(this);
 		} else if (arg instanceof Mail) {
 			PostalNetwork.packageAndDeliver(this.gameWindow, (Mail) arg);
+		} else if (arg instanceof InteractionTreeNode) {
+			//this.screen.
 		}
 
 	}

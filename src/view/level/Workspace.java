@@ -54,7 +54,8 @@ public class Workspace extends AbstractElement implements Anscestral {
 		propertyInfo = game.getProperties();
 
 		this.anscestors = new ArrayDeque<String>();
-
+		anscestors.add(game.getUniqueID());
+		
 		makePane();
 	}
 
