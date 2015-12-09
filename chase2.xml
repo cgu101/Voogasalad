@@ -81,124 +81,6 @@
               </authoring.model.tree.ActorTreeNode>
               <authoring.model.tree.ActorTreeNode>
                 <children>
-                  <authoring.model.tree.TriggerTreeNode>
-                    <children>
-                      <authoring.model.tree.ActionTreeNode>
-                        <children/>
-                        <value>IncreaseProperty</value>
-                        <parameters>
-                          <parameter__values>
-                            <entry>
-                              <string>param.1</string>
-                              <double>1.5</double>
-                            </entry>
-                            <entry>
-                              <string>param.2</string>
-                              <double>35.0</double>
-                            </entry>
-                            <entry>
-                              <string>param.0</string>
-                              <string>speed</string>
-                            </entry>
-                          </parameter__values>
-                        </parameters>
-                      </authoring.model.tree.ActionTreeNode>
-                    </children>
-                    <value>KeyPress</value>
-                    <parameters>
-                      <parameter__values>
-                        <entry>
-                          <string>param.0</string>
-                          <string>Up</string>
-                        </entry>
-                      </parameter__values>
-                    </parameters>
-                  </authoring.model.tree.TriggerTreeNode>
-                  <authoring.model.tree.TriggerTreeNode>
-                    <children>
-                      <authoring.model.tree.ActionTreeNode>
-                        <children/>
-                        <value>RotateCounterclockwise</value>
-                        <parameters>
-                          <parameter__values>
-                            <entry>
-                              <string>param.0</string>
-                              <double>20.0</double>
-                            </entry>
-                          </parameter__values>
-                        </parameters>
-                      </authoring.model.tree.ActionTreeNode>
-                    </children>
-                    <value>KeyPress</value>
-                    <parameters>
-                      <parameter__values>
-                        <entry>
-                          <string>param.0</string>
-                          <string>Left</string>
-                        </entry>
-                      </parameter__values>
-                    </parameters>
-                  </authoring.model.tree.TriggerTreeNode>
-                  <authoring.model.tree.TriggerTreeNode>
-                    <children>
-                      <authoring.model.tree.ActionTreeNode>
-                        <children/>
-                        <value>RotateClockwise</value>
-                        <parameters>
-                          <parameter__values>
-                            <entry>
-                              <string>param.0</string>
-                              <double>20.0</double>
-                            </entry>
-                          </parameter__values>
-                        </parameters>
-                      </authoring.model.tree.ActionTreeNode>
-                    </children>
-                    <value>KeyPress</value>
-                    <parameters>
-                      <parameter__values>
-                        <entry>
-                          <string>param.0</string>
-                          <string>Right</string>
-                        </entry>
-                      </parameter__values>
-                    </parameters>
-                  </authoring.model.tree.TriggerTreeNode>
-                  <authoring.model.tree.TriggerTreeNode>
-                    <children>
-                      <authoring.model.tree.ActionTreeNode>
-                        <children/>
-                        <value>DecreaseProperty</value>
-                        <parameters>
-                          <parameter__values>
-                            <entry>
-                              <string>param.1</string>
-                              <double>0.5</double>
-                            </entry>
-                            <entry>
-                              <string>param.2</string>
-                              <double>0.0</double>
-                            </entry>
-                            <entry>
-                              <string>param.0</string>
-                              <string>speed</string>
-                            </entry>
-                          </parameter__values>
-                        </parameters>
-                      </authoring.model.tree.ActionTreeNode>
-                      <authoring.model.tree.ActionTreeNode>
-                        <children/>
-                        <value>Move</value>
-                        <parameters>
-                          <parameter__values/>
-                        </parameters>
-                      </authoring.model.tree.ActionTreeNode>
-                    </children>
-                    <value>TrueSelfTrigger</value>
-                    <parameters>
-                      <parameter__values/>
-                    </parameters>
-                  </authoring.model.tree.TriggerTreeNode>
                   <authoring.model.tree.ActorTreeNode>
                     <children/>
                     <value>Spaceship</value>
@@ -290,6 +172,133 @@
                 </children>
                 <value>Chaser</value>
               </authoring.model.tree.ActorTreeNode>
+              <authoring.model.tree.ActorTreeNode>
+                <children>
+                  <authoring.model.tree.TriggerTreeNode>
+                    <children>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>IncreaseProperty</value>
+                        <parameters>
+                          <parameter__values>
+                            <entry>
+                              <string>param.1</string>
+                              <double>1.5</double>
+                            </entry>
+                            <entry>
+                              <string>param.2</string>
+                              <double>35.0</double>
+                            </entry>
+                            <entry>
+                              <string>param.0</string>
+                              <string>speed</string>
+                            </entry>
+                          </parameter__values>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                    </children>
+                    <value>KeyPress</value>
+                    <parameters>
+                      <parameter__values>
+                        <entry>
+                          <string>param.0</string>
+                          <string>Up</string>
+                        </entry>
+                      </parameter__values>
+                    </parameters>
+                  </authoring.model.tree.TriggerTreeNode>
+                  <authoring.model.tree.TriggerTreeNode>
+                    <children>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>RotateCounterclockwise</value>
+                        <parameters>
+                          <parameter__values>
+                            <entry>
+                              <string>param.0</string>
+                              <double>20.0</double>
+                            </entry>
+                          </parameter__values>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                    </children>
+                    <value>KeyPress</value>
+                    <parameters>
+                      <parameter__values>
+                        <entry>
+                          <string>param.0</string>
+                          <string>Left</string>
+                        </entry>
+                      </parameter__values>
+                    </parameters>
+                  </authoring.model.tree.TriggerTreeNode>
+                  <authoring.model.tree.TriggerTreeNode>
+                    <children>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>RotateClockwise</value>
+                        <parameters>
+                          <parameter__values>
+                            <entry>
+                              <string>param.0</string>
+                              <double>20.0</double>
+                            </entry>
+                          </parameter__values>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                    </children>
+                    <value>KeyPress</value>
+                    <parameters>
+                      <parameter__values>
+                        <entry>
+                          <string>param.0</string>
+                          <string>Right</string>
+                        </entry>
+                      </parameter__values>
+                    </parameters>
+                  </authoring.model.tree.TriggerTreeNode>
+                  <authoring.model.tree.TriggerTreeNode>
+                    <children>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>Move</value>
+                        <parameters>
+                          <parameter__values/>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                      <authoring.model.tree.ActionTreeNode>
+                        <children/>
+                        <value>DecreaseProperty</value>
+                        <parameters>
+                          <parameter__values>
+                            <entry>
+                              <string>param.1</string>
+                              <double>0.5</double>
+                            </entry>
+                            <entry>
+                              <string>param.2</string>
+                              <double>0.0</double>
+                            </entry>
+                            <entry>
+                              <string>param.0</string>
+                              <string>speed</string>
+                            </entry>
+                          </parameter__values>
+                        </parameters>
+                      </authoring.model.tree.ActionTreeNode>
+                    </children>
+                    <value>TrueSelfTrigger</value>
+                    <parameters>
+                      <parameter__values/>
+                    </parameters>
+                  </authoring.model.tree.TriggerTreeNode>
+                </children>
+                <value>Chasee</value>
+              </authoring.model.tree.ActorTreeNode>
+              <authoring.model.tree.ActorTreeNode>
+                <children/>
+                <value>EnemySpaceship</value>
+              </authoring.model.tree.ActorTreeNode>
             </children>
           </rootTree>
           <actorGroups>
@@ -303,31 +312,7 @@
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
-                <string>LevelTransition</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
                 <string>Bullet</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
-                <string>upslope_ground_tile</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
-                <string>Asteroid</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
                   <obs/>
@@ -347,9 +332,17 @@
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
                   <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Chasere</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
                   <components>
                     <entry>
-                      <string>Wed Dec 09 05:45:04 EST 2015</string>
+                      <string>Wed Dec 09 07:23:13 EST 2015</string>
                       <authoring.model.actors.Actor>
                         <changed>false</changed>
                         <obs/>
@@ -360,43 +353,36 @@
                             <entry>
                               <string>image</string>
                               <authoring.model.properties.Property>
-                                <myValue class="string">rocketsprite.png</myValue>
+                                <myValue class="string">rooticon.png</myValue>
                                 <identifier>image</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">365.0</myValue>
+                                <myValue class="double">610.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>size</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">25.0</myValue>
+                                <myValue class="double">14.14</myValue>
                                 <identifier>size</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>groupID</string>
                               <authoring.model.properties.Property>
-                                <myValue class="string">Spaceship</myValue>
+                                <myValue class="string">Chasere</myValue>
                                 <identifier>groupID</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>width</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">70.0</myValue>
+                                <myValue class="double">20.0</myValue>
                                 <identifier>width</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>health</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">100.0</myValue>
-                                <identifier>health</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
@@ -407,10 +393,265 @@
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
-                              <string>range</string>
+                              <string>distanceTraveled</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>distanceTraveled</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">178.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">10.0</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>height</string>
                               <authoring.model.properties.Property>
                                 <myValue class="double">20.0</myValue>
-                                <identifier>range</identifier>
+                                <identifier>height</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>Wed Dec 09 07:23:13 EST 2015</identifier>
+                        <actorType>LOCAL</actorType>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                    <entry>
+                      <string>Wed Dec 09 07:22:43 EST 2015</string>
+                      <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">rooticon.png</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">383.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>size</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">14.14</myValue>
+                                <identifier>size</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">Chasere</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>width</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">20.0</myValue>
+                                <identifier>width</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>distanceTraveled</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>distanceTraveled</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">209.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">10.0</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>height</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">20.0</myValue>
+                                <identifier>height</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>Wed Dec 09 07:22:43 EST 2015</identifier>
+                        <actorType>LOCAL</actorType>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                    <entry>
+                      <string>Wed Dec 09 07:23:18 EST 2015</string>
+                      <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">rooticon.png</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">347.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>size</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">14.14</myValue>
+                                <identifier>size</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">Chasere</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>width</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">20.0</myValue>
+                                <identifier>width</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>distanceTraveled</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>distanceTraveled</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">238.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">10.0</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>height</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">20.0</myValue>
+                                <identifier>height</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>Wed Dec 09 07:23:18 EST 2015</identifier>
+                        <actorType>LOCAL</actorType>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                    <entry>
+                      <string>Wed Dec 09 07:23:06 EST 2015</string>
+                      <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">rooticon.png</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">364.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>size</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">14.14</myValue>
+                                <identifier>size</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">Chasere</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>width</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">20.0</myValue>
+                                <identifier>width</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>distanceTraveled</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>distanceTraveled</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
@@ -430,13 +671,13 @@
                             <entry>
                               <string>height</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">70.0</myValue>
+                                <myValue class="double">20.0</myValue>
                                 <identifier>height</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                           </components>
                         </myPropertyBundle>
-                        <identifier>Wed Dec 09 05:45:04 EST 2015</identifier>
+                        <identifier>Wed Dec 09 07:23:06 EST 2015</identifier>
                         <actorType>LOCAL</actorType>
                       </authoring.model.actors.Actor>
                     </entry>
@@ -445,6 +686,38 @@
               </entry>
               <entry>
                 <string>himid_ground_tile</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Chasee</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>LevelTransition</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>upslope_ground_tile</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Asteroid</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
                   <obs/>
@@ -783,6 +1056,46 @@
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
+                <string>Bullet</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Raindrop</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Spaceship</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>himid_ground_tile</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Chasee</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
                 <string>LevelTransition</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
@@ -870,14 +1183,6 @@
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
-                <string>Bullet</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
                 <string>upslope_ground_tile</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
@@ -894,31 +1199,7 @@
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
-                <string>Raindrop</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
-                <string>Spaceship</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
                 <string>Chaser</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
-                <string>himid_ground_tile</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
                   <obs/>
@@ -1167,6 +1448,46 @@
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
+                <string>Bullet</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Raindrop</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Spaceship</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>himid_ground_tile</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Chasee</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
                 <string>LevelTransition</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
@@ -1251,14 +1572,6 @@
                       </authoring.model.actors.Actor>
                     </entry>
                   </components>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
-                <string>Bullet</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
@@ -1364,31 +1677,7 @@
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
-                <string>Raindrop</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
-                <string>Spaceship</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
                 <string>Chaser</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
-                <string>himid_ground_tile</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
                   <obs/>
@@ -1607,31 +1896,7 @@
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
-                <string>LevelTransition</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
                 <string>Bullet</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
-                <string>upslope_ground_tile</string>
-                <authoring.model.bundles.Bundle>
-                  <changed>false</changed>
-                  <obs/>
-                  <components/>
-                </authoring.model.bundles.Bundle>
-              </entry>
-              <entry>
-                <string>Asteroid</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
                   <obs/>
@@ -1655,7 +1920,7 @@
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
-                <string>Chaser</string>
+                <string>himid_ground_tile</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
                   <obs/>
@@ -1663,7 +1928,39 @@
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
-                <string>himid_ground_tile</string>
+                <string>Chasee</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>LevelTransition</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>upslope_ground_tile</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Asteroid</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>Chaser</string>
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
                   <obs/>
