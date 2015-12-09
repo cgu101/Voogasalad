@@ -204,7 +204,6 @@ public class Sprite extends ImageView implements Serializable {
 		lastFrameRect = new Rectangle2D(this.rect.getMinX() + xoffset,
 				this.rect.getMinY() + yoffset, this.rect.getWidth(), this.rect.getHeight());
 		Sprite.this.setViewport(this.lastFrameRect);
-		System.out.println(" weee ");
 	}
 
 	/**

@@ -118,10 +118,7 @@ public class ActorView extends AbstractVisual implements Serializable {
 		Sprite ret = SpriteManager.createSprite(myActor.getGroupName(), img);
 		double width = ret.getImage().getWidth();
 		double height = ret.getImage().getHeight();
-		System.out.println("rhea rhea rhea " + width);
 		//myXCoor -= 250;
-		System.out.println("no nanas " + height);
-		System.out.println("woowoo " + width);
 		dimensionRatio = height / width;
 		return ret;
 	}

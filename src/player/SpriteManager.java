@@ -108,12 +108,10 @@ public class SpriteManager {
 	public static Sprite createSprite(String group, String image){
 		String[] dimensions;
 		if (ResourceBundle.getBundle("resources/SpriteManager").keySet().contains(group)){
-			System.out.println("Somethins' goin right");
 			dimensions = ResourceBundle.getBundle("resources/SpriteManager").getString(group).split(",");
 		}else{
 			dimensions = ResourceBundle.getBundle("resources/SpriteManager").getString(image).split(",");
 		}
-		System.out.println(dimensions[2] + " " + dimensions[3]);
 		Sprite ret =  new Sprite(image,
 						  Integer.parseInt(dimensions[0]),
 						  Integer.parseInt(dimensions[1]));

@@ -45,8 +45,6 @@ public class ActorBrowserCell extends AbstractListCell<String> {
 		/*String[] dimensions = ResourceBundle.getBundle("resources/SpriteManager").getString(item).split(",");
 		Sprite output = new Sprite(imageString, Integer.parseInt(dimensions[0]), 
 									Integer.parseInt(dimensions[1]));*/
-		System.out.println(item);
-		System.out.println("BACHI DEBUG");
 		image = SpriteManager.createSprite(item, imageString);
 		Sprite output = image;
 		//image.play(); //debugging
