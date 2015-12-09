@@ -2,6 +2,7 @@ package view.controlbar;
 
 import java.io.File;
 import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -178,15 +179,29 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		try {
 			Game game = XMLManager.loadGame(fileName);
 			
-			CreatorScreen screen = new CreatorScreen(game);
+//			for (AbstractDockElement c : screen.getComponents()) {
+//				c.getShowingProperty().setValue(false);
+//			}
 			
-			this.pane = screen.getDefaultPane();
-			this.gameWindow = new GameWindow(DEFAULT_IP);
-			this.screen = screen;
+//			screen.setNextScreen(new CreatorScreen(game));
+			
+			Deque<String> a = new ArrayDeque<String>();
+			
+			for (Level l : game.getBundleLevels()) {
+				Mail mail = new DataDecorator (Request.LOAD, l, a);
+				screen.getWorkspace().forward(mail.getPath(), mail);
+			}
+			
+			
+//			CreatorScreen screen = new CreatorScreen(game);
+			
+//			this.pane = screen.getDefaultPane();
+//			this.gameWindow = new GameWindow(DEFAULT_IP);
+//			this.screen = screen;
 
-			initializeObservers();
-			makePane();
-			System.out.println("Load Succcess");
+//			initializeObservers();
+//			makePane();
+//			System.out.println("Load Succcess");
 		} catch (GameFileException e) {
 			e.printStackTrace();
 			System.out.println("Something wrong with the game load");

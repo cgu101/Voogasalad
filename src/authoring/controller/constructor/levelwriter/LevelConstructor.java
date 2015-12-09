@@ -1,5 +1,9 @@
 package authoring.controller.constructor.levelwriter;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import authoring.controller.constructor.configreader.ResourceType;
 import authoring.controller.constructor.levelwriter.interfaces.ITreeConstructor;
 import authoring.model.level.Level;
 
@@ -47,4 +51,13 @@ public class LevelConstructor {
 		return ret;
 	}
 
+	public void buildConstructor (Level level) {
+		actorConstructor.setActorGroups(level.getActorGroups());
+		((TreeConstructor) treeConstructor).setRootTree(level.getRootTree());
+		Map<ResourceType, Map> myMap = new HashMap<ResourceType, Map>();
+		myMap.put(ResourceType.TRIGGERS, level.getTriggerMap());
+		myMap.put(ResourceType.ACTIONS, level.getActionMap());
+		
+		mapConstructor.setItemsMap(myMap);
+	}
 }
