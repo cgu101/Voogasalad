@@ -3,6 +3,7 @@ package authoring.model.actions;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import engine.State;
+import player.InputManager;
 
 /**
  * @author Inan
@@ -16,8 +17,8 @@ public abstract class ATwoActorAction implements IAction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor... actors) {
-		run(parameters, state, actors[0], actors[1]);
+	public void run(InputManager inputManager, Parameters parameters, State state, Actor... actors) {
+		run(inputManager, parameters, state, actors[0], actors[1]);
 		state.getActorMap().addActor(actors[0], actors[1]);
 	}
 	
@@ -27,5 +28,5 @@ public abstract class ATwoActorAction implements IAction {
 	 * @param a Actors that you want to run the action on/with
 	 */	
 	@SuppressWarnings("rawtypes")
-	public abstract void run(Parameters parameters, State state, Actor a, Actor b);
+	public abstract void run(InputManager inputManger, Parameters parameters, State state, Actor a, Actor b);
 }

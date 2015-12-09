@@ -8,6 +8,7 @@ import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import authoring.model.properties.Property;
 import javafx.scene.image.Image;
+import player.SpriteManager;
 import util.Sprite;
 import view.visual.AbstractVisual;
 
@@ -110,18 +111,27 @@ public class ActorView extends AbstractVisual implements Serializable {
 
 	public Sprite createImage() {
 		String img = (String) myActor.getProperties().getComponents().get("image").getValue();
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
+		/*Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
 
 		// also establish the ratio
 		double width = image.getWidth();
 		double height = image.getHeight();
 		dimensionRatio = height / width;
+
+		 
+
 		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
-		mapChanged();
+		mapChanged(); */
+		
+		// ^ Someone who understands this look at it
+
 
 		// return new ImageView(image);
-		Sprite ret = new Sprite(img);
-		ret.play();
+		Sprite ret = SpriteManager.createSprite(myActor.getGroupName(), img);
+		double width = ret.getImage().getWidth();
+		double height = ret.getImage().getHeight();
+		//myXCoor -= 250;
+		dimensionRatio = height / width;
 		return ret;
 	}
 

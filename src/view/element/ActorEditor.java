@@ -23,6 +23,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
+import player.SpriteManager;
 import util.Sprite;
 import view.actor.PropertyCell;
 import view.interactions.InteractionCell;
@@ -210,8 +211,9 @@ public class ActorEditor extends AbstractDockElement {
 //	}
 
 	private ImageView makeImage(String item) {
-		image = new Sprite(controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image"));
-		image.play();
+		/*image = new Sprite(controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image"));
+		image.play();*/
+		image = SpriteManager.createSprite(item, controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image"));
 		image.setFitHeight(Double.parseDouble(myResources.getString("imagesize")));
 		image.setPreserveRatio(true);
 		image.setSmooth(true);

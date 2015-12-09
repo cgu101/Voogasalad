@@ -13,6 +13,7 @@ import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import authoring.model.tree.ParametersKey;
 import engine.State;
+import player.InputManager;
 
 public class SpawnActor extends AOneActorAction {
 	/**
@@ -32,7 +33,7 @@ public class SpawnActor extends AOneActorAction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor actor) {
 		String groupID = (String) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0");
 		actors = ResourceBundle.getBundle(ACTOR_FOLDER + groupID);
 		List<String> propertyList = Arrays.asList(actors.getString(PROPERTIES).split(REGEX));
@@ -52,8 +53,10 @@ public class SpawnActor extends AOneActorAction {
 		Actor newActor = new Actor(propertyBundle, groupID + currentTimeStamp.toString());
 
 		if (actor.hasProperty(X_LOCATION) && actor.hasProperty(Y_LOCATION) && actor.hasProperty(ANGLE)) {
-			newActor.setProperty(X_LOCATION, actor.getPropertyValue(X_LOCATION));
+//			newActor.setProperty(X_LOCATION, (Double) actor.getPropertyValue(X_LOCATION) + 0.5*(Double) actor.getPropertyValue("width")*Math.cos(Math.toRadians( ((Double) actor.getPropertyValue(ANGLE)))));
+//			newActor.setProperty(Y_LOCATION, (Double) actor.getPropertyValue(Y_LOCATION) + 0.5*(Double) actor.getPropertyValue("height")*Math.sin(Math.toRadians( ((Double) actor.getPropertyValue(ANGLE)))));
 			newActor.setProperty(Y_LOCATION, actor.getPropertyValue(Y_LOCATION));
+			newActor.setProperty(X_LOCATION, actor.getPropertyValue(X_LOCATION));
 			newActor.setProperty(ANGLE, actor.getPropertyValue(ANGLE));
 		}
 

@@ -12,6 +12,7 @@ import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;
 import authoring.model.tree.Parameters;
 import engine.State;
+import player.InputManager;
 
 /**
  * @author Inan and Tyler
@@ -22,7 +23,7 @@ public class ShootBullet<V> extends AOneActorAction {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor actor) {
 		Property<Double> angle = (Property<Double>) actor.getProperty(ActorProperties.ANGLE.getKey());
 		Property<Double> x = (Property<Double>) actor.getProperty(ActorProperties.X_LOCATION.getKey());
 		Property<Double> y = (Property<Double>) actor.getProperty(ActorProperties.Y_LOCATION.getKey());

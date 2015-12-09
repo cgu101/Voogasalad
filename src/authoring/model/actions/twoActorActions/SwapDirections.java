@@ -6,6 +6,7 @@ import authoring.model.actions.ATwoActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import engine.State;
+import player.InputManager;
 
 /**
  * @author Inan
@@ -19,7 +20,7 @@ public class SwapDirections extends ATwoActorAction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor a, Actor b) {
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor a, Actor b) {
 		Double angleA = a.getPropertyValue(ActorProperties.ANGLE.getKey());
 		Double angleB = b.getPropertyValue(ActorProperties.ANGLE.getKey());
 		a.setProperty(ActorProperties.ANGLE.getKey(), angleB);

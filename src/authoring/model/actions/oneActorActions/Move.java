@@ -5,6 +5,8 @@ import authoring.model.actions.AOneActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import engine.State;
+import javafx.scene.input.MouseButton;
+import player.InputManager;
 
 public class Move extends AOneActorAction {
 	/**
@@ -14,7 +16,7 @@ public class Move extends AOneActorAction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor actor) {
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor actor) {
 		Double angle = actor.getPropertyValue(ActorProperties.ANGLE.getKey());
 		Double speed = actor.getPropertyValue(ActorProperties.SPEED.getKey());
 		Double x = actor.getPropertyValue(ActorProperties.X_LOCATION.getKey());
@@ -35,7 +37,6 @@ public class Move extends AOneActorAction {
 		actor.setProperty(ActorProperties.X_LOCATION.getKey(), x);
 		actor.setProperty(ActorProperties.Y_LOCATION.getKey(), y);
 	}
-
 	private double checkBoundary(double coordinate, int bound) {
 		if (coordinate < 0 || coordinate > bound)
 			return (coordinate + bound) % bound;

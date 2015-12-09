@@ -4,6 +4,7 @@ import authoring.model.actions.ATwoActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import engine.State;
+import player.InputManager;
 
 public class ActorSpawner extends ATwoActorAction {
 	/**
@@ -13,7 +14,7 @@ public class ActorSpawner extends ATwoActorAction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor a, Actor b) {
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor a, Actor b) {
 		// TODO
 	}
 }

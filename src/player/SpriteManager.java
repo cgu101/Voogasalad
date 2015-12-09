@@ -46,8 +46,6 @@ public class SpriteManager {
 				Sprite newsp = createSprite(a);
 				sprites.put(a.getUniqueID(), newsp);
 				myMap.getGroup().getChildren().add(newsp);
-				initSprite(newsp, a);
-				newsp.play(0);
 			}
 			stillAlive.put(a.getUniqueID(), true);
 		}
@@ -67,26 +65,67 @@ public class SpriteManager {
 	}
 	
 	private static void initSprite(Sprite s, Actor a){
-		s.setX(a.getPropertyValue("xLocation"));
-		s.setY(a.getPropertyValue("yLocation"));
+//		s.setX(a.getPropertyValue("xLocation"));
+//		s.setY(a.getPropertyValue("yLocation"));
+		s.setX((Double) a.getPropertyValue("xLocation") - (Double) a.getPropertyValue("width")/2);
+		s.setY((Double) a.getPropertyValue("yLocation") - (Double) a.getPropertyValue("height")/2);
 		s.setFitHeight(a.getPropertyValue("height"));
 		s.setFitWidth(a.getPropertyValue("width"));
 		if (a.getProperties().getComponents().get("angle")!=null)
 			s.setRotate((double)a.getProperties().getComponents().get("angle").getValue());
+
 	}
 	
+
 	/**
 	 * Creates a visual sprite object based on a back-end actor object
 	 * 
 	 * @param a
 	 * @return created sprite
 	 */
-	public Sprite createSprite(Actor a){
+	public static Sprite createSprite(Actor a){
 		String img = (String)a.getProperties().getComponents().get("image").getValue();
-		String[] dimensions = myResources.getString(img).split(",");
-		return new Sprite(img,
+		String[] dimensions;
+		if (ResourceBundle.getBundle("resources/SpriteManager").keySet().contains(a.getPropertyValue("groupID"))){
+			dimensions = ResourceBundle.getBundle("resources/SpriteManager").getString(a.getPropertyValue("groupID")).split(",");
+		}else{
+			dimensions = ResourceBundle.getBundle("resources/SpriteManager").getString(img).split(",");
+		}
+		Sprite ret =  new Sprite(img,
 						  Integer.parseInt(dimensions[0]),
 						  Integer.parseInt(dimensions[1]));
+		initSprite(ret, a);
+		ret.playFlag = dimensions[2];
+		if (dimensions[2].equals("PLAY")){
+			ret.play(Integer.parseInt(dimensions[3]));
+		}else if (dimensions[2].equals("PLAY_ONCE")){
+			ret.playTimes(Integer.parseInt(dimensions[3]), 1);
+		}else if (dimensions[2].equals("SHOW_FRAME")){
+			ret.gotoFrame(Integer.parseInt(dimensions[3]),
+						  Integer.parseInt(dimensions[4]));
+		}
+		return ret;
+	}
+	
+	public static Sprite createSprite(String group, String image){
+		String[] dimensions;
+		if (ResourceBundle.getBundle("resources/SpriteManager").keySet().contains(group)){
+			dimensions = ResourceBundle.getBundle("resources/SpriteManager").getString(group).split(",");
+		}else{
+			dimensions = ResourceBundle.getBundle("resources/SpriteManager").getString(image).split(",");
+		}
+		Sprite ret =  new Sprite(image,
+						  Integer.parseInt(dimensions[0]),
+						  Integer.parseInt(dimensions[1]));
+		if (dimensions[2].equals("PLAY")){
+			ret.play(Integer.parseInt(dimensions[3]));
+		}else if (dimensions[2].equals("PLAY_ONCE")){
+			ret.playTimes(Integer.parseInt(dimensions[3]), 1);
+		}else if (dimensions[2].equals("SHOW_FRAME")){
+			ret.gotoFrame(Integer.parseInt(dimensions[3]),
+						  Integer.parseInt(dimensions[4]));
+		}
+		return ret;
 	}
 	
 	/**
@@ -94,7 +133,7 @@ public class SpriteManager {
 	 */
 	public void pause(){
 		for(Sprite s : sprites.values()){
-			s.pause();
+			if (s.playFlag.equals("PLAY")) s.pause();
 		}
 	}
 	
@@ -103,7 +142,7 @@ public class SpriteManager {
 	 */
 	public void resume(){
 		for(Sprite s : sprites.values()){
-			s.play();
+			if (s.playFlag.equals("PLAY")) s.play();
 		}
 	}
 	

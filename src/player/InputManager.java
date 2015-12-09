@@ -34,6 +34,7 @@ public class InputManager {
 	public InputManager(String fileName) {
 		keyMap = new HashMap<String, MouseEvent>();
 		inputMap = new HashMap<String, Boolean>();
+		keyMap = new HashMap<String, MouseEvent>();
 		keys = new HashSet<String>();
 		Scanner s;
 		try {
@@ -88,6 +89,10 @@ public class InputManager {
 		if (keyMap.containsKey(code.name())) {
 			keyMap.put(code.name(), null);
 		}
+	}
+	
+	public MouseEvent getMouseEvent(String code){
+		return keyMap.get(code);
 	}
 	
 	/**

@@ -4,6 +4,7 @@ import authoring.model.actions.AOneActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import engine.State;
+import player.InputManager;
 
 public class RemoveActor extends AOneActorAction {
 	/**
@@ -13,7 +14,7 @@ public class RemoveActor extends AOneActorAction {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void run(Parameters parameters, State state, Actor a) {
-		state.getActorMap().killActor(a);
+	public void run(InputManager inputManeger, Parameters parameters, State state, Actor actor) {
+		state.getActorMap().killActor(actor);
 	}
 }
