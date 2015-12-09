@@ -129,7 +129,6 @@ public class ActorBrowser extends AbstractDockElement {
 	}
 
 	public void addNewActor(String actorName, Map<String, String> properties) {
-		System.out.println("add actor");
 		Properties prop = new Properties();
 		OutputStream output = null;
 		try {
@@ -158,7 +157,6 @@ public class ActorBrowser extends AbstractDockElement {
 			props.load(in);
 			in.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
@@ -168,18 +166,12 @@ public class ActorBrowser extends AbstractDockElement {
 			props.store(out, null);
 			out.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		AuthoringConfigManager.getInstance().refresh();
 		load(controller);
 
 	}
-
-	// private void externalModify() {
-	// IProject project = root.getProject(currentProjectName);
-	// project.refreshLocal(IResource.DEPTH_INFINITE, null);
-	// }
 
 	public BooleanProperty getDoubleListsProperty() {
 		return doubleLists;
