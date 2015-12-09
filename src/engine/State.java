@@ -5,6 +5,7 @@ import java.util.Observable;
 import authoring.model.actors.ActorGroups;
 import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;
+import player.controller.PlayerController;
 /**
  * A save-state of a game. 
  * Contains a property bundle for metadata and a ActorGroups containing the state of actors.
@@ -13,6 +14,7 @@ import authoring.model.properties.Property;
 public class State extends Observable {
 	private ActorGroups myActorMap;
 	private Bundle<Property<?>> myPropertyBundle;
+	private Instruction<PlayerController> instruction;
 	
 	public State () {
 		myPropertyBundle = new Bundle<Property<?>>();
@@ -54,5 +56,15 @@ public class State extends Observable {
 			setChanged();
 			notifyObservers();
 		}
+	}
+	public void setInstruction(Instruction<PlayerController> instruction) {
+		this.instruction = instruction;
+	}
+	@FunctionalInterface
+	public interface Instruction <A> { 
+		public void apply (A a);
+	}
+	public Instruction<PlayerController> getInstruction () {
+		return instruction;
 	}
 }

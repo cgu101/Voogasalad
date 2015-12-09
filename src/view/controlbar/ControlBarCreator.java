@@ -2,12 +2,14 @@ package view.controlbar;
 
 import java.io.File;
 import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Observable;
 import java.util.Observer;
 
 import authoring.files.properties.ActorProperties;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
+import authoring.model.properties.Property;
 import authoring.model.tree.InteractionTreeNode;
 import data.XMLManager;
 import exceptions.data.GameFileException;
@@ -36,6 +38,8 @@ import network.framework.format.Mail;
 import network.framework.format.Request;
 import network.instances.DataDecorator;
 import network.util.PostalNetwork;
+import resources.keys.PropertyKey;
+import resources.keys.PropertyKeyResource;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.screen.CreatorScreen;
@@ -178,18 +182,30 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		try {
 			Game game = XMLManager.loadGame(fileName);
 			
-			CreatorScreen screen = new CreatorScreen(game);
+//			for (AbstractDockElement c : screen.getComponents()) {
+//				c.getShowingProperty().setValue(false);
+//			}
 			
-			this.pane = screen.getDefaultPane();
+//			screen.setNextScreen(new CreatorScreen(game));
 			
-			this.gameWindow = new GameWindow(DEFAULT_IP);
-			this.screen = screen;
+			Deque<String> a = new ArrayDeque<String>();
+			
+			for (Level l : game.getBundleLevels()) {
+				Mail mail = new DataDecorator (Request.LOAD, l, a);
+				screen.getWorkspace().forward(mail.getPath(), mail);
+			}
+			
+			
+//			CreatorScreen screen = new CreatorScreen(game);
+			
+//			this.pane = screen.getDefaultPane();
+//			this.gameWindow = new GameWindow(DEFAULT_IP);
+//			this.screen = screen;
 
-			initializeObservers();
-			makePane();
-			System.out.println("Load Succcess");
+//			initializeObservers();
+//			makePane();
+//			System.out.println("Load Succcess");
 		} catch (GameFileException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("Something wrong with the game load");
 		}
@@ -280,10 +296,16 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				new FileChooser.ExtensionFilter("PNG", "*.png"));
 
 		File file = fileChooser.showOpenDialog(null);
-		Image backgroundImage = new Image(file.toURI().toString());
+		try {
+			String fileString = file.toURI().toString();
+			Image backgroundImage = new Image(fileString);
 
-		this.screen.getWorkspace().getCurrentLevel().updateBackground(backgroundImage);
-
+			this.screen.getWorkspace().getCurrentLevel().updateBackground(backgroundImage);
+			this.screen.getWorkspace().getCurrentLevel().updateLevelProperty(
+					new Property<String>(PropertyKeyResource.getKey(PropertyKey.LEVEL_BACKGROUND_KEY),fileString));
+		} catch (Exception e) {
+			
+		}
 	}
 
 	private void toggleToolbar(Boolean value) {
