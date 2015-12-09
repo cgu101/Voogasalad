@@ -106,7 +106,7 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 			viewManager.addElements(av.getSprite());
 			// TODO send the actor here
 			ActorSerializable actor = new ActorSerializable(av.getActor(), av.getMap(), av.getType(), x, y);
-			DataDecorator dataMail = new DataDecorator(Request.ADD, actor, anscestors);
+			DataDecorator dataMail = new DataDecorator(Request.ADD, actor, new ArrayDeque<String>(anscestors));
 			GameWindow.getInstance().send(dataMail);
 		}
 	}
