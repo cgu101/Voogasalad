@@ -10,6 +10,51 @@
             <children>
               <authoring.model.tree.ActorTreeNode>
                 <children>
+                  <authoring.model.tree.ActorTreeNode>
+                    <children>
+                      <authoring.model.tree.TriggerTreeNode>
+                        <children>
+                          <authoring.model.tree.ActionTreeNode>
+                            <children/>
+                            <value>DamageHealth</value>
+                            <parameters>
+                              <parameter__values/>
+                            </parameters>
+                          </authoring.model.tree.ActionTreeNode>
+                          <authoring.model.tree.ActionTreeNode>
+                            <children/>
+                            <value>DecreaseProperty</value>
+                            <parameters>
+                              <parameter__values>
+                                <entry>
+                                  <string>param.1</string>
+                                  <double>0.0</double>
+                                </entry>
+                                <entry>
+                                  <string>param.2</string>
+                                  <double>0.0</double>
+                                </entry>
+                                <entry>
+                                  <string>param.0</string>
+                                  <string>health</string>
+                                </entry>
+                              </parameter__values>
+                            </parameters>
+                          </authoring.model.tree.ActionTreeNode>
+                        </children>
+                        <value>KeyPress</value>
+                        <parameters>
+                          <parameter__values>
+                            <entry>
+                              <string>param.0</string>
+                              <string>Space</string>
+                            </entry>
+                          </parameter__values>
+                        </parameters>
+                      </authoring.model.tree.TriggerTreeNode>
+                    </children>
+                    <value>walter</value>
+                  </authoring.model.tree.ActorTreeNode>
                   <authoring.model.tree.TriggerTreeNode>
                     <children>
                       <authoring.model.tree.ActionTreeNode>
@@ -20,18 +65,13 @@
                         </parameters>
                       </authoring.model.tree.ActionTreeNode>
                     </children>
-                    <value>KeyPress</value>
+                    <value>TrueSelfTrigger</value>
                     <parameters>
-                      <parameter__values>
-                        <entry>
-                          <string>param.0</string>
-                          <string>Space</string>
-                        </entry>
-                      </parameter__values>
+                      <parameter__values/>
                     </parameters>
                   </authoring.model.tree.TriggerTreeNode>
                 </children>
-                <value>Asteroid</value>
+                <value>walter</value>
               </authoring.model.tree.ActorTreeNode>
             </children>
           </rootTree>
@@ -50,9 +90,17 @@
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
                   <obs/>
+                  <components/>
+                </authoring.model.bundles.Bundle>
+              </entry>
+              <entry>
+                <string>walter</string>
+                <authoring.model.bundles.Bundle>
+                  <changed>false</changed>
+                  <obs/>
                   <components>
                     <entry>
-                      <string>Tue Dec 08 21:00:58 EST 2015</string>
+                      <string>Tue Dec 08 20:48:45 EST 2015</string>
                       <authoring.model.actors.Actor>
                         <changed>false</changed>
                         <obs/>
@@ -63,43 +111,36 @@
                             <entry>
                               <string>image</string>
                               <authoring.model.properties.Property>
-                                <myValue class="string">asteroids.png</myValue>
+                                <myValue class="string">rcd.jpg</myValue>
                                 <identifier>image</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>xLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">434.0</myValue>
+                                <myValue class="double">382.0</myValue>
                                 <identifier>xLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>size</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">10.0</myValue>
+                                <myValue class="double">0.0</myValue>
                                 <identifier>size</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>groupID</string>
                               <authoring.model.properties.Property>
-                                <myValue class="string">Asteroid</myValue>
+                                <myValue class="string">walter</myValue>
                                 <identifier>groupID</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>width</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">90.0</myValue>
+                                <myValue class="double">0.0</myValue>
                                 <identifier>width</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>health</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">100.0</myValue>
-                                <identifier>health</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
@@ -110,29 +151,50 @@
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
+                              <string>health</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>health</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>range</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>range</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>distanceTraveled</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>distanceTraveled</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
                               <string>yLocation</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">219.0</myValue>
+                                <myValue class="double">305.0</myValue>
                                 <identifier>yLocation</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>speed</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">10.0</myValue>
+                                <myValue class="double">0.0</myValue>
                                 <identifier>speed</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                             <entry>
                               <string>height</string>
                               <authoring.model.properties.Property>
-                                <myValue class="double">10.0</myValue>
+                                <myValue class="double">0.0</myValue>
                                 <identifier>height</identifier>
                               </authoring.model.properties.Property>
                             </entry>
                           </components>
                         </myPropertyBundle>
-                        <identifier>Tue Dec 08 21:00:58 EST 2015</identifier>
+                        <identifier>Tue Dec 08 20:48:45 EST 2015</identifier>
                         <actorType>LOCAL</actorType>
                       </authoring.model.actors.Actor>
                     </entry>

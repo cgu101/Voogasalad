@@ -6,8 +6,6 @@ import java.util.Optional;
 
 import exceptions.EngineException;
 import exceptions.data.GameFileException;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -19,12 +17,8 @@ import player.controller.PlayerController;
 import util.FileChooserUtility;
 import view.controlbar.ControlBarPlayer;
 import view.element.AbstractDockElement;
-import view.element.ActorBrowser;
-import view.element.ActorEditor;
 import view.element.ActorMonitor;
 import view.element.GameInfoMonitor;
-import view.map.CreatorMapSliders;
-import view.map.MapSliders;
 import view.map.PlayerMapSliders;
 
 public class PlayerScreen extends AbstractScreen {

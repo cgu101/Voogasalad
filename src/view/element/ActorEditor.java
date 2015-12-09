@@ -2,12 +2,9 @@ package view.element;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
-
 import authoring.controller.AuthoringController;
 import authoring.model.tree.ActorTreeNode;
 import authoring.model.tree.InteractionTreeNode;
-import authoring.model.tree.ParameterTreeNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -28,7 +25,6 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
 import util.Sprite;
 import view.actor.PropertyCell;
-import view.actor.TriggerCell;
 import view.interactions.InteractionCell;
 import view.level.Workspace;
 import view.screen.AbstractScreenInterface;

@@ -36,7 +36,7 @@ public class ShootBullet<V> extends AOneActorAction {
 	private Actor createBullet(Property<Double> angle, Property<Double> x, Property<Double> y, Property<Double> size) {
 		Property<Double> sizeB = new Property<Double>(size.getUniqueID(), 1.0);
 		Property<Double> angleB = new Property<Double>(angle.getUniqueID(), angle.getValue());
-		Property<String> imageB = new Property<String>(ActorProperties.IMAGE.getKey(), "rcd.jpg");
+		Property<String> imageB = new Property<String>(ActorProperties.IMAGE.getKey(), "bullets.png");
 		Property<String> groupIDB = new Property<String>(ActorProperties.GROUP_ID.getKey(), "bullet");
 		
 		Double dist = sizeB.getValue() + size.getValue() + 0.01;

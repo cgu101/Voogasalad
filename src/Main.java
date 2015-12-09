@@ -19,6 +19,7 @@ import exceptions.data.GameFileException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import resources.keys.PropertyKey;
