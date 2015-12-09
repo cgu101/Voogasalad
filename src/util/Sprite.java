@@ -7,7 +7,11 @@
  */
 package util;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import javafx.animation.Animation;
@@ -29,7 +33,8 @@ public class Sprite extends ImageView {
 	private int fps = 8;
 	private SpriteAnimation currentAnimation;
 	private int lastRowPlayed = 0;
-	
+	private static final String SPRITE_MANAGER_DIRECTORY = "src/resources/SpriteManager.properties";
+	private static final String CONFIGURATION = "configuration";
 	//for drag and drop in the authoring environment
 	private static HashMap<String, Image> thumbnails = new HashMap<String, Image>();
 	private String myThumbnailKey;
@@ -102,12 +107,26 @@ public class Sprite extends ImageView {
 	}
 
 	public Sprite(String sheet) {
-		this(sheet, Integer.parseInt(ResourceBundle.getBundle("resources/SpriteManager").getString(sheet).split(",")[0]),
-				Integer.parseInt(ResourceBundle.getBundle("resources/SpriteManager").getString(sheet).split(",")[1]));
+		this(sheet, getRefreshedImageDimensions(sheet)[0], getRefreshedImageDimensions(sheet)[1]);
+		
 	}
 
 	// Below are all the different API calls for playing, pausing, restarting,
 	// etc. animations
+
+	private static int[] getRefreshedImageDimensions(String sheet) {
+			InputStream input;
+			try {
+				input = new FileInputStream(String.format(SPRITE_MANAGER_DIRECTORY, CONFIGURATION));
+				ResourceBundle myResources = new PropertyResourceBundle(input);
+				String[] dimensionStrings = myResources.getBundle("resources/SpriteManager").getString(sheet).split(",");
+				int[] dimensions = {Integer.parseInt(dimensionStrings[0]), Integer.parseInt(dimensionStrings[1])};
+				return dimensions;
+			} catch ( IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+	}
 
 	/**
 	 * Animates a series of cells from the specified row of the sprite sheeet.
