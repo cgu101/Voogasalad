@@ -9,6 +9,7 @@ import authoring.model.Anscestral;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import authoring.model.level.Level;
+import authoring.model.properties.Property;
 import authoring.model.tree.InteractionTreeNode;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -242,6 +243,10 @@ public class LevelMap extends Map implements Anscestral {
 
 	public LevelType getType() {
 		return type;
+	}
+
+	public void updateLevelProperty(Property<String> property) {
+		myLevel.getPropertyBundle().add(property);
 	}
 
 }
