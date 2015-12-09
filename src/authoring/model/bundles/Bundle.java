@@ -42,7 +42,7 @@ public class Bundle<V extends Identifiable> extends Observable implements Iterab
 		update(components);
 	}
 
-	public void addAll(Map<String, V> otherComponents) {
+	public void addAll(HashMap<String, V> otherComponents) {
 		components.putAll(otherComponents);
 		update(components);
 	}
