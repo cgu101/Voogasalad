@@ -8,8 +8,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 import authoring.files.properties.ActorProperties;
+import authoring.model.game.Game;
 import authoring.model.level.Level;
 import authoring.model.tree.InteractionTreeNode;
+import data.XMLManager;
+import exceptions.data.GameFileException;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
@@ -99,31 +102,32 @@ public class ControlBarCreator extends ControlBar implements Observer {
 			screen.setNextScreen(new StartScreen());
 		});
 		setHoverAndExitAnimations(backButton);
-			
+
 		Button addButton = makeButton("add", e -> addNewLevel());
 		setHoverAndExitAnimations(addButton);
 
 		Button leftButton = makeButton("left", e -> screen.getWorkspace().moveLevel(true));
 		setHoverAndExitAnimations(leftButton);
-		
+
 		Button rightButton = makeButton("right", e -> screen.getWorkspace().moveLevel(false));
 		setHoverAndExitAnimations(rightButton);
 
 		Button splashButton = makeButton("splash", e -> addNewSplash());
 		setHoverAndExitAnimations(splashButton);
-		
+
 		Button backgroundButton = makeButton("background", e -> updateBackground());
 		setHoverAndExitAnimations(backgroundButton);
-		
+
 		Button newActor = makeButton("new", e -> addActor());
 		setHoverAndExitAnimations(newActor);
-		
+
 		toolBar.getItems().addAll(backButton, new Separator(), addButton, splashButton, new Separator(), leftButton,
 				rightButton, new Separator(), newActor, new Separator(), backgroundButton);
 	}
 
 	private void createMenuBar(MenuBar mainMenu) {
-		MenuItem load = makeMenuItem(myResources.getString("load"), e -> screen.loadGame());
+		//		MenuItem load = makeMenuItem(myResources.getString("load"), e -> screen.loadGame());
+		MenuItem load = makeMenuItem(myResources.getString("load"), e -> this.loadGame());
 		MenuItem save = makeMenuItem(myResources.getString("save"), e -> screen.saveGame());
 		MenuItem exit = makeMenuItem(myResources.getString("exit"), e -> Platform.exit(), KeyCode.E,
 				KeyCombination.CONTROL_DOWN);
@@ -133,7 +137,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				KeyCombination.CONTROL_DOWN);
 		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> addNewSplash(), KeyCode.R,
 				KeyCombination.CONTROL_DOWN);
-		
+
 		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> addActor(),
 				KeyCode.N, KeyCombination.CONTROL_DOWN);
 		MenuItem changeBackground = makeMenuItem(myResources.getString("background.message"), e -> updateBackground());
@@ -159,6 +163,40 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		makeMenuBar(mainMenu, file, edit, window);
 	}
 
+	private void loadGame () {
+		System.out.println("Testing loading game ");
+
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Game File Loader");
+		fileChooser.setInitialDirectory(new File("."));
+		File file = fileChooser.showOpenDialog(null);
+
+		if (file == null) {
+			return;
+		}
+		
+		
+		String fileName = file.getAbsolutePath();
+		try {
+			Game game = XMLManager.loadGame(fileName);
+			
+			CreatorScreen screen = new CreatorScreen(game);
+			
+			this.pane = screen.getDefaultPane();
+			
+			this.gameWindow = new GameWindow(DEFAULT_IP);
+			this.screen = screen;
+
+			initializeObservers();
+			makePane();
+			System.out.println("Load Succcess");
+		} catch (GameFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Something wrong with the game load");
+		}
+	}
+
 	private void addNewLevel() {
 		Level newLevel = new Level(Integer.toString(screen.getGame().getLevels().size()));
 		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, new ArrayDeque<String>());
@@ -174,7 +212,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, new ArrayDeque<String>());
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
 	}
-	
+
 	private void handleHover(Button b) {
 		FadeTransition fadeTransition = 
 				new FadeTransition(Duration.millis(300), b);
@@ -183,7 +221,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		fadeTransition.setCycleCount(1);
 		fadeTransition.setAutoReverse(true);
 		fadeTransition.play();
-		
+
 		ScaleTransition scaleTransition = 
 				new ScaleTransition(Duration.millis(300), b);
 		scaleTransition.setToX(1.1);
@@ -197,9 +235,9 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				scaleTransition
 				);
 		parallelTransition.setCycleCount(1);
-        parallelTransition.play();
+		parallelTransition.play();
 	}
-	
+
 	private void handleExit(Button b) {
 		FadeTransition fadeTransition = 
 				new FadeTransition(Duration.millis(300), b);
@@ -207,7 +245,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		fadeTransition.setToValue(0.5);
 		fadeTransition.setCycleCount(1);
 		fadeTransition.setAutoReverse(true);
-		
+
 		ScaleTransition scaleTransition = 
 				new ScaleTransition(Duration.millis(300), b);
 		scaleTransition.setToX(1);
@@ -221,9 +259,9 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				scaleTransition
 				);
 		parallelTransition.setCycleCount(1);
-        parallelTransition.play();
+		parallelTransition.play();
 	}
-	
+
 	private void setHoverAndExitAnimations(Button b) {
 		b.setOpacity(0.5);
 		b.setOnMouseEntered(e -> handleHover(b));
@@ -283,7 +321,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		screen.setGame(screen.getWorkspace().getGame()); // TODO perhaps
-															// unneeded
+		// unneeded
 
 		if (arg instanceof Observable) {
 			((Observable) arg).addObserver(this);

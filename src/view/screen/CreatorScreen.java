@@ -9,11 +9,13 @@ import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
 import authoring.model.properties.Property;
 import data.XMLManager;
+import exceptions.EngineException;
 import exceptions.data.GameFileException;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
 import resources.keys.PropertyKey;
@@ -153,7 +155,6 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 
 	// TODO
 	public void loadGame() {
-		System.out.println("Testing loading game ");
 	}
 
 	public Workspace getWorkspace() {
