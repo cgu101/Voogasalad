@@ -1,7 +1,5 @@
 package engine;
 
-import authoring.model.actors.Actor;
-import authoring.model.actors.ActorType;
 import authoring.model.bundles.Bundle;
 import authoring.model.game.ActorDependencyInjector;
 import authoring.model.game.Game;
@@ -49,7 +47,6 @@ public class GameEngine implements IEngine {
 
 		Bundle<Property<?>> propertyBundle = new Bundle<Property<?>>(game.getProperties());
 		propertyBundle.add(new Property<String>(levelKey, levelID));
-		// TODO: force game to have a name
 		propertyBundle.add(new Property<String>(gameKey, (String) game.getProperty(gameKey).getValue()));
 		setExecutor(initialLevel, new State(propertyBundle,null));
 	}
@@ -78,7 +75,6 @@ public class GameEngine implements IEngine {
 		if (nextLevelID >= Integer.parseInt((String)game.getProperty(levelCountKey).getValue())) {
 			return null;
 		}
-		System.out.println("id "+nextLevelID);
 		String nextLevelName = Integer.toString(nextLevelID);
 		
 		return game.getLevel(nextLevelName);
@@ -154,7 +150,7 @@ public class GameEngine implements IEngine {
 //		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID(), this.getState()),levelExecutor.getCurrentState());
 		
 		levelExecutor.getCurrentState().getPropertyBundle().add(new Property<String>(levelKey, nextLevelKey));
-		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID(), this.getState()),this.getState());
+		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID(), this.getState()), this.getState());
 	}
 	
 	private void changeDependencies () {
@@ -163,16 +159,9 @@ public class GameEngine implements IEngine {
 
 	@Override
 	public void replayLevel() throws EngineException {
-		// TODO: ACTUALLY MAKE IT REPLAY
-		System.out.println("Not implemented!!");
+		State state = levelExecutor.getCurrentState();
+		setExecutor(makeLevel(levelExecutor.getLevelID(),state), state);
 	}
-	
-//	ArrayList<Property<?>> properties = new ArrayList<Property<?>>();
-//	Bundle<Property<?>> propBundle = game.getProperties();
-//	for(Property<?> b : propBundle){
-//		properties.add((Property<?>) b.getValue());
-//	}
-//	return properties;
 	
 	public void displayError (String errorMessage) {
 		//TODO
