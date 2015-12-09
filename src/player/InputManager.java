@@ -101,7 +101,7 @@ public class InputManager {
 	 * @return assignment value
 	 */
 	public boolean getValue(String keyName) {
-		return getValue(KeyCode.valueOf(keyName));
+		return getValue(KeyCode.getKeyCode(keyName));
 	}
 
 	/**
