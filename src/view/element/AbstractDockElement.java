@@ -1,6 +1,7 @@
 package view.element;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
@@ -17,9 +18,8 @@ import view.screen.AbstractScreenInterface;
 /**
  * @author David
  * 
- *         This class allows for elements that can be docked In addition to a
- *         pane to house the contents, this class uses a home pane that contains
- *         the location of the element when docked.
+ *         This class allows for flexible elements that can be docked in a
+ *         Screen, launched in a separate window, and closed/hidden.
  * 
  */
 public abstract class AbstractDockElement extends AbstractElement {
@@ -28,21 +28,50 @@ public abstract class AbstractDockElement extends AbstractElement {
 	protected Label title;
 	protected AbstractScreenInterface screen;
 	protected GridPane home;
+	protected GridPane titlePane;
 	protected BooleanProperty showing;
 	private BooleanProperty docked;
 
-	public AbstractDockElement(GridPane pane, GridPane home, String title, AbstractScreenInterface screen) {
-		super(pane);
+	/**
+	 * 
+	 * @param home
+	 *            the Pane that the element will be contained within when it is
+	 *            in the docked state.
+	 * @param title
+	 *            the name of the element; this will be displayed when the
+	 *            element is opened in a new window.
+	 * @param screen
+	 *            the home screen that this element is bound to and can dock in.
+	 */
+
+	public AbstractDockElement(GridPane home, String title, AbstractScreenInterface screen) {
+		super(new GridPane());
 		this.screen = screen;
 		this.home = home;
 		this.title = new Label(title);
 		this.title.setFont(headerFont);
-		this.title.setOnMouseDragged(me -> {
-			screen.getScene().setCursor(Cursor.CLOSED_HAND);
-		});
+		configureCursors();
 		showing = new SimpleBooleanProperty(false);
 		docked = new SimpleBooleanProperty(false);
 		showing.addListener(e -> toggleShowing(showing.getValue()));
+		titlePane = new GridPane();
+		titlePane.add(this.title, 0, 0);
+		titlePane.setAlignment(Pos.CENTER);
+	}
+
+	private void configureCursors() {
+		this.title.setOnMouseEntered(me -> {
+			screen.getScene().setCursor(Cursor.OPEN_HAND);
+		});
+		this.title.setOnMousePressed(me -> {
+			screen.getScene().setCursor(Cursor.CLOSED_HAND);
+		});
+		this.title.setOnMouseDragged(me -> {
+			screen.getScene().setCursor(Cursor.CLOSED_HAND);
+		});
+		this.title.setOnMouseExited(me -> {
+			screen.getScene().setCursor(Cursor.DEFAULT);
+		});
 	}
 
 	private void toggleShowing(boolean input) {
@@ -61,8 +90,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 		if (docked && !screen.getFullscreenProperty().getValue() && !windowBounds.contains(mouseLoc)) {
 			launch(me.getScreenX() - pane.widthProperty().doubleValue() / 2,
 					me.getScreenY() - title.heightProperty().doubleValue());
-		}
-		if (!docked) {
+		} else if (!docked) {
 			if (windowBounds.contains(mouseLoc)) {
 				dock();
 			} else {
@@ -72,7 +100,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 		}
 	}
 
-	public void launch(double x, double y) {
+	private void launch(double x, double y) {
 		home.getChildren().clear();
 		stage = new Stage();
 		stage.setScene(new Scene(pane));
@@ -87,7 +115,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 		docked.setValue(false);
 	}
 
-	protected void dock() {
+	private void dock() {
 		if (stage != null) {
 			stage.close();
 		}
@@ -104,18 +132,28 @@ public abstract class AbstractDockElement extends AbstractElement {
 		docked.setValue(false);
 	}
 
-	public GridPane makeLabelPane() {
-		GridPane labelPane = new GridPane();
-		labelPane.add(title, 0, 0);
-		labelPane.setAlignment(Pos.CENTER);
-		return labelPane;
-	}
+	/**
+	 * This property dictates the element's current state. When the value of
+	 * this property is set to true, the element will dock itself. When the
+	 * value is set to false, the element will be hidden.
+	 * 
+	 * @return the showing property
+	 */
 
 	public BooleanProperty getShowingProperty() {
 		return showing;
 	}
 
-	public BooleanProperty getDockedProperty() {
+	/**
+	 * This property keeps track of whether the element is docked or not (the
+	 * showing property is also true when the element is open in a separate
+	 * window). It is read only so that observers can be set but the value
+	 * cannot change.
+	 * 
+	 * @return the docked property
+	 */
+
+	public ReadOnlyBooleanProperty getDockedProperty() {
 		return docked;
 	}
 }

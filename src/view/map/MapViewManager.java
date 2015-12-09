@@ -13,7 +13,6 @@ import view.visual.AbstractVisual;
  */
 public class MapViewManager extends AbstractVisual {
 	private Group mapLayout;
-	private MapZoomSlider slider;
 
 	public MapViewManager(Group layout) {// , AuthoringController ac) {
 		mapLayout = layout;
@@ -40,7 +39,7 @@ public class MapViewManager extends AbstractVisual {
 	 * @param background
 	 *            - the new background to be set
 	 */
-	public void updateBackground(Node background) {
+	public void updateBackground(Node background) { 
 		if (!mapLayout.getChildren().isEmpty()) {
 			mapLayout.getChildren().remove(0);
 		}

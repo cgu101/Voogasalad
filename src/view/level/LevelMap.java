@@ -1,5 +1,6 @@
 package view.level;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Deque;
 
@@ -8,8 +9,14 @@ import authoring.model.Anscestral;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import authoring.model.level.Level;
+import authoring.model.tree.InteractionTreeNode;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -20,7 +27,7 @@ import network.framework.format.Mail;
 import view.map.Map;
 import view.screen.AbstractScreen;
 
-public class LevelMap extends Map implements LevelInterface {
+public class LevelMap extends Map implements Anscestral {
 
 	private static final String LEVEL_IDENTIFIER = "Level";
 	private static final String SPLASH_IDENTIFIER = "Splash";
@@ -51,7 +58,8 @@ public class LevelMap extends Map implements LevelInterface {
 
 		myTab.setContent(pane);
 		myTab.setId(l.getUniqueID());
-
+		myTab.setContextMenu(createContextMenu());
+		
 		mapScrollableArea.setOnDragEntered(event -> startDrag(event));
 
 		mapScrollableArea.setOnDragExited(event -> exitDrag(event));
@@ -59,12 +67,16 @@ public class LevelMap extends Map implements LevelInterface {
 		mapScrollableArea.setOnDragOver(event -> dragAroundMap(event));
 		mapScrollableArea.setOnDragDropped(event -> dragFinished(event));
 		myLevel = l;
+		
+		/**
+		 * Add level triggers, ...
+		 */
+		this.controller.getLevelConstructor().buildLevel(myLevel);
 
 		setLevelType();
 
 		if (type == LevelType.SPLASH) {
 			this.removeMiniMap();
-			this.removeMap();
 		}
 	}
 
@@ -78,7 +90,7 @@ public class LevelMap extends Map implements LevelInterface {
 			type = null;
 		}
 	}
-
+	
 	private void dragFinished(DragEvent event) {
 		Dragboard db = event.getDragboard();
 
@@ -94,7 +106,7 @@ public class LevelMap extends Map implements LevelInterface {
 			controller.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, map);
 			Actor a = controller.getLevelConstructor().getActorGroupsConstructor().getActor(actor, uniqueID);
 
-			addActor(a, (double) a.getProperties().getComponents().get("xLocation").getValue(),
+			addActor(a, map, actor, (double) a.getProperties().getComponents().get("xLocation").getValue(),
 					(double) a.getProperties().getComponents().get("yLocation").getValue());
 			success = true;
 			// gameWindow.getClient().send("New Drop Event");
@@ -130,6 +142,29 @@ public class LevelMap extends Map implements LevelInterface {
 		}
 		event.consume();
 	}
+	
+	private ContextMenu createContextMenu() {
+		ContextMenu cm = new ContextMenu();
+		MenuItem rename = makeMenuItem(myResources.getString("rename"), e -> renameLevel());
+		cm.getItems().addAll(rename);
+		return cm;
+	}
+	
+	private void renameLevel() {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setContentText(myResources.getString("nameLevelInstru"));
+		dialog.setTitle(myResources.getString("rename"));
+		dialog.showAndWait();
+		
+		String s = dialog.getEditor().getText();
+		myTab.setText(s);
+	}
+	
+	private MenuItem makeMenuItem(String title, EventHandler<ActionEvent> handler) {
+		MenuItem mi = new MenuItem(title);
+		mi.setOnAction(handler);
+		return mi;
+	}
 
 	public Tab getTab() {
 		return myTab;
@@ -144,7 +179,6 @@ public class LevelMap extends Map implements LevelInterface {
 	// return (i + 1) + myString;
 	// }
 
-	@Override
 	public String getTitle() {
 		return myTitle;
 	}
@@ -153,13 +187,11 @@ public class LevelMap extends Map implements LevelInterface {
 		return this.pane;
 	}
 
-	@Override
 	public void redraw(Level modelLevel) {
 		// TODO Auto-generated method stub
 		System.out.println("I am redrawing");
 	}
 
-	@Override
 	public Level buildLevel() {
 		// TODO Auto-generated method stub
 		return myLevel;
@@ -174,9 +206,32 @@ public class LevelMap extends Map implements LevelInterface {
 	@Override
 	public void process(Mail mail) {
 		// TODO Auto-generated method stub
-
+		if (mail.getData() instanceof InteractionTreeNode) {
+//			this.myTree = (InteractionTreeNode) mail.getData();
+			setChanged();
+//			notifyObservers(this.myTree);
+		} else {
+			
+		}
 	}
 
+	@Override
+	public void forward (Deque<String> aDeque, Mail mail) {
+		if (!aDeque.isEmpty()) {
+			String aID = aDeque.poll();			
+			Serializable data = mail.getData();			
+			if (data instanceof InteractionTreeNode) {
+				
+			} else { // ActorGrousp
+				
+			}
+			
+			getChild(aID).forward(aDeque, mail);
+		} else {
+			process(mail);
+		}
+	}
+	
 	@Override
 	public Anscestral getChild(String id) {
 		// TODO Auto-generated method stub

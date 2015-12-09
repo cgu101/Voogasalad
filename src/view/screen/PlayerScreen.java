@@ -19,8 +19,11 @@ import player.controller.PlayerController;
 import util.FileChooserUtility;
 import view.controlbar.ControlBarPlayer;
 import view.element.AbstractDockElement;
+import view.element.ActorBrowser;
+import view.element.ActorEditor;
 import view.element.ActorMonitor;
 import view.element.GameInfoMonitor;
+import view.map.CreatorMapSliders;
 import view.map.MapSliders;
 import view.map.PlayerMapSliders;
 
@@ -28,13 +31,12 @@ public class PlayerScreen extends AbstractScreen {
 
 	private ControlBarPlayer controlBarPlayer;
 	private PlayerController playerController;
-	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
 	private ActorMonitor actorMonitor;
 	private GameInfoMonitor gameInfoMonitor;
 	private view.map.Map map;
 	PlayerMapSliders mapSlider;
-	//	private Workspace w;
+	// private Workspace w;
 
 	public PlayerScreen() {
 		findResources();
@@ -46,23 +48,23 @@ public class PlayerScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Causes the PlayerControllers game loop to be resumed. 
+	 * Causes the PlayerControllers game loop to be resumed.
 	 */
 	public void resume() {
-		try{
+		try {
 			playerController.resume();
-		} catch (GameFileException e){
+		} catch (GameFileException e) {
 			showWarning("Resume Game Error", "No game has been loaded yet!");
 		}
 	}
 
 	/**
-	 * Causes the PlayerControllers game loop to be paused. 
+	 * Causes the PlayerControllers game loop to be paused.
 	 */
 	public void pause() {
-		try{
+		try {
 			playerController.pause();
-		} catch (GameFileException e){
+		} catch (GameFileException e) {
 			showWarning("Pause Game Error", "No game has been loaded yet!");
 		}
 	}
@@ -73,43 +75,44 @@ public class PlayerScreen extends AbstractScreen {
 		root = r;
 		scene = new Scene(root, WIDTH, HEIGHT);
 		makePanes(2);
-		controlBarPlayer = new ControlBarPlayer(myPanes.get(0), this, WIDTH);
 		r.setTop(myPanes.get(0));
-		dockPanes = new ArrayList<GridPane>();
 		homePanes = new ArrayList<GridPane>();
-		this.playerController = new PlayerController(scene);
+		this.playerController = new PlayerController(scene, myPanes.get(1));
 		map = playerController.getMap();
+		GridPane mapPane = new GridPane();
+		mapPane.add(myPanes.get(1), 0, 0);
 		for (int i = 0; i < 3; i++) {
-			dockPanes.add(new GridPane());
 			homePanes.add(new GridPane());
 		}
 		GridPane rightPane = new GridPane();
 		rightPane.add(homePanes.get(0), 0, 0);
 		rightPane.add(homePanes.get(1), 0, 1);
-		rightPane.setAlignment(Pos.CENTER);
 		r.setRight(rightPane);
-		
-		components = new ArrayList<AbstractDockElement>(); //No components yet! 
-		gameInfoMonitor = new GameInfoMonitor(dockPanes.get(0), homePanes.get(0),
-				myResources.getString("gameinfoname"), this, playerController);
-		
-		actorMonitor = new ActorMonitor(dockPanes.get(1), homePanes.get(1),
-				myResources.getString("monitorname"), this, playerController);
-		mapSlider = new PlayerMapSliders(dockPanes.get(2), homePanes.get(2), myResources.getString("slidername"),
-				this);
-		r.setBottom(homePanes.get(2));
-		homePanes.get(2).setAlignment(Pos.BASELINE_CENTER);
+
+		components = new ArrayList<AbstractDockElement>();
+		gameInfoMonitor = new GameInfoMonitor(homePanes.get(0), myResources.getString("gameinfoname"), this,
+				playerController);
+
+		actorMonitor = new ActorMonitor(homePanes.get(1), myResources.getString("monitorname"), this, playerController);
+		mapSlider = new PlayerMapSliders(homePanes.get(2), myResources.getString("slidername"), this);
+		mapPane.add(homePanes.get(2), 0, 1);
+		r.setCenter(mapPane);
 		mapSlider.initializeMap(map);
 		components.add(mapSlider);
 		components.add(actorMonitor);
 		components.add(gameInfoMonitor);
 		playerController.addMonitor(actorMonitor);
+		controlBarPlayer = new ControlBarPlayer(myPanes.get(0), this, WIDTH);
+		configureMap(gameInfoMonitor, actorMonitor);
+		map.setPanEnabled(false);
 	}
 
-	// TODO: David: need a stage eventually for the line: fileChooser.showOpenDialog(null);
+	// TODO: David: need a stage eventually for the line:
+	// fileChooser.showOpenDialog(null);
 	// You want to force the user to choose
 	/**
-	 * Method that allows for a game to be loaded. Brings up a file selector using 'FileChooser' class 
+	 * Method that allows for a game to be loaded. Brings up a file selector
+	 * using 'FileChooser' class
 	 */
 	public void loadGame() {
 		System.out.println("Testing");
@@ -119,13 +122,17 @@ public class PlayerScreen extends AbstractScreen {
 		System.out.println(playerController);
 		File file = fileChooser.showOpenDialog(null);
 
+		if (file == null) {
+			return;
+		}
+
 		try {
 			playerController.loadGame(file.getAbsolutePath());
 		} catch (GameFileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EngineException ee) {
-			//			ee.printStackTrace();
+			// ee.printStackTrace();
 			System.err.println("Level exception!");
 		}
 		gameInfoMonitor.initializePane();
@@ -139,9 +146,9 @@ public class PlayerScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Method that calls for the player to save the game state. 
+	 * Method that calls for the player to save the game state.
 	 */
-	public void saveState () {
+	public void saveState() {
 		System.out.println("Testing saving game state ");
 
 		try {
@@ -153,10 +160,10 @@ public class PlayerScreen extends AbstractScreen {
 	}
 
 	/**
-	 * Method that calls for the player to load a game state. 
+	 * Method that calls for the player to load a game state.
 	 */
-	public void loadState () {
-		//TODO: do gui stuff
+	public void loadState() {
+		// TODO: do gui stuff
 		try {
 			File loadFile = FileChooserUtility.load(scene.getWindow());
 			playerController.loadState(loadFile.getPath());
@@ -165,26 +172,30 @@ public class PlayerScreen extends AbstractScreen {
 		}
 	}
 
-	//TODO: Implement, check the controller to see
+	// TODO: Implement, check the controller to see
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	private void configureObserverRelationships() {
 		playerController.getState().addObserver(actorMonitor);
 	}
 
 	public void resetOrReplay(String type) {
 		try {
-		     switch (type) {
-		         case "Replay Level":  playerController.replayLevel();;
-		         	break;
-		         case "Reset Game": playerController.resetGame();;
-		         	break;
-		     }
-			//TODO: Needs to reset the map as well
+			switch (type) {
+			case "Replay Level":
+				playerController.replayLevel();
+				;
+				break;
+			case "Reset Game":
+				playerController.resetGame();
+				;
+				break;
+			}
+			// TODO: Needs to reset the map as well
 		} catch (NullPointerException e) {
 			showWarning("Game Reset Error", "No Game Laoded!");
 		} catch (GameFileException e) {
@@ -192,20 +203,44 @@ public class PlayerScreen extends AbstractScreen {
 			e.printStackTrace();
 		}
 	}
-	
-	public void confirmRestartOrReplay(String type){
+
+	public void confirmRestartOrReplay(String type) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation");
 		alert.setHeaderText(type);
 		alert.setContentText("Are you sure you'd like to?");
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK){
-		    alert.hide();
-		    resetOrReplay(type);
+		if (result.get() == ButtonType.OK) {
+			alert.hide();
+			resetOrReplay(type);
 		} else {
-		    alert.hide();
+			alert.hide();
 		}
 	}
 
+	private void configureMap(GameInfoMonitor info, ActorMonitor monitor) {
+		fullscreen.addListener(e -> manageMapSize(fullscreen.getValue(), info.getDockedProperty().getValue(),
+				monitor.getDockedProperty().getValue()));
+		info.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
+				info.getDockedProperty().getValue(), monitor.getDockedProperty().getValue()));
+		monitor.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
+				info.getDockedProperty().getValue(), monitor.getDockedProperty().getValue()));
+	}
+
+	private void manageMapSize(boolean fullscreen, boolean monitor, boolean editor) {
+		if (!fullscreen) {
+			if (!monitor && !editor) {
+				map.setMapDimensions(Double.parseDouble(myResources.getString("mediumsmallwidth")), Double.parseDouble(myResources.getString("smallscreenheight")));
+			} else {
+				map.setMapDimensions(Double.parseDouble(myResources.getString("smallestwidth")), Double.parseDouble(myResources.getString("smallscreenheight")));
+			}
+		} else {
+			if (!monitor && !editor) {
+				map.setMapDimensions(Double.parseDouble(myResources.getString("suffrage")), Double.parseDouble(myResources.getString("fullscreenheight")));
+			} else {
+				map.setMapDimensions(Double.parseDouble(myResources.getString("mediumbigwidth")), Double.parseDouble(myResources.getString("fullscreenheight")));
+			}
+		}
+	}
 }

@@ -1,49 +1,67 @@
 package authoring.controller.constructor.configreader;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 public class AuthoringConfigManager {
-	
+
 	private Map<String, Map<String, ResourceBundle>> bundleMaps;
 	private ResourceBundle myConfiguration;
-	
-	private static final String CONFIGURATION_DIR = "authoring/files/%s";
+
+	private static final String CONFIGURATION_DIRECTORY = "src/authoring/files/%s.properties";
 	private static final String CONFIGURATION = "configuration";
 	private static final String DIRECTORY_FORMAT = "%s/%s";
 	private static final String REG_EX = ",";
-	
+
 	private static final AuthoringConfigManager myManager = new AuthoringConfigManager();
-	
+
 	private AuthoringConfigManager() {
 		load();
 	}
-	
+
 	private void load() {
-		myConfiguration = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, CONFIGURATION));
+		//		myConfiguration = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, CONFIGURATION));
+		InputStream input;
+		try {
+			input = new FileInputStream(String.format(CONFIGURATION_DIRECTORY, CONFIGURATION));
+			myConfiguration = new PropertyResourceBundle(input);
+		} catch ( IOException e) {
+			e.printStackTrace();
+		}
+
 		bundleMaps = new HashMap<String, Map<String, ResourceBundle>>();
 		List<String> iter = splitString(myConfiguration.getString(CONFIGURATION));
 		for(String s : iter) {
 			bundleMaps.put(s, loadMap(s));
 		}
 	}
-	
+
 	private Map<String, ResourceBundle> loadMap(String type) {	
 		Map<String, ResourceBundle> myMap = new HashMap<String, ResourceBundle>();
 		List<String> toAdd = splitString(myConfiguration.getString(type));
 		for(String s: toAdd) {
-			ResourceBundle r = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, String.format(DIRECTORY_FORMAT, type, s)));
-			myMap.put(s, r);
+			InputStream input;
+			ResourceBundle r;
+			try {
+				input = new FileInputStream(String.format(CONFIGURATION_DIRECTORY, String.format(DIRECTORY_FORMAT, type, s)));
+				r = new PropertyResourceBundle(input);
+				myMap.put(s, r);
+			} catch ( IOException e) {
+				e.printStackTrace();
+			}
+		//		ResourceBundle r = ResourceBundle.getBundle(String.format(CONFIGURATION_DIR, String.format(DIRECTORY_FORMAT, type, s)));
 		}
 		return myMap;
 	}
-	
+
 	/**
 	 * This method returns the static instance of the AuthuringConfigManager.
 	 * This class holds the information for the relationships between all actors, triggers, and actions.
@@ -53,7 +71,7 @@ public class AuthoringConfigManager {
 	public static AuthoringConfigManager getInstance() {
 		return myManager;
 	}
-	
+
 	/**
 	 * This method will reload the configuration files and should be called whenever the configuration files
 	 * change during a game. 
@@ -61,8 +79,8 @@ public class AuthoringConfigManager {
 	public void refresh() {
 		load();
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * 
@@ -70,22 +88,22 @@ public class AuthoringConfigManager {
 	public List<String> getKeyList(String type) {
 		return new ArrayList<String>(bundleMaps.get(type).keySet());
 	}
-	
+
 	/**
 	 * 
 	 */
 	public String getTypeInfo(String type, String instance, String info) {
 		return bundleMaps.get(type).get(instance).getString(info);
 	}
-	
-	
+
+
 	/**
 	 * This method will return a String array of all default Properties. 
 	 * 
 	 * @return List<String> 
 	 */	
 	public List<String> getPropertyList(String actor) {
-		return splitString(getTypeInfo(ResourceType.ACTORS, actor, ResourceType.PROPERTIES));
+		return splitString(getTypeInfo(ResourceType.ACTORS.toString(), actor, ResourceType.PROPERTIES.toString()));
 	}
 
 	/**
@@ -96,9 +114,9 @@ public class AuthoringConfigManager {
 	 * @return String
 	 */
 	public String getDefaultPropertyValue(String actor, String property) {
-		return getTypeInfo(ResourceType.ACTORS, actor, property);
+		return getTypeInfo(ResourceType.ACTORS.toString(), actor, property);
 	}
-	
+
 	/**
 	 * This method will return the type for the given property. These types are primitives and are used
 	 * for the instantiation of the property class. 
@@ -107,9 +125,9 @@ public class AuthoringConfigManager {
 	 * @return String
 	 */
 	public String getPropertyType(String property) {
-		return getTypeInfo(ResourceType.PROPERTIES, property, ResourceType.TYPE);
+		return getTypeInfo(ResourceType.PROPERTIES.toString(), property, ResourceType.TYPE.toString());
 	}
-	
+
 	/**
 	 * This method will return a list of Strings representing the given type for the Actor. The different
 	 * types are represented by the public constants and are: 
@@ -123,11 +141,10 @@ public class AuthoringConfigManager {
 	 * @return List<String>
 	 */
 	public List<String> getConfigList(String actor, String type) {
-		List<String> actorActionList = splitString(getTypeInfo(ResourceType.ACTORS, actor, type));		
-		List<String> generalActionList = splitString(myConfiguration.getString(String.format("%s.%s", type, ResourceType.GENERAL)));		
-		return combineLists(actorActionList, generalActionList);
+		List<String> generalActionList = splitString(myConfiguration.getString(type));		
+		return generalActionList;
 	}
-	
+
 	/**
 	 * This method will return the properties required by an trigger or action.
 	 * 
@@ -137,8 +154,8 @@ public class AuthoringConfigManager {
 	public List<String> getRequiredPropertyList(String type, String instance, String data) {
 		return splitString(getTypeInfo(type, instance, data));
 	}
-	
-	
+
+
 	private static List<String> splitString(String toSplit) {
 		List<String> ret = new ArrayList<String>();
 		if(!toSplit.equals("")) {
@@ -146,36 +163,36 @@ public class AuthoringConfigManager {
 		}
 		return ret;
 	}
-	
-	
-	@SafeVarargs
-	private static List<String> combineLists(List<String>...lists) {
-		Set<String> container = new HashSet<String>();
-		for(List<String> list : lists) {
-			container.addAll(list);
-		}
-		
-		List<String> ret = new ArrayList<String>();
-		ret.addAll(container);
-		return ret;
-	}
 
-	
-//	/**
-//	 * This method will return a String array of all default Actors. 
-//	 * 
-//	 * @return List<String> 
-//	 */
-//	public List<String> getActorList() {
-//		return new ArrayList<String>(actorMap.keySet());
-//	}
-//	
-//	/**
-//	 * This method will return a String array of all default Properties. 
-//	 * 
-//	 * @return List<String> 
-//	 */	
-//	public List<String> getPropertyList() {
-//		return new ArrayList<String>(propertyMap.keySet());
-//	}
+
+	//	@SafeVarargs
+	//	private static List<String> combineLists(List<String>...lists) {
+	//		Set<String> container = new HashSet<String>();
+	//		for(List<String> list : lists) {
+	//			container.addAll(list);
+	//		}
+	//		
+	//		List<String> ret = new ArrayList<String>();
+	//		ret.addAll(container);
+	//		return ret;
+	//	}
+
+
+	//	/**
+	//	 * This method will return a String array of all default Actors. 
+	//	 * 
+	//	 * @return List<String> 
+	//	 */
+	//	public List<String> getActorList() {
+	//		return new ArrayList<String>(actorMap.keySet());
+	//	}
+	//	
+	//	/**
+	//	 * This method will return a String array of all default Properties. 
+	//	 * 
+	//	 * @return List<String> 
+	//	 */	
+	//	public List<String> getPropertyList() {
+	//		return new ArrayList<String>(propertyMap.keySet());
+	//	}
 }

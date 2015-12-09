@@ -1,12 +1,19 @@
 package view.controlbar;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Observer;
 
 import authoring.model.level.Level;
+import authoring.model.tree.InteractionTreeNode;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,6 +30,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
 import network.framework.format.Request;
@@ -91,14 +99,26 @@ public class ControlBarCreator extends ControlBar implements Observer {
 			}
 			screen.setNextScreen(new StartScreen());
 		});
+		setHoverAndExitAnimations(backButton);
+			
 		Button addButton = makeButton("add", e -> addNewLevel());
+		setHoverAndExitAnimations(addButton);
+
 		Button leftButton = makeButton("left", e -> screen.getWorkspace().moveLevel(true));
+		setHoverAndExitAnimations(leftButton);
+		
 		Button rightButton = makeButton("right", e -> screen.getWorkspace().moveLevel(false));
+		setHoverAndExitAnimations(rightButton);
+
 		Button splashButton = makeButton("splash", e -> addNewSplash());
-
+		setHoverAndExitAnimations(splashButton);
+		
 		Button backgroundButton = makeButton("background", e -> updateBackground());
+		setHoverAndExitAnimations(backgroundButton);
+		
 		Button newActor = makeButton("new", e -> addActor());
-
+		setHoverAndExitAnimations(newActor);
+		
 		toolBar.getItems().addAll(backButton, new Separator(), addButton, splashButton, new Separator(), leftButton,
 				rightButton, new Separator(), newActor, new Separator(), backgroundButton);
 	}
@@ -114,7 +134,8 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				KeyCombination.CONTROL_DOWN);
 		MenuItem addSplash = makeMenuItem(myResources.getString("newSplash"), e -> addNewSplash(), KeyCode.R,
 				KeyCombination.CONTROL_DOWN);
-		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> findActorBrowser().addNewActor(),
+		
+		MenuItem addActor = makeMenuItem(myResources.getString("newActor"), e -> addActor(),
 				KeyCode.N, KeyCombination.CONTROL_DOWN);
 		MenuItem changeBackground = makeMenuItem(myResources.getString("background.message"), e -> updateBackground());
 		Menu edit = addToMenu(new Menu(myResources.getString("edit")), addActor, new SeparatorMenuItem(), addLevel,
@@ -125,7 +146,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		toolbar.selectedProperty().addListener(e -> toggleToolbar(toolbar.selectedProperty().getValue()));
 
 		Menu hideAndShow = addToMenu(new Menu(myResources.getString("hideshow")), toolbar);
-		makeComponentCheckMenus(hideAndShow);
+		makeComponentCheckMenus(hideAndShow, screen);
 
 		CheckMenuItem fullscreen = new CheckMenuItem(myResources.getString("fullscreen"));
 		fullscreen.setAccelerator(new KeyCodeCombination(KeyCode.F6));
@@ -140,27 +161,85 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	}
 
 	private void addNewLevel() {
-		Level newLevel = new Level(LEVEL_ID + Integer.toString(screen.getGame().getLevels().size() + 1));
+		Level newLevel = new Level(Integer.toString(screen.getGame().getLevels().size()));
 		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, new ArrayDeque<String>());
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
 		screen.getWorkspace().updateObservers(dataMail);
 		if (screen.getGame().getLevels().size() == 1) {
-			for (AbstractDockElement c : screen.getComponents()) {
-				if (!c.getShowingProperty().getValue()) {
-					c.getShowingProperty().setValue(true);
-				}
-			}
+			toggleComponents(true, screen);
 		}
 	}
 
 	private void addNewSplash() {
-		Level newSplash = new Level(SPLASH_ID + Integer.toString(screen.getGame().getLevels().size() + 1));
+		Level newSplash = new Level(Integer.toString(screen.getGame().getLevels().size()));
 		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, new ArrayDeque<String>());
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
 	}
+	
+	private void handleHover(Button b) {
+		FadeTransition fadeTransition = 
+				new FadeTransition(Duration.millis(300), b);
+		fadeTransition.setFromValue(0.5);
+		fadeTransition.setToValue(1.0);
+		fadeTransition.setCycleCount(1);
+		fadeTransition.setAutoReverse(true);
+		fadeTransition.play();
+		
+		ScaleTransition scaleTransition = 
+				new ScaleTransition(Duration.millis(300), b);
+		scaleTransition.setToX(1.1);
+		scaleTransition.setToY(1.1);
+		scaleTransition.setCycleCount(1);
+		scaleTransition.setAutoReverse(true);
+
+		ParallelTransition parallelTransition = new ParallelTransition();
+		parallelTransition.getChildren().addAll(
+				fadeTransition,
+				scaleTransition
+				);
+		parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+	}
+	
+	private void handleExit(Button b) {
+		FadeTransition fadeTransition = 
+				new FadeTransition(Duration.millis(300), b);
+		fadeTransition.setFromValue(1.0);
+		fadeTransition.setToValue(0.5);
+		fadeTransition.setCycleCount(1);
+		fadeTransition.setAutoReverse(true);
+		
+		ScaleTransition scaleTransition = 
+				new ScaleTransition(Duration.millis(300), b);
+		scaleTransition.setToX(1);
+		scaleTransition.setToY(1);
+		scaleTransition.setCycleCount(1);
+		scaleTransition.setAutoReverse(true);
+
+		ParallelTransition parallelTransition = new ParallelTransition();
+		parallelTransition.getChildren().addAll(
+				fadeTransition,
+				scaleTransition
+				);
+		parallelTransition.setCycleCount(1);
+        parallelTransition.play();
+	}
+	
+	private void setHoverAndExitAnimations(Button b) {
+		b.setOpacity(0.5);
+		b.setOnMouseEntered(e -> handleHover(b));
+		b.setOnMouseExited(e -> handleExit(b));
+	}
 
 	private void addActor() {
-		findActorBrowser().addNewActor();
+		Map<String, String> props = new HashMap<String, String>(){{
+	        put("image","rcd.jpg");
+	        put("groupID","NewActor");
+	        put("width","10");
+	        put("height","10");
+	        put("size","12");
+	    }};
+		findActorBrowser().requestGroupName(props);
 		if (!findActorBrowser().getShowingProperty().getValue()) {
 			findActorBrowser().getShowingProperty().setValue(true);
 		}
@@ -173,15 +252,9 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				new FileChooser.ExtensionFilter("PNG", "*.png"));
 
 		File file = fileChooser.showOpenDialog(null);
+		Image backgroundImage = new Image(file.toURI().toString());
 
-		try {
-			Image backgroundImage = new Image(file.toURI().toURL().toExternalForm(), 60, 0, true, false);
-			
-			this.screen.getWorkspace().getCurrentLevelInterface().updateBackground(backgroundImage);
-
-		} catch (IOException ex) {
-			showError("Error", "Unable to Load Image");
-		}
+		this.screen.getWorkspace().getCurrentLevel().updateBackground(backgroundImage);
 
 	}
 
@@ -193,14 +266,6 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		}
 	}
 
-	private void makeComponentCheckMenus(Menu window) {
-		for (AbstractDockElement c : screen.getComponents()) {
-			CheckMenuItem item = new CheckMenuItem(myResources.getString(c.getClass().getSimpleName()));
-			item.selectedProperty().bindBidirectional(c.getShowingProperty());
-			addToMenu(window, item);
-		}
-	}
-
 	private ActorBrowser findActorBrowser() {
 		for (AbstractDockElement c : screen.getComponents()) {
 			if (c instanceof ActorBrowser) {
@@ -209,6 +274,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		}
 		return null;
 	}
+
 
 	public GameWindow getGameWindow() {
 		return gameWindow;
@@ -231,6 +297,8 @@ public class ControlBarCreator extends ControlBar implements Observer {
 			((Observable) arg).addObserver(this);
 		} else if (arg instanceof Mail) {
 			PostalNetwork.packageAndDeliver(this.gameWindow, (Mail) arg);
+		} else if (arg instanceof InteractionTreeNode) {
+			//this.screen.
 		}
 
 	}

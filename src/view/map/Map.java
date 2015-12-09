@@ -2,13 +2,11 @@ package view.map;
 
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorPropertyMap;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.ToolBar;
@@ -78,35 +76,40 @@ public abstract class Map extends AbstractElement {
 		// it
 		controller = new AuthoringController();
 		editToolbar = new ToolBar();
-		actorHandler = new ActorHandler(layout, controller, editToolbar, this, theMiniMap, zoomSliderArea);
+		actorHandler = new ActorHandler(layout, editToolbar, this, theMiniMap, zoomSliderArea, controller);
 		// TODO: actorHandler = new ActorHandler(layout, zoomSliderArea,
 		// controller, editToolbar);
 
 		makePane();
 	}
-	
+
 	public void build (Map map) {
-		
+
 	}
-	
+
 	public void setMapDimensions(double width, double height) {
 		mapRegularWidth = width;
 		mapRegularHeight = height;
-		mapScrollableArea.setPrefWidth(mapRegularWidth);
-		mapScrollableArea.setPrefViewportWidth(mapRegularWidth);
-		mapScrollableArea.setPrefHeight(mapRegularHeight);
 		
+		mapScrollableArea.setMinViewportWidth(mapRegularWidth);
+		mapScrollableArea.setPrefWidth(mapRegularWidth);
+		mapScrollableArea.setPrefHeight(mapRegularHeight);
+
 		if (width < height) {
+			background.setFitHeight(-1);
 			background.setFitWidth(mapRegularWidth);
 			background.setPreserveRatio(true);
 		}
-		
+
 		else {
+			background.setFitWidth(-1);
 			background.setFitHeight(mapRegularHeight);
 			background.setPreserveRatio(true);
 		}
-		
+
 		actorHandler.updateBackground(background);
+		setMapMaximumBounds();
+		theMiniMap.updateMapDimensions(mapRegularWidth, mapRegularHeight);
 	}
 
 	/**
@@ -119,14 +122,9 @@ public abstract class Map extends AbstractElement {
 	 * @param y
 	 *            - vertical position to place the Node
 	 */
-	public void addActor(Actor element, double x, double y) {
+	public void addActor(Actor element, ActorPropertyMap map, String actorType, double x, double y) {
 		// Use this method to add an actor to the StackPane.
-		if (!actorHandler.rectangleOn()) {
-			actorHandler.addActor(element, x, y);
-		} else {
-			Alert alert = new Alert(AlertType.ERROR, myResources.getString("rectangleOn"), ButtonType.OK);
-			alert.showAndWait();
-		}
+		actorHandler.addActor(element, map, actorType, x, y);
 	}
 
 	/**
@@ -147,17 +145,21 @@ public abstract class Map extends AbstractElement {
 	 */
 	public void updateBackground(Image bg) {
 		background = new ImageView(bg);
-		background.setFitWidth(mapRegularWidth);
+		background.setFitWidth(200);
 		background.setSmooth(true);
 		background.setCache(true);
 		if (!preserveMapRatio) {
 			background.setPreserveRatio(false);
-			background.setFitHeight(mapRegularHeight);
+			background.setFitHeight(200);
 		} else {
 			background.setFitHeight(mapRegularWidth * bg.getHeight()/bg.getWidth());
 		}
 		background.setPreserveRatio(true);
 		actorHandler.updateBackground(background);
+		if(theMiniMap != null) {
+			theMiniMap.updateMiniMapBackground(background);
+			System.out.println("Updated minimap!");
+		}
 	}
 
 	public void setPanEnabled(boolean enable) {
@@ -184,7 +186,7 @@ public abstract class Map extends AbstractElement {
 
 		opacitySliderArea = new MapOpacitySlider(theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
 		opacitySliderArea.createTheSlider();
-		
+
 		miniMapResizerSliderArea = new MinimapResizerSlider(theMiniMap, Double.valueOf(myResources.getString("sliderwidth")));
 		miniMapResizerSliderArea.createTheSlider();
 	}
@@ -192,7 +194,7 @@ public abstract class Map extends AbstractElement {
 	public GridPane getZoomSlider() {
 		return zoomSliderArea.getSliderWithCaptions();
 	}
-	
+
 	public Slider getActualSlider() {
 		return zoomSliderArea.getSlider();
 	}
@@ -232,14 +234,14 @@ public abstract class Map extends AbstractElement {
 		createMiniMap();
 
 		addScrollAreaAndMiniMap();
-		setMapMaximumBounds();
+		setMapDimensions(mapRegularWidth, mapRegularHeight);
 	}
-	
+
 	private void addScrollAreaAndMiniMap() {
 		mapArea.getChildren().add(mapScrollableArea);
 		mapArea.getChildren().add(theMiniMap.getMiniMap());
 	}
-	
+
 	private void setMapMaximumBounds() {
 		Rectangle clip = new Rectangle(mapRegularWidth, mapRegularHeight);
 		clip.setLayoutX(0);
@@ -254,11 +256,6 @@ public abstract class Map extends AbstractElement {
 		mapScrollableArea.setPannable(true);
 
 		mapScrollableArea.setContent(contentGroup);
-
-		mapScrollableArea.setPrefWidth(mapRegularWidth);
-		mapScrollableArea.setPrefViewportWidth(mapRegularWidth);
-
-		mapScrollableArea.setPrefHeight(mapRegularHeight);
 	}
 
 	private void createGroups() {
@@ -305,11 +302,11 @@ public abstract class Map extends AbstractElement {
 
 		});
 	}
-		
+
 	public double getMapWidth() {
 		return mapRegularWidth;
 	}
-	
+
 	public double getMapHeight() {
 		return mapRegularHeight;
 	}
@@ -323,28 +320,25 @@ public abstract class Map extends AbstractElement {
 		// Create the map after adding elements you want
 		createTheMap();
 		
-		actorHandler = new ActorHandler(layout, controller, editToolbar, this, theMiniMap, zoomSliderArea);
+		actorHandler = new ActorHandler(layout, editToolbar, this, theMiniMap, zoomSliderArea, controller);
 
 		// remove pesky key event handlers
 		addEventFilters();
 
 		// Add the map to the GridPane
 		addMapToPane(pane);
-		
-		System.out.println("The background bounds are: " + background.getBoundsInParent());
-		// System.out.println(mapScrollableArea.getHvalue());
-		// System.out.println(mapScrollableArea.getVvalue());
 	}
-	
+
 	public void removeElement (Node n) {
 		this.mapArea.getChildren().remove(n);
 	}
-	
+
 	public void removeMiniMap () {
 		removeElement(this.theMiniMap.getMiniMap());
 	}
 	
-	public void removeMap () {
-		this.mapScrollableArea.setContent(null);;
+	public ImageView getBackground() {
+		return background;
 	}
+
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0"?><authoring.model.game.Game>
+  <myLevelBundle>
+    <changed>false</changed>
+    <obs/>
+    <components>
+      <entry>
+        <string>0</string>
+        <authoring.model.level.Level>
+          <rootTree>
+            <children/>
+          </rootTree>
+          <actorGroups>
+            <actorMap/>
+            <newActors/>
+            <deadActors/>
+          </actorGroups>
+          <triggerMap/>
+          <actionMap/>
+          <uniqueID>0</uniqueID>
+          <propertyBundle>
+            <changed>false</changed>
+            <obs/>
+            <components/>
+          </propertyBundle>
+        </authoring.model.level.Level>
+      </entry>
+    </components>
+  </myLevelBundle>
+  <myPropertyBundle>
+    <changed>false</changed>
+    <obs/>
+    <components>
+      <entry>
+        <string>levelCount</string>
+        <authoring.model.properties.Property>
+          <myValue class="string">1</myValue>
+          <identifier>levelCount</identifier>
+        </authoring.model.properties.Property>
+      </entry>
+      <entry>
+        <string>initialLevel</string>
+        <authoring.model.properties.Property>
+          <myValue class="string">0</myValue>
+          <identifier>initialLevel</identifier>
+        </authoring.model.properties.Property>
+      </entry>
+      <entry>
+        <string>name</string>
+        <authoring.model.properties.Property>
+          <myValue class="string">name</myValue>
+          <identifier>name</identifier>
+        </authoring.model.properties.Property>
+      </entry>
+      <entry>
+        <string>description</string>
+        <authoring.model.properties.Property>
+          <myValue class="string">description</myValue>
+          <identifier>description</identifier>
+        </authoring.model.properties.Property>
+      </entry>
+    </components>
+  </myPropertyBundle>
+</authoring.model.game.Game>

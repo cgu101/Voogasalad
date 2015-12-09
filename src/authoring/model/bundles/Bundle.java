@@ -16,6 +16,10 @@ import java.util.Map.Entry;
  */
 
 public class Bundle<V extends Identifiable> extends Observable implements Iterable<V>, Serializable {
+	/**
+	 * Generated serial version ID
+	 */
+	private static final long serialVersionUID = -2997201509698308844L;
 	private Map<String, V> components;
 
 	public Bundle() {
@@ -38,7 +42,7 @@ public class Bundle<V extends Identifiable> extends Observable implements Iterab
 		update(components);
 	}
 
-	public void addAll(Map<String, V> otherComponents) {
+	public void addAll(HashMap<String, V> otherComponents) {
 		components.putAll(otherComponents);
 		update(components);
 	}

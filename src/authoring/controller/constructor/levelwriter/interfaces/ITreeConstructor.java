@@ -14,6 +14,12 @@ public interface ITreeConstructor {
 	
 	/**
 	 * 
+	 * @return
+	 */
+	public InteractionTreeNode getActorBaseNode(String...actors);
+	
+	/**
+	 * 
 	 * @param actors
 	 * @param triggers
 	 * @param actions

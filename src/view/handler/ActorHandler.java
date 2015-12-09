@@ -1,27 +1,29 @@
 package view.handler;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorPropertyMap;
+import authoring.model.bundles.Bundle;
+import authoring.model.properties.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Separator;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.image.Image;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -29,11 +31,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Pair;
 import view.map.Map;
 import view.map.MapViewManager;
 import view.map.MapZoomSlider;
@@ -42,83 +43,86 @@ import view.visual.AbstractVisual;
 
 /**
  * This class essentially creates a) the context menu of an actor's imageview to
- * enable on-screen editing and b) creates the filter states that then occur
- * when a certain editing choice is made by the user.
+ * enable on-screen editing, with the assistance of the ActorEditingMenu and b)
+ * maintains a list of current ActorViews
  * 
  * @author Bridget
  *
  */
 public class ActorHandler extends AbstractVisual {
-	private AuthoringController myController;
 	private MapViewManager viewManager;
 	private ToolBar myToolbar;
-	private Label defaultLabel;
 	private Map map;
 	private MiniMap theMiniMap;
 	private MapZoomSlider theZoomSlider;
 	private List<ActorView> myAVs;
-	private boolean rectangleOn;
+	private ActorEditingToolbar myEditMenu;
+	private AuthoringController myAC;
 
-	public ActorHandler(Group layout, AuthoringController ac, ToolBar tb, Map map, MiniMap miniMap,
-			MapZoomSlider zoomSlider) {
-		myController = ac;
+	public ActorHandler(Group layout, ToolBar tb, Map map, MiniMap miniMap, MapZoomSlider zoomSlider,
+			AuthoringController ac) {
 		viewManager = new MapViewManager(layout);
 		myToolbar = tb;
 		this.map = map;
 		theMiniMap = miniMap;
 		theZoomSlider = zoomSlider;
+		myAC = ac;
 		findResources();
-		defaultLabel = makeLabel(myResources.getString("defaultPrompt"));
-		restoreToolbar();
+		myEditMenu = new ActorEditingToolbar(myToolbar, map, viewManager);
 		myAVs = new ArrayList<ActorView>();
-		rectangleOn = false;
 	}
 
-	public void addActor(Actor a, double x, double y) {
-		ActorView av = new ActorView(a, x, y);
-		addActor(av, x, y);
+	public void addActor(Actor a, ActorPropertyMap map, String actorType, double x, double y) {
+		if (!myEditMenu.isEditing()) {
+			ActorView av = new ActorView(a, map, actorType, x, y, myAC);
+			addActor(av, x, y);
+		} else {
+			myAC.getLevelConstructor().getActorGroupsConstructor().deleteActor(a.getGroupName(), a.getUniqueID());
+			Alert alert = new Alert(AlertType.ERROR, myResources.getString("whileeditingerror"), ButtonType.OK);
+			alert.showAndWait();
+		}
 	}
 
 	public void addActor(ActorView av, double x, double y) {
 		if (!checkOutOfBounds(av, x, y)) {
 			if (!myAVs.contains(av)) {
 				myAVs.add(av);
-				ImageView image = av.getImageView();
+				ImageView image = av.getSprite();
 				ContextMenu cm = makeContextMenu(av);
 				image.setOnContextMenuRequested(e -> {
-					if (!rectangleOn) {
+					if (!myEditMenu.isEditing()) {
 						cm.show(image, e.getScreenX(), e.getScreenY());
 					}
 				});
 			}
 			addToScale(av, x, y);
-			viewManager.addElements(av.getImageView());
+			viewManager.addElements(av.getSprite());
 		}
 	}
-	
+
 	private void addToScale(ActorView a, double x, double y) {
 		double scale = theZoomSlider.getSlider().valueProperty().doubleValue();
 		scale = 100 / (scale + 100);
 		double xOffset = theMiniMap.getRectangleX();
 		double yOffset = theMiniMap.getRectangleY();
-		
+
 		double scaleOffset = Double.parseDouble(myResources.getString("minimapscaleratio"));
-		double newX = xOffset*scaleOffset + x * scale;
-		double newY = yOffset*scaleOffset + y * scale;
+		double newX = xOffset * scaleOffset + x * scale;
+		double newY = yOffset * scaleOffset + y * scale;
 		a.restoreXY(newX, newY);
 	}
 
 	private ContextMenu makeContextMenu(ActorView a) {
 		ContextMenu cm = new ContextMenu();
-		MenuItem moveActor = makeMenuItem(myResources.getString("move"), event -> moveActorFilter(a));
+		MenuItem moveActor = makeMenuItem(myResources.getString("move"), event -> moveActor(a));
 		MenuItem copyActor = makeMenuItem(myResources.getString("copy"), event -> copyActor(a));
 		MenuItem rotateActor = makeMenuItem(myResources.getString("rotate"), event -> rotateActor(a));
 		MenuItem resizeActor = makeMenuItem(myResources.getString("resize"), event -> resizeActor(a));
 		MenuItem deleteActor = makeMenuItem(myResources.getString("delete"), event -> removeActor(a));
-		MenuItem editParam = makeMenuItem(myResources.getString("editparams"), event -> editParams());
-		MenuItem editShip = makeMenuItem(myResources.getString("editship"), event -> editShip());
+		MenuItem editParam = makeMenuItem(myResources.getString("editparams"), event -> editParams(a));
+//		MenuItem editShip = makeMenuItem(myResources.getString("editship"), event -> editShip());
 
-		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, deleteActor, editParam, editShip);
+		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, editParam, deleteActor); //, editParam, editShip);
 
 		return cm;
 	}
@@ -129,23 +133,17 @@ public class ActorHandler extends AbstractVisual {
 		return res;
 	}
 
-	private void moveActorFilter(ActorView a) {
+	private void moveActor(ActorView a) {
 		map.setPanEnabled(false);
 		double origX = a.getXCoor();
 		double origY = a.getYCoor();
-		// create the filter
 		Rectangle r = makeFilterRectangle();
 		r.setOnDragDetected(e -> startMoveDrag(e, a, r));
 		r.setOnDragOver(e -> duringMoveDrag(e));
 		r.setOnDragDone(e -> endMoveDrag(e, a, r));
 		r.setOnDragDropped(e -> dropMoveDrag(e, a, r));
-		Button undo = makeButton(myResources.getString("restore"), e -> {
-			a.restoreXY(origX, origY);
-			viewManager.addElements(a.getImageView());
-		});
-		Pane spacer = makeSpacer();
-		Button finish = makeFinishButton(r);
-		replaceToolbar(makeLabel(myResources.getString("moveInstru")), spacer, undo, finish);
+
+		myEditMenu.makeMoveActorToolbar(a, r, e -> a.restoreXY(origX, origY));
 	}
 
 	private void duringMoveDrag(DragEvent e) {
@@ -159,8 +157,8 @@ public class ActorHandler extends AbstractVisual {
 		ClipboardContent content = new ClipboardContent();
 		content.putString(a.getXCoor() + " " + a.getYCoor());
 		db.setContent(content);
-		db.setDragView(a.getImageView().getImage(), a.getImageView().getImage().getWidth() / 2,
-				a.getImageView().getImage().getHeight() / 2);
+		db.setDragView(a.getSprite().getCroppedImage(), a.getSprite().getCroppedImage().getWidth() / 2,
+				a.getSprite().getCroppedImage().getHeight() / 2);
 	}
 
 	private void dropMoveDrag(DragEvent event, ActorView a, Rectangle r) {
@@ -169,7 +167,7 @@ public class ActorHandler extends AbstractVisual {
 		if (!checkOutOfBounds(a, event.getX(), event.getY())) {
 			a.restoreXY(event.getX(), event.getY());
 		}
-		viewManager.addElements(a.getImageView(), r);
+		viewManager.addElements(a.getSprite(), r);
 		event.setDropCompleted(true);
 		event.consume();
 	}
@@ -184,26 +182,18 @@ public class ActorHandler extends AbstractVisual {
 		ActorView aCopy = new ActorView(a);
 		double offset = Double.parseDouble(myResources.getString("copyoffset"));
 		addActor(aCopy, aCopy.getXCoor() + offset, aCopy.getYCoor() + offset);
-		moveActorFilter(aCopy);
+		moveActor(aCopy);
 	}
 
 	private void rotateActor(ActorView a) {
 		map.setPanEnabled(false);
 		Rectangle r = makeFilterRectangle();
 		r.setOnScroll(e -> handleScroll(e, a));
-		Node currNode = a.getImageView();
+		Node currNode = a.getSprite();
 		double heading = currNode.getRotate();
-		Button enterVal = makeButton(myResources.getString("actual"), e -> rotateDialog(a, true));
-		Button enterVal2 = makeButton(myResources.getString("relative"), e -> rotateDialog(a, false));
-		Separator s = new Separator();
 		int rotateInc = Integer.parseInt(myResources.getString("rotateIncrement"));
-		Button left = makeButton(makeImage(myResources.getString("left")), e -> rotateRight(a, -1 * rotateInc));
-		Button right = makeButton(makeImage(myResources.getString("right")), e -> rotateRight(a, rotateInc));
-		Button reset = makeButton(myResources.getString("restore"), e -> a.setRotation(heading));
-		Button finish = makeFinishButton(r);
-		Pane spacer = makeSpacer();
-		replaceToolbar(makeLabel(myResources.getString("rotateInstru")), enterVal, enterVal2, s, left, right, spacer,
-				reset, finish);
+		myEditMenu.makeRotateActorToolbar(a, heading, r, e -> rotateRight(a, rotateInc),
+				e -> rotateRight(a, -1 * rotateInc));
 	}
 
 	private void handleScroll(ScrollEvent e, ActorView a) {
@@ -214,39 +204,13 @@ public class ActorHandler extends AbstractVisual {
 		a.setRotation(a.getRotation() + i);
 	}
 
-	private void rotateDialog(ActorView a, boolean absolute) {
-		double initialHeading = 0;
-
-		if (!absolute) {
-			initialHeading = a.getRotation();
-		}
-
-		TextInputDialog popup = new TextInputDialog();
-		popup.setTitle(myResources.getString("rotate"));
-		popup.setHeaderText(myResources.getString("rotateInput"));
-		popup.showAndWait();
-
-		String newVal = popup.getEditor().getText();
-		try {
-			double degrees = Double.parseDouble(newVal);
-			a.setRotation(degrees + initialHeading);
-		} catch (Exception e) {
-			Alert error = new Alert(AlertType.ERROR, myResources.getString("parsedoubleerror"), ButtonType.OK);
-			error.showAndWait();
-		}
-	}
-
 	private void resizeActor(ActorView a) {
 		map.setPanEnabled(false);
 		Rectangle r = makeFilterRectangle();
 		r.setOnScroll(e -> handleResize(e, a));
 		int growInc = Integer.parseInt(myResources.getString("growIncrement"));
-		Button plus = makeButton(makeImage(myResources.getString("plus")), e -> increaseActorSize(a, growInc));
-		Button minus = makeButton(makeImage(myResources.getString("minus")), e -> increaseActorSize(a, -1 * growInc));
-		Pane spacer = makeSpacer();
-		Button finish = makeFinishButton(r);
-
-		replaceToolbar(makeLabel(myResources.getString("resizeInstru")), plus, minus, spacer, finish);
+		myEditMenu.makeResizeActorToolbar(a, r, e -> increaseActorSize(a, growInc),
+				e -> increaseActorSize(a, -1 * growInc));
 	}
 
 	private void handleResize(ScrollEvent e, ActorView a) {
@@ -260,89 +224,85 @@ public class ActorHandler extends AbstractVisual {
 		}
 	}
 
-	protected void removeActor(ActorView a) {
-		viewManager.removeElements(a.getImageView()); 
+	private void removeActor(ActorView a) {
+		myAVs.remove(a);
+		myAC.getLevelConstructor().getActorGroupsConstructor().deleteActor(a.getActor().getGroupName(), a.getActor().getUniqueID());
+		viewManager.removeElements(a.getSprite()); 
 	}
 
 	public void removeActor(Node element) {
 		viewManager.removeElements(element);
 	}
 
-	private void editParams() {
+	private void editParams(ActorView a) {
+		// Create the custom dialog.
+		Dialog<Pair<String, String>> dialog = new Dialog<>();
+		dialog.setTitle("Actor: " + a.getActor().getUniqueID());
+		dialog.setHeaderText("Edit Parameters");
 
+		// Set the icon (must be included in the project).
+
+		// Set the button types.
+		ButtonType loginButtonType = new ButtonType("Login", ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+		// Create the username and password labels and fields.
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setPadding(new Insets(20, 150, 10, 10));
+
+		int i = 0;
+		for(Property<?> p : a.getActor().getProperties()){
+			TextField t = new TextField();
+			t.insertText(0, p.getValue().toString());
+			grid.add(new Label(p.getUniqueID()), 0, i);
+			grid.add(t, 1, i);
+			i++;
+		}
+//		TextField username = new TextField();
+//		username.setPromptText("Username");
+//		TextField password = new TextField();
+//		password.setPromptText("Password");
+//
+//		grid.add(new Label("Username:"), 0, 0);
+//		grid.add(username, 1, 0);
+//		grid.add(new Label("Password:"), 0, 1);
+//		grid.add(password, 1, 1);
+
+		// Enable/Disable login button depending on whether a username was entered.
+		Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+		loginButton.setDisable(true);
+
+		// Do some validation (using the Java 8 lambda syntax).
+//		username.textProperty().addListener((observable, oldValue, newValue) -> {
+//		    loginButton.setDisable(newValue.trim().isEmpty());
+//		});
+
+		dialog.getDialogPane().setContent(grid);
+		dialog.showAndWait();
 	}
-
-	private void editShip() {
-
-	}
-
-
+//
+//	private void editShip() {
+//
+//	}
+	
 	private Rectangle makeFilterRectangle() {
 		Rectangle rect = new Rectangle(map.getMapWidth(), map.getMapHeight());
 		double opacity = Double.parseDouble(myResources.getString("opacity"));
 		rect.setFill(Color.rgb(255, 0, 0, opacity));
 		rect.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> finish(rect));
 		viewManager.addElements(rect);
-		rectangleOn = true;
+		myEditMenu.setEditing(true);
 		return rect;
 	}
 
-	private Label makeLabel(String desc) {
-		Label l = new Label(desc);
-		l.setFont(textFont);
-		return l;
-	}
-
-	private Button makeButton(String title, EventHandler<ActionEvent> handler) {
-		Button b = new Button(title);
-		b.setOnAction(handler);
-		b.setFont(textFont);
-		return b;
-	}
-
-	private Button makeButton(ImageView image, EventHandler<ActionEvent> handler) {
-		Button b = new Button();
-		b.setOnAction(handler);
-		b.setGraphic(image);
-		return b;
-	}
-
-	private ImageView makeImage(String s) {
-		Image img = new Image(getClass().getClassLoader().getResourceAsStream(s));
-		ImageView image = new ImageView(img);
-		image.setFitHeight(Double.parseDouble(myResources.getString("height")));
-		image.setPreserveRatio(true);
-		return image;
-	}
-
-	private Button makeFinishButton(Node... elementsToRemove) {
-		return makeButton(myResources.getString("finish"), e -> finish(elementsToRemove));
-	}
-
-	private void finish(Node... elementsToRemove) {
+	protected void finish(Node... elementsToRemove) {
 		viewManager.removeElements(elementsToRemove);
-		restoreToolbar();
+		myEditMenu.restoreToolbar();
 		map.setPanEnabled(true);
-		rectangleOn = false;
-	}
-
-	private Pane makeSpacer() {
-		Pane spacer = new Pane();
-		HBox.setHgrow(spacer, Priority.SOMETIMES);
-		return spacer;
-	}
-
-	private void replaceToolbar(Node... nodes) {
-		myToolbar.setPrefWidth(map.getMapWidth());
-		myToolbar.getItems().clear();
-		for (Node n : nodes) {
-			myToolbar.getItems().add(n);
-		}
-	}
-
-	private void restoreToolbar() {
-		myToolbar.getItems().clear();
-		myToolbar.getItems().add(defaultLabel);
+		myEditMenu.setEditing(false);
+		;
 	}
 
 	// returns true if out-of-bounds
@@ -355,23 +315,6 @@ public class ActorHandler extends AbstractVisual {
 			return true;
 		}
 		return false;
-	}
-
-	// TODO:
-	// input is rgb color code
-	// idea is to highlight an actor when an actor is selected - through a
-	// double click method?
-	// and through a second double click, actor is deselected.
-	// private Rectangle selectActor(int red, int green, int blue) {
-	// Image image = getImageFromActor(currActor);
-	// Rectangle rect = new Rectangle(image.getWidth() + 10, image.getHeight() +
-	// 10);
-	// rect.setFill(Color.rgb(255, 0, 0, 0.2));
-	// return rect;
-	// }
-
-	public boolean rectangleOn() {
-		return rectangleOn;
 	}
 
 	public void updateBackground(ImageView n) {

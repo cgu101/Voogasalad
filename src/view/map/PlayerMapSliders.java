@@ -6,12 +6,11 @@ import view.screen.AbstractScreenInterface;
 
 public class PlayerMapSliders extends MapSliders {
 
-	
-	public PlayerMapSliders(GridPane pane, GridPane home, String title, AbstractScreenInterface screen) {
-		super(pane, home, title, screen);
+	public PlayerMapSliders(GridPane home, String title, AbstractScreenInterface screen) {
+		super(home, title, screen);
 	}
 
-	public void initializeMap(view.map.Map map){
+	public void initializeMap(view.map.Map map) {
 		this.map = map;
 		makePane();
 	}

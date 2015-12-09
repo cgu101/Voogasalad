@@ -9,7 +9,7 @@ import view.visual.AbstractVisual;
  * 
  */
 public abstract class AbstractElement extends AbstractVisual {
-	public GridPane pane;
+	protected GridPane pane;
 
 	public AbstractElement(GridPane pane) {
 		this.pane = pane;

@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import authoring.model.bundles.Bundle;
 import authoring.model.game.Game;
+import authoring.model.properties.Property;
 import data.XMLManager;
 import exceptions.data.GameFileException;
 import javafx.geometry.Pos;
@@ -14,6 +16,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
+import resources.keys.PropertyKey;
+import resources.keys.PropertyKeyResource;
 import util.FileChooserUtility;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
@@ -32,7 +36,6 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	private static final int DEFAULT_MAP_PANE_INDEX = 0;
 
 	private Workspace w;
-	private ArrayList<GridPane> dockPanes;
 	private ArrayList<GridPane> homePanes;
 
 	private Game game;
@@ -72,10 +75,8 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		GridPane mapPane = new GridPane();
 		mapPane.add(myPanes.get(1), 0, 1);
 		r.setCenter(mapPane);
-		dockPanes = new ArrayList<GridPane>();
 		homePanes = new ArrayList<GridPane>();
 		for (int i = 0; i < 4; i++) {
-			dockPanes.add(new GridPane());
 			homePanes.add(new GridPane());
 		}
 		mapPane.add(homePanes.get(3), 0, 0);
@@ -86,18 +87,20 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 		rightPane.setAlignment(Pos.CENTER);
 		r.setRight(rightPane);
 		components = new ArrayList<AbstractDockElement>();
-		ActorBrowser browser = new ActorBrowser(dockPanes.get(0), homePanes.get(0),
-				myResources.getString("browsername"), this, w);
+		ActorBrowser browser = new ActorBrowser(homePanes.get(0), myResources.getString("browsername"), this, w);
 		components.add(browser);
-		ActorEditor editor = new ActorEditor(dockPanes.get(1), homePanes.get(1), myResources.getString("editorname"),
-				this, browser, w);
+		ActorEditor editor = new ActorEditor(homePanes.get(1), myResources.getString("editorname"), this, browser, w);
 		components.add(editor);
-		CreatorMapSliders slider = new CreatorMapSliders(dockPanes.get(2), homePanes.get(2),
-				myResources.getString("slidername"), this, w);
+		CreatorMapSliders slider = new CreatorMapSliders(homePanes.get(2), myResources.getString("slidername"), this,
+				w);
 		components.add(slider);
-		ActorHandlerToolbar aet = new ActorHandlerToolbar(dockPanes.get(3), homePanes.get(3),
-				myResources.getString("toolbarname"), this, w);
+		ActorHandlerToolbar aet = new ActorHandlerToolbar(homePanes.get(3), myResources.getString("toolbarname"), this,
+				w);
 		components.add(aet);
+		configureMap(browser, editor);
+	}
+
+	private void configureMap(ActorBrowser browser, ActorEditor editor) {
 		fullscreen.addListener(e -> manageMapSize(fullscreen.getValue(), browser.getDockedProperty().getValue(),
 				editor.getDockedProperty().getValue()));
 		browser.getDockedProperty().addListener(e -> manageMapSize(fullscreen.getValue(),
@@ -107,24 +110,37 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 	}
 
 	private void manageMapSize(boolean fullscreen, boolean browser, boolean editor) {
-		if (!fullscreen) {
+		if (w.getCurrentLevel() == null) {
+			return;
+		} else if (!fullscreen) {
 			if (!browser && !editor) {
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("med1width")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			} else {
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("smallestwidth")), Double.parseDouble(myResources.getString("smallscreenheight")));
 			}
 		} else {
+			w.refresh();
 			if (!browser && !editor) {
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("largestwidth")), Double.parseDouble(myResources.getString("bigscreenheight")));
 			} else {
-
+				w.getCurrentLevel().setMapDimensions(Double.parseDouble(myResources.getString("med2width")), Double.parseDouble(myResources.getString("bigscreeneheight")));
 			}
 		}
 	}
-
+	private void setProperties (Game game) {
+		Bundle<Property<?>> bundle = new Bundle<Property<?>>();
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_ID_KEY), "name"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_DESCRIPTION_KEY), "description"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.INITIAL_LEVEL_KEY), "0"));
+		bundle.add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.GAME_LEVEL_COUNT_KEY), "1"));
+		game.addAllProperties(bundle);
+	}
 	// TODO
 	public void saveGame() {
 		System.out.println("Testing saving game ");
 
 		try {
-			Game game = this.game;
+			setProperties(game);
 			File saveFile = FileChooserUtility.save(scene.getWindow());
 
 			String fileLocation = saveFile.getAbsolutePath();
@@ -162,6 +178,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 
 		Mail mail = (Mail) arg;
 
+		
 		w.forward(mail.getPath(), (Mail) arg);
 	}
 }

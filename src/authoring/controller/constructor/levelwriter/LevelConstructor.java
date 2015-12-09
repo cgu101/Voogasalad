@@ -40,8 +40,7 @@ public class LevelConstructor {
 	 * @param level
 	 * @return Level
 	 */
-	public Level buildLevel(String level) {
-		Level ret = new Level(level);
+	public Level buildLevel(Level ret) {
 		ret.setActorGroupsValues(actorConstructor);
 		ret.setTreeConstructorValues(treeConstructor);
 		ret.setMapConstructorValues(mapConstructor);

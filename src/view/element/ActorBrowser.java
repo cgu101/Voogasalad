@@ -1,8 +1,16 @@
 package view.element;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
 
 import authoring.controller.AuthoringController;
+import authoring.controller.constructor.configreader.AuthoringConfigManager;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -10,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
@@ -34,18 +43,16 @@ public class ActorBrowser extends AbstractDockElement {
 	private BooleanProperty doubleLists;
 	private AuthoringController controller;
 	private GridPane listPane;
-	private GridPane labelPane;
 
-	public ActorBrowser(GridPane pane, GridPane home, String title, AbstractScreenInterface screen,
-			Workspace workspace) {
-		super(pane, home, title, screen);
+	public ActorBrowser(GridPane home, String title, AbstractScreenInterface screen, Workspace workspace) {
+		super(home, title, screen);
 		findResources();
 		doubleLists = new SimpleBooleanProperty(true);
 		doubleLists.addListener(e -> toggleDoubleLists(doubleLists.getValue()));
 		this.controller = null;
 		workspace.addListener((ov, oldTab, newTab) -> {
-			if (workspace.getCurrentLevelInterface() != null) {
-				load(workspace.getCurrentLevelInterface().getController());
+			if (workspace.getCurrentLevel() != null) {
+				load(workspace.getCurrentLevel().getController());
 			} else {
 				load(null);
 			}
@@ -55,8 +62,7 @@ public class ActorBrowser extends AbstractDockElement {
 
 	@Override
 	protected void makePane() {
-		labelPane = makeLabelPane();
-		pane.add(labelPane, 0, 0);
+		pane.add(titlePane, 0, 0);
 		listPane = new GridPane();
 		pane.add(listPane, 0, 1);
 		actors = FXCollections.observableArrayList(new ArrayList<String>());
@@ -79,7 +85,12 @@ public class ActorBrowser extends AbstractDockElement {
 		rightlist.setItems(actors);
 		if (controller != null) {
 			actors.addAll(controller.getAuthoringActorConstructor().getActorList());
+			System.out.println(actors.toString());
 		}
+		// load new groups into ActorGroups
+		actors.forEach(a -> {
+			controller.getLevelConstructor().getActorGroupsConstructor().getActorGroups().addGroup(a);
+		});
 	}
 
 	private void configure(ListView<String> list) {
@@ -119,10 +130,60 @@ public class ActorBrowser extends AbstractDockElement {
 		event.consume();
 	}
 
-	public void addNewActor() {
-		// actors.add("Actor " + actors.size());
-		// TODO: add backend implementation
-		System.out.println("add actor");
+	public void addNewActor(String actorName, Map<String, String> properties) {
+		Properties prop = new Properties();
+		OutputStream output = null;
+		try {
+			output = new FileOutputStream("src/authoring/files/actors/" + actorName + ".properties");
+			String props = "";
+			for (Map.Entry<String, String> property : properties.entrySet()) {
+				props += property.getKey() + ",";
+				prop.setProperty(property.getKey(), property.getValue());
+			}
+			prop.setProperty("properties", props);
+			prop.store(output, "New User Defined Actor Added");
+		} catch (IOException io) {
+			io.printStackTrace();
+		} finally {
+			try {
+				output.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		FileInputStream in;
+		Properties props = new Properties();
+		try {
+			in = new FileInputStream("src/authoring/files/configuration.properties");
+			props.load(in);
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			FileOutputStream out = new FileOutputStream("src/authoring/files/configuration.properties");
+			String actors = props.getProperty("actors") + "," + actorName;
+			props.setProperty("actors", actors);
+			props.store(out, null);
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		AuthoringConfigManager.getInstance().refresh();
+		load(controller);
+
+	}
+
+
+	public void requestGroupName(Map<String, String> properties) {
+		TextInputDialog dialog = new TextInputDialog("walter");
+		dialog.setTitle("Group Name Input");
+		dialog.setHeaderText("Your new actor!");
+		dialog.setContentText("Please enter your actor's name:");
+
+		Optional<String> result = dialog.showAndWait();
+		result.ifPresent(name -> addNewActor(name, properties));
 	}
 
 	public BooleanProperty getDoubleListsProperty() {
@@ -133,13 +194,13 @@ public class ActorBrowser extends AbstractDockElement {
 		if (value) {
 			listPane.add(rightlist, 1, 1);
 			setWidth(leftlist, Double.parseDouble(myResources.getString("width")));
-			GridPane.setColumnSpan(labelPane, 2);
+			GridPane.setColumnSpan(titlePane, 2);
 			listPane.setAlignment(Pos.TOP_CENTER);
 		} else {
 			rightlist.getSelectionModel().clearSelection();
 			listPane.getChildren().remove(rightlist);
 			setWidth(leftlist, 2 * Double.parseDouble(myResources.getString("width")));
-			GridPane.setColumnSpan(labelPane, 1);
+			GridPane.setColumnSpan(titlePane, 1);
 		}
 	}
 

@@ -2,6 +2,7 @@ package authoring.controller;
 
 import java.util.List;
 
+import KeyLibrary.KeyLibrary;
 import authoring.controller.constructor.configreader.AuthoringActorConstructor;
 import authoring.controller.constructor.levelwriter.LevelConstructor;
 import authoring.controller.constructor.other.ConstructorFactory;
@@ -13,6 +14,7 @@ public class AuthoringController {
 	
 	private LevelConstructor levelConstructor;
 	private AuthoringActorConstructor authActorConstructor;
+	private KeyLibrary kl;
 	
 	/**
 	 * Constructor for AuthroingController. Creates new Level and AuthoringActor Constructor instances. 
@@ -20,6 +22,7 @@ public class AuthoringController {
 	public AuthoringController() {
 		levelConstructor = ConstructorFactory.getLevelConstructor();
 		authActorConstructor = ConstructorFactory.getAuthoringActorConstructor();
+		kl = new KeyLibrary(true);
 	}
 	
 	/**
@@ -60,12 +63,16 @@ public class AuthoringController {
 	 * @param levelBuilderList
 	 * @return
 	 */
-	public static Game getGameWithLevels (List<LevelConstructor> levelBuilderList) {
-		Game game = new Game();
-		for (int i = 0 ; i < levelBuilderList.size(); i++) {
-			game.addLevel(levelBuilderList.get(i).buildLevel(Integer.toString(i)));
-		}
-		return game;
-		
+//	public static Game getGameWithLevels (List<LevelConstructor> levelBuilderList) {
+//		Game game = new Game();
+//		for (int i = 0 ; i < levelBuilderList.size(); i++) {
+//			game.addLevel(levelBuilderList.get(i).buildLevel(Integer.toString(i)));
+//		}
+//		return game;
+//		
+//	}
+
+	public KeyLibrary getKeyLibrary() {
+		return kl;
 	}
 }

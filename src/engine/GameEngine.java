@@ -1,6 +1,9 @@
 package engine;
 
+import authoring.model.actors.Actor;
+import authoring.model.actors.ActorType;
 import authoring.model.bundles.Bundle;
+import authoring.model.game.ActorDependencyInjector;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
 import authoring.model.properties.Property;
@@ -25,11 +28,14 @@ public class GameEngine implements IEngine {
 	private Game game;
 	private InteractionExecutor levelExecutor;
 	private InputManager inputManager;
+	private ActorDependencyInjector depInjector;
 	
 	public GameEngine (InputManager inputManager) {
 		this.inputManager = inputManager;
 		this.game = null;
 		this.levelExecutor = null;
+		this.depInjector = new ActorDependencyInjector(this);
+		
 	}
 	
 	/**
@@ -48,34 +54,39 @@ public class GameEngine implements IEngine {
 		setExecutor(initialLevel, new State(propertyBundle,null));
 	}
 	private String getFirstLevelName (Game g) {
-		Object levelProperty = g.getProperty(initialLevelKey);
+		Property<?> levelProperty = g.getProperty(initialLevelKey);
 		String levelID = INITIAL_LEVEL;
 		if (levelProperty != null) {
-			levelID = levelProperty.toString();
+			levelID = (String) levelProperty.getValue();
 		}
 		return levelID;
 	}
 	private Level makeLevel(Game g, String levelID) {
 		return g.getLevel(levelID);
 	}
-	private Level makeLevel(String levelID) {
+	
+	
+	private Level makeLevel(String levelID, State state) {
 		if (levelID.equals(nextLevelKey)) {
-			return makeDefaultNextLevel(levelExecutor.getLevelID());
+			return makeDefaultNextLevel(levelExecutor.getLevelID(), state);
 		}
 		return game.getLevel(levelID);
 	}
-	private Level makeDefaultNextLevel (String currentLevelID) {
+	private Level makeDefaultNextLevel (String currentLevelID, State state) {
 		int nextLevelID = Integer.parseInt(currentLevelID) + 1;
+		// TODO end game
 		if (nextLevelID >= Integer.parseInt((String)game.getProperty(levelCountKey).getValue())) {
 			return null;
 		}
+		System.out.println("id "+nextLevelID);
 		String nextLevelName = Integer.toString(nextLevelID);
+		
 		return game.getLevel(nextLevelName);
 	}
 	private void setExecutor(Level level, State state) {
-		levelExecutor = new InteractionExecutor(level, inputManager, state);
+		levelExecutor = new InteractionExecutor(level, inputManager, state, depInjector);
 	}
-	
+
 	/**
 	 * Loads the first level of the game (level with ID "0")
 	 */
@@ -99,7 +110,7 @@ public class GameEngine implements IEngine {
 		String levelID = (String) state.getProperty(levelKey).getValue();
 		if (!levelID.equals(levelExecutor.getLevelID())) {
 			// SWITCH LEVEL
-			setExecutor(makeLevel(levelID), state);
+			setExecutor(makeLevel(levelID, state), state);
 		}
 		
 	}
@@ -130,17 +141,24 @@ public class GameEngine implements IEngine {
 	public void loadState (State state) throws EngineException {
 		if (state.getProperty(gameKey).getValue().equals(game.getProperty(gameKey).getValue())) {
 			Level level = game.getLevel((String) state.getProperty(levelKey).getValue());
-			levelExecutor = new InteractionExecutor(level, inputManager, state);
+			levelExecutor = new InteractionExecutor(level, inputManager, state, depInjector);
 		} else {
 			throw new EngineStateException("Wrong game", null);
 		}
 	}
 
 	// This method shouldn't really be used
-	@Override
+	@Override 
 	public void nextLevel() throws EngineException {
-		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID()),levelExecutor.getCurrentState());
+		changeDependencies();
+//		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID(), this.getState()),levelExecutor.getCurrentState());
 		
+		levelExecutor.getCurrentState().getPropertyBundle().add(new Property<String>(levelKey, nextLevelKey));
+		setExecutor(makeDefaultNextLevel(levelExecutor.getLevelID(), this.getState()),this.getState());
+	}
+	
+	private void changeDependencies () {
+		this.depInjector = new ActorDependencyInjector(this);
 	}
 
 	@Override
@@ -155,4 +173,9 @@ public class GameEngine implements IEngine {
 //		properties.add((Property<?>) b.getValue());
 //	}
 //	return properties;
+	
+	public void displayError (String errorMessage) {
+		//TODO
+		System.err.println(errorMessage);
+	}
 }
