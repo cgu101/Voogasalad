@@ -18,7 +18,6 @@ public class AuthoringActorConstructor {
 	private void reload() {
 		actorMap = new HashMap<String, ActorObject>();
 		for (String actor : AuthoringConfigManager.getInstance().getKeyList(ResourceType.ACTORS.toString())) {
-			System.out.println("actor="+actor);
 			if(actorMap.containsKey(actor)) continue;
 			actorMap.put(actor, new ActorObject(actor, AuthoringConfigManager.getInstance().getPropertyList(actor)));
 		}
