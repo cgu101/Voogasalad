@@ -31,7 +31,9 @@ public class MapViewManager extends AbstractVisual {
 	}
 
 	public void removeAll() {
+		Node background = mapLayout.getChildren().get(0);
 		mapLayout.getChildren().clear();
+		mapLayout.getChildren().add(background);
 	}
 
 	/**
