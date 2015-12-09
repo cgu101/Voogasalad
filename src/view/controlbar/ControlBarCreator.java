@@ -2,12 +2,9 @@ package view.controlbar;
 
 import java.io.File;
 import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
-import authoring.files.properties.ActorProperties;
 import authoring.model.level.Level;
 import authoring.model.tree.InteractionTreeNode;
 import javafx.animation.FadeTransition;
@@ -43,8 +40,8 @@ import view.screen.StartScreen;
 public class ControlBarCreator extends ControlBar implements Observer {
 
 	private static final String DEFAULT_IP = "localhost";
-	private static final String LEVEL_ID = "Level ";
-	private static final String SPLASH_ID = "Splash ";
+//	private static final String LEVEL_ID = "Level ";
+//	private static final String SPLASH_ID = "Splash ";
 
 	private CreatorScreen screen;
 	private GameWindow gameWindow;
