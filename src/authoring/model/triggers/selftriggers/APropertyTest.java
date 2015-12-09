@@ -10,7 +10,6 @@ public abstract class APropertyTest extends AActorSelfTrigger {
 	 */
 	private static final long serialVersionUID = 1622215949688922117L;
 
-	// TODO Fix hard-coded strings
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean condition(Parameters parameters, Actor actor) {

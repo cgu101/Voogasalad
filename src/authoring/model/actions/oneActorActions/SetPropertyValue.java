@@ -6,18 +6,17 @@ import authoring.model.tree.Parameters;
 import authoring.model.tree.ParametersKey;
 import engine.State;
 
-public class RotateClockwise extends AOneActorAction {
+public class SetPropertyValue extends AOneActorAction {
 	/**
 	 * Generated serial version ID
 	 */
-	private static final long serialVersionUID = -401773162575161667L;
-	private static final String ANGLE = "angle";
+	private static final long serialVersionUID = -8130811793608757750L;
 
 	@SuppressWarnings("rawtypes")
 	@Override
 	public void run(Parameters parameters, State state, Actor actor) {
-		Double rotation = (Double) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0");
-		Double angle = actor.getPropertyValue(ANGLE);
-		actor.setProperty(ANGLE, (angle + rotation) % 360);
+		String propetyName = (String) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0");
+		Double newValue = (Double) parameters.getParameter(ParametersKey.PARAM_PREFIX + "1");
+		actor.setProperty(propetyName, newValue);
 	}
 }

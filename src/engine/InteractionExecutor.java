@@ -69,6 +69,11 @@ public class InteractionExecutor {
 			this.currentState = state;
 			currentState.getPropertyBundle().add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.LEVEL_ID_KEY), currentLevelIdentifier));
 			currentState.setActorMap(level.getActorGroups());
+			if (level.getProperty(PropertyKeyResource.getKey(PropertyKey.LEVEL_BACKGROUND_KEY)) != null) {
+				currentState.setInstruction(c -> {
+					c.updateBackground((String)level.getProperty(PropertyKeyResource.getKey(PropertyKey.LEVEL_BACKGROUND_KEY)).getValue());
+				});
+			}
 			
 			this.triggerMap = level.getTriggerMap();
 			this.actionMap = level.getActionMap();
@@ -141,11 +146,9 @@ public class InteractionExecutor {
 			}
 		});
 		lambdaMap.put(TRIGGER_IDENTIFIER, (node, list) -> {
-//			System.out.println(triggerMap.values());
 			ITriggerEvent triggerEvent = triggerMap.get(node.getValue());
 			if (triggerEvent.condition(((ParameterTreeNode) node).getParameters(), inputMap, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
 				for (InteractionTreeNode child : node.children()) {
-//					System.out.println(child.getIdentifier());
 					lambdaMap.get(child.getIdentifier()).apply(child, list);
 				}
 			}
@@ -186,7 +189,6 @@ public class InteractionExecutor {
 		public void apply (A a, B b);
 	}
 	protected State getCurrentState() {
-		// TODO Auto-generated method stub
 		return currentState;
 	}
 }

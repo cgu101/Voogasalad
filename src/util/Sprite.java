@@ -89,6 +89,7 @@ public class Sprite extends ImageView {
 			images.put(sheet, this.getImage());
 		rect = new Rectangle2D(0, 0, width, height);
 		this.setViewport(rect);
+		//initWidthHeight(sheet);
 		labels = new HashMap<String, Integer>();
 		rowLengths = new HashMap<Integer, Integer>();
 		for (int i = 0; i < (int) (this.getImage().getHeight() / this.rect.getHeight()); i++) {

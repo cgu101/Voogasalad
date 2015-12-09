@@ -28,6 +28,10 @@ public class ActorGroupsConstructor {
 		actorGroups = new ActorGroups();
 	}
 	
+	public void setActorGroups (ActorGroups actorGroup) {
+		this.actorGroups = actorGroup;
+	}
+	
 	/**
 	 * Returns the ActorGroups instance that has been built by the user. 
 	 * @return ActorGroups

@@ -22,6 +22,10 @@ public class MapConstructor {
 		addValueToMap(AuthoringConfigManager.getInstance().getKeyList(ResourceType.ACTIONS.toString()), ResourceType.ACTIONS);
 	}
 	
+	public void setItemsMap (Map<ResourceType, Map> map) {
+		this.itemsMap = map;
+	}
+	
 	/**
 	 * Returns the trigger map. 
 	 * 

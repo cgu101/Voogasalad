@@ -45,7 +45,7 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
-		createTestGame2();
+//		createTestGame2();
 		launch(args);
 	}
 	
@@ -53,7 +53,7 @@ public class Main extends Application {
 	 * Up Arrow: Move Mega Man forward
 	 * Left Arrow: Turn Mega Man left
 	 * Right Arrow: Turn Mega Man right
-	 * Space Bar: Shoot bullet (bullets are currently using rcd.jpg)
+	 * Space Bar: Shoot Bullet (Bullets are currently using rcd.jpg)
 	 */
 	private static void createTestGame2() {
 		//Test
@@ -67,7 +67,8 @@ public class Main extends Application {
 		TreeConstructor tc = new TreeConstructor();  //Changed constructor from none to public
 		MapConstructor m = new MapConstructor();
 		ActorGroupsConstructor ac = new ActorGroupsConstructor();	// Changed constructor from nothing to public
-		ac.getActorGroups().addGroup("bullet");		
+		ac.getActorGroups().addGroup("Bullet");		
+		ac.getActorGroups().addGroup("Asteroid");		
 
 		//MegaMan Actor
 		ActorPropertyMap apmMegaMan = new ActorPropertyMap();
@@ -85,7 +86,7 @@ public class Main extends Application {
 		//Asteroid Actors
 		Random generator = new Random();
 		ActorPropertyMap apmAsteroid = new ActorPropertyMap();
-		apmAsteroid.addProperty("groupID", "asteroid");
+		apmAsteroid.addProperty("groupID", "Asteroid");
 		apmAsteroid.addProperty("image", "asteroids.png");
 		apmAsteroid.addProperty("size", "128");
 		apmAsteroid.addProperty("health", "20");
@@ -114,8 +115,8 @@ public class Main extends Application {
 		ActorPropertyMap apmGlobal = new ActorPropertyMap();
 		apmGlobal.addProperty("groupID", "LevelTransition");
 		apmGlobal.addProperty("image", "rcd.jpg");
-		apmGlobal.addProperty("xLocation", "300");
-		apmGlobal.addProperty("yLocation", "300");
+		apmGlobal.addProperty("xLocation", "-300");
+		apmGlobal.addProperty("yLocation", "-300");
 		apmGlobal.addProperty("size", "300");
 		ac.updateActor("GlobalActor", apmGlobal);
 		
@@ -143,7 +144,7 @@ public class Main extends Application {
 		triggerList.clear();
 		triggerList.add("SpaceBarKey");
 		actionList.clear();
-		actionList.add("ShootBullet");
+		actionList.add("SpawnActor");
 		tc.addTreeNode(actorList, triggerList, actionList);
 
 		triggerList.clear();
@@ -171,7 +172,7 @@ public class Main extends Application {
 		
 		// Asteroid Self Triggers
 		actorList.clear();
-		actorList.add("asteroid");
+		actorList.add("Asteroid");
 //		triggerList.clear();
 //		triggerList.add("authoring.model.triggers.selfconditions.DownArrowKey");
 //		actionList.clear();
@@ -186,7 +187,7 @@ public class Main extends Application {
 		
 		// Bullet Self Triggers
 		actorList.clear();
-		actorList.add("bullet");
+		actorList.add("Bullet");
 		triggerList.clear();
 		triggerList.add("TrueSelfTrigger");
 		actionList.clear();
@@ -200,20 +201,20 @@ public class Main extends Application {
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
 		// External Triggers
-		//Remove asteroid when asteroid and bullet collide
+		//Remove Asteroid when Asteroid and Bullet collide
 		actorList.clear();
-		actorList.add("asteroid");
-		actorList.add("bullet");
+		actorList.add("Asteroid");
+		actorList.add("Bullet");
 		triggerList.clear();
 		triggerList.add("CircleCollision");
 		actionList.clear();
 		actionList.add("RemoveActor");
 		tc.addTreeNode(actorList, triggerList, actionList);
 		
-		//Remove bullet when asteroid and bullet collide
+		//Remove Bullet when Asteroid and Bullet collide
 		actorList.clear();
-		actorList.add("bullet");
-		actorList.add("asteroid");
+		actorList.add("Bullet");
+		actorList.add("Asteroid");
 		triggerList.clear();
 		triggerList.add("CircleCollision");
 		actionList.clear();
@@ -250,8 +251,8 @@ public class Main extends Application {
 		
 //		//Asteroid Actors
 //		ActorPropertyMap apmAsteroid1 = new ActorPropertyMap();
-//		apmAsteroid1.addProperty("groupID", "asteroid");
-//		apmAsteroid1.addProperty("image", "asteroids.png");
+//		apmAsteroid1.addProperty("groupID", "Asteroid");
+//		apmAsteroid1.addProperty("image", "Asteroids.png");
 //		apmAsteroid1.addProperty("size", "128");
 //		apmAsteroid1.addProperty("health", "20");
 //		apmAsteroid1.addProperty("xLocation", Integer.toString(generator.nextInt(701)));

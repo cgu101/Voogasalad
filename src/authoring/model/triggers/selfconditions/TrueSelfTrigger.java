@@ -10,9 +10,6 @@ public class TrueSelfTrigger extends AActorSelfTrigger {
 	 */
 	private static final long serialVersionUID = -7049875777286733171L;
 
-	public TrueSelfTrigger() {
-	}
-
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean condition(Parameters parameters, Actor actor) {

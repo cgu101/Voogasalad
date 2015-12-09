@@ -17,10 +17,16 @@
 
 * Deprecated property size needs to be removed.
 
+* When in the authoring environment, editing an individual actor by right clicking and changing properties does not change its representation on the map accordingly.
+
+* Load Game File from authoring environment doesnt work
+
+* Minimap serves essentially no purpose
+
+
 #Considerations
 
 * Make Parameter Objects Immutable
-* Why do keycode triggers use "keycode" as the key to the parameter? Please use ParametersKey type + index
 
 #Resolved
 * Sprites are not centered over their location.  Instead, the location is the top left corner of the sprite.
