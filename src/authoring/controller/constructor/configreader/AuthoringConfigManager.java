@@ -93,7 +93,6 @@ public class AuthoringConfigManager {
 	 * 
 	 */
 	public String getTypeInfo(String type, String instance, String info) {
-		System.out.println(type + " " + instance + " " + info);
 		return bundleMaps.get(type).get(instance).getString(info);
 	}
 

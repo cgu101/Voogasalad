@@ -46,8 +46,6 @@ public class ShootBullet<V> extends AOneActorAction {
 		Property<Double> speedB = new Property<Double>(ActorProperties.SPEED.getKey(), 50.0);
 		Property<Double> distanceB = new Property<Double>(ActorProperties.DISTANCE_TRAVELED.getKey(), 0.0);
 		
-//		System.out.println("MegaMan: (" + x.getValue() + " , " + y.getValue() + ")");
-//		System.out.println(" Bullet: (" + xB.getValue() + " , " + yB.getValue() + ")");
 
 		Bundle<Property<?>> propBundle = new Bundle<Property<?>>();
 		propBundle.add(angleB);

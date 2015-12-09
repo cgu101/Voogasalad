@@ -168,7 +168,6 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	}
 
 	private void loadGame () {
-		System.out.println("Testing loading game ");
 
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Game File Loader");
@@ -209,7 +208,6 @@ public class ControlBarCreator extends ControlBar implements Observer {
 //			System.out.println("Load Succcess");
 		} catch (GameFileException e) {
 			e.printStackTrace();
-			System.out.println("Something wrong with the game load");
 		}
 	}
 

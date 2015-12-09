@@ -188,7 +188,6 @@ public class CreatorScreen extends AbstractScreen implements Observer, Anscestra
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("Observer update");
 		
 		Mail mail = (Mail) arg;		
 		forward(mail.getPath(), (Mail) arg);

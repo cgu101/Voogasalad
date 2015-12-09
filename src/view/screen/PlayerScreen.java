@@ -138,7 +138,6 @@ public class PlayerScreen extends AbstractScreen {
 	 * Method that calls for the player to save the game state.
 	 */
 	public void saveState() {
-		System.out.println("Testing saving game state ");
 
 		try {
 			File saveFile = FileChooserUtility.save(scene.getWindow());

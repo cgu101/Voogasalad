@@ -70,7 +70,6 @@ public class PlayerController implements IPlayer {
 		if (first) {
 			pause();
 		}
-		System.out.println("PlayController.loadGame(" + fileName + ")");
 		Game game = XMLManager.loadGame(fileName);
 		myEngine.init(game);
 		if (first) actorMonitor.resetData();
@@ -94,7 +93,6 @@ public class PlayerController implements IPlayer {
 		myGameLoop.getKeyFrames().add(frame);
 		myGameLoop.play();
 		mySpriteManager.resume();
-		System.out.println("Game started...");
 	}
 
 	/**
