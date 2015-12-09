@@ -85,10 +85,9 @@ public class LevelMap extends Map implements Anscestral {
 	}
 
 	private void setLevelType() {
-		// TODO Auto-generated method stub
-		if (myLevel.getUniqueID().startsWith(LEVEL_IDENTIFIER)) {
+		if (myLevel.getProperty(myResources.getString("type")).getValue().equals(LEVEL_IDENTIFIER)) {
 			type = LevelType.LEVEL;
-		} else if (myLevel.getUniqueID().startsWith(SPLASH_IDENTIFIER)) {
+		} else if (myLevel.getProperty(myResources.getString("type")).getValue().equals(SPLASH_IDENTIFIER)) {
 			type = LevelType.SPLASH;
 		} else {
 			type = null;
