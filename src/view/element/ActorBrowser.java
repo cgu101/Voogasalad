@@ -85,8 +85,9 @@ public class ActorBrowser extends AbstractDockElement {
 			actors.addAll(controller.getAuthoringActorConstructor().getActorList());
 			System.out.println(actors.toString());
 		}
+		// load new groups into ActorGroups
 		actors.forEach(a -> {
-			controller.getLevelConstructor().getActorGroupsConstructor();
+			controller.getLevelConstructor().getActorGroupsConstructor().getActorGroups().addGroup(a);
 		});
 	}
 
