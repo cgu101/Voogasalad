@@ -9,6 +9,7 @@ import java.util.Observer;
 import authoring.files.properties.ActorProperties;
 import authoring.model.game.Game;
 import authoring.model.level.Level;
+import authoring.model.properties.Property;
 import authoring.model.tree.InteractionTreeNode;
 import data.XMLManager;
 import exceptions.data.GameFileException;
@@ -37,6 +38,8 @@ import network.framework.format.Mail;
 import network.framework.format.Request;
 import network.instances.DataDecorator;
 import network.util.PostalNetwork;
+import resources.keys.PropertyKey;
+import resources.keys.PropertyKeyResource;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
 import view.screen.CreatorScreen;
@@ -293,10 +296,16 @@ public class ControlBarCreator extends ControlBar implements Observer {
 				new FileChooser.ExtensionFilter("PNG", "*.png"));
 
 		File file = fileChooser.showOpenDialog(null);
-		Image backgroundImage = new Image(file.toURI().toString());
+		try {
+			String fileString = file.toURI().toString();
+			Image backgroundImage = new Image(fileString);
 
-		this.screen.getWorkspace().getCurrentLevel().updateBackground(backgroundImage);
-
+			this.screen.getWorkspace().getCurrentLevel().updateBackground(backgroundImage);
+			this.screen.getWorkspace().getCurrentLevel().updateLevelProperty(
+					new Property<String>(PropertyKeyResource.getKey(PropertyKey.LEVEL_BACKGROUND_KEY),fileString));
+		} catch (Exception e) {
+			
+		}
 	}
 
 	private void toggleToolbar(Boolean value) {

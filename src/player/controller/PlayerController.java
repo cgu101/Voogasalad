@@ -18,6 +18,7 @@ import exceptions.engine.EngineStateException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
@@ -120,7 +121,7 @@ public class PlayerController implements IPlayer {
 
 	private void run() {
 		try {
-			myEngine.play();
+			consumeInstruction(myEngine.play());
 			mySpriteManager.updateSprites(getIndividualActorsList(), this.myScene);
 			myEngine.getState().areThereNewOrDeadActors();
 			refreshPlayerComponents();
@@ -131,6 +132,13 @@ public class PlayerController implements IPlayer {
 		}
 	}
 
+
+	private void consumeInstruction(State state) {
+		if (state.getInstruction() != null) {
+			state.getInstruction().apply(this);
+			state.setInstruction(null);
+		}
+	}
 
 	/**
 	 * This method grabs the actors from the state returned by the engine.
@@ -310,4 +318,19 @@ public class PlayerController implements IPlayer {
 	public view.map.Map getMap(){
 		return mySpriteManager.getMap();
 	}
+
+	public void endGame() {
+		try {
+			pause();
+		} catch (GameFileException e) {
+			// TODO 
+			e.printStackTrace();
+			((GameEngine) myEngine).displayError(e.getMessage());
+		}
+		
+	}
+	public void updateBackground(String filename) {
+		mySpriteManager.getMap().updateBackground(new Image(filename));
+	}
+
 }

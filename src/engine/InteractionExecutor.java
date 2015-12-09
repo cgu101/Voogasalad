@@ -69,6 +69,11 @@ public class InteractionExecutor {
 			this.currentState = state;
 			currentState.getPropertyBundle().add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.LEVEL_ID_KEY), currentLevelIdentifier));
 			currentState.setActorMap(level.getActorGroups());
+			if (level.getProperty(PropertyKeyResource.getKey(PropertyKey.LEVEL_BACKGROUND_KEY)) != null) {
+				currentState.setInstruction(c -> {
+					c.updateBackground((String)level.getProperty(PropertyKeyResource.getKey(PropertyKey.LEVEL_BACKGROUND_KEY)).getValue());
+				});
+			}
 			
 			this.triggerMap = level.getTriggerMap();
 			this.actionMap = level.getActionMap();

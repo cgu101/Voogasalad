@@ -8,6 +8,7 @@ import authoring.model.properties.Property;
 import exceptions.EngineException;
 import exceptions.engine.EngineStateException;
 import player.InputManager;
+import player.controller.PlayerController;
 import resources.keys.PropertyKey;
 import resources.keys.PropertyKeyResource;
 
@@ -73,6 +74,10 @@ public class GameEngine implements IEngine {
 		int nextLevelID = Integer.parseInt(currentLevelID) + 1;
 		// TODO end game
 		if (nextLevelID >= Integer.parseInt((String)game.getProperty(levelCountKey).getValue())) {
+			state.setInstruction((controller) -> {
+				controller.endGame();
+			});
+			// return null??
 			return null;
 		}
 		String nextLevelName = Integer.toString(nextLevelID);
@@ -162,7 +167,6 @@ public class GameEngine implements IEngine {
 		State state = levelExecutor.getCurrentState();
 		setExecutor(makeLevel(levelExecutor.getLevelID(),state), state);
 	}
-	
 	public void displayError (String errorMessage) {
 		//TODO
 		System.err.println(errorMessage);
