@@ -42,6 +42,7 @@ import resources.keys.PropertyKey;
 import resources.keys.PropertyKeyResource;
 import view.element.AbstractDockElement;
 import view.element.ActorBrowser;
+import view.level.LevelType;
 import view.screen.CreatorScreen;
 import view.screen.StartScreen;
 
@@ -213,6 +214,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 
 	private void addNewLevel() {
 		Level newLevel = new Level(Integer.toString(screen.getGame().getLevels().size()));
+		newLevel.getPropertyBundle().add(new Property<String>(myResources.getString("type"), myResources.getString("leveltype")) );
 		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, new ArrayDeque<String>());
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
 		screen.getWorkspace().updateObservers(dataMail);
@@ -223,6 +225,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 
 	private void addNewSplash() {
 		Level newSplash = new Level(Integer.toString(screen.getGame().getLevels().size()));
+		newSplash.getPropertyBundle().add(new Property<String>(myResources.getString("type"), myResources.getString("splashtype")) );
 		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, new ArrayDeque<String>());
 		screen.getWorkspace().forward(dataMail.getPath(), dataMail);
 	}

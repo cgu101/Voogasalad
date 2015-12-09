@@ -5,6 +5,7 @@ import java.util.Date;
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
+import authoring.model.properties.Property;
 import javafx.scene.image.Image;
 import util.Sprite;
 import view.visual.AbstractVisual;
@@ -53,12 +54,12 @@ public class ActorView extends AbstractVisual {
 		String uniqueID = new Date().toString();
 		myController.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, myMap);
 		myActor = myController.getLevelConstructor().getActorGroupsConstructor().getActor(myType, uniqueID);
+		String img = (String) myActor.getProperties().getComponents().get("image").getValue();
 
 		Double offset = Double.parseDouble(myResources.getString("copyoffset"));
 		myXCoor = copy.getXCoor() + offset;
 		myYCoor = copy.getYCoor() + offset;
 		myFitWidth = copy.getWidth(); 
-		String img = (String) myActor.getProperties().getComponents().get("image").getValue();
 		
 		myMap.addProperty(myResources.getString("width"), "" + getWidth());
 		myMap.addProperty(myResources.getString("image"), img);
@@ -70,6 +71,13 @@ public class ActorView extends AbstractVisual {
 		setupNode();
 		myMap.addProperty(myResources.getString("height"), "" + getHeight());
 		mapChanged();
+	}
+	
+	protected void updateNode() {
+		myXCoor = Double.parseDouble(myResources.getString("x"));
+		myYCoor = Double.parseDouble(myResources.getString("y"));
+		myRotation = Double.parseDouble(myResources.getString("angle"));
+		// if width is changed , if height is changed
 	}
 
 	protected Actor getActor() {
@@ -92,6 +100,8 @@ public class ActorView extends AbstractVisual {
 		double width = image.getWidth();
 		double height = image.getHeight();
 		dimensionRatio = height / width;
+		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
+		mapChanged();
 
 		// return new ImageView(image);
 		Sprite ret = new Sprite(img);
@@ -147,24 +157,31 @@ public class ActorView extends AbstractVisual {
 	}
 
 	protected void scaleDimensions(double percent) {
-		myFitWidth *= percent; // TODO: size?
-		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
-		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
-		mapChanged();
+		myFitWidth *= percent; 
 		preserveCenter();
 	}
 
 	protected void addDimensions(double increase) {
 		myFitWidth += increase;
-		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
-		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
-		mapChanged();
+		preserveCenter();
+	}
+	
+	protected void setWidth(double width) {
+		myFitWidth = width;
+		preserveCenter();
+	}
+	
+	protected void setHeight(double height) {
+		myFitWidth = height / dimensionRatio;
 		preserveCenter();
 	}
 
 	private void preserveCenter() {
 		mySprite.setFitWidth(myFitWidth);
 		mySprite.setPreserveRatio(true);
+		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
+		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
+		mapChanged();
 		restoreXY(myXCoor, myYCoor);
 	}
 
