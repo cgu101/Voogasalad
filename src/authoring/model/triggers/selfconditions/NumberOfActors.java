@@ -18,8 +18,6 @@ public class NumberOfActors extends AStateTrigger {
 		String groupID = (String) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0");
 		double numberD = (double) parameters.getParameter(ParametersKey.PARAM_PREFIX + "1");
 		int number = (int) numberD;
-		System.out.println("Actors: " +  state.getActorMap().getGroup(groupID).getSize());
-		System.out.println("Number: " + number);
 		return state.getActorMap().getGroup(groupID).getSize() == number;
 	}
 }
