@@ -30,7 +30,9 @@ public class MapViewManager extends AbstractVisual {
 		}
 	}
 
-	// TODO: figure out scaling here
+	public void removeAll() {
+		mapLayout.getChildren().clear();
+	}
 
 	/**
 	 * Removes the current background and adds the specified background as the

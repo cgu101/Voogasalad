@@ -5,6 +5,7 @@ import java.util.Date;
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
+import authoring.model.properties.Property;
 import javafx.scene.image.Image;
 import util.Sprite;
 import view.visual.AbstractVisual;
@@ -53,12 +54,12 @@ public class ActorView extends AbstractVisual {
 		String uniqueID = new Date().toString();
 		myController.getLevelConstructor().getActorGroupsConstructor().updateActor(uniqueID, myMap);
 		myActor = myController.getLevelConstructor().getActorGroupsConstructor().getActor(myType, uniqueID);
+		String img = (String) myActor.getProperties().getComponents().get("image").getValue();
 
 		Double offset = Double.parseDouble(myResources.getString("copyoffset"));
 		myXCoor = copy.getXCoor() + offset;
 		myYCoor = copy.getYCoor() + offset;
 		myFitWidth = copy.getWidth(); 
-		String img = (String) myActor.getProperties().getComponents().get("image").getValue();
 		
 		myMap.addProperty(myResources.getString("width"), "" + getWidth());
 		myMap.addProperty(myResources.getString("image"), img);

@@ -232,6 +232,11 @@ public class ActorHandler extends AbstractVisual {
 	public void removeActor(Node element) {
 		viewManager.removeElements(element);
 	}
+	
+	public void clearMap() {
+		myAVs.clear();
+		viewManager.removeAll();
+	}
 
 	private void editParams(ActorView a) {
 		// Create the custom dialog.
@@ -251,7 +256,7 @@ public class ActorHandler extends AbstractVisual {
 
 		int i = 0;
 		for(Property<?> p : a.getActor().getProperties()){
-			if(p.getUniqueID() != "groupID"||p.getUniqueID() != "image"){
+			if(!p.getUniqueID().equals("groupID")&&!p.getUniqueID().equals("image")){
 				TextField t = new TextField();
 				t.insertText(0, p.getValue().toString());
 				grid.add(new Label(p.getUniqueID()), 0, i);
@@ -260,7 +265,7 @@ public class ActorHandler extends AbstractVisual {
 				t.textProperty().addListener((observable, oldValue, newValue) -> {
 					try {
 						double newVal = Double.parseDouble(newValue);
-						p.setValue(newValue);
+						p.setValue(newVal);
 						updateNode(a, p.getUniqueID(), newVal);
 					} catch (Exception e) {
 						Alert alert = new Alert(AlertType.ERROR, myResources.getString("doubleerror"), ButtonType.OK);
