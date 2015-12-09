@@ -152,12 +152,12 @@ public abstract class Map extends AbstractElement {
 	 */
 	public void updateBackground(Image bg) {
 		background = new ImageView(bg);
-		background.setFitWidth(200);
+		background.setFitWidth(1500);
 		background.setSmooth(true);
 		background.setCache(true);
 		if (!preserveMapRatio) {
 			background.setPreserveRatio(false);
-			background.setFitHeight(200);
+			background.setFitHeight(750);
 		} else {
 			background.setFitHeight(mapRegularWidth * bg.getHeight()/bg.getWidth());
 		}
