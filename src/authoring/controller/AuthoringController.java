@@ -63,14 +63,14 @@ public class AuthoringController {
 	 * @param levelBuilderList
 	 * @return
 	 */
-	public static Game getGameWithLevels (List<LevelConstructor> levelBuilderList) {
-		Game game = new Game();
-		for (int i = 0 ; i < levelBuilderList.size(); i++) {
-			game.addLevel(levelBuilderList.get(i).buildLevel(Integer.toString(i)));
-		}
-		return game;
-		
-	}
+//	public static Game getGameWithLevels (List<LevelConstructor> levelBuilderList) {
+//		Game game = new Game();
+//		for (int i = 0 ; i < levelBuilderList.size(); i++) {
+//			game.addLevel(levelBuilderList.get(i).buildLevel(Integer.toString(i)));
+//		}
+//		return game;
+//		
+//	}
 
 	public KeyLibrary getKeyLibrary() {
 		return kl;

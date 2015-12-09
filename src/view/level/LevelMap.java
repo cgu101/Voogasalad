@@ -1,5 +1,6 @@
 package view.level;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Deque;
 
@@ -65,6 +66,11 @@ public class LevelMap extends Map implements Anscestral {
 		mapScrollableArea.setOnDragOver(event -> dragAroundMap(event));
 		mapScrollableArea.setOnDragDropped(event -> dragFinished(event));
 		myLevel = l;
+		
+		/**
+		 * Add level triggers, ...
+		 */
+		this.controller.getLevelConstructor().buildLevel(myLevel);
 
 		setLevelType();
 
@@ -202,6 +208,25 @@ public class LevelMap extends Map implements Anscestral {
 
 	}
 
+//	@Override
+//	public void forward (Deque<String> aDeque, Mail mail) {
+//		if (!aDeque.isEmpty()) {
+//			String aID = aDeque.poll();
+//			
+//			Serializable Data = mail.getData();
+//			
+//			if (data ) {
+//				
+//			} else { //
+//				
+//			}
+//			
+//			getChild(aID).forward(aDeque, mail);
+//		} else {
+//			process(mail);
+//		}
+//	}
+	
 	@Override
 	public Anscestral getChild(String id) {
 		// TODO Auto-generated method stub
