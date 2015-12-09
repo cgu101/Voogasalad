@@ -1409,6 +1409,13 @@
             <obs/>
             <components>
               <entry>
+                <string>background</string>
+                <authoring.model.properties.Property>
+                  <myValue class="string">file:/C:/Users/Tyler/workspace/voogasalad_IllegalTeamNameException/images/space.jpg</myValue>
+                  <identifier>background</identifier>
+                </authoring.model.properties.Property>
+              </entry>
+              <entry>
                 <string>type</string>
                 <authoring.model.properties.Property>
                   <myValue class="string">Level</myValue>
