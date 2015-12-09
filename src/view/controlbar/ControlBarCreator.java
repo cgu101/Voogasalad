@@ -239,7 +239,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	        put("groupID","NewActor");
 	        put("width","10");
 	        put("height","10");
-	        put("size","10");
+	        put("size","12");
 	    }};
 		findActorBrowser().addNewActor("NewActor", props);
 		if (!findActorBrowser().getShowingProperty().getValue()) {
