@@ -178,6 +178,7 @@ public class CreatorScreen extends AbstractScreen implements Observer {
 
 		Mail mail = (Mail) arg;
 
+		
 		w.forward(mail.getPath(), (Mail) arg);
 	}
 }

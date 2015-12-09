@@ -103,7 +103,7 @@ public class AuthoringConfigManager {
 	 * @return List<String> 
 	 */	
 	public List<String> getPropertyList(String actor) {
-		return splitString(getTypeInfo(ResourceType.ACTORS, actor, ResourceType.PROPERTIES));
+		return splitString(getTypeInfo(ResourceType.ACTORS.toString(), actor, ResourceType.PROPERTIES.toString()));
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class AuthoringConfigManager {
 	 * @return String
 	 */
 	public String getDefaultPropertyValue(String actor, String property) {
-		return getTypeInfo(ResourceType.ACTORS, actor, property);
+		return getTypeInfo(ResourceType.ACTORS.toString(), actor, property);
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class AuthoringConfigManager {
 	 * @return String
 	 */
 	public String getPropertyType(String property) {
-		return getTypeInfo(ResourceType.PROPERTIES, property, ResourceType.TYPE);
+		return getTypeInfo(ResourceType.PROPERTIES.toString(), property, ResourceType.TYPE.toString());
 	}
 
 	/**

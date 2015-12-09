@@ -9,6 +9,7 @@ import authoring.model.Anscestral;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import authoring.model.level.Level;
+import authoring.model.tree.InteractionTreeNode;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
@@ -205,27 +206,31 @@ public class LevelMap extends Map implements Anscestral {
 	@Override
 	public void process(Mail mail) {
 		// TODO Auto-generated method stub
-
+		if (mail.getData() instanceof InteractionTreeNode) {
+//			this.myTree = (InteractionTreeNode) mail.getData();
+			setChanged();
+//			notifyObservers(this.myTree);
+		} else {
+			
+		}
 	}
 
-//	@Override
-//	public void forward (Deque<String> aDeque, Mail mail) {
-//		if (!aDeque.isEmpty()) {
-//			String aID = aDeque.poll();
-//			
-//			Serializable Data = mail.getData();
-//			
-//			if (data ) {
-//				
-//			} else { //
-//				
-//			}
-//			
-//			getChild(aID).forward(aDeque, mail);
-//		} else {
-//			process(mail);
-//		}
-//	}
+	@Override
+	public void forward (Deque<String> aDeque, Mail mail) {
+		if (!aDeque.isEmpty()) {
+			String aID = aDeque.poll();			
+			Serializable data = mail.getData();			
+			if (data instanceof InteractionTreeNode) {
+				
+			} else { // ActorGrousp
+				
+			}
+			
+			getChild(aID).forward(aDeque, mail);
+		} else {
+			process(mail);
+		}
+	}
 	
 	@Override
 	public Anscestral getChild(String id) {

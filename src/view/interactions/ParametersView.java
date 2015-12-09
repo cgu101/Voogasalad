@@ -55,7 +55,7 @@ public class ParametersView {
 		this.controller = controller;
 		this.actors = actors;
 
-		type = node.getIdentifier().equals(TRIGGER_IDENTIFIER) ? ResourceType.TRIGGERS : ResourceType.ACTIONS;
+		type = node.getIdentifier().equals(TRIGGER_IDENTIFIER) ? ResourceType.TRIGGERS.toString() : ResourceType.ACTIONS.toString();
 		makePane();
 		init();
 	}
@@ -123,14 +123,14 @@ public class ParametersView {
 		ComboBox<String> options = new ComboBox<String>();
 		// assumes there will always be actors
 		if (actors.length == 1) {
-			if (type.equals(ResourceType.TRIGGERS)) {
+			if (type.equals(ResourceType.TRIGGERS.toString())) {
 				controller.getAuthoringActorConstructor().getTriggerList(actors[0]).forEach(e -> {options.getItems().add(e);});
 			} else {
 				controller.getAuthoringActorConstructor().getActionList(actors[0]).forEach(e -> {options.getItems().add(e);});
 			}
 		} else {
 			String[] otherActors = Arrays.copyOfRange(actors, 1, actors.length);
-			if (type.equals(ResourceType.TRIGGERS)) {
+			if (type.equals(ResourceType.TRIGGERS.toString())) {
 				controller.getAuthoringActorConstructor().getTriggerList(actors[0], otherActors).forEach(e -> {options.getItems().add(e);});
 			} else {
 				controller.getAuthoringActorConstructor().getActionList(actors[0],otherActors).forEach(e -> {options.getItems().add(e);});
@@ -149,7 +149,7 @@ public class ParametersView {
 	}
 
 	private ListView<ParameterData> makeParamList(String identifier) {
-		int numParams = Integer.parseInt(AuthoringConfigManager.getInstance().getTypeInfo(type, identifier, ResourceType.NUM_PARAMS));
+		int numParams = Integer.parseInt(AuthoringConfigManager.getInstance().getTypeInfo(type, identifier, ResourceType.NUM_PARAMS.toString()));
 		paramList = FXCollections.observableArrayList();
 		for (int i = 0; i < numParams; i++) {
 			String paramPrefix = ParametersKey.PARAM_PREFIX + Integer.toString(i);
