@@ -71,6 +71,13 @@ public class ActorView extends AbstractVisual {
 		myMap.addProperty(myResources.getString("height"), "" + getHeight());
 		mapChanged();
 	}
+	
+	protected void updateNode() {
+		myXCoor = Double.parseDouble(myResources.getString("x"));
+		myYCoor = Double.parseDouble(myResources.getString("y"));
+		myRotation = Double.parseDouble(myResources.getString("angle"));
+		// if width is changed , if height is changed
+	}
 
 	protected Actor getActor() {
 		return myActor;
@@ -92,6 +99,8 @@ public class ActorView extends AbstractVisual {
 		double width = image.getWidth();
 		double height = image.getHeight();
 		dimensionRatio = height / width;
+		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
+		mapChanged();
 
 		// return new ImageView(image);
 		Sprite ret = new Sprite(img);
@@ -147,24 +156,31 @@ public class ActorView extends AbstractVisual {
 	}
 
 	protected void scaleDimensions(double percent) {
-		myFitWidth *= percent; // TODO: size?
-		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
-		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
-		mapChanged();
+		myFitWidth *= percent; 
 		preserveCenter();
 	}
 
 	protected void addDimensions(double increase) {
 		myFitWidth += increase;
-		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
-		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
-		mapChanged();
+		preserveCenter();
+	}
+	
+	protected void setWidth(double width) {
+		myFitWidth = width;
+		preserveCenter();
+	}
+	
+	protected void setHeight(double height) {
+		myFitWidth = height / dimensionRatio;
 		preserveCenter();
 	}
 
 	private void preserveCenter() {
 		mySprite.setFitWidth(myFitWidth);
 		mySprite.setPreserveRatio(true);
+		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
+		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
+		mapChanged();
 		restoreXY(myXCoor, myYCoor);
 	}
 

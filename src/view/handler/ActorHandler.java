@@ -251,14 +251,21 @@ public class ActorHandler extends AbstractVisual {
 
 		int i = 0;
 		for(Property<?> p : a.getActor().getProperties()){
-			if(p.getUniqueID() != "groupID"){
+			if(p.getUniqueID() != "groupID"||p.getUniqueID() != "image"){
 				TextField t = new TextField();
 				t.insertText(0, p.getValue().toString());
 				grid.add(new Label(p.getUniqueID()), 0, i);
 				grid.add(t, 1, i);
 				i++;
 				t.textProperty().addListener((observable, oldValue, newValue) -> {
-					p.setValue(newValue);
+					try {
+						double newVal = Double.parseDouble(newValue);
+						p.setValue(newValue);
+						updateNode(a, p.getUniqueID(), newVal);
+					} catch (Exception e) {
+						Alert alert = new Alert(AlertType.ERROR, myResources.getString("doubleerror"), ButtonType.OK);
+						alert.showAndWait();
+					}
 				});
 			}
 		}
@@ -266,6 +273,24 @@ public class ActorHandler extends AbstractVisual {
 		dialog.getDialogPane().setContent(grid);
 		dialog.showAndWait();
 	}
+	
+	private void updateNode(ActorView a, String uniqueID, double newVal) {
+
+		// basically a switch/case tree but allows us to use resources file
+		// sorry i couldn't think of a better thing.
+		if (uniqueID.equals(myResources.getString("x"))) {
+			a.setXCoor(newVal);
+		} else if (uniqueID.equals(myResources.getString("y"))) {
+			a.setYCoor(newVal);
+		} else if (uniqueID.equals(myResources.getString("angle"))) {
+			a.setRotation(newVal);
+		} else if (uniqueID.equals(myResources.getString("width"))) {
+			a.setWidth(newVal);
+		} else if (uniqueID.equals(myResources.getString("height"))) {
+			a.setHeight(newVal);
+		}
+	}
+
 //
 //	private void editShip() {
 //
