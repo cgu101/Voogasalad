@@ -1,6 +1,7 @@
 package view.element;
 
 import java.io.File;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import authoring.controller.AuthoringController;
 import authoring.model.tree.ActorTreeNode;
@@ -23,6 +24,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.Callback;
+import network.framework.GameWindow;
+import network.framework.format.Request;
+import network.instances.DataDecorator;
 import player.SpriteManager;
 import util.Sprite;
 import view.actor.PropertyCell;

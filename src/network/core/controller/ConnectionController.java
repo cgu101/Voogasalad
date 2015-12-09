@@ -1,35 +1,43 @@
 package network.core.controller;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import network.core.ForwardedMessage;
 import network.core.Message;
 import network.core.connections.ClientConnection;
 import network.core.connections.NetworkGameState;
 import network.core.connections.threads.ConnectionThread;
 import network.core.containers.NetworkContainer;
+import network.framework.format.Mail;
 
 public class ConnectionController extends ConnectionThread {	
 		
 	private NetworkContainer<NetworkGameState> games;
 	private NetworkContainer<ClientConnection> clients;
-	private BlockingQueue<Message> incomingMessages;
+	private BlockingQueue<Object> incomingMessages;
 	private MessageHandler handler;
 	
 	public ConnectionController() {
 		games = new NetworkContainer<NetworkGameState>();
 		clients = new NetworkContainer<ClientConnection>();
-		incomingMessages = new LinkedBlockingQueue<Message>();
+		incomingMessages = new LinkedBlockingQueue<Object>();
 		handler = new MessageHandler();
 	}
 		
 	@Override
 	public void execute() {		
 		try {
-			Message m = incomingMessages.take();
-			handler.getHandler(m.getMail().getRequest()).executeMessage(m, clients, games);
+			Object m = incomingMessages.take();
+			if(m instanceof ForwardedMessage) {
+				ForwardedMessage m1 = (ForwardedMessage) m;
+				if(m1.message instanceof Mail) {
+					handler.getHandler(((Mail) m1.message).getRequest()).executeMessage(m1, clients, games);
+				}
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -57,7 +65,11 @@ public class ConnectionController extends ConnectionThread {
 		
 		// Then create the client
 		try {
-			clients.addObject(new ClientConnection(IdManager.getNewClientId(), incomingMessages, connection));
+			Integer val = IdManager.getNewClientId();
+			ClientConnection toAdd = new ClientConnection(val, incomingMessages, connection);
+			toAdd.send(val);
+			clients.addObject(toAdd);
+			
 		} catch (IOException e) {
 			System.out.println("Error when creating the client: " + e);
 		}

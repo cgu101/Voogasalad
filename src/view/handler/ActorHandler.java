@@ -254,11 +254,21 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 			a.addDimensions(-1 * increase);
 		}
 	}
-
-	private void removeActor(ActorView a) {
+	
+	private void removeActor(Integer i) {
+		ActorView a = myAVs.get(i);
 		myAVs.remove(a);
 		myAC.getLevelConstructor().getActorGroupsConstructor().deleteActor(a.getActor().getGroupName(), a.getActor().getUniqueID());
 		viewManager.removeElements(a.getSprite()); 
+	}
+
+	private void removeActor(ActorView a) {
+		Integer i = myAVs.indexOf(a);
+		myAVs.remove(a);
+		myAC.getLevelConstructor().getActorGroupsConstructor().deleteActor(a.getActor().getGroupName(), a.getActor().getUniqueID());
+		viewManager.removeElements(a.getSprite()); 
+		DataDecorator dataMail = new DataDecorator(Request.DELETE, i, new ArrayDeque<String>(anscestors));
+		GameWindow.getInstance().send(dataMail);
 	}
 
 	public void removeActor(Node element) {
@@ -372,16 +382,17 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 
 	@Override
 	public void process(Mail mail) {
-		ActorSerializable actor = (ActorSerializable) mail.getData();
 		Request request = mail.getRequest();
 
 		switch (request) {
 		case ADD: {
+			ActorSerializable actor = (ActorSerializable) mail.getData();
 			addActor(actor);
 			break;
 		}
 		case DELETE: {
-//			removeActor(actor);
+			Integer index = (Integer) mail.getData();
+			removeActor(index);
 			break;
 		}
 		case MODIFY: {
