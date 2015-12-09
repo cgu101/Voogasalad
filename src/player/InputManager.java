@@ -12,6 +12,8 @@ import java.util.Set;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 /**
  * Contains a map of keys (as Strings) to whether or not they are being pressed
@@ -20,16 +22,18 @@ import javafx.scene.input.KeyEvent;
  */
 public class InputManager {
 	private Map<String, Boolean> inputMap;
+	private Map<String, MouseEvent> keyMap;
 	private InputTree inputTree;
 	private Set<String> keys;
+	private final String KeyEventsResource = "resources/gameplayer/Inputs";
 
 	public InputManager() {
 		this(null);
 	}
 
 	public InputManager(String fileName) {
+		keyMap = new HashMap<String, MouseEvent>();
 		inputMap = new HashMap<String, Boolean>();
-		populateMap(inputMap, fileName);
 		keys = new HashSet<String>();
 		Scanner s;
 		try {
@@ -45,6 +49,11 @@ public class InputManager {
 			s.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		}
+		populateMap(inputMap, fileName);
+		ResourceBundle keyEventResource = ResourceBundle.getBundle(KeyEventsResource);
+		for(String key : keyEventResource.keySet()){
+			keyMap.put(key, null);
 		}
 	}
 
@@ -67,6 +76,20 @@ public class InputManager {
 		}
 	}
 
+	public void mousePressed(MouseEvent me) {
+		MouseButton code = me.getButton();
+		if (keyMap.containsKey(code.name())) {
+			keyMap.put(code.name(), me);
+		}
+	}
+	
+	public void mouseReleased(MouseEvent me) {
+		MouseButton code = me.getButton();
+		if (keyMap.containsKey(code.name())) {
+			keyMap.put(code.name(), null);
+		}
+	}
+	
 	/**
 	 * A method to attach to a keyPressed event in order to update the map when
 	 * a key is pressed.

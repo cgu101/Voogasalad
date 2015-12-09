@@ -1,5 +1,9 @@
 package view.actor;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import authoring.controller.AuthoringController;
@@ -26,6 +30,8 @@ public class ActorBrowserCell extends AbstractListCell<String> {
 	private boolean deselect;
 	private String actor;
 	private Sprite image;
+	private static final String CONFIGURATION_DIRECTORY = "src/resources/SpriteManager.properties";
+	private static final String CONFIGURATION = "configuration";
 
 	public ActorBrowserCell(AuthoringController controller) {
 		this.controller = controller;
@@ -35,6 +41,7 @@ public class ActorBrowserCell extends AbstractListCell<String> {
 		//image = new Image(getClass().getClassLoader()
 		//		.getResourceAsStream(controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image")));
 		String imageString = controller.getAuthoringActorConstructor().getDefaultPropertyValue(item, "image");
+
 		/*String[] dimensions = ResourceBundle.getBundle("resources/SpriteManager").getString(item).split(",");
 		Sprite output = new Sprite(imageString, Integer.parseInt(dimensions[0]), 
 									Integer.parseInt(dimensions[1]));*/
@@ -83,5 +90,18 @@ public class ActorBrowserCell extends AbstractListCell<String> {
 
 	public void dragDone(DragEvent e) {
 		e.consume();
+	}
+	
+	private String[] getRefreshedImageDimensions(String imageString) {
+		InputStream input;
+		try {
+			input = new FileInputStream(String.format(CONFIGURATION_DIRECTORY, CONFIGURATION));
+			myResources = new PropertyResourceBundle(input);
+			String[] dimensions = myResources.getBundle("resources/SpriteManager").getString(imageString).split(",");
+			return dimensions;
+		} catch ( IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

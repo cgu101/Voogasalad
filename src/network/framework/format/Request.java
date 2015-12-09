@@ -6,6 +6,7 @@ public enum Request {
 	ADD("Add"), 
 	DELETE("Delete"), 
 	MODIFY("Modify"),
+	LOAD("Load"),
 	TRANSITION("Transition");
 	
 	private final String requestType;

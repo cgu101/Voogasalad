@@ -1,10 +1,14 @@
 package view.handler;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
 import authoring.controller.AuthoringController;
+import authoring.model.Anscestral;
 import authoring.model.actors.Actor;
+import authoring.model.actors.ActorGroups;
 import authoring.model.actors.ActorPropertyMap;
 import authoring.model.properties.Property;
 import javafx.event.ActionEvent;
@@ -14,6 +18,8 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Dialog;
@@ -21,8 +27,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -34,6 +38,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
+import network.framework.format.Mail;
+import network.framework.format.Request;
+import network.instances.DataDecorator;
 import view.map.Map;
 import view.map.MapViewManager;
 import view.map.MapZoomSlider;
@@ -48,7 +55,7 @@ import view.visual.AbstractVisual;
  * @author Bridget
  *
  */
-public class ActorHandler extends AbstractVisual {
+public class ActorHandler extends AbstractVisual implements Anscestral {
 	private MapViewManager viewManager;
 	private ToolBar myToolbar;
 	private Map map;
@@ -57,6 +64,8 @@ public class ActorHandler extends AbstractVisual {
 	private List<ActorView> myAVs;
 	private ActorEditingToolbar myEditMenu;
 	private AuthoringController myAC;
+	private ActorGroups myActorGroups;
+	private Deque<String> anscestors;
 
 	public ActorHandler(Group layout, ToolBar tb, Map map, MiniMap miniMap, MapZoomSlider zoomSlider,
 			AuthoringController ac) {
@@ -69,6 +78,7 @@ public class ActorHandler extends AbstractVisual {
 		findResources();
 		myEditMenu = new ActorEditingToolbar(myToolbar, map, viewManager);
 		myAVs = new ArrayList<ActorView>();
+		myActorGroups = myAC.getLevelConstructor().getActorGroupsConstructor().getActorGroups();
 	}
 
 	public void addActor(Actor a, ActorPropertyMap map, String actorType, double x, double y) {
@@ -96,7 +106,22 @@ public class ActorHandler extends AbstractVisual {
 			}
 			addToScale(av, x, y);
 			viewManager.addElements(av.getSprite());
+			// TODO send the actor here
+			DataDecorator dataMail = new DataDecorator(Request.ADD, av, anscestors);
+			
 		}
+	}
+	
+	private void addActor(ActorView av) {
+		myAVs.add(av);
+		ImageView image = av.getSprite();
+		ContextMenu cm = makeContextMenu(av);
+		image.setOnContextMenuRequested(e -> {
+			if (!myEditMenu.isEditing()) {
+				cm.show(image, e.getScreenX(), e.getScreenY());
+			}
+		});
+		viewManager.addElements(av.getSprite());
 	}
 
 	private void addToScale(ActorView a, double x, double y) {
@@ -151,6 +176,8 @@ public class ActorHandler extends AbstractVisual {
 
 	private void startMoveDrag(MouseEvent e, ActorView a, Rectangle r) {
 		removeActor(a);
+		
+		// TODO Send to network to remove the actor
 		r.setCursor(Cursor.CLOSED_HAND);
 		Dragboard db = r.startDragAndDrop(TransferMode.MOVE);
 		ClipboardContent content = new ClipboardContent();
@@ -232,6 +259,11 @@ public class ActorHandler extends AbstractVisual {
 	public void removeActor(Node element) {
 		viewManager.removeElements(element);
 	}
+	
+	public void clearMap() {
+		myAVs.clear();
+		viewManager.removeAll();
+	}
 
 	private void editParams(ActorView a) {
 		// Create the custom dialog.
@@ -248,24 +280,48 @@ public class ActorHandler extends AbstractVisual {
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(20, 150, 10, 10));
-
+		System.out.println("Old Actor:"+a.getActor().getGroupName()+ ":"+a.getXCoor()+","+a.getYCoor());
 		int i = 0;
 		for(Property<?> p : a.getActor().getProperties()){
-			if(p.getUniqueID() != "groupID"){
+			if(!p.getUniqueID().equals("groupID")&&!p.getUniqueID().equals("image")){
 				TextField t = new TextField();
 				t.insertText(0, p.getValue().toString());
 				grid.add(new Label(p.getUniqueID()), 0, i);
 				grid.add(t, 1, i);
 				i++;
 				t.textProperty().addListener((observable, oldValue, newValue) -> {
-					p.setValue(newValue);
+					try {
+						double newVal = Double.parseDouble(newValue);
+						p.setValue(newVal);
+						updateNode(a, p.getUniqueID(), newVal);
+					} catch (Exception e) {
+						Alert alert = new Alert(AlertType.ERROR, myResources.getString("doubleerror"), ButtonType.OK);
+						alert.showAndWait();
+					}
 				});
 			}
 		}
-
 		dialog.getDialogPane().setContent(grid);
 		dialog.showAndWait();
 	}
+	
+	private void updateNode(ActorView a, String uniqueID, double newVal) {
+
+		// basically a switch/case tree but allows us to use resources file
+		// sorry i couldn't think of a better thing.
+		if (uniqueID.equals(myResources.getString("x"))) {
+			a.setXCoor(newVal);
+		} else if (uniqueID.equals(myResources.getString("y"))) {
+			a.setYCoor(newVal);
+		} else if (uniqueID.equals(myResources.getString("angle"))) {
+			a.setRotation(newVal);
+		} else if (uniqueID.equals(myResources.getString("width"))) {
+			a.setWidth(newVal);
+		} else if (uniqueID.equals(myResources.getString("height"))) {
+			a.setHeight(newVal);
+		}
+	}
+
 //
 //	private void editShip() {
 //
@@ -286,7 +342,6 @@ public class ActorHandler extends AbstractVisual {
 		myEditMenu.restoreToolbar();
 		map.setPanEnabled(true);
 		myEditMenu.setEditing(false);
-		;
 	}
 
 	// returns true if out-of-bounds
@@ -303,5 +358,51 @@ public class ActorHandler extends AbstractVisual {
 
 	public void updateBackground(ImageView n) {
 		viewManager.updateBackground(n);
+	}
+
+	@Override
+	public Deque<String> getAnscestralPath() {
+		return anscestors;
+	}
+
+	@Override
+	public void process(Mail mail) {
+		ActorView actor = (ActorView) mail.getData();
+		Request request = mail.getRequest();
+
+		switch (request) {
+			case ADD: {
+				addActor(actor);
+				break;
+			}
+			case DELETE: {
+				removeActor(actor);
+				break;
+			}
+			case MODIFY: {
+				removeActor(actor);
+				addActor(actor);
+				break;
+			}
+			default: {
+				break;
+			}
+		}
+	}
+
+	@Override
+	public Anscestral getChild(String id) {
+		// Doesn't have any children
+		return null;
+	}
+	
+	public void setDeque(Deque<String> anscestors) {
+		this.anscestors = new ArrayDeque<String>(anscestors);
+		this.anscestors.add(ActorHandler.class.getName());
+	}
+	
+	public void updateObservers(Object o) {
+		setChanged();
+		notifyObservers(o);
 	}
 }

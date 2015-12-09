@@ -1,17 +1,23 @@
 package view.level;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.ArrayDeque;
 import java.util.Date;
 import java.util.Deque;
+import java.util.Map.Entry;
 
 import authoring.controller.AuthoringController;
 import authoring.model.Anscestral;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
+import authoring.model.bundles.Bundle;
 import authoring.model.level.Level;
+import authoring.model.properties.Property;
 import authoring.model.tree.InteractionTreeNode;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
@@ -24,6 +30,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
+import network.framework.format.Request;
+import network.instances.DataDecorator;
 import view.map.Map;
 import view.screen.AbstractScreen;
 
@@ -43,10 +51,11 @@ public class LevelMap extends Map implements Anscestral {
 	 * Identifiers and Data
 	 */
 	private String myTitle;
-	private Deque<String> myPath;
+	private Deque<String> anscestors;
 	private Level myLevel;
 
 	private LevelType type;
+	
 
 	public LevelMap(GridPane pane, Level l, AbstractScreen screen) {
 		super(pane);
@@ -71,7 +80,10 @@ public class LevelMap extends Map implements Anscestral {
 		/**
 		 * Add level triggers, ...
 		 */
+		// TODO: Chris: might mess with networking:
+		
 		this.controller.getLevelConstructor().buildLevel(myLevel);
+		this.controller.getLevelConstructor().buildConstructor(myLevel);
 
 		setLevelType();
 
@@ -81,10 +93,9 @@ public class LevelMap extends Map implements Anscestral {
 	}
 
 	private void setLevelType() {
-		// TODO Auto-generated method stub
-		if (myLevel.getUniqueID().startsWith(LEVEL_IDENTIFIER)) {
+		if (myLevel.getProperty(myResources.getString("type")).getValue().equals(LEVEL_IDENTIFIER)) {
 			type = LevelType.LEVEL;
-		} else if (myLevel.getUniqueID().startsWith(SPLASH_IDENTIFIER)) {
+		} else if (myLevel.getProperty(myResources.getString("type")).getValue().equals(SPLASH_IDENTIFIER)) {
 			type = LevelType.SPLASH;
 		} else {
 			type = null;
@@ -109,6 +120,7 @@ public class LevelMap extends Map implements Anscestral {
 			addActor(a, map, actor, (double) a.getProperties().getComponents().get("xLocation").getValue(),
 					(double) a.getProperties().getComponents().get("yLocation").getValue());
 			success = true;
+						
 			// gameWindow.getClient().send("New Drop Event");
 		}
 		event.setDropCompleted(success);
@@ -188,58 +200,64 @@ public class LevelMap extends Map implements Anscestral {
 	}
 
 	public void redraw(Level modelLevel) {
-		// TODO Auto-generated method stub
-		System.out.println("I am redrawing");
+		clearActors();
+		ArrayList<Actor> actors = new ArrayList<Actor>();
+		for (Entry<String,Bundle<Actor>> b : myLevel.getActorGroups().getMap().entrySet()) {
+			for (Actor actor : b.getValue().getComponents().values()) {
+				ActorPropertyMap map = controller.getAuthoringActorConstructor().getActorPropertyMap(b.getKey());
+				addActor(actor, map, b.getKey(), (double) actor.getProperties().getComponents().get("xLocation").getValue(),
+						(double) actor.getProperties().getComponents().get("yLocation").getValue());
+			}
+		}
 	}
-
-	public Level buildLevel() {
-		// TODO Auto-generated method stub
-		return myLevel;
+	// used in loading
+	public void buildLevel() {
+		redraw(myLevel);
 	}
+	
+//	@Override
+//	public void addActor(Actor element, ActorPropertyMap map, String actorType, double x, double y) {
+//		super.addActor(element, map, actorType, x, y);
+//	}
+//	
+//	@Override
+//	public void removeActor(Node element) {
+//		super.removeActor(element);
+//	}
 
 	@Override
 	public Deque<String> getAnscestralPath() {
-		// TODO Auto-generated method stub
-		return null;
+		return anscestors;
 	}
 
 	@Override
 	public void process(Mail mail) {
-		// TODO Auto-generated method stub
-		if (mail.getData() instanceof InteractionTreeNode) {
-//			this.myTree = (InteractionTreeNode) mail.getData();
-			setChanged();
-//			notifyObservers(this.myTree);
-		} else {
+		if(mail.getData() instanceof InteractionTreeNode ) {
+			InteractionTreeNode toReplace = (InteractionTreeNode) mail.getData();
+			// TODO update the treeNode
 			
-		}
-	}
-
-	@Override
-	public void forward (Deque<String> aDeque, Mail mail) {
-		if (!aDeque.isEmpty()) {
-			String aID = aDeque.poll();			
-			Serializable data = mail.getData();			
-			if (data instanceof InteractionTreeNode) {
-				
-			} else { // ActorGrousp
-				
-			}
-			
-			getChild(aID).forward(aDeque, mail);
 		} else {
-			process(mail);
+			System.out.println("SOMETHING BAD HAPPENED AND TREENODE WAS NOT A TREENODE");
 		}
 	}
 	
 	@Override
 	public Anscestral getChild(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return (Anscestral) getActorHandler();
+	}
+	
+	public void setDeque(Deque<String> anscestors) {
+		this.anscestors = new ArrayDeque<String>(anscestors);
+		this.anscestors.add(myLevel.getUniqueID());
+		getActorHandler().setDeque(this.anscestors);
 	}
 
 	public LevelType getType() {
 		return type;
+	}
+
+	public void updateLevelProperty(Property<String> property) {
+		myLevel.getPropertyBundle().add(property);
 	}
 
 }

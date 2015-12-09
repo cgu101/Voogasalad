@@ -1,6 +1,10 @@
 package view.map;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 import authoring.controller.AuthoringController;
+import authoring.model.Anscestral;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
 import javafx.beans.value.ChangeListener;
@@ -15,6 +19,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
+import network.framework.format.Request;
+import network.instances.DataDecorator;
 import view.element.AbstractElement;
 import view.handler.ActorHandler;
 
@@ -125,6 +131,7 @@ public abstract class Map extends AbstractElement {
 	public void addActor(Actor element, ActorPropertyMap map, String actorType, double x, double y) {
 		// Use this method to add an actor to the StackPane.
 		actorHandler.addActor(element, map, actorType, x, y);
+		
 	}
 
 	/**
@@ -336,9 +343,16 @@ public abstract class Map extends AbstractElement {
 	public void removeMiniMap () {
 		removeElement(this.theMiniMap.getMiniMap());
 	}
+	public void clearActors () {
+		this.actorHandler.clearMap();
+	}
 	
-	public ImageView getBackground() {
+	public ImageView getBackground () {
 		return background;
+	}
+	
+	protected ActorHandler getActorHandler() {
+		return actorHandler;
 	}
 
 }
