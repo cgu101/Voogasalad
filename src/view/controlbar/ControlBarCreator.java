@@ -68,7 +68,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 
 	public ControlBarCreator(CreatorScreen screen) {
 		super(screen.getDefaultPane());
-		this.gameWindow = new GameWindow(DEFAULT_IP);
+		this.gameWindow = GameWindow.getInstance();
 		this.screen = screen;
 
 		initializeObservers();

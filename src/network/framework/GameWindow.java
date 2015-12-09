@@ -12,20 +12,26 @@ import network.framework.format.Proxy;
 
 public class GameWindow extends Observable implements Proxy {
 	
-	private final static int PORT = 6969;
+	private static final String HOST = "localhost";
+	private static final int PORT = 6969;
 	private GameClient connection; 
 	private volatile boolean connected;
 	private Game gameData; 
+	private static final GameWindow window = new GameWindow();
+	
+	public static GameWindow getInstance() {
+		return window;
+	}
 
-	public GameWindow(final String host) {
+	private GameWindow() {
 
 		new Thread() {
 			public void run() {
 				try {
-					addToTranscript("Connecting to " + host + " ...");
-					connection = new GameClient(host);
+					addToTranscript("Connecting to " + HOST + " ...");
+					connection = new GameClient(HOST);
 					connected = true;
-					connection.send("I have connected to " + host);
+					connection.send("I have connected to " + HOST);
 
 					/**
 					 * Instead of creating a new game as the game data, we want to try to obtain a Game object from the server side

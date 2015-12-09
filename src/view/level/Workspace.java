@@ -196,25 +196,29 @@ public class Workspace extends AbstractElement implements Anscestral {
 		Request request = mail.getRequest();
 
 		switch (request) {
-			case ADD: {
-				addVisual(data);
-				break;
-			}
-			case DELETE: {
-				deleteVisual(data);
-				break;
-			}
-			case MODIFY: {
-				updateVisual(data);
-				break;
-			}
-			case TRANSITION: {
-				addSplashScreen(data);
-				break;
-			}
-			default: {
-				break;
-			}
+		case ADD: {
+			addVisual(data);
+			break;
+		}
+		case DELETE: {
+			deleteVisual(data);
+			break;
+		}
+		case MODIFY: {
+			updateVisual(data);
+			break;
+		}
+		case TRANSITION: {
+			addSplashScreen(data);
+			break;
+		}
+		case LOAD: {
+			loadVisual(data);
+			break;
+		}
+		default: {
+			break;
+		}
 		}
 	}
 
