@@ -59,7 +59,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 		makePane();
 		
 		for (Level level:levelInfo) {
-			System.out.println(level);
+//			System.out.println(level);
 			addVisual(level);
 		}
 	}

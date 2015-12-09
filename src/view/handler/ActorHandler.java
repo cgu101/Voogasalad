@@ -280,7 +280,7 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		grid.setHgap(10);
 		grid.setVgap(10);
 		grid.setPadding(new Insets(20, 150, 10, 10));
-		System.out.println("Old Actor:"+a.getActor().getGroupName()+ ":"+a.getXCoor()+","+a.getYCoor());
+//		System.out.println("Old Actor:"+a.getActor().getGroupName()+ ":"+a.getXCoor()+","+a.getYCoor());
 		int i = 0;
 		for(Property<?> p : a.getActor().getProperties()){
 			if(!p.getUniqueID().equals("groupID")&&!p.getUniqueID().equals("image")){

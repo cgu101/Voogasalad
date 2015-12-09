@@ -165,7 +165,7 @@ public abstract class Map extends AbstractElement {
 		actorHandler.updateBackground(background);
 		if(theMiniMap != null) {
 			theMiniMap.updateMiniMapBackground(background);
-			System.out.println("Updated minimap!");
+//			System.out.println("Updated minimap!");
 		}
 	}
 
