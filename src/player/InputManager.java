@@ -32,6 +32,7 @@ public class InputManager {
 	}
 
 	public InputManager(String fileName) {
+		keyMap = new HashMap<String, MouseEvent>();
 		inputMap = new HashMap<String, Boolean>();
 		keys = new HashSet<String>();
 		Scanner s;
