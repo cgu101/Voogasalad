@@ -147,7 +147,7 @@ public class InteractionExecutor {
 		});
 		lambdaMap.put(TRIGGER_IDENTIFIER, (node, list) -> {
 			ITriggerEvent triggerEvent = triggerMap.get(node.getValue());
-			if (triggerEvent.condition(((ParameterTreeNode) node).getParameters(), inputMap, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
+			if (triggerEvent.condition(((ParameterTreeNode) node).getParameters(), inputMap, currentState, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
 				for (InteractionTreeNode child : node.children()) {
 					lambdaMap.get(child.getIdentifier()).apply(child, list);
 				}

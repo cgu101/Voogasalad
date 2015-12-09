@@ -53,8 +53,10 @@ public class SpawnActor extends AOneActorAction {
 		Actor newActor = new Actor(propertyBundle, groupID + currentTimeStamp.toString());
 
 		if (actor.hasProperty(X_LOCATION) && actor.hasProperty(Y_LOCATION) && actor.hasProperty(ANGLE)) {
-			newActor.setProperty(X_LOCATION, actor.getPropertyValue(X_LOCATION));
+//			newActor.setProperty(X_LOCATION, (Double) actor.getPropertyValue(X_LOCATION) + 0.5*(Double) actor.getPropertyValue("width")*Math.cos(Math.toRadians( ((Double) actor.getPropertyValue(ANGLE)))));
+//			newActor.setProperty(Y_LOCATION, (Double) actor.getPropertyValue(Y_LOCATION) + 0.5*(Double) actor.getPropertyValue("height")*Math.sin(Math.toRadians( ((Double) actor.getPropertyValue(ANGLE)))));
 			newActor.setProperty(Y_LOCATION, actor.getPropertyValue(Y_LOCATION));
+			newActor.setProperty(X_LOCATION, actor.getPropertyValue(X_LOCATION));
 			newActor.setProperty(ANGLE, actor.getPropertyValue(ANGLE));
 		}
 
