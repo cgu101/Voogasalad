@@ -65,8 +65,10 @@ public class SpriteManager {
 	}
 	
 	private static void initSprite(Sprite s, Actor a){
-		s.setX(a.getPropertyValue("xLocation"));
-		s.setY(a.getPropertyValue("yLocation"));
+//		s.setX(a.getPropertyValue("xLocation"));
+//		s.setY(a.getPropertyValue("yLocation"));
+		s.setX((Double) a.getPropertyValue("xLocation") - (Double) a.getPropertyValue("width")/2);
+		s.setY((Double) a.getPropertyValue("yLocation") - (Double) a.getPropertyValue("height")/2);
 		s.setFitHeight(a.getPropertyValue("height"));
 		s.setFitWidth(a.getPropertyValue("width"));
 		if (a.getProperties().getComponents().get("angle")!=null)
