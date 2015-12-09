@@ -67,6 +67,8 @@ public class MiniMap extends AbstractVisual {
 		theBackground = background;
 		createMiniMapImageView(Double.valueOf(myResources.getString("minimapwidth")));
 		addMiniMapImageView();
+		createMiniMapRectangle(miniMapWidth, miniMapHeight, currentScale, currentOpacity);
+		addMiniMapRectangle(currentRectangleXPos, currentRectangleYPos);
 	}
 
 	private void createMiniMap() {
