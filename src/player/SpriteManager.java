@@ -40,19 +40,13 @@ public class SpriteManager {
 		for(Actor a : actors){
 			if(sprites.containsKey(a.getUniqueID())){
 				Sprite s = sprites.get(a.getUniqueID());
-				s.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
-				s.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
-				if (a.getProperties().getComponents().get("angle")!=null)
-					s.setRotate((double)a.getProperties().getComponents().get("angle").getValue());
+				initSprite(s, a);
 			//}else if((Boolean)a.getProperties().getComponents().get("_visible").getValue()){
 			}else{
 				Sprite newsp = createSprite(a);
 				sprites.put(a.getUniqueID(), newsp);
 				myMap.getGroup().getChildren().add(newsp);
-				newsp.setX((double)a.getProperties().getComponents().get("xLocation").getValue());
-				newsp.setY((double)a.getProperties().getComponents().get("yLocation").getValue());
-				if (a.getProperties().getComponents().get("angle")!=null)
-					newsp.setRotate((double)a.getProperties().getComponents().get("angle").getValue());
+				initSprite(newsp, a);
 				newsp.play(0);
 			}
 			stillAlive.put(a.getUniqueID(), true);
@@ -70,6 +64,15 @@ public class SpriteManager {
 		for(String id : stillAlive.keySet()){
 			stillAlive.put(id,  false);
 		}	
+	}
+	
+	private static void initSprite(Sprite s, Actor a){
+		s.setX(a.getPropertyValue("xLocation"));
+		s.setY(a.getPropertyValue("yLocation"));
+		s.setFitHeight(a.getPropertyValue("height"));
+		s.setFitWidth(a.getPropertyValue("width"));
+		if (a.getProperties().getComponents().get("angle")!=null)
+			s.setRotate((double)a.getProperties().getComponents().get("angle").getValue());
 	}
 	
 	/**

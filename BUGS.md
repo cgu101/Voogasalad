@@ -17,6 +17,11 @@
 
 * Deprecated property size needs to be removed.
 
+* When in the authoring environment, editing an individual actor by right clicking and changing properties does not change its representation on the map accordingly.
+
+* Load Game File from authoring environment doesnt work
+
+
 #Considerations
 
 * Make Parameter Objects Immutable
