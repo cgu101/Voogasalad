@@ -12,6 +12,18 @@
                 <children/>
                 <value>himid_ground_tile</value>
               </authoring.model.tree.ActorTreeNode>
+              <authoring.model.tree.ActorTreeNode>
+                <children/>
+                <value>high_ground_tile</value>
+              </authoring.model.tree.ActorTreeNode>
+              <authoring.model.tree.ActorTreeNode>
+                <children/>
+                <value>Asteroid</value>
+              </authoring.model.tree.ActorTreeNode>
+              <authoring.model.tree.ActorTreeNode>
+                <children/>
+                <value>Spaceship</value>
+              </authoring.model.tree.ActorTreeNode>
             </children>
           </rootTree>
           <actorGroups>
@@ -53,7 +65,93 @@
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
                   <obs/>
-                  <components/>
+                  <components>
+                    <entry>
+                      <string>Wed Dec 09 06:55:41 EST 2015</string>
+                      <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">asteroids.png</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">527.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>size</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">64.0</myValue>
+                                <identifier>size</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">Asteroid</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>width</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">128.0</myValue>
+                                <identifier>width</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>health</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">100.0</myValue>
+                                <identifier>health</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">90.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">10.0</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>height</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">126.0</myValue>
+                                <identifier>height</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>Wed Dec 09 06:55:41 EST 2015</identifier>
+                        <actorType>LOCAL</actorType>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                  </components>
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
@@ -505,7 +603,7 @@
                       </authoring.model.actors.Actor>
                     </entry>
                     <entry>
-                      <string>Wed Dec 09 06:39:515 EST 2015</string>
+                      <string>Wed Dec 09 06:39:52 EST 2015</string>
                       <authoring.model.actors.Actor>
                         <changed>false</changed>
                         <obs/>
@@ -530,149 +628,7 @@
                             <entry>
                               <string>groupID</string>
                               <authoring.model.properties.Property>
-                                <myValue class="string">upslope_ground_tile</myValue>
-                                <identifier>groupID</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>width</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">96.0</myValue>
-                                <identifier>width</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>angle</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">0.0</myValue>
-                                <identifier>angle</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>yLocation</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">305.0</myValue>
-                                <identifier>yLocation</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>speed</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">10.0</myValue>
-                                <identifier>speed</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>height</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">96.0</myValue>
-                                <identifier>height</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                          </components>
-                        </myPropertyBundle>
-                        <identifier>Wed Dec 09 06:39:515 EST 2015</identifier>
-                        <actorType>LOCAL</actorType>
-                      </authoring.model.actors.Actor>
-                    </entry>
-                    <entry>
-                      <string>Wed Dec 09 06:39:51 EST 2015</string>
-                      <authoring.model.actors.Actor>
-                        <changed>false</changed>
-                        <obs/>
-                        <myPropertyBundle>
-                          <changed>false</changed>
-                          <obs/>
-                          <components>
-                            <entry>
-                              <string>image</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="string">sonictiles.png</myValue>
-                                <identifier>image</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>xLocation</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">672.0</myValue>
-                                <identifier>xLocation</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>groupID</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="string">high_ground_tile</myValue>
-                                <identifier>groupID</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>width</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">96.0</myValue>
-                                <identifier>width</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>angle</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">0.0</myValue>
-                                <identifier>angle</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>yLocation</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">305.0</myValue>
-                                <identifier>yLocation</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>speed</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">10.0</myValue>
-                                <identifier>speed</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>height</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">96.0</myValue>
-                                <identifier>height</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                          </components>
-                        </myPropertyBundle>
-                        <identifier>Wed Dec 09 06:39:51 EST 2015</identifier>
-                        <actorType>LOCAL</actorType>
-                      </authoring.model.actors.Actor>
-                    </entry>
-                    <entry>
-                      <string>Wed Dec 09 06:39:52 EST 2015</string>
-                      <authoring.model.actors.Actor>
-                        <changed>false</changed>
-                        <obs/>
-                        <myPropertyBundle>
-                          <changed>false</changed>
-                          <obs/>
-                          <components>
-                            <entry>
-                              <string>image</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="string">sonictiles.png</myValue>
-                                <identifier>image</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>xLocation</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="double">768.0</myValue>
-                                <identifier>xLocation</identifier>
-                              </authoring.model.properties.Property>
-                            </entry>
-                            <entry>
-                              <string>groupID</string>
-                              <authoring.model.properties.Property>
-                                <myValue class="string">dslope_ground_tile</myValue>
+                                <myValue class="string">himid_ground_tile</myValue>
                                 <identifier>groupID</identifier>
                               </authoring.model.properties.Property>
                             </entry>
@@ -733,7 +689,150 @@
                 <authoring.model.bundles.Bundle>
                   <changed>false</changed>
                   <obs/>
-                  <components/>
+                  <components>
+                    <entry>
+                      <string>Wed Dec 09 06:51:50 EST 2015</string>
+                      <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">sonictiles.png</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">672.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">high_ground_tile</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>width</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">96.0</myValue>
+                                <identifier>width</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">332.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">10.0</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>height</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">96.0</myValue>
+                                <identifier>height</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>Wed Dec 09 06:51:50 EST 2015</identifier>
+                        <actorType>LOCAL</actorType>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                    <entry>
+                      <string>Wed Dec 09 06:51:55 EST 2015</string>
+                      <authoring.model.actors.Actor>
+                        <changed>false</changed>
+                        <obs/>
+                        <myPropertyBundle>
+                          <changed>false</changed>
+                          <obs/>
+                          <components>
+                            <entry>
+                              <string>image</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">sonictiles.png</myValue>
+                                <identifier>image</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>xLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">650.0</myValue>
+                                <identifier>xLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>groupID</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="string">high_ground_tile</myValue>
+                                <identifier>groupID</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>width</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">96.0</myValue>
+                                <identifier>width</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>angle</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">0.0</myValue>
+                                <identifier>angle</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>yLocation</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">303.0</myValue>
+                                <identifier>yLocation</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>speed</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">10.0</myValue>
+                                <identifier>speed</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                            <entry>
+                              <string>height</string>
+                              <authoring.model.properties.Property>
+                                <myValue class="double">96.0</myValue>
+                                <identifier>height</identifier>
+                              </authoring.model.properties.Property>
+                            </entry>
+                          </components>
+                        </myPropertyBundle>
+                        <identifier>Wed Dec 09 06:51:55 EST 2015</identifier>
+                        <actorType>LOCAL</actorType>
+                      </authoring.model.actors.Actor>
+                    </entry>
+                  </components>
                 </authoring.model.bundles.Bundle>
               </entry>
               <entry>
