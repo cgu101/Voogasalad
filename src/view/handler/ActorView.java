@@ -86,8 +86,8 @@ public class ActorView extends AbstractVisual {
 	}
 
 	private Sprite createImage() {
-		/*String img = (String) myActor.getProperties().getComponents().get("image").getValue();
-		Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
+		String img = (String) myActor.getProperties().getComponents().get("image").getValue();
+		/*Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
 
 		// also establish the ratio
 		double width = image.getWidth();
@@ -95,7 +95,7 @@ public class ActorView extends AbstractVisual {
 		dimensionRatio = height / width;
 		 */
 		// return new ImageView(image);
-		Sprite ret = SpriteManager.createSprite(myActor);
+		Sprite ret = SpriteManager.createSprite(myActor.getGroupName(), img);
 		double width = ret.getImage().getWidth();
 		double height = ret.getImage().getHeight();
 		System.out.println("rhea rhea rhea " + width);

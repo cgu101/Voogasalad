@@ -100,8 +100,6 @@ public class Sprite extends ImageView {
 	
 	private Image createThumbnailImage() {
 		PixelReader reader = this.getImage().getPixelReader();
-		System.out.println(this.rect.getMinX() + "<- wat the fu");
-		System.out.println(this.rect.getMinY() + "<- wat teh feh");
 		if (this.lastFrameRect == null) this.lastFrameRect=this.rect;
 		WritableImage newImage = new WritableImage(reader, (int)this.lastFrameRect.getMinX(), 
 													(int)this.lastFrameRect.getMinY(), (int)this.lastFrameRect.getWidth(), (int)this.lastFrameRect.getHeight());
@@ -263,8 +261,9 @@ public class Sprite extends ImageView {
 	}
 
 	public Image getCroppedImage() {
-		if (this.thumbnails.get(myThumbnailKey)==null) 
+		/*if (this.thumbnails.get(myThumbnailKey)==null) 
 			this.thumbnails.put(myThumbnailKey, createThumbnailImage());
-		return this.thumbnails.get(myThumbnailKey);
+		return this.thumbnails.get(myThumbnailKey);*/
+		return createThumbnailImage();
 	}
 }

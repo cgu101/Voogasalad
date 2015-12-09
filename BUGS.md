@@ -25,6 +25,8 @@
 
 * In creator, menu > view > Show Map Slider does nothing
 
+* Minimap doesnt change when background changes.
+
 
 #Considerations
 
