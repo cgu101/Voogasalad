@@ -3,8 +3,8 @@ package network.instances;
 import java.io.Serializable;
 import java.util.Deque;
 
+import network.deprecated.RequestType;
 import network.framework.format.Mail;
-import network.framework.format.Request;
 
 public class DataDecorator implements Mail {
 	
@@ -13,12 +13,12 @@ public class DataDecorator implements Mail {
 	 */
 	private static final long serialVersionUID = -6320582607260270478L;
 	
-	Request request;
+	RequestType request;
 	
 	Serializable data;
 	Deque<String> anscestralPath;
 
-	public DataDecorator (Request r, Serializable data, Deque<String> path) {
+	public DataDecorator (RequestType r, Serializable data, Deque<String> path) {
 		this.request = r;
 		
 		this.data = data;
@@ -26,7 +26,7 @@ public class DataDecorator implements Mail {
 	}
 	
 	@Override
-	public Request getRequest() {
+	public RequestType getRequest() {
 		return request;
 	}
 

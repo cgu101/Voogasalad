@@ -3,7 +3,7 @@ package network.framework;
 import java.io.Serializable;
 
 import authoring.model.game.Game;
-import network.framework.format.Request;
+import network.deprecated.RequestType;
 import resources.keys.PropertyKey;
 import resources.keys.PropertyKeyResource;
 
@@ -21,11 +21,11 @@ public class AuthoringMessage implements Serializable {
 
 	private static String GAME_NAME = PropertyKeyResource.getKey(PropertyKey.GAME_ID_KEY);
 	
-	private Request request;
+	private RequestType request;
 	private String data;
 	private Game game; 
 	
-	public AuthoringMessage (Request request, String data, Game gameState) {
+	public AuthoringMessage (RequestType request, String data, Game gameState) {
 		this.request = request;
 		this.data = data;
 		this.game = gameState;

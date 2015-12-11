@@ -18,9 +18,9 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
+import network.deprecated.RequestType;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
-import network.framework.format.Request;
 import network.instances.DataDecorator;
 import view.element.AbstractDockElement;
 import view.element.AbstractElement;
@@ -159,7 +159,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 		Tab newTab = levelmap.getTab();
 		newTab.setOnClosed(e -> {
 			removeLevel(level);
-			DataDecorator d = new DataDecorator(Request.DELETE, level, this.anscestors);
+			DataDecorator d = new DataDecorator(RequestType.DELETE, level, this.anscestors);
 			GameWindow.getInstance().send(d);
 		});
 		tabManager.getTabs().add(levels.size() - 1, newTab);
@@ -198,7 +198,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 	@Override
 	public void process(Mail mail) {
 		Level data = (Level) mail.getData();
-		Request request = mail.getRequest();
+		RequestType request = mail.getRequest();
 
 		switch (request) {
 		case ADD: {
@@ -255,7 +255,7 @@ public class Workspace extends AbstractElement implements Anscestral {
 //
 //		    @Override
 //		    public void run() {
-//				DataDecorator dataMail = new DataDecorator(Request.GAME, game, null);
+//				DataDecorator dataMail = new DataDecorator(RequestType.GAME, game, null);
 //				GameWindow.getInstance().send(dataMail);
 //		    }
 //

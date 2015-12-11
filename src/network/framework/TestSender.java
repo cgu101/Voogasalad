@@ -5,8 +5,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import authoring.model.game.Game;
+import network.deprecated.RequestType;
 import network.framework.format.Mail;
-import network.framework.format.Request;
 import network.instances.DataDecorator;
 
 public class TestSender {
@@ -24,12 +24,12 @@ public class TestSender {
 			ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
 			
 			Game game = new Game();			
-			Mail toSend = new DataDecorator(Request.ADD, game, null);
+			Mail toSend = new DataDecorator(RequestType.ADD, game, null);
 			
 			out.writeObject(toSend);
 			out.flush();
 			
-			out.writeObject(new DataDecorator(Request.DISCONNECT, null, null));
+			out.writeObject(new DataDecorator(RequestType.DISCONNECT, null, null));
 			out.flush();
 			
 			out.close();

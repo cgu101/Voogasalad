@@ -37,9 +37,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
+import network.deprecated.RequestType;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
-import network.framework.format.Request;
 import network.instances.DataDecorator;
 import view.map.Map;
 import view.map.MapViewManager;
@@ -106,7 +106,7 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 			viewManager.addElements(av.getSprite());
 			// TODO send the actor here
 			ActorSerializable actor = new ActorSerializable(av.getActor(), av.getMap(), av.getType(), x, y);
-			DataDecorator dataMail = new DataDecorator(Request.ADD, actor, new ArrayDeque<String>(anscestors));
+			DataDecorator dataMail = new DataDecorator(RequestType.ADD, actor, new ArrayDeque<String>(anscestors));
 			GameWindow.getInstance().send(dataMail);
 		}
 	}
@@ -267,7 +267,7 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		myAVs.remove(a);
 		myAC.getLevelConstructor().getActorGroupsConstructor().deleteActor(a.getActor().getGroupName(), a.getActor().getUniqueID());
 		viewManager.removeElements(a.getSprite()); 
-		DataDecorator dataMail = new DataDecorator(Request.DELETE, i, new ArrayDeque<String>(anscestors));
+		DataDecorator dataMail = new DataDecorator(RequestType.DELETE, i, new ArrayDeque<String>(anscestors));
 		GameWindow.getInstance().send(dataMail);
 	}
 
@@ -382,7 +382,7 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 
 	@Override
 	public void process(Mail mail) {
-		Request request = mail.getRequest();
+		RequestType request = mail.getRequest();
 
 		switch (request) {
 		case ADD: {

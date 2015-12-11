@@ -10,29 +10,29 @@ import network.core.Message;
 import network.core.connections.ClientConnection;
 import network.core.connections.NetworkGameState;
 import network.core.containers.NetworkContainer;
+import network.deprecated.RequestType;
 import network.framework.format.Mail;
-import network.framework.format.Request;
 
 public class MessageHandler {
 	
-	private Map<Request, ExecuteHandler> myExecuters;
+	private Map<RequestType, ExecuteHandler> myExecuters;
 	
 	public MessageHandler() {
-		myExecuters = new HashMap<Request, ExecuteHandler>();
+		myExecuters = new HashMap<RequestType, ExecuteHandler>();
 		init();
 	}
 	
-	public ExecuteHandler getHandler(Request type) {
+	public ExecuteHandler getHandler(RequestType type) {
 		return myExecuters.get(type);
 	}
 	
 	private void init() {
-		myExecuters.put(Request.NODE, (message, clients, games)-> {
+		myExecuters.put(RequestType.NODE, (message, clients, games)-> {
 			System.out.println("TREE NODE");
 			forwardToAll(message, clients);
 		});
 		
-		myExecuters.put(Request.GAME, (message, clients, games)-> {
+		myExecuters.put(RequestType.GAME, (message, clients, games)-> {
 			Game g = (Game) ((Mail) message.message).getData();
 			if(!games.getKeys().contains(g.getUniqueID())) {
 				games.addObject(new NetworkGameState(g.getUniqueID(), g, message.senderID));
@@ -40,28 +40,28 @@ public class MessageHandler {
 			}
 		});
 		
-		myExecuters.put(Request.DISCONNECT, (message, clients, games)-> {
+		myExecuters.put(RequestType.DISCONNECT, (message, clients, games)-> {
 			forwardToAll(message, clients);
 //			System.out.println("DISCONNECT");
 		});
 		
-		myExecuters.put(Request.ADD, (message, clients, games)-> {
+		myExecuters.put(RequestType.ADD, (message, clients, games)-> {
 			forwardToAll(message, clients);
 		});
 //		
 //		// TODO Handle delete request
-		myExecuters.put(Request.DELETE, (message, clients, games)-> {
+		myExecuters.put(RequestType.DELETE, (message, clients, games)-> {
 			forwardToAll(message, clients);
 			System.out.println("DELETE");
 		});
 		
-		myExecuters.put(Request.MODIFY, (message, clients, games)-> {
+		myExecuters.put(RequestType.MODIFY, (message, clients, games)-> {
 			forwardToAll(message, clients);
 			System.out.println("MODIFY");
 		});
 
 //		// TODO Handle transition request
-		myExecuters.put(Request.TRANSITION, (message, clients, games)-> {
+		myExecuters.put(RequestType.TRANSITION, (message, clients, games)-> {
 			forwardToAll(message, clients);
 			System.out.println("TRANSITION");
 		});
