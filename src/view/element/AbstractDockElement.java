@@ -50,6 +50,7 @@ public abstract class AbstractDockElement extends AbstractElement {
 		this.home = home;
 		this.title = new Label(title);
 		this.title.setFont(headerFont);
+		this.title.setOnMouseReleased(me -> reposition(me));
 		configureCursors();
 		showing = new SimpleBooleanProperty(false);
 		docked = new SimpleBooleanProperty(false);
@@ -82,15 +83,15 @@ public abstract class AbstractDockElement extends AbstractElement {
 		}
 	}
 
-	private void reposition(MouseEvent me, boolean docked) {
+	private void reposition(MouseEvent me) {
 		screen.getScene().setCursor(Cursor.DEFAULT);
 		Point2D mouseLoc = new Point2D(me.getScreenX(), me.getScreenY());
 		Window window = screen.getScene().getWindow();
 		Rectangle2D windowBounds = new Rectangle2D(window.getX(), window.getY(), window.getWidth(), window.getHeight());
-		if (docked && !screen.getFullscreenProperty().getValue() && !windowBounds.contains(mouseLoc)) {
+		if (docked.getValue() && !screen.getFullscreenProperty().getValue() && !windowBounds.contains(mouseLoc)) {
 			launch(me.getScreenX() - pane.widthProperty().doubleValue() / 2,
 					me.getScreenY() - title.heightProperty().doubleValue());
-		} else if (!docked) {
+		} else if (!docked.getValue()) {
 			if (windowBounds.contains(mouseLoc)) {
 				dock();
 			} else {
@@ -111,7 +112,6 @@ public abstract class AbstractDockElement extends AbstractElement {
 		stage.setResizable(false);
 		stage.setOnCloseRequest(e -> showing.setValue(false));
 		stage.setAlwaysOnTop(true);
-		this.title.setOnMouseReleased(me -> reposition(me, false));
 		docked.setValue(false);
 	}
 
@@ -120,7 +120,6 @@ public abstract class AbstractDockElement extends AbstractElement {
 			stage.close();
 		}
 		home.add(pane, 0, 0);
-		this.title.setOnMouseReleased(me -> reposition(me, true));
 		docked.setValue(true);
 	}
 
