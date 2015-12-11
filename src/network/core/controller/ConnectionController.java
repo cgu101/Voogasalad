@@ -14,6 +14,7 @@ import network.core.messages.Message;
 import network.core.messages.ServerMessage;
 import network.deprecated.ForwardedMessage;
 import network.framework.format.Mail;
+import network.framework.format.Request;
 
 public class ConnectionController extends ConnectionThread {	
 		
@@ -32,8 +33,8 @@ public class ConnectionController extends ConnectionThread {
 	@Override
 	public void execute() {		
 		try {
-			ServerMessage m = incomingMessages.take();
-			handler.getHandler(((Mail) m1.message).getRequest()).executeMessage(m1, clients, games);
+			ServerMessage m = incomingMessages.take();	
+			// Check to make sure the object is of type message, else send it 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -56,14 +57,12 @@ public class ConnectionController extends ConnectionThread {
 	}
 	
 	private void handshake(Socket connection) {
-		// TODO the actual handshake
 		System.out.println("Hub just connected to: " + connection.getLocalAddress());
-		
-		// Then create the client
+
 		try {
-			Integer val = IdManager.getNewClientId();
-			ClientConnection toAdd = new ClientConnection(val, incomingMessages, connection);
-			toAdd.send(val);
+			String newId = IdManager.getNewClientId();
+			ClientConnection toAdd = new ClientConnection(newId, incomingMessages, connection);
+			toAdd.send(Request.CONNECTION, newId, null);
 			clients.addObject(toAdd);
 			
 		} catch (IOException e) {

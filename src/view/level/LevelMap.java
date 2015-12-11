@@ -30,9 +30,9 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import network.deprecated.RequestType;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
-import network.framework.format.Request;
 import network.instances.DataDecorator;
 import view.map.Map;
 import view.screen.AbstractScreen;
@@ -261,5 +261,19 @@ public class LevelMap extends Map implements Anscestral {
 	public void updateLevelProperty(Property<String> property) {
 		myLevel.getPropertyBundle().add(property);
 	}
+
+	
+//	private void initializeTimer() {
+//		Timer timer = new Timer();
+//		timer.scheduleAtFixedRate(new TimerTask() {
+//
+//		    @Override
+//		    public void run() {
+//				DataDecorator dataMail = new DataDecorator(RequestType.NODE, myLevel.getRootTree(), new ArrayDeque<String>(anscestors));
+//				GameWindow.getInstance().send(dataMail);
+//		    }
+//	
+//		}, 0, 5000);
+//	}
 
 }

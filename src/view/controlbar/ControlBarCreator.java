@@ -34,9 +34,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import network.deprecated.ForwardedMessage;
+import network.deprecated.RequestType;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
-import network.framework.format.Request;
 import network.instances.DataDecorator;
 import network.util.PostalNetwork;
 import resources.keys.PropertyKey;
@@ -192,7 +192,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 			Deque<String> a = new ArrayDeque<String>();
 			
 			for (Level l : game.getBundleLevels()) {
-				Mail mail = new DataDecorator (Request.LOAD, l, a);
+				Mail mail = new DataDecorator (RequestType.LOAD, l, a);
 				screen.getWorkspace().forward(mail.getPath(), mail);
 			}
 			
@@ -214,7 +214,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	private void addNewLevel() {
 		Level newLevel = new Level(Integer.toString(screen.getGame().getLevels().size()));
 		newLevel.getPropertyBundle().add(new Property<String>(myResources.getString("type"), myResources.getString("leveltype")) );
-		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, screen.getWorkspace().getAnscestralPath());
+		DataDecorator dataMail = new DataDecorator(RequestType.ADD, newLevel, screen.getWorkspace().getAnscestralPath());
 		screen.getWorkspace().addVisual(newLevel);
 		//screen.forward(dataMail.getPath(), dataMail);
 		GameWindow.getInstance().send(dataMail);
@@ -226,7 +226,7 @@ public class ControlBarCreator extends ControlBar implements Observer {
 	private void addNewSplash() {
 		Level newSplash = new Level(Integer.toString(screen.getGame().getLevels().size()));
 		newSplash.getPropertyBundle().add(new Property<String>(myResources.getString("type"), myResources.getString("splashtype")) );
-		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, screen.getWorkspace().getAnscestralPath());
+		DataDecorator dataMail = new DataDecorator(RequestType.TRANSITION, newSplash, screen.getWorkspace().getAnscestralPath());
 		screen.getWorkspace().addSplashScreen(newSplash);
 		//screen.forward(dataMail.getPath(), dataMail);
 		GameWindow.getInstance().send(dataMail);

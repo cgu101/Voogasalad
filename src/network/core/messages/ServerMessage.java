@@ -1,21 +1,20 @@
 package network.core.messages;
 
-import java.io.Serializable;
+public class ServerMessage {
 
-import network.framework.format.Request;
-
-public class ServerMessage extends Message {
-
-	private static final long serialVersionUID = 8605541165705784067L;
+	private String clientId;
+	private Object message;
 	
-	private Integer clientId;
-	
-	public ServerMessage(Integer clientId, Serializable payload, Request request, String id) {
-		super(payload, request, id);
-		this.clientId = clientId;
+	public ServerMessage(String clientId, Object message) {
+		this.clientId=clientId;
+		this.message=message;
 	}
 	
-	public Integer getClientId() {
+	public String getClientId() {
 		return clientId;
+	}
+	
+	public Object getMessage() {
+		return message;
 	}
 }

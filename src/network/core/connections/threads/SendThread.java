@@ -5,17 +5,15 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import network.deprecated.ForwardedMessage;
-import network.framework.format.Mail;
-
+import network.core.messages.Message;
 
 public class SendThread extends ConnectionThread {
 
 	private Socket connection;
-	private LinkedBlockingQueue<Object> outGoingMessages;
+	private LinkedBlockingQueue<Message> outGoingMessages;
 	private ObjectOutputStream out;
 
-	public SendThread(Socket connection, LinkedBlockingQueue<Object> outGoingMessages) throws IOException {
+	public SendThread(Socket connection, LinkedBlockingQueue<Message> outGoingMessages) throws IOException {
 		this.connection = connection;
 		this.outGoingMessages = outGoingMessages;
 		this.out = new ObjectOutputStream(connection.getOutputStream());
@@ -24,7 +22,7 @@ public class SendThread extends ConnectionThread {
 	@Override
 	public void execute() {
 		try {
-			Object message = outGoingMessages.take();
+			Message message = outGoingMessages.take();
 			out.writeObject(message);
 		} catch (IOException | InterruptedException e) {
 			if(!isClosed()) {

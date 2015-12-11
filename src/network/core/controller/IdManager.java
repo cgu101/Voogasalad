@@ -1,16 +1,33 @@
 package network.core.controller;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.Set;
+
 public class IdManager {
-	
-	private static Integer clientId = 0;
-	
-	public static Integer getNewClientId() {
-		return clientId++;
-	}
-	
-	public static void getStoredGame(String gameId) {
-		// TODO load game stored on s3
-		
+
+	private static Set<String> uniqueIds;
+
+	public static String getNewClientId() {
+		String newId = SessionIdentifierGenerator.nextSessionId();
+		if(!uniqueIds.contains(newId)) {
+			uniqueIds.add(newId);
+			return newId;
+		} else {
+			return getNewClientId();
+		}
 	}
 
+	public static void getStoredGame(String gameId) {
+		// TODO load game stored on s3
+
+	}
+
+	public static class SessionIdentifierGenerator {
+		private static SecureRandom random = new SecureRandom();
+
+		public static String nextSessionId() {
+			return new BigInteger(130, random).toString(32);
+		}
+	}
 }

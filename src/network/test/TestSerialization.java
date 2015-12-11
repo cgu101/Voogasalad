@@ -13,7 +13,7 @@ import authoring.model.properties.Property;
 public class TestSerialization {
 	public static void main (String[] args) {
 
-		//		AuthoringMessage a = new AuthoringMessage(Request.LOAD_GAME, "Game1", new SGameState("TestGame"));
+		//		AuthoringMessage a = new AuthoringMessage(RequestType.LOAD_GAME, "Game1", new SGameState("TestGame"));
 		Level a = new Level("questionaire");
 
 		try

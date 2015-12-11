@@ -1,16 +1,13 @@
 package network.core.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import authoring.model.game.Game;
 import network.core.connections.ClientConnection;
 import network.core.connections.NetworkGameState;
 import network.core.containers.NetworkContainer;
-import network.core.messages.Message;
+import network.core.messages.ServerMessage;
 import network.deprecated.ForwardedMessage;
-import network.framework.format.Mail;
 import network.framework.format.Request;
 
 public class MessageHandler {
@@ -27,44 +24,29 @@ public class MessageHandler {
 	}
 	
 	private void init() {
-		
-		myExecuters.put(Request.DISCONNECT, (message, clients, games)-> {
-			forwardToAll(message, clients);
-//			System.out.println("DISCONNECT");
-		});
-		
-		myExecuters.put(Request.ADD, (message, clients, games)-> {
-			forwardToAll(message, clients);
-		});
-//		
-//		// TODO Handle delete request
-		myExecuters.put(Request.DELETE, (message, clients, games)-> {
-			forwardToAll(message, clients);
-			System.out.println("DELETE");
-		});
-		
-		myExecuters.put(Request.MODIFY, (message, clients, games)-> {
-			forwardToAll(message, clients);
-			System.out.println("MODIFY");
-		});
 
-//		// TODO Handle transition request
-		myExecuters.put(Request.TRANSITION, (message, clients, games)-> {
-			forwardToAll(message, clients);
-			System.out.println("TRANSITION");
+		myExecuters.put(Request.ERROR, (message, clients, games)-> {
+			System.out.println("ERROR");
+		});
+		
+		myExecuters.put(Request.CONNECTION, (message, clients, games)-> {
+			System.out.println("CONNECTION");
+		});
+		
+		myExecuters.put(Request.LOADGROUP, (message, clients, games)-> {
+			System.out.println("LOADGROUP");
+		});
+		
+		myExecuters.put(Request.CREATEGROUP, (message, clients, games)-> {
+			System.out.println("CREATEGROUP");
 		});
 	}
 	
-	private void forwardToAll(ForwardedMessage message, NetworkContainer<ClientConnection> clients) {
-		String sender = Integer.toString(message.senderID);
-		for(String s : clients.getKeys()) {
-			if(!s.equals(sender)) {
-				clients.getObject(s).send(message.message);
-			}
-		}
+	private void forwardToAll(ServerMessage message, NetworkContainer<ClientConnection> clients) {
+		
 	}
 	
 	interface ExecuteHandler {	
-		void executeMessage(ForwardedMessage message, NetworkContainer<ClientConnection> clients, NetworkContainer<NetworkGameState> games);		
+		void executeMessage(ServerMessage message, NetworkContainer<ClientConnection> clients, NetworkContainer<NetworkGameState> games);		
 	}
 }
