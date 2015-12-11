@@ -10,6 +10,11 @@ import network.core.ForwardedMessage;
 import network.framework.format.Mail;
 import network.framework.format.Proxy;
 
+/**
+ * A currently deprecated class. Please see ClientAdapter
+ * @author Austin
+ *
+ */
 public class GameWindow extends Observable implements Proxy {
 
 	private static final String HOST = "52.20.247.225";
@@ -18,12 +23,15 @@ public class GameWindow extends Observable implements Proxy {
 	private GameClient connection; 
 	private volatile boolean connected;
 	private Game gameData; 
+	
 	private static final GameWindow window = new GameWindow();
 
+	@Deprecated
 	public static GameWindow getInstance() {
 		return window;
 	}
 
+	@Deprecated
 	private GameWindow() {
 
 		new Thread() {
@@ -44,40 +52,49 @@ public class GameWindow extends Observable implements Proxy {
 		gameData = new Game();
 	}
 
+	@Deprecated
 	public Game requestServerObject () {
 		return gameData;
 	}
 
+	@Deprecated
 	private void addToTranscript (String message) {
 		System.out.println(message);
 	}
 
+	@Deprecated
 	public void updateObservers (Object o) {
 		setChanged();
 		notifyObservers(o);
 	}
 	
+	@Deprecated
 	@Override
 	public void send(Object o) {
 		send((Mail) o);
 	}
 
+	@Deprecated
 	public void send (Mail message) {
 		if (connection != null) {
 			connection.send(message);
 		}
 	}
 
+	@Deprecated
 	public boolean isConnected () {
 		return connected;
 	}
 
+	@Deprecated
 	private class GameClient extends Client {
 
+		@Deprecated
 		GameClient(String host) throws IOException {
 			super(host, PORT);
 		}
 
+		@Deprecated
 		protected void messageReceived(Object message) {
 
 			//addToTranscript("I HAVE RECEIVED! Sender ID is: " + msg.senderID + " and says:  " + msg.message.getClass());
@@ -91,10 +108,12 @@ public class GameWindow extends Observable implements Proxy {
 
 		}
 
+		@Deprecated
 		private boolean isMessageValid (ForwardedMessage m) {
 			return (m.message instanceof Mail && m.senderID != this.getID());
 		}
 	
+		@Deprecated
 		protected void connectionClosedByError(String message) {
 			addToTranscript("Sorry, communication has shut down due to an error:\n     " + message);
 			connected = false;
