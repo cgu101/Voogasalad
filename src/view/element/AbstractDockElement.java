@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import view.screen.AbstractScreenInterface;
@@ -24,11 +25,11 @@ import view.screen.AbstractScreenInterface;
  */
 public abstract class AbstractDockElement extends AbstractElement {
 
-	protected Stage stage;
-	protected Label title;
+	private Stage stage;
+	private Label title;
 	protected AbstractScreenInterface screen;
 	protected GridPane home;
-	protected GridPane titlePane;
+	protected Pane titlePane;
 	protected BooleanProperty showing;
 	private BooleanProperty docked;
 
@@ -55,9 +56,10 @@ public abstract class AbstractDockElement extends AbstractElement {
 		showing = new SimpleBooleanProperty(false);
 		docked = new SimpleBooleanProperty(false);
 		showing.addListener(e -> toggleShowing(showing.getValue()));
-		titlePane = new GridPane();
-		titlePane.add(this.title, 0, 0);
-		titlePane.setAlignment(Pos.CENTER);
+		GridPane tp = new GridPane();
+		tp.add(this.title, 0, 0);
+		tp.setAlignment(Pos.CENTER);
+		titlePane = tp;
 	}
 
 	private void configureCursors() {
