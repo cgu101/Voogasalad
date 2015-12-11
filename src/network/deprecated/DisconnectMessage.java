@@ -1,4 +1,4 @@
-package network.core;
+package network.deprecated;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * are for internal use in the netgame.common package and  are not used 
  * directly by users of the package.
  */
-final class DisconnectMessage implements Serializable {
+public final class DisconnectMessage implements Serializable {
 
     /**
      * The message associated with the disconnect.  When the Hub

@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import authoring.model.game.Game;
-import network.core.ForwardedMessage;
-import network.core.Message;
 import network.core.connections.ClientConnection;
 import network.core.connections.NetworkGameState;
 import network.core.containers.NetworkContainer;
+import network.core.messages.Message;
+import network.deprecated.ForwardedMessage;
 import network.framework.format.Mail;
 import network.framework.format.Request;
 
@@ -27,18 +27,6 @@ public class MessageHandler {
 	}
 	
 	private void init() {
-		myExecuters.put(Request.NODE, (message, clients, games)-> {
-			System.out.println("TREE NODE");
-			forwardToAll(message, clients);
-		});
-		
-		myExecuters.put(Request.GAME, (message, clients, games)-> {
-			Game g = (Game) ((Mail) message.message).getData();
-			if(!games.getKeys().contains(g.getUniqueID())) {
-				games.addObject(new NetworkGameState(g.getUniqueID(), g, message.senderID));
-				System.out.println("Did something");
-			}
-		});
 		
 		myExecuters.put(Request.DISCONNECT, (message, clients, games)-> {
 			forwardToAll(message, clients);

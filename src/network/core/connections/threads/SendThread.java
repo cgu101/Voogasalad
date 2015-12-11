@@ -5,7 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import network.core.ForwardedMessage;
+import network.deprecated.ForwardedMessage;
 import network.framework.format.Mail;
 
 

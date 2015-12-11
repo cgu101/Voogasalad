@@ -6,38 +6,34 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import network.core.ForwardedMessage;
-import network.core.Message;
 import network.core.connections.ClientConnection;
 import network.core.connections.NetworkGameState;
 import network.core.connections.threads.ConnectionThread;
 import network.core.containers.NetworkContainer;
+import network.core.messages.Message;
+import network.core.messages.ServerMessage;
+import network.deprecated.ForwardedMessage;
 import network.framework.format.Mail;
 
 public class ConnectionController extends ConnectionThread {	
 		
 	private NetworkContainer<NetworkGameState> games;
 	private NetworkContainer<ClientConnection> clients;
-	private BlockingQueue<Object> incomingMessages;
+	private BlockingQueue<ServerMessage> incomingMessages;
 	private MessageHandler handler;
 	
 	public ConnectionController() {
 		games = new NetworkContainer<NetworkGameState>();
 		clients = new NetworkContainer<ClientConnection>();
-		incomingMessages = new LinkedBlockingQueue<Object>();
+		incomingMessages = new LinkedBlockingQueue<ServerMessage>();
 		handler = new MessageHandler();
 	}
 		
 	@Override
 	public void execute() {		
 		try {
-			Object m = incomingMessages.take();
-			if(m instanceof ForwardedMessage) {
-				ForwardedMessage m1 = (ForwardedMessage) m;
-				if(m1.message instanceof Mail) {
-					handler.getHandler(((Mail) m1.message).getRequest()).executeMessage(m1, clients, games);
-				}
-			}
+			ServerMessage m = incomingMessages.take();
+			handler.getHandler(((Mail) m1.message).getRequest()).executeMessage(m1, clients, games);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

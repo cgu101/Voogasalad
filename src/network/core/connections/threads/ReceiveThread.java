@@ -5,8 +5,8 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
-import network.core.ForwardedMessage;
-import network.core.Message;
+import network.core.messages.Message;
+import network.deprecated.ForwardedMessage;
 import network.framework.format.Mail;
 
 public class ReceiveThread extends ConnectionThread {

@@ -6,11 +6,11 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import authoring.model.bundles.Identifiable;
-import network.core.ForwardedMessage;
-import network.core.Message;
 import network.core.connections.threads.ConnectionThread;
 import network.core.connections.threads.ReceiveThread;
 import network.core.connections.threads.SendThread;
+import network.core.messages.Message;
+import network.deprecated.ForwardedMessage;
 import network.framework.format.Mail;
 
 public class ClientConnection implements Identifiable, Closeable {
