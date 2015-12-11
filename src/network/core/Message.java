@@ -1,22 +1,35 @@
 package network.core;
 
-import network.framework.format.Mail;
+import java.io.Serializable;
 
-public class Message {
+import network.framework.format.Request;
+
+public class Message implements Serializable {
 	
-	private String client;
-    private Mail mail;
-    
-    public Message(String client, Mail mail) {
-    	this.client = client;
-    	this.mail = mail;
+	/**
+	 * Generated Serial ID
+	 */
+	private static final long serialVersionUID = -7266468240235229064L;
+	
+	private Request request;
+	private Serializable payload;
+	private String id;
+	
+    public Message(Serializable payload, Request request, String id) {
+    	this.request = request;
+    	this.payload = payload;
+    	this.id = id;
     }
     
-    public Mail getMail() {
-    	return mail;
+    public Serializable getPaylad () {
+    	return payload;
     }
     
-    public String getClient() {
-    	return client;
+    public Request getRequest () {
+    	return request;
+    }
+    
+    public String getID () {
+    	return id;
     }
 }
