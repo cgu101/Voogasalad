@@ -1,30 +1,27 @@
 package network.core.controller;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import network.core.connections.ClientConnection;
-import network.core.connections.NetworkGameState;
+import network.core.connections.NetworkObjectState;
 import network.core.connections.threads.ConnectionThread;
 import network.core.containers.NetworkContainer;
 import network.core.messages.Message;
 import network.core.messages.ServerMessage;
-import network.deprecated.ForwardedMessage;
-import network.framework.format.Mail;
 import network.framework.format.Request;
 
 public class ConnectionController extends ConnectionThread {	
 		
-	private NetworkContainer<NetworkGameState> games;
+	private NetworkContainer<NetworkObjectState> games;
 	private NetworkContainer<ClientConnection> clients;
 	private BlockingQueue<ServerMessage> incomingMessages;
 	private MessageHandler handler;
 	
 	public ConnectionController() {
-		games = new NetworkContainer<NetworkGameState>();
+		games = new NetworkContainer<NetworkObjectState>();
 		clients = new NetworkContainer<ClientConnection>();
 		incomingMessages = new LinkedBlockingQueue<ServerMessage>();
 		handler = new MessageHandler();
@@ -33,8 +30,13 @@ public class ConnectionController extends ConnectionThread {
 	@Override
 	public void execute() {		
 		try {
-			ServerMessage m = incomingMessages.take();	
-			// Check to make sure the object is of type message, else send it 
+			ServerMessage sMsg = incomingMessages.take();	
+			if(sMsg.getMessage() instanceof Message) {
+				Message msg = (Message) sMsg.getMessage();
+				handler.getHandler(msg.getRequest()).executeMessage(sMsg, clients, games);
+			} else {
+				ServerErrorController.sendErrorMessage(sMsg.getClientId(), clients, "Please send correct format");
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

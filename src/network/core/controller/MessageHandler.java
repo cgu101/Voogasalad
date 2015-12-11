@@ -4,10 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import network.core.connections.ClientConnection;
-import network.core.connections.NetworkGameState;
+import network.core.connections.NetworkObjectState;
 import network.core.containers.NetworkContainer;
 import network.core.messages.ServerMessage;
-import network.deprecated.ForwardedMessage;
 import network.framework.format.Request;
 
 public class MessageHandler {
@@ -42,11 +41,11 @@ public class MessageHandler {
 		});
 	}
 	
-	private void forwardToAll(ServerMessage message, NetworkContainer<ClientConnection> clients) {
-		
-	}
+//	private void forwardToAll(ServerMessage message, NetworkContainer<ClientConnection> clients) {
+//		
+//	}
 	
 	interface ExecuteHandler {	
-		void executeMessage(ServerMessage message, NetworkContainer<ClientConnection> clients, NetworkContainer<NetworkGameState> games);		
+		void executeMessage(ServerMessage message, NetworkContainer<ClientConnection> clients, NetworkContainer<NetworkObjectState> games);		
 	}
 }

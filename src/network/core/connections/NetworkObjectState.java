@@ -6,7 +6,7 @@ import java.util.List;
 import authoring.model.bundles.Identifiable;
 import authoring.model.game.Game;
 
-public class NetworkGameState implements Identifiable, Closeable  {
+public class NetworkObjectState implements Identifiable, Closeable  {
 	
 	private static final Long DELAY = 2700000l;
 	
@@ -16,7 +16,7 @@ public class NetworkGameState implements Identifiable, Closeable  {
 	private Heartbeat heartbeat;
 	private List<Integer> clients;
 	
-	public NetworkGameState(String gameIdentifier, Game game, Integer client) {
+	public NetworkObjectState(String gameIdentifier, Game game, Integer client) {
 		this.gameIdentifier = gameIdentifier;
 		this.game = game;
 		heartbeatVal = new HeartbeatValue();
