@@ -1,8 +1,8 @@
-package network.core;
+package network.core.messages;
 
 import java.io.Serializable;
 
-import network.deprecated.RequestType;
+import network.framework.format.Request;
 
 public class Message implements Serializable {
 	
@@ -11,11 +11,11 @@ public class Message implements Serializable {
 	 */
 	private static final long serialVersionUID = -7266468240235229064L;
 	
-	private RequestType request;
+	private Request request;
 	private Serializable payload;
 	private String id;
 	
-    public Message(Serializable payload, RequestType request, String id) {
+    public Message(Serializable payload, Request request, String id) {
     	this.request = request;
     	this.payload = payload;
     	this.id = id;
@@ -25,7 +25,7 @@ public class Message implements Serializable {
     	return payload;
     }
     
-    public RequestType getRequest () {
+    public Request getRequest () {
     	return request;
     }
     

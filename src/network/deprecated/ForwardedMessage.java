@@ -1,4 +1,4 @@
-package network.core;
+package network.deprecated;
 
 import java.io.Serializable;
 

@@ -5,18 +5,16 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
-import network.core.ForwardedMessage;
-import network.core.Message;
-import network.framework.format.Mail;
+import network.core.messages.ServerMessage;
 
 public class ReceiveThread extends ConnectionThread {
 	
 	private Socket connection;
-	private Integer id;
-	private BlockingQueue<Object> incomingMessages;
+	private String id;
+	private BlockingQueue<ServerMessage> incomingMessages;
 	private ObjectInputStream in;
 	
-	public ReceiveThread(Integer id, Socket connection, BlockingQueue<Object> incomingMessages) throws IOException {
+	public ReceiveThread(String id, Socket connection, BlockingQueue<ServerMessage> incomingMessages) throws IOException {
 		this.id = id;
 		this.connection = connection;
 		this.incomingMessages = incomingMessages;
@@ -27,7 +25,7 @@ public class ReceiveThread extends ConnectionThread {
 	public void execute() {
 		try {
 			Object message = in.readObject();
-			ForwardedMessage temp = new ForwardedMessage(id, message);
+			ServerMessage temp = new ServerMessage(id, message);
 			incomingMessages.put(temp);
 		}
 		catch (InterruptedException | ClassNotFoundException | IOException e) {

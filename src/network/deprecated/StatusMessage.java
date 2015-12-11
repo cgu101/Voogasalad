@@ -1,4 +1,4 @@
-package network.core;
+package network.deprecated;
 
 import java.io.Serializable;
 
@@ -15,7 +15,7 @@ import java.io.Serializable;
  * not see these messages; instead, the Client's playerConnected()
  * or playerDisconnected() method will be called.
  */
-final class StatusMessage implements Serializable {
+public final class StatusMessage implements Serializable {
 
     /**
      * The ID number of the player who has connected or disconnected.

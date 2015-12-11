@@ -1,42 +1,41 @@
 package network.core.controller;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import network.core.ForwardedMessage;
-import network.core.Message;
 import network.core.connections.ClientConnection;
-import network.core.connections.NetworkGameState;
+import network.core.connections.NetworkObjectState;
 import network.core.connections.threads.ConnectionThread;
 import network.core.containers.NetworkContainer;
-import network.framework.format.Mail;
+import network.core.messages.Message;
+import network.core.messages.ServerMessage;
+import network.framework.format.Request;
 
 public class ConnectionController extends ConnectionThread {	
 		
-	private NetworkContainer<NetworkGameState> games;
+	private NetworkContainer<NetworkObjectState> games;
 	private NetworkContainer<ClientConnection> clients;
-	private BlockingQueue<Object> incomingMessages;
+	private BlockingQueue<ServerMessage> incomingMessages;
 	private MessageHandler handler;
 	
 	public ConnectionController() {
-		games = new NetworkContainer<NetworkGameState>();
+		games = new NetworkContainer<NetworkObjectState>();
 		clients = new NetworkContainer<ClientConnection>();
-		incomingMessages = new LinkedBlockingQueue<Object>();
+		incomingMessages = new LinkedBlockingQueue<ServerMessage>();
 		handler = new MessageHandler();
 	}
 		
 	@Override
 	public void execute() {		
 		try {
-			Object m = incomingMessages.take();
-			if(m instanceof ForwardedMessage) {
-				ForwardedMessage m1 = (ForwardedMessage) m;
-				if(m1.message instanceof Mail) {
-					handler.getHandler(((Mail) m1.message).getRequest()).executeMessage(m1, clients, games);
-				}
+			ServerMessage sMsg = incomingMessages.take();	
+			if(sMsg.getMessage() instanceof Message) {
+				Message msg = (Message) sMsg.getMessage();
+				handler.getHandler(msg.getRequest()).executeMessage(sMsg, clients, games);
+			} else {
+				ServerErrorController.sendErrorMessage(sMsg.getClientId(), clients, "Please send correct format");
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -60,14 +59,12 @@ public class ConnectionController extends ConnectionThread {
 	}
 	
 	private void handshake(Socket connection) {
-		// TODO the actual handshake
 		System.out.println("Hub just connected to: " + connection.getLocalAddress());
-		
-		// Then create the client
+
 		try {
-			Integer val = IdManager.getNewClientId();
-			ClientConnection toAdd = new ClientConnection(val, incomingMessages, connection);
-			toAdd.send(val);
+			String newId = IdManager.getNewClientId();
+			ClientConnection toAdd = new ClientConnection(newId, incomingMessages, connection);
+			toAdd.send(Request.CONNECTION, newId, null);
 			clients.addObject(toAdd);
 			
 		} catch (IOException e) {

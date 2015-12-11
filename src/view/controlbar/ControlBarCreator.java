@@ -33,7 +33,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
-import network.core.ForwardedMessage;
+import network.deprecated.ForwardedMessage;
 import network.deprecated.RequestType;
 import network.framework.GameWindow;
 import network.framework.format.Mail;

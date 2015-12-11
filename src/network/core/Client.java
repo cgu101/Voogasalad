@@ -7,6 +7,10 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import network.deprecated.DisconnectMessage;
+import network.deprecated.ResetSignal;
+import network.deprecated.StatusMessage;
+
 
 /**
  * This abstract class represents a Client, or Player, that can connect

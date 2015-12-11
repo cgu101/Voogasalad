@@ -1,47 +1,48 @@
 package network.core.connections;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import authoring.model.bundles.Identifiable;
-import network.core.ForwardedMessage;
-import network.core.Message;
 import network.core.connections.threads.ConnectionThread;
 import network.core.connections.threads.ReceiveThread;
 import network.core.connections.threads.SendThread;
-import network.framework.format.Mail;
+import network.core.messages.Message;
+import network.core.messages.ServerMessage;
+import network.framework.format.Request;
 
 public class ClientConnection implements Identifiable, Closeable {
 	
 	private static final Long DELAY = 1800000l;
 	
-    private Integer playerId;
+    private String clientId;
     private String gameId;
     private Socket connection;
     private HeartbeatValue heartbeatVal;
     private Heartbeat heartbeat;
-    private LinkedBlockingQueue<Object> outgoingMessages;
-    private BlockingQueue<Object> incomingMessages;
+    private LinkedBlockingQueue<Message> outgoingMessages;
+    private BlockingQueue<ServerMessage> incomingMessages;
     private ConnectionThread sendThread;
     private ConnectionThread receiveThread;
     
-    public ClientConnection(Integer playerId, BlockingQueue<Object> receivedMessageQueue, Socket connection) throws IOException  {
-        this.playerId = playerId;
+    public ClientConnection(String clientId, BlockingQueue<ServerMessage> receivedMessageQueue, Socket connection) throws IOException  {
+        this.clientId = clientId;
     	this.connection = connection;
     	heartbeatVal = new HeartbeatValue();
         incomingMessages = receivedMessageQueue;
-        outgoingMessages = new LinkedBlockingQueue<Object>();
+        outgoingMessages = new LinkedBlockingQueue<Message>();
         sendThread =  new SendThread(connection, outgoingMessages);
-        receiveThread = new ReceiveThread(playerId, connection, incomingMessages);
+        receiveThread = new ReceiveThread(clientId, connection, incomingMessages);
         sendThread.start();
         receiveThread.start();
         initializeHeartbeat();
     }
     
-    public Integer getId() {
-        return playerId;
+    public String getId() {
+        return clientId;
     }
     
     public String getGameId() {
@@ -61,13 +62,18 @@ public class ClientConnection implements Identifiable, Closeable {
         } catch (IOException e) {}
     }
     
-    public void send(Object obj) {
-        outgoingMessages.add(obj);
+    public void send(Request request, Serializable ser, String id) {
+    	Message msg = new Message(ser, request, id);
+        send(msg);
+    }
+    
+    public void send(Message msg) {
+        outgoingMessages.add(msg);
     }
 
 	@Override
 	public String getUniqueID() {
-		return playerId.toString();
+		return clientId;
 	}
 
 	@Override
