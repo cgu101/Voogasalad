@@ -18,7 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import network.framework.GameWindow;
+import network.deprecated.GameWindow;
 import network.framework.format.Mail;
 import resources.keys.PropertyKey;
 import resources.keys.PropertyKeyResource;

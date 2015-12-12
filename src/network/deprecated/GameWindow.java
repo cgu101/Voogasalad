@@ -1,4 +1,4 @@
-package network.framework;
+package network.deprecated;
 
 import java.io.IOException;
 import java.util.Observable;
@@ -6,7 +6,6 @@ import java.util.Observable;
 import authoring.model.game.Game;
 import javafx.application.Platform;
 import network.core.Client;
-import network.deprecated.ForwardedMessage;
 import network.framework.format.Mail;
 import network.framework.format.Proxy;
 

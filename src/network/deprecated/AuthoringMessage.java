@@ -1,9 +1,8 @@
-package network.framework;
+package network.deprecated;
 
 import java.io.Serializable;
 
 import authoring.model.game.Game;
-import network.deprecated.RequestType;
 import resources.keys.PropertyKey;
 import resources.keys.PropertyKeyResource;
 

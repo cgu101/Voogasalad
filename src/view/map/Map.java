@@ -19,8 +19,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
+import network.deprecated.DataDecorator;
 import network.deprecated.RequestType;
-import network.instances.DataDecorator;
 import view.element.AbstractElement;
 import view.handler.ActorHandler;
 

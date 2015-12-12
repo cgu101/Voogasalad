@@ -1,4 +1,4 @@
-package network.core;
+package network.deprecated;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -6,11 +6,6 @@ import java.net.Socket;
 import java.util.TreeMap;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import network.deprecated.DisconnectMessage;
-import network.deprecated.ForwardedMessage;
-import network.deprecated.ResetSignal;
-import network.deprecated.StatusMessage;
 
 
 /**

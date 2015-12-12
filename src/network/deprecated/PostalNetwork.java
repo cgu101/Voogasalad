@@ -1,4 +1,4 @@
-package network.util;
+package network.deprecated;
 
 import network.framework.format.Mail;
 import network.framework.format.Proxy;

@@ -1,13 +1,13 @@
-package network.framework;
+package network.test;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import authoring.model.game.Game;
+import network.deprecated.DataDecorator;
 import network.deprecated.RequestType;
 import network.framework.format.Mail;
-import network.instances.DataDecorator;
 
 public class TestSender {
 	

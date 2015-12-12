@@ -1,8 +1,7 @@
-package network.framework;
+package network.deprecated;
 
 import java.io.IOException;
 
-import network.core.TempHub;
 import network.core.connections.threads.Hub;
 
 public class GameHub {
