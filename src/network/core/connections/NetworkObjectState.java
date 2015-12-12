@@ -6,7 +6,7 @@ import java.util.List;
 import authoring.model.bundles.Identifiable;
 import authoring.model.game.Game;
 
-public class NetworkObjectState implements Identifiable, Closeable  {
+public class NetworkObjectState implements Identifiable, ICloseable  {
 	
 	private static final Long DELAY = 2700000l;
 	
@@ -68,6 +68,12 @@ public class NetworkObjectState implements Identifiable, Closeable  {
 	
 	public HeartbeatValue getHeartbeatValue() {
 		return heartbeatVal;
+	}
+
+	@Override
+	public Boolean isClosed() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 		
 }

@@ -11,10 +11,10 @@ import network.core.connections.threads.ConnectionThread;
 import network.core.connections.threads.ReceiveThread;
 import network.core.connections.threads.SendThread;
 import network.core.messages.Message;
-import network.core.messages.ServerMessage;
+import network.exceptions.StreamException;
 import network.framework.format.Request;
 
-public class ClientConnection implements Identifiable, Closeable {
+public class ClientConnection implements Identifiable, ICloseable {
 	
 	private static final Long DELAY = 1800000l;
 	
@@ -24,11 +24,11 @@ public class ClientConnection implements Identifiable, Closeable {
     private HeartbeatValue heartbeatVal;
     private Heartbeat heartbeat;
     private LinkedBlockingQueue<Message> outgoingMessages;
-    private BlockingQueue<ServerMessage> incomingMessages;
+    private BlockingQueue<Message> incomingMessages;
     private ConnectionThread sendThread;
     private ConnectionThread receiveThread;
     
-    public ClientConnection(String clientId, BlockingQueue<ServerMessage> receivedMessageQueue, Socket connection) throws IOException  {
+    public ClientConnection(String clientId, BlockingQueue<Message> receivedMessageQueue, Socket connection) throws IOException  {
         this.clientId = clientId;
     	this.connection = connection;
     	heartbeatVal = new HeartbeatValue();
@@ -54,7 +54,7 @@ public class ClientConnection implements Identifiable, Closeable {
     }
     
     @Override
-    public void close() {
+    public void close() throws StreamException {
     	sendThread.close();
     	receiveThread.close();
         try {
@@ -93,5 +93,11 @@ public class ClientConnection implements Identifiable, Closeable {
 	
 	public HeartbeatValue getHeartbeatValue() {
 		return heartbeatVal;
+	}
+
+	@Override
+	public Boolean isClosed() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

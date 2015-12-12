@@ -5,49 +5,39 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
-import network.core.messages.ServerMessage;
+import network.core.messages.Message;
 
 public class ReceiveThread extends ConnectionThread {
+
+	private static final ThreadType threadType = ThreadType.RECEIVE;
 	
-	private Socket connection;
-	private String id;
-	private BlockingQueue<ServerMessage> incomingMessages;
 	private ObjectInputStream in;
-	
-	public ReceiveThread(String id, Socket connection, BlockingQueue<ServerMessage> incomingMessages) throws IOException {
-		this.id = id;
-		this.connection = connection;
-		this.incomingMessages = incomingMessages;
+
+	public ReceiveThread(String id, Socket connection, BlockingQueue<Message> flowingMessages)
+			throws IOException {
+		super(id, connection, flowingMessages);
+		this.in = new ObjectInputStream(connection.getInputStream());
+	}
+
+	@Override
+	protected void closeStream() throws IOException {
+		in.close();
+	}
+
+	@Override
+	protected ThreadType getThreadType() {
+		return threadType;
+	}
+
+	@Override
+	protected void executeUsingStream() throws IOException, InterruptedException, ClassNotFoundException {
+		Message payload = (Message) in.readObject();
+		flowingMessages.put(payload);
+	}
+
+	@Override
+	protected void resetStream() throws IOException {
 		in = new ObjectInputStream(connection.getInputStream());
 	}
-	
-	@Override
-	public void execute() {
-		try {
-			Object message = in.readObject();
-			ServerMessage temp = new ServerMessage(id, message);
-			incomingMessages.put(temp);
-		}
-		catch (InterruptedException | ClassNotFoundException | IOException e) {
-			if(!isClosed()) {
-				try {
-					in = new ObjectInputStream(connection.getInputStream());
-				} catch (IOException e1) {
-					System.out.println("Failure trying to ropen connection: " + e);
-					close();
-				};
-			}
-		}
-	}
-	
-	@Override
-	public void close() {
-		super.close();
-		try {
-			in.close();
-			join(5);
-		} catch(IOException | InterruptedException e) {
-			System.out.println("Error while trying to close input stream: " + e);
-		}
-	}
+
 }

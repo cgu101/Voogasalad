@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import network.core.Client;
 import network.util.ThreadFactory;
-import network.util.ThreadType;
+import network.util.ConnectionType;
 
 public class ClientAdapter {
 	
@@ -31,7 +31,7 @@ public class ClientAdapter {
 
 		protected void messageReceived(Object message) {
 			Runnable myRunnable =  new Runnable() { public void run() {}};
-			ThreadFactory.execute(myRunnable, ThreadType.JAVAFX);
+			ThreadFactory.execute(myRunnable, ConnectionType.JAVAFX);
 		}
 	
 	}

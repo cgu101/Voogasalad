@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import authoring.model.bundles.Identifiable;
-import network.core.connections.Closeable;
+import network.core.connections.ICloseable;
 
-public class NetworkContainer<T extends Identifiable & Closeable> {
+public class NetworkContainer<T extends Identifiable & ICloseable> {
 
 	private Map<String, T> container;
 	
@@ -32,7 +32,7 @@ public class NetworkContainer<T extends Identifiable & Closeable> {
 		container.remove(id);
 	}
 	
-	public void close() {
+	public void close() throws Exception {
 		for(T t : container.values()) {
 			t.close();
 		}

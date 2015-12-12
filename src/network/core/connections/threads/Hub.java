@@ -3,8 +3,11 @@ package network.core.connections.threads;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import network.core.controller.ConnectionController;
+import network.core.messages.Message;
+import network.exceptions.StreamException;
 
 public class Hub {
 
@@ -75,7 +78,7 @@ public class Hub {
 		private ConnectionController controller;
 		
 		private ServerThread() {
-			controller = new ConnectionController();
+			controller = new ConnectionController(null, null, new LinkedBlockingQueue<Message>()); //TODO
 			controller.start();
 		}
 		
@@ -91,7 +94,7 @@ public class Hub {
 						System.out.println("Listener socket has shut down.");
 						controller.close();
 						join();
-					} catch (InterruptedException e1) {
+					} catch (InterruptedException | StreamException e1) {
 						System.out.println("Error shutting down server thread: " + e);
 					}
 				} else {

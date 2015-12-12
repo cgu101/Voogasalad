@@ -1,8 +1,8 @@
-package network.util;
+package network.core.connections.threads;
 
 public enum ThreadType {
-	JAVAFX("JavaFX Safe Thread"),
-	DEFAULT("Standard Thread");
+	SEND("Send Thread"),
+	RECEIVE("Receive Thread");
 	
 	private final String threadType;
 	

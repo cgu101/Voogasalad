@@ -1,4 +1,4 @@
-package network.core.controller;
+package network.deprecated.threads;
 
 import java.util.HashMap;
 import java.util.Map;
