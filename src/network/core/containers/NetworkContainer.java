@@ -10,6 +10,9 @@ import network.core.connections.IDistinguishable;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ * 
+ * Contains client instances and data instances from the server.
+ * Map-like structure to contain all connections
  */
 
 public class NetworkContainer<T extends IDistinguishable & ICloseable> {
@@ -36,6 +39,10 @@ public class NetworkContainer<T extends IDistinguishable & ICloseable> {
 		container.remove(id);
 	}
 	
+	
+	/*
+	 * Close all connections
+	 */
 	public void close() throws Exception {
 		for(T t : container.values()) {
 			t.close();

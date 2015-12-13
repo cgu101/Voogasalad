@@ -6,12 +6,18 @@ import java.util.Set;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ * 
+ * Manager to generate client IDs (unique)
  */
 
 public class IdManager {
 
 	private static Set<String> uniqueIds;
 
+	/**
+	 * Generates a unique client ID
+	 * @return unique client ID
+	 */
 	public static String getNewClientId() {
 		String newId = SessionIdentifierGenerator.nextSessionId();
 		if(!uniqueIds.contains(newId)) {
@@ -27,6 +33,11 @@ public class IdManager {
 
 	}
 
+	/**
+	 * Generates random session identifier
+	 * 
+	 * @author Chris 
+	 */
 	public static class SessionIdentifierGenerator {
 		private static SecureRandom random = new SecureRandom();
 

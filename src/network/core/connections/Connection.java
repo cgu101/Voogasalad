@@ -60,6 +60,12 @@ public class Connection implements IDistinguishable, ICloseable, ISendable {
     }
     
     @Override
+    public void send(Message m) {
+    	IDMessageEncapsulation msg = new IDMessageEncapsulation(connectionId, m);
+    	send(msg);
+    }
+    
+    @Override
     public void send(IDMessageEncapsulation msg) {
         outgoingMessages.add(msg);
     }

@@ -11,6 +11,8 @@ import network.core.messages.format.Request;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ * 
+ * Handles the messages that are inserted 
  */
 
 public class MessageHandler {
@@ -29,25 +31,21 @@ public class MessageHandler {
 	private void init() {
 
 		myExecuters.put(Request.ERROR, (message, clients, games)-> {
-			System.out.println("ERROR");
+			System.out.println(Request.ERROR.toString());
 		});
 		
 		myExecuters.put(Request.CONNECTION, (message, clients, games)-> {
-			System.out.println("CONNECTION");
+			System.out.println(Request.CONNECTION.toString());
 		});
 		
 		myExecuters.put(Request.LOADGROUP, (message, clients, games)-> {
-			System.out.println("LOADGROUP");
+			System.out.println(Request.LOADGROUP.toString());
 		});
 		
 		myExecuters.put(Request.CREATEGROUP, (message, clients, games)-> {
-			System.out.println("CREATEGROUP");
+			System.out.println(Request.CREATEGROUP.toString());
 		});
 	}
-	
-//	private void forwardToAll(ServerMessage message, NetworkContainer<Connection> clients) {
-//		
-//	}
 	
 	interface ExecuteHandler {	
 		void executeMessage(IDMessageEncapsulation message, NetworkContainer<Connection> clients, NetworkContainer<NetworkState> games);		
