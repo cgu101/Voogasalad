@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
+import network.core.messages.ServerMessage;
+
 public class ReceiveThread extends ConnectionThread {
 	
 	private Socket connection;

@@ -12,6 +12,10 @@ import network.exceptions.StreamException;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ * 
+ * Describes a thread of execution of a program specific to client-server communication.
+ * Multiple threads are allowed to be run at the same time.
+ * Describes the parent class, whose children are Receive and Send.
  */
 
 public abstract class ConnectionThread extends Thread implements IExecutable, ICloseable, IDistinguishable {
@@ -83,8 +87,31 @@ public abstract class ConnectionThread extends Thread implements IExecutable, IC
 		}	 
 	}
 
+	/**
+	 * Method described that closes the stream associated with this thread
+	 * @throws IOException
+	 */
 	protected abstract void closeStream() throws IOException;
+	
+	/**
+	 * Returns an enum indicating the type of thread this class represents
+	 * @return
+	 */
 	protected abstract ThreadType getThreadType();
+	
+	/**
+	 * Executes functionalities using the stream associated with this thread
+	 * 
+	 * @throws IOException
+	 * @throws InterruptedException
+	 * @throws ClassNotFoundException
+	 */
 	protected abstract void executeUsingStream() throws IOException, InterruptedException, ClassNotFoundException;
+	
+	/**
+	 * Resets the stream under the circumstance that the stream is not closed when it should be
+	 * 
+	 * @throws IOException
+	 */
 	protected abstract void resetStream() throws IOException;
 }

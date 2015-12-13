@@ -5,5 +5,8 @@ package network.core.connections;
  */
 
 public interface IDistinguishable {
+	/**
+	 * @return unique ID of a certain interface
+	 */
 	public String getID ();
 }

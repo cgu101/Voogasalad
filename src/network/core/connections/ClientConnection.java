@@ -16,6 +16,8 @@ import network.framework.format.Request;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ * 
+ * Maintains the send and receive thread, and each connection gets the instance.
  */
 
 public class ClientConnection implements Identifiable, ICloseable {

@@ -2,6 +2,8 @@ package network.core.connections.threads;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ * 
+ * Enum describing the type of thread.
  */
 
 public enum ThreadType {
