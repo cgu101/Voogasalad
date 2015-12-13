@@ -12,6 +12,7 @@ import network.core.controller.AConnectionController;
 import network.core.messages.IDMessageEncapsulation;
 import network.core.messages.Message;
 import network.core.messages.format.Request;
+import network.exceptions.StreamException;
 
 public class ClientConnectionController extends AConnectionController {
 	
@@ -19,7 +20,7 @@ public class ClientConnectionController extends AConnectionController {
 	private static final Integer PORT = 5055;
 	
 	private Map<String, BlockingQueue<Message>> myQueues;
-	private ISendable clientConnection;
+	private Connection clientConnection;
 	
 	private static final ClientConnectionController controller = new ClientConnectionController();
 	
@@ -46,6 +47,7 @@ public class ClientConnectionController extends AConnectionController {
 	
 	@Override
 	protected void handshake(Socket connection) {
+		// TODO better handshake
 		System.out.println("Client just connected to: " + connection.getLocalAddress());
 
 		try {
@@ -57,6 +59,7 @@ public class ClientConnectionController extends AConnectionController {
 	
 	@Override
 	protected void handleMessage(IDMessageEncapsulation message) {
+		// TODO Better message handler for client connection
 		Message msg = message.getMessage();
 		if(msg.getRequest() == Request.QUEUEDATA) {
 			if(myQueues.containsKey(msg.getID())) {
@@ -65,13 +68,18 @@ public class ClientConnectionController extends AConnectionController {
 				// TODO Send error to the server or something
 				System.out.println("Invalid queue identifier received from server");
 			}
+		} else if (msg.getRequest() == Request.CONNECTION) {
+			clientConnection.setId((String) msg.getPaylad()); 
 		}
 	}
 
 	@Override
 	protected void closeStream() throws IOException {
-		// TODO Auto-generated method stub
-		
+		try {
+			clientConnection.close();
+		} catch (StreamException e) {
+			// TODO handle closing exception
+		}
 	}
 
 	@Override

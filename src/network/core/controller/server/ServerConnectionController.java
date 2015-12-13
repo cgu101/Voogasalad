@@ -38,6 +38,7 @@ public class ServerConnectionController extends AConnectionController {
 
 	@Override
 	protected void handshake(Socket connection) {
+		// TODO better handshake
 		System.out.println("Hub just connected to: " + connection.getLocalAddress());
 
 		try {
