@@ -2,11 +2,13 @@ package network.core.controller.client;
 
 import java.util.concurrent.BlockingQueue;
 
+import network.core.connections.ICloseable;
 import network.core.messages.Message;
 
-public abstract class QueueHandler {
+public abstract class QueueHandler implements ICloseable {
 
 	private BlockingQueue<Message> myQueue;
+	private Boolean executing = true;
 	
 	public QueueHandler(String queueId) {
 		ClientConnectionController.getInstance().addQueue(queueId, myQueue);
@@ -18,14 +20,24 @@ public abstract class QueueHandler {
 			@Override
 			public void run() {
 				try {
-					handleMessage(myQueue.take());
+					while(executing) {
+						handleMessage(myQueue.take());
+					}
 				} catch (InterruptedException e) {
-					// TODO handle error message;
+					// TODO handle exception
 				}
 			}
 		}.start();
 	}
 	
 	public abstract void handleMessage(Message message);
+	
+	public void close() throws Exception {
+		executing = false;
+	}
+	
+	public Boolean isClosed() {
+		return executing;
+	}
 	
 }
