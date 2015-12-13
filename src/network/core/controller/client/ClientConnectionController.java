@@ -16,7 +16,7 @@ import network.exceptions.StreamException;
 
 public class ClientConnectionController extends AConnectionController {
 	
-	private static final String IP_ADDRESS = "localhost";
+	private static final String IP_ADDRESS = "wl-10-190-54-23.wireless.duke.edu";
 	private static final Integer PORT = 5055;
 	
 	private Map<String, BlockingQueue<Message>> myQueues;

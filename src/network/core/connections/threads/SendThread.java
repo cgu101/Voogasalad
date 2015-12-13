@@ -34,7 +34,7 @@ public class SendThread extends ConnectionThread {
 
 	@Override
 	protected void executeUsingStream() throws IOException, InterruptedException, ClassNotFoundException {
-		IDMessageEncapsulation message = flowingMessages.take();		
+		IDMessageEncapsulation message = flowingMessages.take();
 		out.writeObject(message);
 	}
 

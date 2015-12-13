@@ -1,6 +1,8 @@
 package network.core.messages;
 
-public class IDMessageEncapsulation {
+import java.io.Serializable;
+
+public class IDMessageEncapsulation implements Serializable {
 
 	private String clientId;
 	private Message message;

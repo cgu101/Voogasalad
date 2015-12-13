@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import network.util.ThreadFactory;
 import network.core.controller.client.ClientConnectionController;
+import network.core.messages.Message;
+import network.core.messages.format.Request;
 import network.util.ConnectionType;
 
 /**
@@ -48,5 +50,10 @@ public class ClientAdapter {
 			ThreadFactory.execute(myRunnable, ConnectionType.JAVAFX);
 		}
 	
+	}
+	
+	public static void main (String[] args) {
+		ClientAdapter a = new ClientAdapter();
+		ClientConnectionController.getInstance().getConnection().send(new Message("Payload", Request.QUEUEDATA, "ID_1"));
 	}
 }

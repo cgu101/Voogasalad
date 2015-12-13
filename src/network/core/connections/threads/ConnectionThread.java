@@ -85,6 +85,7 @@ public abstract class ConnectionThread extends Thread implements IExecutable, IC
 		try {
 			executeUsingStream();
 		} catch (IOException | InterruptedException | ClassNotFoundException e) {
+			e.printStackTrace();
 			if(!isClosed()) {
 				try {
 					resetStream();
