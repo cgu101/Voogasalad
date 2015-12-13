@@ -14,7 +14,7 @@ import network.core.messages.format.Request;
 public class ServerErrorController {
 
 	public static void sendErrorMessage(String client, NetworkContainer<Connection> clients, String error) {
-		//clients.getObject(client).send(new IDMessage(error, Request.ERROR, null));
+		//clients.getObject(client).send(new IDMessageEncapsulation(error, Request.ERROR, null));
 	}
 	
 	public static void sendErrorMessage(Connection client, String error) {

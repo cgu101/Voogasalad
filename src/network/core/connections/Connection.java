@@ -10,7 +10,7 @@ import network.core.connections.threads.ConnectionThread;
 import network.core.connections.threads.ReceiveThread;
 import network.core.connections.threads.SendThread;
 import network.core.messages.Message;
-import network.core.messages.IDMessage;
+import network.core.messages.IDMessageEncapsulation;
 import network.core.messages.format.Request;
 import network.exceptions.StreamException;
 
@@ -20,27 +20,27 @@ import network.exceptions.StreamException;
  * Maintains the send and receive thread, and each connection gets the instance.
  */
 
-public class Connection implements IDistinguishable, ICloseable {
+public class Connection implements IDistinguishable, ICloseable, ISendable {
 	
 	private String connectionId;
     private Socket connection;
-    private LinkedBlockingQueue<IDMessage> outgoingMessages;
-    private BlockingQueue<IDMessage> incomingMessages;
+    private LinkedBlockingQueue<IDMessageEncapsulation> outgoingMessages;
+    private BlockingQueue<IDMessageEncapsulation> incomingMessages;
     private ConnectionThread sendThread;
     private ConnectionThread receiveThread;
     
-    public Connection(String connectionId, BlockingQueue<IDMessage> receivedMessageQueue, Socket connection) throws IOException  {
+    public Connection(String connectionId, BlockingQueue<IDMessageEncapsulation> receivedMessageQueue, Socket connection) throws IOException  {
     	this.connectionId = connectionId;
     	this.connection = connection;
         incomingMessages = receivedMessageQueue;
-        outgoingMessages = new LinkedBlockingQueue<IDMessage>();
+        outgoingMessages = new LinkedBlockingQueue<IDMessageEncapsulation>();
         sendThread =  new SendThread(connection, outgoingMessages);
         receiveThread = new ReceiveThread(connection, incomingMessages);
         sendThread.start();
         receiveThread.start();
     }
     
-    public Connection(BlockingQueue<IDMessage> receivedMessageQueue, Socket connection) throws IOException  {
+    public Connection(BlockingQueue<IDMessageEncapsulation> receivedMessageQueue, Socket connection) throws IOException  {
     	this(Connection.class.getName(), receivedMessageQueue, connection);
     }
     
@@ -53,13 +53,14 @@ public class Connection implements IDistinguishable, ICloseable {
         } catch (IOException e) {}
     }
     
+    @Override
     public void send(Request request, Serializable ser, String queueId) {
-    	IDMessage msg = new IDMessage(connectionId, new Message(ser, request, queueId));
-    	
+    	IDMessageEncapsulation msg = new IDMessageEncapsulation(connectionId, new Message(ser, request, queueId));   	
         send(msg);
     }
     
-    public void send(IDMessage msg) {
+    @Override
+    public void send(IDMessageEncapsulation msg) {
         outgoingMessages.add(msg);
     }
     

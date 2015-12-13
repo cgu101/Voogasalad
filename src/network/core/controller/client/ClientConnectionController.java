@@ -7,9 +7,11 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 import network.core.connections.Connection;
+import network.core.connections.ISendable;
 import network.core.controller.AConnectionController;
-import network.core.messages.IDMessage;
+import network.core.messages.IDMessageEncapsulation;
 import network.core.messages.Message;
+import network.core.messages.format.Request;
 
 public class ClientConnectionController extends AConnectionController {
 	
@@ -17,7 +19,7 @@ public class ClientConnectionController extends AConnectionController {
 	private static final Integer PORT = 5055;
 	
 	private Map<String, BlockingQueue<Message>> myQueues;
-	private Connection clientConnection;
+	private ISendable clientConnection;
 	
 	private static final ClientConnectionController controller = new ClientConnectionController();
 	
@@ -28,6 +30,18 @@ public class ClientConnectionController extends AConnectionController {
 		} catch(IOException e) {
 			// TODO Handle this exception
 		}
+	}
+	
+	public static ClientConnectionController getInstance() {
+		return controller;
+	}
+	
+	public void addQueue(String queueId, BlockingQueue<Message> queue) {
+		myQueues.put(queueId, queue);
+	}
+	
+	public ISendable getConnection() {
+		return clientConnection;
 	}
 	
 	@Override
@@ -41,13 +55,17 @@ public class ClientConnectionController extends AConnectionController {
 		}
 	}
 	
-	public void addQueue(String queueId, BlockingQueue<Message> queue) {
-		myQueues.put(queueId, queue);
-	}
-	
 	@Override
-	protected void handleMessage(IDMessage message) {
-		
+	protected void handleMessage(IDMessageEncapsulation message) {
+		Message msg = message.getMessage();
+		if(msg.getRequest() == Request.QUEUEDATA) {
+			if(myQueues.containsKey(msg.getID())) {
+				myQueues.get(msg.getID()).add(msg);
+			} else {
+				// TODO Send error to the server or something
+				System.out.println("Invalid queue identifier received from server");
+			}
+		}
 	}
 
 	@Override
