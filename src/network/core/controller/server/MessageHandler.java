@@ -1,6 +1,7 @@
 package network.core.controller.server;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import network.core.connections.Connection;
@@ -31,20 +32,20 @@ public class MessageHandler {
 	
 	private void init() {
 
-		myExecuters.put(Request.ERROR, (message, clients, games)-> {
+		myExecuters.put(Request.ERROR, (message, clients, states)-> {
 			System.out.println(Request.ERROR.toString());
 		});
 		
-		myExecuters.put(Request.CONNECTION, (message, clients, games)-> {
+		myExecuters.put(Request.CONNECTION, (message, clients, states)-> {
 			System.out.println(Request.CONNECTION.toString());
 		});
 		
-		myExecuters.put(Request.LOADGROUP, (message, clients, games)-> {
+		myExecuters.put(Request.LOADGROUP, (message, clients, states)-> {
 			Connection client = clients.getObject(message.getClientId());
 			Message msg = message.getMessage();
 			
 			NetworkState state;
-			if((state = games.getObject(msg.getID())) != null) {				
+			if((state = states.getObject(msg.getID())) != null) {				
 				client.setStateId(state.getID());
 				client.send(Request.LOADGROUP, state.getState(), msg.getID());
 			} else {
@@ -52,15 +53,15 @@ public class MessageHandler {
 			}			
 		});
 		
-		myExecuters.put(Request.CREATEGROUP, (message, clients, games)-> {
+		myExecuters.put(Request.CREATEGROUP, (message, clients, states)-> {
 			String clientId = message.getClientId();
 			Connection client = clients.getObject(clientId);
 			Message msg = message.getMessage();
 			
-			if(!games.containsObject(msg.getID())) {
+			if(!states.containsObject(msg.getID())) {
 				clients.getObject(clientId).setStateId(msg.getID());
 				NetworkState toAdd = new NetworkState(msg.getID(), msg.getPaylad(), clientId);
-				games.addObject(toAdd);
+				states.addObject(toAdd);
 			} else {
 				ErrorController.sendErrorMessage(client, "State already exists with given id: " + msg.getID());
 			}
@@ -68,17 +69,29 @@ public class MessageHandler {
 			System.out.println(Request.CREATEGROUP.toString());
 		});
 		
-		myExecuters.put(Request.GENERALDATA, (message, clients, games)-> {
+		myExecuters.put(Request.GENERALDATA, (message, clients, states)-> {			
+			forwardToAll(message, clients, states);
 			System.out.println(Request.CREATEGROUP.toString());
 		});
 			
-		myExecuters.put(Request.QUEUEDATA, (message, clients, games)-> {
+		myExecuters.put(Request.QUEUEDATA, (message, clients, states)-> {
+			forwardToAll(message, clients, states);
 			System.out.println(Request.CREATEGROUP.toString());
 		});
-		
 	}
 	
+	private void forwardToAll(IDMessageEncapsulation message, NetworkContainer<Connection> clients, NetworkContainer<NetworkState> states) {
+		String stateId = clients.getObject(message.getClientId()).getStateId();
+		List<String> clientIds = states.getObject(stateId).getClients();
+		
+		for(String s : clientIds) {
+			if(!s.equals(message.getClientId())) {
+				clients.getObject(s).send(message.getMessage());
+			}
+		}
+	}
+
 	interface ExecuteHandler {	
-		void executeMessage(IDMessageEncapsulation message, NetworkContainer<Connection> clients, NetworkContainer<NetworkState> games);		
+		void executeMessage(IDMessageEncapsulation message, NetworkContainer<Connection> clients, NetworkContainer<NetworkState> states);		
 	}
 }
