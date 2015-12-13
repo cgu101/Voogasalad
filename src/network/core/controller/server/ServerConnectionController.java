@@ -14,16 +14,16 @@ import network.core.messages.format.Request;
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
  */
 
-public class ServerConnectionController extends AConnectionController {	
+public class ServerConnectionController extends AConnectionController<IServerExecuteHandler> {	
 			
 	private NetworkContainer<NetworkState> states;
 	private NetworkContainer<Connection> clients;
-	private MessageHandler handler;
+	private ServerMessageHandler handler;
 	
 	public ServerConnectionController() {		
 		states = new NetworkContainer<NetworkState>();
 		clients = new NetworkContainer<Connection>();
-		handler = new MessageHandler();
+		handler = new ServerMessageHandler();
 	}
 	
 	/**
@@ -42,7 +42,7 @@ public class ServerConnectionController extends AConnectionController {
 		System.out.println("Hub just connected to: " + connection.getLocalAddress());
 
 		try {
-			String newId = IdManager.getNewClientId();
+			String newId = ServerIdManager.getNewClientId();
 			Connection toAdd = new Connection(newId, incomingMessages, connection);
 			toAdd.send(Request.CONNECTION, newId, null);
 			clients.addObject(toAdd);
@@ -55,8 +55,7 @@ public class ServerConnectionController extends AConnectionController {
 	@Override
 	protected void handleMessage(IDMessageEncapsulation message) {
 		// TODO Pre-Processing
-		handler.getHandler(message.getMessage().getRequest()).executeMessage(message, clients, states);
-		
+		handler.getHandler(message.getMessage().getRequest()).executeMessage(message, clients, states);	
 	}
 
 	@Override

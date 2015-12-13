@@ -11,7 +11,7 @@ import java.util.Set;
  * Manager to generate client IDs (unique)
  */
 
-public class IdManager {
+public class ServerIdManager {
 
 	private static Set<String> uniqueIds;
 
@@ -19,7 +19,7 @@ public class IdManager {
 	 * Generates a unique client ID
 	 * @return unique client ID
 	 */
-	public static String getNewClientId() {
+	static String getNewClientId() {
 		uniqueIds = new HashSet<String>();
 		String newId = SessionIdentifierGenerator.nextSessionId();
 		if(!uniqueIds.contains(newId)) {
@@ -30,7 +30,7 @@ public class IdManager {
 		}
 	}
 
-	public static void getStoredGame(String gameId) {
+	static void getStoredGame(String gameId) {
 		// TODO load game stored on s3
 
 	}
@@ -40,7 +40,7 @@ public class IdManager {
 	 * 
 	 * @author Chris 
 	 */
-	public static class SessionIdentifierGenerator {
+	static class SessionIdentifierGenerator {
 		private static SecureRandom random = new SecureRandom();
 
 		public static String nextSessionId() {

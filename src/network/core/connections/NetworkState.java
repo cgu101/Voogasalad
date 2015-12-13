@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import authoring.model.game.Game;
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
  */

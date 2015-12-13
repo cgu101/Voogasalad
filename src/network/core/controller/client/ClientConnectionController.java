@@ -11,10 +11,9 @@ import network.core.connections.ISendable;
 import network.core.controller.AConnectionController;
 import network.core.messages.IDMessageEncapsulation;
 import network.core.messages.Message;
-import network.core.messages.format.Request;
 import network.exceptions.StreamException;
 
-public class ClientConnectionController extends AConnectionController {
+public class ClientConnectionController extends AConnectionController<IClientExecuteHandler> {
 	
 	private static final String IP_ADDRESS = "wl-10-190-54-23.wireless.duke.edu";
 	private static final Integer PORT = 5055;
@@ -25,12 +24,11 @@ public class ClientConnectionController extends AConnectionController {
 	private static final ClientConnectionController controller = new ClientConnectionController();
 	
 	private ClientConnectionController() {
+		messageHandler = new ClientMessageHandler();
 		myQueues = new HashMap<String, BlockingQueue<Message>>();
 		try {
 			handshake(new Socket(IP_ADDRESS, PORT));
-		} catch(IOException e) {
-			// TODO Handle this exception
-		}
+		} catch(IOException e) {}
 	}
 	
 	public static ClientConnectionController getInstance() {
@@ -59,18 +57,7 @@ public class ClientConnectionController extends AConnectionController {
 	
 	@Override
 	protected void handleMessage(IDMessageEncapsulation message) {
-		// TODO Better message handler for client connection
-		Message msg = message.getMessage();
-		if(msg.getRequest() == Request.QUEUEDATA) {
-			if(myQueues.containsKey(msg.getID())) {
-				myQueues.get(msg.getID()).add(msg);
-			} else {
-				// TODO Send error to the server or something
-				System.out.println("Invalid queue identifier received from server");
-			}
-		} else if (msg.getRequest() == Request.CONNECTION) {
-			clientConnection.setId((String) msg.getPaylad()); 
-		}
+		messageHandler.getHandler(message.getMessage().getRequest()).execute(message, clientConnection, myQueues);
 	}
 
 	@Override

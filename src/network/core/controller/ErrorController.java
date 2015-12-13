@@ -1,4 +1,4 @@
-package network.core.controller.server;
+package network.core.controller;
 
 import network.core.connections.Connection;
 import network.core.containers.NetworkContainer;

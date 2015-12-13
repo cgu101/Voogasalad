@@ -1,12 +1,13 @@
 package network.core.controller.server;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import network.core.connections.Connection;
 import network.core.connections.NetworkState;
 import network.core.containers.NetworkContainer;
+import network.core.controller.AMessageHandler;
+import network.core.controller.ErrorController;
 import network.core.messages.IDMessageEncapsulation;
 import network.core.messages.Message;
 import network.core.messages.format.Request;
@@ -17,30 +18,21 @@ import network.core.messages.format.Request;
  * Handles the messages that are inserted 
  */
 
-public class MessageHandler {
+public class ServerMessageHandler extends AMessageHandler<IServerExecuteHandler> {
 	
-	private Map<Request, ExecuteHandler> myExecuters;
 	
-	public MessageHandler() {
-		myExecuters = new HashMap<Request, ExecuteHandler>();
-		init();
-	}
-	
-	public ExecuteHandler getHandler(Request type) {
-		return myExecuters.get(type);
-	}
-	
-	private void init() {
+	@Override
+	protected void init(Map<Request, IServerExecuteHandler> executers) {
 
-		myExecuters.put(Request.ERROR, (message, clients, states)-> {
+		executers.put(Request.ERROR, (message, clients, states)-> {
 			System.out.println(Request.ERROR.toString());
 		});
 		
-		myExecuters.put(Request.CONNECTION, (message, clients, states)-> {
+		executers.put(Request.CONNECTION, (message, clients, states)-> {
 			System.out.println(Request.CONNECTION.toString());
 		});
 		
-		myExecuters.put(Request.LOADGROUP, (message, clients, states)-> {
+		executers.put(Request.LOADGROUP, (message, clients, states)-> {
 			Connection client = clients.getObject(message.getClientId());
 			Message msg = message.getMessage();
 			
@@ -53,7 +45,7 @@ public class MessageHandler {
 			}			
 		});
 		
-		myExecuters.put(Request.CREATEGROUP, (message, clients, states)-> {
+		executers.put(Request.CREATEGROUP, (message, clients, states)-> {
 			String clientId = message.getClientId();
 			Connection client = clients.getObject(clientId);
 			Message msg = message.getMessage();
@@ -69,12 +61,12 @@ public class MessageHandler {
 			System.out.println(Request.CREATEGROUP.toString());
 		});
 		
-		myExecuters.put(Request.GENERALDATA, (message, clients, states)-> {			
+		executers.put(Request.GENERALDATA, (message, clients, states)-> {			
 			forwardToAll(message, clients, states);
 			System.out.println(Request.CREATEGROUP.toString());
 		});
 			
-		myExecuters.put(Request.QUEUEDATA, (message, clients, states)-> {
+		executers.put(Request.QUEUEDATA, (message, clients, states)-> {
 			forwardToAll(message, clients, states);
 			System.out.println(Request.CREATEGROUP.toString());
 		});
@@ -89,9 +81,5 @@ public class MessageHandler {
 				clients.getObject(s).send(message.getMessage());
 			}
 		}
-	}
-
-	interface ExecuteHandler {	
-		void executeMessage(IDMessageEncapsulation message, NetworkContainer<Connection> clients, NetworkContainer<NetworkState> states);		
 	}
 }

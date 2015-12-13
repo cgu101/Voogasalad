@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class IDMessageEncapsulation implements Serializable {
 
+	private static final long serialVersionUID = 4480245812681171848L;
+	
 	private String clientId;
 	private Message message;
 	

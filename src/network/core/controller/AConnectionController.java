@@ -15,10 +15,11 @@ import network.core.messages.IDMessageEncapsulation;
  *
  */
 
-public abstract class AConnectionController extends ConnectionThread {
+public abstract class AConnectionController<T> extends ConnectionThread {
 	
 	private static final ThreadType threadType = ThreadType.CONTROLLER;
 	protected BlockingQueue<IDMessageEncapsulation> incomingMessages;
+	protected AMessageHandler<T> messageHandler;
 	
 	public AConnectionController() {
 		incomingMessages = new LinkedBlockingQueue<IDMessageEncapsulation>();
