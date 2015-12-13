@@ -3,7 +3,7 @@ package network.core.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import network.core.connections.ClientConnection;
+import network.core.connections.Connection;
 import network.core.connections.NetworkObjectState;
 import network.core.containers.NetworkContainer;
 import network.core.messages.Message;
@@ -45,11 +45,11 @@ public class MessageHandler {
 		});
 	}
 	
-//	private void forwardToAll(ServerMessage message, NetworkContainer<ClientConnection> clients) {
+//	private void forwardToAll(ServerMessage message, NetworkContainer<Connection> clients) {
 //		
 //	}
 	
 	interface ExecuteHandler {	
-		void executeMessage(Message message, NetworkContainer<ClientConnection> clients, NetworkContainer<NetworkObjectState> games);		
+		void executeMessage(Message message, NetworkContainer<Connection> clients, NetworkContainer<NetworkObjectState> games);		
 	}
 }

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
-import network.core.connections.ClientConnection;
+import network.core.connections.Connection;
 import network.core.connections.NetworkObjectState;
 import network.core.connections.threads.ConnectionThread;
 import network.core.connections.threads.ThreadType;
@@ -21,7 +21,7 @@ public class ConnectionController extends ConnectionThread {
 	private static final ThreadType threadType = ThreadType.RECEIVE;
 	
 	private NetworkContainer<NetworkObjectState> games;
-	private NetworkContainer<ClientConnection> clients;
+	private NetworkContainer<Connection> clients;
 	private BlockingQueue<Message> incomingMessages;
 	private MessageHandler handler;
 	
@@ -29,7 +29,7 @@ public class ConnectionController extends ConnectionThread {
 		super(id, connection, flowingMessages); //TODO
 		
 		games = new NetworkContainer<NetworkObjectState>();
-		clients = new NetworkContainer<ClientConnection>();
+		clients = new NetworkContainer<Connection>();
 		incomingMessages = flowingMessages;
 		handler = new MessageHandler();
 	}
@@ -68,7 +68,7 @@ public class ConnectionController extends ConnectionThread {
 
 		try {
 			String newId = IdManager.getNewClientId();
-			ClientConnection toAdd = new ClientConnection(newId, incomingMessages, connection);
+			Connection toAdd = new Connection(newId, incomingMessages, connection); //TODO
 			toAdd.send(Request.CONNECTION, newId, null);
 			clients.addObject(toAdd);
 			

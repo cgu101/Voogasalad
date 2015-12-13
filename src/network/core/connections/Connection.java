@@ -6,9 +6,7 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import authoring.model.bundles.Identifiable;
 import network.core.connections.heartbeat.Heartbeat;
-import network.core.connections.heartbeat.HeartbeatValue;
 import network.core.connections.threads.ConnectionThread;
 import network.core.connections.threads.ReceiveThread;
 import network.core.connections.threads.SendThread;
@@ -22,43 +20,28 @@ import network.exceptions.StreamException;
  * Maintains the send and receive thread, and each connection gets the instance.
  */
 
-public class ClientConnection implements IDistinguishable, ICloseable {
+public class Connection implements IDistinguishable, ICloseable {
 	
 	private static final Long DELAY = 1800000l;
 	
-    private String clientId;
-    private String gameId;
+	private String id;
     private Socket connection;
-    private HeartbeatValue heartbeatVal;
     private Heartbeat heartbeat;
     private LinkedBlockingQueue<Message> outgoingMessages;
     private BlockingQueue<Message> incomingMessages;
     private ConnectionThread sendThread;
     private ConnectionThread receiveThread;
     
-    public ClientConnection(String clientId, BlockingQueue<Message> receivedMessageQueue, Socket connection) throws IOException  {
-        this.clientId = clientId;
+    public Connection(String id, BlockingQueue<Message> receivedMessageQueue, Socket connection) throws IOException  {
+    	this.id = id;
     	this.connection = connection;
-    	heartbeatVal = new HeartbeatValue();
         incomingMessages = receivedMessageQueue;
         outgoingMessages = new LinkedBlockingQueue<Message>();
         sendThread =  new SendThread(connection, outgoingMessages);
-        receiveThread = new ReceiveThread(clientId, connection, incomingMessages);
+        receiveThread = new ReceiveThread(id, connection, incomingMessages);
         sendThread.start();
         receiveThread.start();
         initializeHeartbeat();
-    }
-    
-    public String getId() {
-        return clientId;
-    }
-    
-    public String getGameId() {
-    	return gameId;
-    }
-    
-    public void setGameId(String gameId) {
-    	this.gameId = gameId;
     }
     
     @Override
@@ -88,18 +71,15 @@ public class ClientConnection implements IDistinguishable, ICloseable {
 			}			
 		};
 	}
-	
-	public HeartbeatValue getHeartbeatValue() {
-		return heartbeatVal;
-	}
 
 	@Override
 	public Boolean isClosed() {
+		// TODO
 		return null;
 	}
 
 	@Override
 	public String getID() {
-		return clientId;
+		return id;
 	}
 }
