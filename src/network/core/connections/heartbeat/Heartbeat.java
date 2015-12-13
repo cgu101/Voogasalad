@@ -1,4 +1,4 @@
-package network.core.connections;
+package network.core.connections.heartbeat;
 
 import java.util.Timer;
 import java.util.TimerTask;

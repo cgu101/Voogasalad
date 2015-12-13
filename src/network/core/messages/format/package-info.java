@@ -5,4 +5,4 @@
  * @author Austin
  *
  */
-package network.framework.format;
+package network.core.messages.format;

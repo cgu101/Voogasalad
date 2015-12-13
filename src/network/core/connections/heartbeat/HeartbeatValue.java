@@ -1,4 +1,4 @@
-package network.core.connections;
+package network.core.connections.heartbeat;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)

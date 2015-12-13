@@ -1,4 +1,4 @@
-package network.framework.format;
+package network.deprecated;
 
 /**
  * @author Austin Liu (abl17) and Chris Streiffer (cds33)

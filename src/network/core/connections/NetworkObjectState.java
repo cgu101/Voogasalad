@@ -5,6 +5,8 @@ import java.util.List;
 
 import authoring.model.bundles.Identifiable;
 import authoring.model.game.Game;
+import network.core.connections.heartbeat.Heartbeat;
+import network.core.connections.heartbeat.HeartbeatValue;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)

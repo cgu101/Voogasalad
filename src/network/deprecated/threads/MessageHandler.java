@@ -7,7 +7,7 @@ import network.core.connections.ClientConnection;
 import network.core.connections.NetworkObjectState;
 import network.core.containers.NetworkContainer;
 import network.core.messages.Message;
-import network.framework.format.Request;
+import network.core.messages.format.Request;
 
 public class MessageHandler {
 	

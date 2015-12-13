@@ -10,7 +10,7 @@ import network.core.connections.threads.ConnectionThread;
 import network.core.connections.threads.ThreadType;
 import network.core.containers.NetworkContainer;
 import network.core.messages.Message;
-import network.framework.format.Request;
+import network.core.messages.format.Request;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)

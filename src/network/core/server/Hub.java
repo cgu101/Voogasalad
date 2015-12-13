@@ -1,4 +1,4 @@
-package network.core.connections.threads;
+package network.core.server;
 
 import java.io.*;
 import java.net.ServerSocket;

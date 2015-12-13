@@ -7,12 +7,14 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import authoring.model.bundles.Identifiable;
+import network.core.connections.heartbeat.Heartbeat;
+import network.core.connections.heartbeat.HeartbeatValue;
 import network.core.connections.threads.ConnectionThread;
 import network.core.connections.threads.ReceiveThread;
 import network.core.connections.threads.SendThread;
 import network.core.messages.Message;
+import network.core.messages.format.Request;
 import network.exceptions.StreamException;
-import network.framework.format.Request;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
