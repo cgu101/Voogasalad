@@ -13,6 +13,7 @@ public class GameHub {
         }
         catch (IOException e) {
             System.out.println("Can't create listening socket.  Shutting down.");
+            e.printStackTrace();
         }
     }
 }

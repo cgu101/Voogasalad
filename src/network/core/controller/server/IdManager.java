@@ -2,6 +2,7 @@ package network.core.controller.server;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -19,6 +20,7 @@ public class IdManager {
 	 * @return unique client ID
 	 */
 	public static String getNewClientId() {
+		uniqueIds = new HashSet<String>();
 		String newId = SessionIdentifierGenerator.nextSessionId();
 		if(!uniqueIds.contains(newId)) {
 			uniqueIds.add(newId);

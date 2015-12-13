@@ -39,6 +39,10 @@ public class NetworkContainer<T extends IDistinguishable & ICloseable> {
 		container.remove(id);
 	}
 	
+	public Boolean containsObject(String id) {
+		return container.containsKey(id);
+	}
+	
 	
 	/*
 	 * Close all connections

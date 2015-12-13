@@ -43,7 +43,7 @@ public class ServerConnectionController extends AConnectionController {
 
 		try {
 			String newId = IdManager.getNewClientId();
-			Connection toAdd = new Connection(newId, incomingMessages, connection); //TODO
+			Connection toAdd = new Connection(newId, incomingMessages, connection);
 			toAdd.send(Request.CONNECTION, newId, null);
 			clients.addObject(toAdd);
 			

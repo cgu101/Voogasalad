@@ -20,8 +20,9 @@ import network.exceptions.StreamException;
  * Maintains the send and receive thread, and each connection gets the instance.
  */
 
-public class Connection implements IDistinguishable, ICloseable, ISendable {
+public class Connection implements IDistinguishable, ICloseable, ISendable, IStateIdentifier {
 	
+	private String stateId;
 	private String connectionId;
     private Socket connection;
     private LinkedBlockingQueue<IDMessageEncapsulation> outgoingMessages;
@@ -83,5 +84,13 @@ public class Connection implements IDistinguishable, ICloseable, ISendable {
 	@Override
 	public String getID() {
 		return connectionId;
+	}
+	
+	public void setStateId(String stateId) {
+		this.stateId = stateId;
+	}
+	
+	public String getStateId() {
+		return stateId;
 	}
 }

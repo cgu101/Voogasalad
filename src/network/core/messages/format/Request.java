@@ -10,7 +10,7 @@ public enum Request {
 	LOADGROUP("Load Group"),
 	CREATEGROUP("Create Group"),
 	QUEUEDATA("Queue Data"),
-	STATE("State");
+	GENERALDATA("General Data");
 	
 	private final String requestType;
 	

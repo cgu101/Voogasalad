@@ -88,6 +88,7 @@ public class Hub {
 			try {
 				while (!shutdown) {
 					Socket connection = serverSocket.accept();
+					System.out.println("here");
 					controller.addConnection(connection);
 				}
 			} catch (Exception e) {
