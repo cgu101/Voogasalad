@@ -28,7 +28,10 @@ public class ClientConnectionController extends AConnectionController<IClientExe
 		myQueues = new HashMap<String, BlockingQueue<Message>>();
 		try {
 			handshake(new Socket(IP_ADDRESS, PORT));
-		} catch(IOException e) {}
+			start();
+		} catch(IOException e) {
+			
+		}
 	}
 	
 	public static ClientConnectionController getInstance() {
