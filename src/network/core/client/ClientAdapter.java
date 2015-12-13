@@ -2,6 +2,7 @@ package network.core.client;
 
 import java.io.IOException;
 
+import authoring.model.game.Game;
 import network.util.ThreadFactory;
 import network.core.controller.client.ClientConnectionController;
 import network.core.messages.Message;
@@ -54,6 +55,7 @@ public class ClientAdapter {
 	
 	public static void main (String[] args) {
 		ClientAdapter a = new ClientAdapter();
-		ClientConnectionController.getInstance().getConnection().send(new Message("Payload", Request.QUEUEDATA, "ID_1"));
+		Game g = new Game("GAME_ID_1");
+		ClientConnectionController.getInstance().getConnection().send(new Message(g, Request.CREATEGROUP, g.getName()));
 	}
 }

@@ -24,6 +24,13 @@ public class Game implements Serializable, Identifiable {
 	private Bundle<Level> myLevelBundle;
 	private Bundle<Property<?>> myPropertyBundle;
 	
+	private String name;
+	
+	public Game (String name) {
+		this();
+		this.setName(name);
+	}
+	
 	public Game () {
 		myLevelBundle = new Bundle<Level>();
 		myPropertyBundle = new Bundle<Property<?>>();
@@ -86,5 +93,13 @@ public class Game implements Serializable, Identifiable {
 	public Identifiable getCopy() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
