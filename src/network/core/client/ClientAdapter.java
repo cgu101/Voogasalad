@@ -3,6 +3,7 @@ package network.core.client;
 import java.io.IOException;
 
 import network.util.ThreadFactory;
+import network.core.controller.client.ClientConnectionController;
 import network.util.ConnectionType;
 
 /**
@@ -14,11 +15,12 @@ public class ClientAdapter {
 	
 	private NetworkClient myClient;
 	private volatile boolean isConnected;
+	private ClientConnectionController myConnectionController;
 	
 	private static final ClientAdapter myAdapter = new ClientAdapter();
 	
 	private ClientAdapter () {
-		// TODOs
+		myConnectionController = ClientConnectionController.getInstance();
 	}
 	
 	/**
