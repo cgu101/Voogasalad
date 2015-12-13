@@ -1,11 +1,11 @@
 package network.core.messages;
 
-public class IDMessage {
+public class IDMessageEncapsulation implements ISendable {
 
 	private String clientId;
 	private Message message;
 	
-	public IDMessage(String clientId, Message message) {
+	public IDMessageEncapsulation(String clientId, Message message) {
 		this.clientId=clientId;
 		this.message=message;
 	}
@@ -15,6 +15,11 @@ public class IDMessage {
 	}
 	
 	public Message getMessage() {
+		return message;
+	}
+
+	@Override
+	public Message getSendable() {
 		return message;
 	}
 }

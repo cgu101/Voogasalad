@@ -7,7 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import network.core.connections.threads.ConnectionThread;
 import network.core.connections.threads.ThreadType;
-import network.core.messages.IDMessage;
+import network.core.messages.IDMessageEncapsulation;
 
 /**
  * 
@@ -18,10 +18,10 @@ import network.core.messages.IDMessage;
 public abstract class AConnectionController extends ConnectionThread {
 	
 	private static final ThreadType threadType = ThreadType.CONTROLLER;
-	protected BlockingQueue<IDMessage> incomingMessages;
+	protected BlockingQueue<IDMessageEncapsulation> incomingMessages;
 	
 	public AConnectionController() {
-		incomingMessages = new LinkedBlockingQueue<IDMessage>();
+		incomingMessages = new LinkedBlockingQueue<IDMessageEncapsulation>();
 	}
 	
 	@Override
@@ -31,12 +31,12 @@ public abstract class AConnectionController extends ConnectionThread {
 	
 	@Override
 	protected void executeUsingStream() throws IOException, InterruptedException, ClassNotFoundException {
-		IDMessage message = incomingMessages.take();
+		IDMessageEncapsulation message = incomingMessages.take();
 		handleMessage(message);
 	}
 	
 	protected abstract void handshake(Socket connection);
 	
-	protected abstract void handleMessage(IDMessage message);
+	protected abstract void handleMessage(IDMessageEncapsulation message);
 
 }

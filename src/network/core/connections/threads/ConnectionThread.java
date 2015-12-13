@@ -7,7 +7,7 @@ import java.util.concurrent.BlockingQueue;
 import network.core.connections.ICloseable;
 import network.core.connections.IDistinguishable;
 import network.core.connections.IExecutable;
-import network.core.messages.IDMessage;
+import network.core.messages.IDMessageEncapsulation;
 import network.exceptions.StreamException;
 
 /**
@@ -27,18 +27,18 @@ public abstract class ConnectionThread extends Thread implements IExecutable, IC
 
 	private String id;
 	protected Socket connection;
-	protected BlockingQueue<IDMessage> flowingMessages;
+	protected BlockingQueue<IDMessageEncapsulation> flowingMessages;
 	
 	public ConnectionThread() {
 		
 	}
 	
-	public ConnectionThread (Socket connection, BlockingQueue<IDMessage> flowingMessages) {
+	public ConnectionThread (Socket connection, BlockingQueue<IDMessageEncapsulation> flowingMessages) {
 		this(ConnectionThread.class.getName(), connection, flowingMessages);
 	}
 	
 
-	public ConnectionThread (String id, Socket connection, BlockingQueue<IDMessage> flowingMessages) {
+	public ConnectionThread (String id, Socket connection, BlockingQueue<IDMessageEncapsulation> flowingMessages) {
 		this.id = id;
 		this.connection = connection;
 		this.flowingMessages = flowingMessages;

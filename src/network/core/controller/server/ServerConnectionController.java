@@ -7,7 +7,7 @@ import network.core.connections.Connection;
 import network.core.connections.NetworktState;
 import network.core.containers.NetworkContainer;
 import network.core.controller.AConnectionController;
-import network.core.messages.IDMessage;
+import network.core.messages.IDMessageEncapsulation;
 import network.core.messages.format.Request;
 
 /**
@@ -52,7 +52,7 @@ public class ServerConnectionController extends AConnectionController {
 	}
 	
 	@Override
-	protected void handleMessage(IDMessage message) {
+	protected void handleMessage(IDMessageEncapsulation message) {
 		// TODO Pre-Processing
 		handler.getHandler(message.getMessage().getRequest()).executeMessage(message, clients, states);
 		

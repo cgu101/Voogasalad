@@ -9,7 +9,7 @@ import network.core.messages.format.Request;
  *
  */
 
-public class Message implements Serializable {
+public class Message implements Serializable, ISendable {
 	
 	/**
 	 * Generated Serial ID
@@ -36,5 +36,9 @@ public class Message implements Serializable {
     
     public String getID () {
     	return id;
+    }
+    
+    public Message getSendable () {
+    	return this;
     }
 }

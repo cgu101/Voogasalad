@@ -6,17 +6,17 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
 import network.core.messages.Message;
-import network.core.messages.IDMessage;
+import network.core.messages.IDMessageEncapsulation;
 
 public class ReceiveThread extends ConnectionThread {
 	
 	private Socket connection;
 	private String id;
-	private BlockingQueue<IDMessage> incomingMessages;
+	private BlockingQueue<IDMessageEncapsulation> incomingMessages;
 	private ObjectInputStream in;
 	
 	@Deprecated
-	public ReceiveThread(String id, Socket connection, BlockingQueue<IDMessage> incomingMessages) throws IOException {
+	public ReceiveThread(String id, Socket connection, BlockingQueue<IDMessageEncapsulation> incomingMessages) throws IOException {
 		this.id = id;
 		this.connection = connection;
 		this.incomingMessages = incomingMessages;
