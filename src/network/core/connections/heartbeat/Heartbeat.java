@@ -5,6 +5,8 @@ import java.util.TimerTask;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ *
+ * Describes a class that allows for execution of a task via synchronous "updates"
  */
 
 public abstract class Heartbeat {
@@ -37,6 +39,9 @@ public abstract class Heartbeat {
 		return updateTime;
 	}
 	
+	/**
+	 * Updates the current time
+	 */
 	public void update() {
 		updateTime = System.currentTimeMillis()/1000L;
 	}

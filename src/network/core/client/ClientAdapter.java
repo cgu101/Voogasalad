@@ -7,7 +7,7 @@ import network.util.ConnectionType;
 
 /**
  * @author Austin Liu (abl17) and Chris Streiffer (cds33)
- *
+ * Class that represents the client framework
  */
 
 public class ClientAdapter {
@@ -21,10 +21,18 @@ public class ClientAdapter {
 		// TODOs
 	}
 	
+	/**
+	 * @return Singleton of Client to be used no matter the data architecture
+	 */
 	public static ClientAdapter getInstance () {
 		return myAdapter;
 	}
 	
+	/**
+	 * Private network class
+	 * @author Chris & Austin
+	 */
+
 	private class NetworkClient extends Client {
 
 		private static final int DEFAULT_PORT = 5959;

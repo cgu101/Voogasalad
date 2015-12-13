@@ -59,6 +59,11 @@ public class Connection implements IDistinguishable, ICloseable {
         send(msg);
     }
     
+    public void send(Message m) {
+    	IDMessageEncapsulation msg = new IDMessageEncapsulation(connectionId, m);
+    	send(msg);
+    }
+    
     public void send(IDMessageEncapsulation msg) {
         outgoingMessages.add(msg);
     }
