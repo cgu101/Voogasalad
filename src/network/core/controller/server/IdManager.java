@@ -1,4 +1,4 @@
-package network.core.controller;
+package network.core.controller.server;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;

@@ -8,7 +8,8 @@ package network.core.connections.threads;
 
 public enum ThreadType {
 	SEND("Send Thread"),
-	RECEIVE("Receive Thread");
+	RECEIVE("Receive Thread"),
+	CONTROLLER("Control Thread");
 	
 	private final String threadType;
 	

@@ -9,8 +9,9 @@ import java.util.TimerTask;
 
 public abstract class Heartbeat {
 	
-	private static final Long MAX_DELAY = 300000l;
-	
+	private static final Long MAX_DELAY = 300000l;	
+	private Long updateTime = System.currentTimeMillis()/1000L;
+		
 	private Timer timer;
 	private Long delay;
 	
@@ -30,6 +31,14 @@ public abstract class Heartbeat {
 		    }
 
 		}, initial_delay, delay);
+	}
+	
+	public Long getUpdateTime() {
+		return updateTime;
+	}
+	
+	public void update() {
+		updateTime = System.currentTimeMillis()/1000L;
 	}
 	
 	public abstract void heartbeat();

@@ -5,7 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
-import network.core.messages.Message;
+import network.core.messages.IDMessage;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
@@ -16,9 +16,9 @@ public class SendThread extends ConnectionThread {
 	private static final ThreadType threadType = ThreadType.SEND;
 	private ObjectOutputStream out;
 	
-	public SendThread(Socket connection, BlockingQueue<Message> flowingMessages) 
+	public SendThread(Socket connection, BlockingQueue<IDMessage> flowingMessages) 
 			throws IOException {
-		super(null, connection, flowingMessages);
+		super(connection, flowingMessages);
 		this.out = new ObjectOutputStream(connection.getOutputStream());
 	}
 
@@ -34,7 +34,7 @@ public class SendThread extends ConnectionThread {
 
 	@Override
 	protected void executeUsingStream() throws IOException, InterruptedException, ClassNotFoundException {
-		Message message = flowingMessages.take();
+		IDMessage message = flowingMessages.take();		
 		out.writeObject(message);
 	}
 

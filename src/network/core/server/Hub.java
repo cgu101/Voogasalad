@@ -3,10 +3,8 @@ package network.core.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.LinkedBlockingQueue;
 
-import network.core.controller.ConnectionController;
-import network.core.messages.Message;
+import network.core.controller.server.ServerConnectionController;
 import network.exceptions.StreamException;
 
 /**
@@ -79,10 +77,10 @@ public class Hub {
 
 	private class ServerThread extends Thread {
 		
-		private ConnectionController controller;
+		private ServerConnectionController controller;
 		
 		private ServerThread() {
-			controller = new ConnectionController(null, null, new LinkedBlockingQueue<Message>()); //TODO
+			controller = new ServerConnectionController(); //TODO
 			controller.start();
 		}
 		

@@ -5,17 +5,18 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
-import network.core.messages.ServerMessage;
+import network.core.messages.Message;
+import network.core.messages.IDMessage;
 
 public class ReceiveThread extends ConnectionThread {
 	
 	private Socket connection;
 	private String id;
-	private BlockingQueue<ServerMessage> incomingMessages;
+	private BlockingQueue<IDMessage> incomingMessages;
 	private ObjectInputStream in;
 	
 	@Deprecated
-	public ReceiveThread(String id, Socket connection, BlockingQueue<ServerMessage> incomingMessages) throws IOException {
+	public ReceiveThread(String id, Socket connection, BlockingQueue<IDMessage> incomingMessages) throws IOException {
 		this.id = id;
 		this.connection = connection;
 		this.incomingMessages = incomingMessages;
@@ -25,21 +26,21 @@ public class ReceiveThread extends ConnectionThread {
 	@Deprecated
 	@Override
 	public void execute() {
-		try {
-			Object message = in.readObject();
-			ServerMessage temp = new ServerMessage(id, message);
-			incomingMessages.put(temp);
-		}
-		catch (InterruptedException | ClassNotFoundException | IOException e) {
-			if(!isClosed()) {
-				try {
-					in = new ObjectInputStream(connection.getInputStream());
-				} catch (IOException e1) {
-					System.out.println("Failure trying to ropen connection: " + e);
-					close();
-				};
-			}
-		}
+//		try {
+//			//Message message = in.readObject();
+//			//ServerMessage temp = new ServerMessage(id, message);
+//			//incomingMessages.put(temp);
+//		}
+//		catch (InterruptedException | ClassNotFoundException | IOException e) {
+//			if(!isClosed()) {
+//				try {
+//					in = new ObjectInputStream(connection.getInputStream());
+//				} catch (IOException e1) {
+//					System.out.println("Failure trying to ropen connection: " + e);
+//					close();
+//				};
+//			}
+//		}
 	}
 	
 	@Deprecated

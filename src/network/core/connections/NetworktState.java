@@ -6,13 +6,13 @@ import java.util.List;
 import authoring.model.bundles.Identifiable;
 import authoring.model.game.Game;
 import network.core.connections.heartbeat.Heartbeat;
-import network.core.connections.heartbeat.HeartbeatValue;
+import network.deprecated.HeartbeatValue;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
  */
 
-public class NetworkObjectState implements IDistinguishable, ICloseable  {
+public class NetworktState implements IDistinguishable, ICloseable  {
 	
 	private static final Long DELAY = 2700000l;
 	
@@ -22,7 +22,7 @@ public class NetworkObjectState implements IDistinguishable, ICloseable  {
 	private Heartbeat heartbeat;
 	private List<Integer> clients;
 	
-	public NetworkObjectState(String gameIdentifier, Game game, Integer client) {
+	public NetworktState(String gameIdentifier, Game game, Integer client) {
 		this.gameIdentifier = gameIdentifier;
 		this.game = game;
 		heartbeatVal = new HeartbeatValue();

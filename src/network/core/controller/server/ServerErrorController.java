@@ -1,4 +1,4 @@
-package network.core.controller;
+package network.core.controller.server;
 
 import network.core.connections.Connection;
 import network.core.containers.NetworkContainer;
@@ -9,13 +9,15 @@ import network.core.messages.format.Request;
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
  */
 
+// TODO this class
+
 public class ServerErrorController {
 
 	public static void sendErrorMessage(String client, NetworkContainer<Connection> clients, String error) {
-		clients.getObject(client).send(new Message(error, Request.ERROR, null));
+		//clients.getObject(client).send(new IDMessage(error, Request.ERROR, null));
 	}
 	
 	public static void sendErrorMessage(Connection client, String error) {
-		client.send(new Message(error, Request.ERROR, null));
+		//client.send(new Message(error, Request.ERROR, null));
 	}
 }

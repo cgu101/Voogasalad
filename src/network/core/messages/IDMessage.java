@@ -1,11 +1,11 @@
 package network.core.messages;
 
-public class ServerMessage {
+public class IDMessage {
 
 	private String clientId;
-	private Object message;
+	private Message message;
 	
-	public ServerMessage(String clientId, Object message) {
+	public IDMessage(String clientId, Message message) {
 		this.clientId=clientId;
 		this.message=message;
 	}
@@ -14,7 +14,7 @@ public class ServerMessage {
 		return clientId;
 	}
 	
-	public Object getMessage() {
+	public Message getMessage() {
 		return message;
 	}
 }

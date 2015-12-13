@@ -1,4 +1,4 @@
-package network.core.connections.heartbeat;
+package network.deprecated;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)

@@ -5,7 +5,7 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
-import network.core.messages.Message;
+import network.core.messages.IDMessage;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
@@ -17,9 +17,9 @@ public class ReceiveThread extends ConnectionThread {
 	
 	private ObjectInputStream in;
 
-	public ReceiveThread(String id, Socket connection, BlockingQueue<Message> flowingMessages)
+	public ReceiveThread(Socket connection, BlockingQueue<IDMessage> flowingMessages)
 			throws IOException {
-		super(id, connection, flowingMessages);
+		super(connection, flowingMessages);
 		this.in = new ObjectInputStream(connection.getInputStream());
 	}
 
@@ -35,7 +35,7 @@ public class ReceiveThread extends ConnectionThread {
 
 	@Override
 	protected void executeUsingStream() throws IOException, InterruptedException, ClassNotFoundException {
-		Message payload = (Message) in.readObject();
+		IDMessage payload = (IDMessage) in.readObject();
 		flowingMessages.put(payload);
 	}
 

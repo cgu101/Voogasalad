@@ -6,11 +6,11 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import network.core.connections.heartbeat.Heartbeat;
 import network.core.connections.threads.ConnectionThread;
 import network.core.connections.threads.ReceiveThread;
 import network.core.connections.threads.SendThread;
 import network.core.messages.Message;
+import network.core.messages.IDMessage;
 import network.core.messages.format.Request;
 import network.exceptions.StreamException;
 
@@ -22,26 +22,26 @@ import network.exceptions.StreamException;
 
 public class Connection implements IDistinguishable, ICloseable {
 	
-	private static final Long DELAY = 1800000l;
-	
-	private String id;
+	private String connectionId;
     private Socket connection;
-    private Heartbeat heartbeat;
-    private LinkedBlockingQueue<Message> outgoingMessages;
-    private BlockingQueue<Message> incomingMessages;
+    private LinkedBlockingQueue<IDMessage> outgoingMessages;
+    private BlockingQueue<IDMessage> incomingMessages;
     private ConnectionThread sendThread;
     private ConnectionThread receiveThread;
     
-    public Connection(String id, BlockingQueue<Message> receivedMessageQueue, Socket connection) throws IOException  {
-    	this.id = id;
+    public Connection(String connectionId, BlockingQueue<IDMessage> receivedMessageQueue, Socket connection) throws IOException  {
+    	this.connectionId = connectionId;
     	this.connection = connection;
         incomingMessages = receivedMessageQueue;
-        outgoingMessages = new LinkedBlockingQueue<Message>();
+        outgoingMessages = new LinkedBlockingQueue<IDMessage>();
         sendThread =  new SendThread(connection, outgoingMessages);
-        receiveThread = new ReceiveThread(id, connection, incomingMessages);
+        receiveThread = new ReceiveThread(connection, incomingMessages);
         sendThread.start();
         receiveThread.start();
-        initializeHeartbeat();
+    }
+    
+    public Connection(BlockingQueue<IDMessage> receivedMessageQueue, Socket connection) throws IOException  {
+    	this(Connection.class.getName(), receivedMessageQueue, connection);
     }
     
     @Override
@@ -53,24 +53,19 @@ public class Connection implements IDistinguishable, ICloseable {
         } catch (IOException e) {}
     }
     
-    public void send(Request request, Serializable ser, String id) {
-    	Message msg = new Message(ser, request, id);
+    public void send(Request request, Serializable ser, String queueId) {
+    	IDMessage msg = new IDMessage(connectionId, new Message(ser, request, queueId));
+    	
         send(msg);
     }
     
-    public void send(Message msg) {
+    public void send(IDMessage msg) {
         outgoingMessages.add(msg);
     }
-	
-	private void initializeHeartbeat() {
-		heartbeat = new Heartbeat(DELAY) {
-
-			@Override
-			public void heartbeat() {
-				// TODO Auto-generated method stub
-			}			
-		};
-	}
+    
+    public void setId(String connectionId) {
+    	this.connectionId = connectionId;
+    }
 
 	@Override
 	public Boolean isClosed() {
@@ -80,6 +75,6 @@ public class Connection implements IDistinguishable, ICloseable {
 
 	@Override
 	public String getID() {
-		return id;
+		return connectionId;
 	}
 }
