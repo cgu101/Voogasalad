@@ -13,7 +13,9 @@ import authoring.model.level.Level;
 import engine.State;
 import exceptions.data.GameFileException;
 
-
+/**
+ * @author Austin, Sung
+ */
 public class XMLManager {
 	
 	private static void saveFile (Object obj, String filePath) throws GameFileException {

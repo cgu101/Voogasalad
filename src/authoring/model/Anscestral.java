@@ -3,8 +3,10 @@ package authoring.model;
 import java.util.Deque;
 
 import network.framework.format.Mail;
-import network.framework.format.Request;
 
+/**
+ * @author Austin
+ */
 public interface Anscestral {
 	public Deque<String> getAnscestralPath ();
 	

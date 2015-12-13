@@ -2,6 +2,9 @@ package authoring.model.actors;
 
 import engine.State;
 
+/**
+ * @author Austin
+ */
 public class ActionMail {
 	private ActionType actionType;
 	private State state;
