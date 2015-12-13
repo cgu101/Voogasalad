@@ -56,6 +56,6 @@ public class ClientAdapter {
 	public static void main (String[] args) {
 		ClientAdapter a = new ClientAdapter();
 		Game g = new Game("GAME_ID_1");
-		ClientConnectionController.getInstance().getConnection().send(new Message(g, Request.CREATEGROUP, g.getName()));
+		ClientConnectionController.getInstance().getConnection().send(new Message(g, Request.LOADGROUP, "eragreg"));
 	}
 }

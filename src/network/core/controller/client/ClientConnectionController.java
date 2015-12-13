@@ -50,6 +50,13 @@ public class ClientConnectionController extends AConnectionController<IClientExe
 
 		try {
 			clientConnection = new Connection(incomingMessages, connection);
+			try {
+				IDMessageEncapsulation msg = incomingMessages.take();
+				handleMessage(msg);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
 		} catch (IOException e) {
 			System.out.println("Error when creating the client: " + e);
 		}
