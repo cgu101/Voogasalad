@@ -18,7 +18,7 @@ import network.framework.format.Request;
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
  */
 
-public class ClientConnection implements Identifiable, ICloseable {
+public class ClientConnection implements IDistinguishable, ICloseable {
 	
 	private static final Long DELAY = 1800000l;
 	
@@ -74,16 +74,6 @@ public class ClientConnection implements Identifiable, ICloseable {
     public void send(Message msg) {
         outgoingMessages.add(msg);
     }
-
-	@Override
-	public String getUniqueID() {
-		return clientId;
-	}
-
-	@Override
-	public Identifiable getCopy() {
-		return null;
-	} 
 	
 	private void initializeHeartbeat() {
 		heartbeat = new Heartbeat(DELAY) {
@@ -101,7 +91,11 @@ public class ClientConnection implements Identifiable, ICloseable {
 
 	@Override
 	public Boolean isClosed() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getID() {
+		return clientId;
 	}
 }
