@@ -34,7 +34,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import network.deprecated.DataDecorator;
-import network.deprecated.ForwardedMessage;
 import network.deprecated.GameWindow;
 import network.deprecated.Mail;
 import network.deprecated.PostalNetwork;
