@@ -2,7 +2,7 @@ package network.deprecated;
 
 import java.io.IOException;
 
-import network.core.connections.threads.Hub;
+import network.core.server.Hub;
 
 public class GameHub {
 	private final static int PORT = 5055;

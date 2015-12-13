@@ -1,8 +1,7 @@
-package network.framework;
+package network.core.client;
 
 import java.io.IOException;
 
-import network.core.Client;
 import network.util.ThreadFactory;
 import network.util.ConnectionType;
 

@@ -2,7 +2,7 @@ package network.core.messages;
 
 import java.io.Serializable;
 
-import network.framework.format.Request;
+import network.core.messages.format.Request;
 
 /**
  * @author Austin Liu (abl17) and Chris Streiffer (cds33)

@@ -5,12 +5,14 @@ import java.util.List;
 
 import authoring.model.bundles.Identifiable;
 import authoring.model.game.Game;
+import network.core.connections.heartbeat.Heartbeat;
+import network.core.connections.heartbeat.HeartbeatValue;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
  */
 
-public class NetworkObjectState implements Identifiable, ICloseable  {
+public class NetworkObjectState implements IDistinguishable, ICloseable  {
 	
 	private static final Long DELAY = 2700000l;
 	
@@ -46,16 +48,6 @@ public class NetworkObjectState implements Identifiable, ICloseable  {
 	}
 
 	@Override
-	public String getUniqueID() {
-		return gameIdentifier;
-	}
-
-	@Override
-	public Identifiable getCopy() {
-		return null;
-	}
-
-	@Override
 	public void close() {
 		// TODO Auto-generated method stub
 	}
@@ -78,6 +70,11 @@ public class NetworkObjectState implements Identifiable, ICloseable  {
 	public Boolean isClosed() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getID() {
+		return gameIdentifier;
 	}
 		
 }

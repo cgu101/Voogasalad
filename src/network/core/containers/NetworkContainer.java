@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import authoring.model.bundles.Identifiable;
 import network.core.connections.ICloseable;
+import network.core.connections.IDistinguishable;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
  */
 
-public class NetworkContainer<T extends Identifiable & ICloseable> {
+public class NetworkContainer<T extends IDistinguishable & ICloseable> {
 
 	private Map<String, T> container;
 	
@@ -29,7 +29,7 @@ public class NetworkContainer<T extends Identifiable & ICloseable> {
 	}
 		
 	public void addObject(T t) {
-		container.put(t.getUniqueID(), t);
+		container.put(t.getID(), t);
 	}
 	
 	public void removeObject(String id) {

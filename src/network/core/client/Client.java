@@ -1,4 +1,4 @@
-package network.core;
+package network.core.client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
