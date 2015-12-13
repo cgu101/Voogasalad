@@ -4,7 +4,7 @@ import network.framework.format.Mail;
 
 public class Message {
 	
-    private String client;
+	private String client;
     private Mail mail;
     
     public Message(String client, Mail mail) {

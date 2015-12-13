@@ -4,10 +4,8 @@ public class IdManager {
 	
 	private static Integer clientId = 0;
 	
-	public static String getNewClientId() {
-		String ret = clientId.toString();
-		clientId++;
-		return ret;
+	public static Integer getNewClientId() {
+		return clientId++;
 	}
 	
 	public static void getStoredGame(String gameId) {

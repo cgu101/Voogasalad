@@ -32,7 +32,7 @@ public class MiniMap extends AbstractVisual {
 		theMiniMap = new StackPane();
 		theBackground = background;
 		currentScale = Double.valueOf(myResources.getString("startingscale"));
-		currentOpacity = 0.0;//Double.valueOf(myResources.getString("startingopacity"));
+		currentOpacity = Double.valueOf(myResources.getString("startingopacity"));
 		currentRectangleXPos = Double.valueOf(myResources.getString("startingrectx"));
 		currentRectangleYPos = Double.valueOf(myResources.getString("startingrecty"));
 
@@ -54,7 +54,7 @@ public class MiniMap extends AbstractVisual {
 	}
 
 	public void updateMiniMapOpacity(double opacity) {
-		currentOpacity = 0.0;//opacity;
+		currentOpacity = opacity;
 		miniMapImageView.setOpacity(opacity);
 		currentRectangle.setStroke(Color.rgb(Integer.valueOf(myResources.getString("rectrvalue")),
 				Integer.valueOf(myResources.getString("rectgvalue")),
@@ -64,8 +64,11 @@ public class MiniMap extends AbstractVisual {
 	public void updateMiniMapBackground(ImageView background) {
 		// Not sure if this will properly update it
 		theMiniMap.getChildren().remove(0);
+		theBackground = background;
 		createMiniMapImageView(Double.valueOf(myResources.getString("minimapwidth")));
 		addMiniMapImageView();
+		createMiniMapRectangle(miniMapWidth, miniMapHeight, currentScale, currentOpacity);
+		addMiniMapRectangle(currentRectangleXPos, currentRectangleYPos);
 	}
 
 	private void createMiniMap() {
@@ -90,7 +93,7 @@ public class MiniMap extends AbstractVisual {
 
 	private void createMiniMapImageView(double width) {
 		miniMapImageView = new ImageView(theBackground.getImage());
-		miniMapImageView.setOpacity(0.0);//currentOpacity);
+		miniMapImageView.setOpacity(0.5);
 		miniMapImageView.setFitWidth(width);
 		miniMapImageView.setPreserveRatio(true);
 	}

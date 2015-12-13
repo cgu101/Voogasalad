@@ -25,7 +25,7 @@ public class ActorView extends AbstractVisual implements Serializable {
 	private static final long serialVersionUID = -1658010950951262660L;
 	
 	private Actor myActor;
-	private Sprite mySprite;
+	private transient Sprite mySprite;
 	private double myFitWidth;
 	private double dimensionRatio;
 	private double myRotation;
@@ -78,6 +78,18 @@ public class ActorView extends AbstractVisual implements Serializable {
 		mapChanged();
 	}
 	
+	public void setController(AuthoringController ac) {
+		this.myController = ac;
+	}
+	
+	protected ActorPropertyMap getMap() {
+		return myMap;
+	}
+	
+	protected String getType() {
+		return myType;
+	}
+	
 	protected void updateNode() {
 		myXCoor = Double.parseDouble(myResources.getString("x"));
 		myYCoor = Double.parseDouble(myResources.getString("y"));
@@ -97,7 +109,7 @@ public class ActorView extends AbstractVisual implements Serializable {
 		return myController;
 	}
 
-	private Sprite createImage() {
+	public Sprite createImage() {
 		String img = (String) myActor.getProperties().getComponents().get("image").getValue();
 		/*Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
 

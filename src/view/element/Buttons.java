@@ -24,12 +24,9 @@ public class Buttons extends AbstractElement {
 	protected void makePane() {
 		Button helpButton = makeButton(myResources.getString("help"), 
 				e -> currentScreen.setNextScreen(new HelpScreen()));
-		Button settingsButton = makeButton(myResources.getString("settings"), 
-				e -> currentScreen.setNextScreen(new SettingsScreen()));
 		Button creditsButton = makeButton(myResources.getString("credits"), 
 				e -> currentScreen.setNextScreen(new CreditsScreen()));
 		pane.add(helpButton, 0, 0);
-		pane.add(settingsButton, 1, 0);
 		pane.add(creditsButton, 2, 0);
 		pane.setHgap(Integer.parseInt(myResources.getString("hgap")));
 	}

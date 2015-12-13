@@ -1,5 +1,9 @@
 package exceptions;
 
+
+/**
+ * @author Austin
+ */
 public abstract class EngineException extends Exception {
 
 	/**

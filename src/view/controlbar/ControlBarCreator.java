@@ -33,6 +33,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import network.core.ForwardedMessage;
 import network.framework.GameWindow;
 import network.framework.format.Mail;
 import network.framework.format.Request;
@@ -214,9 +215,9 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		Level newLevel = new Level(Integer.toString(screen.getGame().getLevels().size()));
 		newLevel.getPropertyBundle().add(new Property<String>(myResources.getString("type"), myResources.getString("leveltype")) );
 		DataDecorator dataMail = new DataDecorator(Request.ADD, newLevel, screen.getWorkspace().getAnscestralPath());
-		screen.forward(dataMail.getPath(), dataMail);
-
-		screen.getWorkspace().updateObservers(dataMail);
+		screen.getWorkspace().addVisual(newLevel);
+		//screen.forward(dataMail.getPath(), dataMail);
+		GameWindow.getInstance().send(dataMail);
 		if (screen.getGame().getLevels().size() == 1) {
 			toggleComponents(true, screen);
 		}
@@ -226,7 +227,9 @@ public class ControlBarCreator extends ControlBar implements Observer {
 		Level newSplash = new Level(Integer.toString(screen.getGame().getLevels().size()));
 		newSplash.getPropertyBundle().add(new Property<String>(myResources.getString("type"), myResources.getString("splashtype")) );
 		DataDecorator dataMail = new DataDecorator(Request.TRANSITION, newSplash, screen.getWorkspace().getAnscestralPath());
-		screen.forward(dataMail.getPath(), dataMail);
+		screen.getWorkspace().addSplashScreen(newSplash);
+		//screen.forward(dataMail.getPath(), dataMail);
+		GameWindow.getInstance().send(dataMail);
 	}
 
 	private void handleHover(Button b) {

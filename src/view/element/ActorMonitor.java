@@ -100,7 +100,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 
 	private void addLabelPane() {
 		pane.add(titlePane, 0, 0);
-		titlePane.add(makeCheckBox(), 0, 1);
+		((GridPane) titlePane).add(makeCheckBox(), 0, 1);
 		GridPane.setColumnSpan(titlePane, 2);
 	}
 
