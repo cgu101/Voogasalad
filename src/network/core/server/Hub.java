@@ -12,11 +12,23 @@ import network.exceptions.StreamException;
  */
 
 public class Hub {
-
+	
+	private static final Integer PORT = 5055;
+	
 	private ServerSocket serverSocket;  
 	private Thread serverThread;
 	private Integer port;
 	volatile private boolean shutdown;
+    
+    public static void main(String[] args) {
+        try {
+            new Hub(PORT); 
+        }
+        catch (IOException e) {
+            System.out.println("Can't create listening socket.  Shutting down.");
+            e.printStackTrace();
+        }
+    }
 	
 	/**
 	 * Creates a Hub listening on a specified port, and starts a thread for
