@@ -8,7 +8,8 @@ public enum Request {
 	ERROR("Error"),
 	CONNECTION("Connetion"),
 	LOADGROUP("Load Group"),
-	CREATEGROUP("Create Group");
+	CREATEGROUP("Create Group"),
+	QUEUEDATA("Queue Data");
 	
 	private final String requestType;
 	

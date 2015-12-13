@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import network.core.connections.Connection;
-import network.core.connections.NetworktState;
+import network.core.connections.NetworkState;
 import network.core.containers.NetworkContainer;
 import network.core.controller.AConnectionController;
 import network.core.messages.IDMessage;
@@ -16,12 +16,12 @@ import network.core.messages.format.Request;
 
 public class ServerConnectionController extends AConnectionController {	
 			
-	private NetworkContainer<NetworktState> states;
+	private NetworkContainer<NetworkState> states;
 	private NetworkContainer<Connection> clients;
 	private MessageHandler handler;
 	
 	public ServerConnectionController() {		
-		states = new NetworkContainer<NetworktState>();
+		states = new NetworkContainer<NetworkState>();
 		clients = new NetworkContainer<Connection>();
 		handler = new MessageHandler();
 	}

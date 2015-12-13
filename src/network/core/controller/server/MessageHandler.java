@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import network.core.connections.Connection;
-import network.core.connections.NetworktState;
+import network.core.connections.NetworkState;
 import network.core.containers.NetworkContainer;
 import network.core.messages.IDMessage;
 import network.core.messages.format.Request;
@@ -50,6 +50,6 @@ public class MessageHandler {
 //	}
 	
 	interface ExecuteHandler {	
-		void executeMessage(IDMessage message, NetworkContainer<Connection> clients, NetworkContainer<NetworktState> games);		
+		void executeMessage(IDMessage message, NetworkContainer<Connection> clients, NetworkContainer<NetworkState> games);		
 	}
 }

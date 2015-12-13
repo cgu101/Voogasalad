@@ -12,7 +12,7 @@ import network.deprecated.HeartbeatValue;
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
  */
 
-public class NetworktState implements IDistinguishable, ICloseable  {
+public class NetworkState implements IDistinguishable, ICloseable  {
 	
 	private static final Long DELAY = 2700000l;
 	
@@ -22,7 +22,7 @@ public class NetworktState implements IDistinguishable, ICloseable  {
 	private Heartbeat heartbeat;
 	private List<Integer> clients;
 	
-	public NetworktState(String gameIdentifier, Game game, Integer client) {
+	public NetworkState(String gameIdentifier, Game game, Integer client) {
 		this.gameIdentifier = gameIdentifier;
 		this.game = game;
 		heartbeatVal = new HeartbeatValue();

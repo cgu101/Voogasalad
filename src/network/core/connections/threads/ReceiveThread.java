@@ -13,8 +13,7 @@ import network.core.messages.IDMessage;
 
 public class ReceiveThread extends ConnectionThread {
 
-	private static final ThreadType threadType = ThreadType.RECEIVE;
-	
+	private static final ThreadType threadType = ThreadType.RECEIVE;	
 	private ObjectInputStream in;
 
 	public ReceiveThread(Socket connection, BlockingQueue<IDMessage> flowingMessages)
