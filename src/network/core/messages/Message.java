@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import network.framework.format.Request;
 
+/**
+ * @author Austin Liu (abl17) and Chris Streiffer (cds33)
+ *
+ */
+
 public class Message implements Serializable {
 	
 	/**

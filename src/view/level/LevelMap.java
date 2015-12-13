@@ -32,8 +32,8 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import network.deprecated.DataDecorator;
 import network.deprecated.GameWindow;
+import network.deprecated.Mail;
 import network.deprecated.RequestType;
-import network.framework.format.Mail;
 import view.map.Map;
 import view.screen.AbstractScreen;
 

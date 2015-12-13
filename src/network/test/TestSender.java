@@ -6,8 +6,13 @@ import java.net.Socket;
 
 import authoring.model.game.Game;
 import network.deprecated.DataDecorator;
+import network.deprecated.Mail;
 import network.deprecated.RequestType;
-import network.framework.format.Mail;
+
+/**
+ * @author Austin Liu (abl17) and Chris Streiffer (cds33)
+ *
+ */
 
 public class TestSender {
 	

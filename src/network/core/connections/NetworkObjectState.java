@@ -6,6 +6,10 @@ import java.util.List;
 import authoring.model.bundles.Identifiable;
 import authoring.model.game.Game;
 
+/**
+ * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ */
+
 public class NetworkObjectState implements Identifiable, ICloseable  {
 	
 	private static final Long DELAY = 2700000l;

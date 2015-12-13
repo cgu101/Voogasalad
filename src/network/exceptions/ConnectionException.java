@@ -1,5 +1,11 @@
 package network.exceptions;
 
+
+/**
+ * @author Austin Liu (abl17) and Chris Streiffer (cds33)
+ *
+ */
+
 public class ConnectionException extends NetworkException {
 
 	/**

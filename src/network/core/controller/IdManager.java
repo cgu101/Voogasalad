@@ -4,6 +4,10 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Set;
 
+/**
+ * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ */
+
 public class IdManager {
 
 	private static Set<String> uniqueIds;

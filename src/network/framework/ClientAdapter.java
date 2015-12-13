@@ -6,6 +6,11 @@ import network.core.Client;
 import network.util.ThreadFactory;
 import network.util.ConnectionType;
 
+/**
+ * @author Austin Liu (abl17) and Chris Streiffer (cds33)
+ *
+ */
+
 public class ClientAdapter {
 	
 	private NetworkClient myClient;

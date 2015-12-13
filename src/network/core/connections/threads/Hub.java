@@ -9,6 +9,10 @@ import network.core.controller.ConnectionController;
 import network.core.messages.Message;
 import network.exceptions.StreamException;
 
+/**
+ * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ */
+
 public class Hub {
 
 	private ServerSocket serverSocket;  

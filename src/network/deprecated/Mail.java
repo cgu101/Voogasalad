@@ -1,9 +1,12 @@
-package network.framework.format;
+package network.deprecated;
 
 import java.io.Serializable;
 import java.util.Deque;
 
-import network.deprecated.RequestType;
+/**
+ * @author Austin Liu (abl17) and Chris Streiffer (cds33)
+ *
+ */
 
 public interface Mail extends Serializable {
 	public RequestType getRequest();

@@ -8,6 +8,10 @@ import java.util.Map;
 import authoring.model.bundles.Identifiable;
 import network.core.connections.ICloseable;
 
+/**
+ * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ */
+
 public class NetworkContainer<T extends Identifiable & ICloseable> {
 
 	private Map<String, T> container;

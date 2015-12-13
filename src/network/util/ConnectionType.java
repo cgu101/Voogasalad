@@ -1,5 +1,10 @@
 package network.util;
 
+
+/**
+ * @author Austin and Chris Streiffer
+ */
+
 public enum ConnectionType {
 	JAVAFX("JavaFX Safe Connection"),
 	DEFAULT("Standard Connection");

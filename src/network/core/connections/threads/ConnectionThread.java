@@ -10,6 +10,10 @@ import network.core.connections.IExecutable;
 import network.core.messages.Message;
 import network.exceptions.StreamException;
 
+/**
+ * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ */
+
 public abstract class ConnectionThread extends Thread implements IExecutable, ICloseable, IDistinguishable {
 
 	private static final long THREAD_DIE_TIME = 5; //millis

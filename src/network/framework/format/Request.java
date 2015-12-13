@@ -1,5 +1,9 @@
 package network.framework.format;
 
+/**
+ * @author Austin Liu (abl17) and Chris Streiffer (cds33)
+ *
+ */
 public enum Request {
 	ERROR("Error"),
 	CONNECTION("Connetion"),

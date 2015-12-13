@@ -6,7 +6,6 @@ import java.util.Observable;
 import authoring.model.game.Game;
 import javafx.application.Platform;
 import network.core.Client;
-import network.framework.format.Mail;
 import network.framework.format.Proxy;
 
 /**

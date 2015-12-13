@@ -3,6 +3,10 @@ package network.core.connections;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ */
+
 public abstract class Heartbeat {
 	
 	private static final Long MAX_DELAY = 300000l;

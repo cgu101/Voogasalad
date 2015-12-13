@@ -7,6 +7,10 @@ import java.util.concurrent.BlockingQueue;
 
 import network.core.messages.Message;
 
+/**
+ * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ */
+
 public class ReceiveThread extends ConnectionThread {
 
 	private static final ThreadType threadType = ThreadType.RECEIVE;

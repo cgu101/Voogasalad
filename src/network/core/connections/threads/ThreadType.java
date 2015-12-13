@@ -1,5 +1,9 @@
 package network.core.connections.threads;
 
+/**
+ * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ */
+
 public enum ThreadType {
 	SEND("Send Thread"),
 	RECEIVE("Receive Thread");

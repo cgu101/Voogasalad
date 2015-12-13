@@ -8,6 +8,11 @@ import authoring.model.game.Game;
 import authoring.model.level.Level;
 import authoring.model.properties.Property;
 
+/**
+ * @author Austin Liu (abl17) and Chris Streiffer (cds33)
+ *
+ */
+
 public class TestDeserialization {
 	public static void main (String[] args) {
 //		AuthoringMessage a = null;

@@ -5,6 +5,12 @@ import javafx.stage.Stage;
 import view.controlbar.ControlBarCreator;
 import view.screen.CreatorScreen;
 
+
+/**
+ * @author Austin Liu (abl17) and Chris Streiffer (cds33)
+ *
+ */
+
 public class TestMain extends Application {
 
 

@@ -9,6 +9,10 @@ import network.core.containers.NetworkContainer;
 import network.core.messages.Message;
 import network.framework.format.Request;
 
+/**
+ * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ */
+
 public class MessageHandler {
 	
 	private Map<Request, ExecuteHandler> myExecuters;

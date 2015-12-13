@@ -14,6 +14,10 @@ import network.core.messages.Message;
 import network.exceptions.StreamException;
 import network.framework.format.Request;
 
+/**
+ * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ */
+
 public class ClientConnection implements Identifiable, ICloseable {
 	
 	private static final Long DELAY = 1800000l;

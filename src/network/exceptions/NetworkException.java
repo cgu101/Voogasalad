@@ -1,8 +1,7 @@
 package network.exceptions;
 
 /**
- * Documents exceptions related to Server-Client connectivity
- * @author Austin
+ * @author Austin Liu (abl17) and Chris Streiffer (cds33)
  *
  */
 public abstract class NetworkException extends Exception {

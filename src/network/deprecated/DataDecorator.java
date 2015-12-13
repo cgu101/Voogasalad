@@ -3,8 +3,6 @@ package network.deprecated;
 import java.io.Serializable;
 import java.util.Deque;
 
-import network.framework.format.Mail;
-
 public class DataDecorator implements Mail {
 	
 	/**

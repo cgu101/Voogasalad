@@ -1,7 +1,10 @@
 package network.exceptions;
 
 import network.core.connections.threads.ThreadType;
-
+/**
+ * @author Austin Liu (abl17) and Chris Streiffer (cds33)
+ *
+ */
 public class StreamException extends NetworkException {
 	/**
 	 * Generated Serial ID

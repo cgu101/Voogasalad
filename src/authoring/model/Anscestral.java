@@ -2,8 +2,8 @@ package authoring.model;
 
 import java.util.Deque;
 
+import network.deprecated.Mail;
 import network.deprecated.RequestType;
-import network.framework.format.Mail;
 
 public interface Anscestral {
 	public Deque<String> getAnscestralPath ();
