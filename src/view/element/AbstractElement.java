@@ -20,5 +20,4 @@ public abstract class AbstractElement extends AbstractVisual {
 	public GridPane getPane() {
 		return pane;
 	}
-
 }
