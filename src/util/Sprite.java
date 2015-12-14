@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// D. Collin Bachi - dcb31
 /**
  * CS308 - Team IllegalTeamNameException
  * A javafx utility for loading, slicing up, and animation sprite sheets.
@@ -28,6 +30,8 @@ import javafx.util.Duration;
 public class Sprite extends ImageView implements Serializable {
 
 	private static final long serialVersionUID = -7218693879020524806L;
+	private static final String SPRITE_MANAGER_DIRECTORY = "src/resources/SpriteManager.properties";
+	private static final String CONFIGURATION = "configuration";
 	
 	private static HashMap<String, Image> images = new HashMap<String, Image>();
 	private Rectangle2D rect;
@@ -36,15 +40,15 @@ public class Sprite extends ImageView implements Serializable {
 	private int fps = 8;
 	private SpriteAnimation currentAnimation;
 	private int lastRowPlayed = 0;
-	private static final String SPRITE_MANAGER_DIRECTORY = "src/resources/SpriteManager.properties";
-	private static final String CONFIGURATION = "configuration";
-	//for drag and drop in the authoring environment
+	
+	// accommodate authoring environment's need for drag and drop thumbnails
 	private static HashMap<String, Image> thumbnails = new HashMap<String, Image>();
 	private String myThumbnailKey;
 	private Rectangle2D lastFrameRect;
 	
-	//for score and seven years ago
-	public String playFlag;
+	// to describe the proper animation of this sprite (in configuration)
+	// options include PLAY, PLAY_ONCE, GOTO_FRAME
+	private String playFlag;
 
 	/**
 	 * Initializes a sprite from a javafx Image. This is not the recommended
@@ -58,11 +62,6 @@ public class Sprite extends ImageView implements Serializable {
 	 * @param height
 	 *            the height of a single sprite cell
 	 */
-
-	public Sprite(Image sheet) {
-		super(sheet);
-	}
-
 	public Sprite(Image sheet, int width, int height) { // Not recommended
 		super(sheet);
 		String filename = sheet.toString();
@@ -105,36 +104,29 @@ public class Sprite extends ImageView implements Serializable {
 		
 		this.myThumbnailKey = sheet;
 	}
-	
-	private Image createThumbnailImage() {
-		PixelReader reader = this.getImage().getPixelReader();
-		if (this.lastFrameRect == null) this.lastFrameRect=this.rect;
-		WritableImage newImage = new WritableImage(reader, (int)this.lastFrameRect.getMinX(), 
-													(int)this.lastFrameRect.getMinY(), (int)this.lastFrameRect.getWidth(), (int)this.lastFrameRect.getHeight());
-		return newImage;
-	}
 
 	public Sprite(String sheet) {
-		this(sheet, getRefreshedImageDimensions(sheet)[0], getRefreshedImageDimensions(sheet)[1]);
+		this(sheet, getImageDimensions(sheet)[0], getImageDimensions(sheet)[1]);
 		
+	}
+	
+	private static int[] getImageDimensions(String sheet) {
+		InputStream input;
+		try {
+			input = new FileInputStream(String.format(SPRITE_MANAGER_DIRECTORY, CONFIGURATION));
+			ResourceBundle myResources = new PropertyResourceBundle(input);
+			String[] dimensionStrings = myResources.getBundle("resources/SpriteManager").getString(sheet).split(",");
+			int[] dimensions = {Integer.parseInt(dimensionStrings[0]), Integer.parseInt(dimensionStrings[1])};
+			return dimensions;
+		} catch ( IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	// Below are all the different API calls for playing, pausing, restarting,
 	// etc. animations
 
-	private static int[] getRefreshedImageDimensions(String sheet) {
-			InputStream input;
-			try {
-				input = new FileInputStream(String.format(SPRITE_MANAGER_DIRECTORY, CONFIGURATION));
-				ResourceBundle myResources = new PropertyResourceBundle(input);
-				String[] dimensionStrings = myResources.getBundle("resources/SpriteManager").getString(sheet).split(",");
-				int[] dimensions = {Integer.parseInt(dimensionStrings[0]), Integer.parseInt(dimensionStrings[1])};
-				return dimensions;
-			} catch ( IOException e) {
-				e.printStackTrace();
-			}
-			return null;
-	}
 
 	/**
 	 * Animates a series of cells from the specified row of the sprite sheeet.
@@ -283,10 +275,24 @@ public class Sprite extends ImageView implements Serializable {
 		}
 	}
 
+	/**
+	 * Crops the spritesheet to create a thumbnail image, for use in the authoring environment.
+	 * 
+	 * @return an Image that servees as a thumbnail for the Sprite
+	 */
 	public Image getCroppedImage() {
-		/*if (this.thumbnails.get(myThumbnailKey)==null) 
-			this.thumbnails.put(myThumbnailKey, createThumbnailImage());
-		return this.thumbnails.get(myThumbnailKey);*/
 		return createThumbnailImage();
+	}
+	
+	private Image createThumbnailImage() {
+		PixelReader reader = this.getImage().getPixelReader();
+		if (this.lastFrameRect == null) this.lastFrameRect=this.rect;
+		WritableImage newImage = new WritableImage(reader, (int)this.lastFrameRect.getMinX(), 
+													(int)this.lastFrameRect.getMinY(), (int)this.lastFrameRect.getWidth(), (int)this.lastFrameRect.getHeight());
+		return newImage;
+	}
+
+	public String getPlayFlag() {
+		return this.playFlag;
 	}
 }
