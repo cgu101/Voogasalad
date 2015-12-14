@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Tyler Webner
 package authoring.model.triggers.noactorconditions;
 
 import authoring.model.actors.Actor;
@@ -6,6 +8,11 @@ import authoring.model.triggers.ATriggerEvent;
 import engine.State;
 import player.InputManager;
 
+/**
+ * Input triggers do not need access to state or actors.
+ * 
+ * @author Tyler
+ */
 public abstract class AInputTrigger extends ATriggerEvent {
 	/**
 	 * Generated serial version ID

@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Tyler Webner
 package player;
 
 import java.util.Arrays;
