@@ -3,6 +3,9 @@ package authoring.model.actors;
 import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;
 
+/**
+ * @author Austin
+ */
 public interface IActor {
 	/**
 	 * @return

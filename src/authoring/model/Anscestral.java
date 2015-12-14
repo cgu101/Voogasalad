@@ -5,6 +5,9 @@ import java.util.Deque;
 import network.deprecated.Mail;
 import network.deprecated.RequestType;
 
+/**
+ * @author Austin
+ */
 public interface Anscestral {
 	public Deque<String> getAnscestralPath ();
 	
