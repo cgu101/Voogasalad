@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Connor Usry (cgu4)
 package view.element;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import player.controller.PlayerController;
+import player.controller.PlayerStateUtility;
 import view.actor.ActorMonitorCell;
 import view.element.AbstractDockElement;
 import view.screen.AbstractScreenInterface;
@@ -28,7 +31,7 @@ import view.screen.AbstractScreenInterface;
 public class ActorMonitor extends AbstractDockElement implements Observer{
 
 	private ObservableList<String> individualActorList;
-	private PlayerController controller; 
+	private PlayerStateUtility playerStateUtility; 
 	private ListView<String> observableIndividualActorList;
 	private CheckComboBox<String> checkComboBox;
 	private ObservableList<String> showOnlyGroups;
@@ -44,10 +47,10 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 	 * @param  screen The Screen used to determine dimensions of the component
 	 * @param  controller The PlayerController which allows the ActorMonitor to grab the actors' properties
 	 */
-	public ActorMonitor(GridPane home, String title, AbstractScreenInterface screen, PlayerController controller) {
+	public ActorMonitor(GridPane home, String title, AbstractScreenInterface screen, PlayerStateUtility playerStateUtility) {
 		super(home, title, screen);
 		findResources();
-		this.controller = controller;
+		this.playerStateUtility = playerStateUtility;
 	}
 
 	@Override
@@ -57,7 +60,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 		individualActorList = FXCollections.observableArrayList(new ArrayList<String>());
 
 		//Actor's keyset = List<String> 
-		for(Actor a : controller.getIndividualActorsList()){
+		for(Actor a : playerStateUtility.getIndividualActorsList()){
 			individualActorList.add(a.getUniqueID());
 		}
 
@@ -76,8 +79,8 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 	public void load() {
 		individualActorList = FXCollections.observableArrayList(new ArrayList<String>());
 		observableIndividualActorList.setItems(individualActorList);
-		if (controller != null) {
-			for(Actor a : controller.getIndividualActorsList()){
+		if (playerStateUtility != null) {
+			for(Actor a : playerStateUtility.getIndividualActorsList()){
 				individualActorList.add(a.getUniqueID());
 			}
 			configure(observableIndividualActorList);
@@ -93,7 +96,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 		observableIndividualActorList.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 			@Override
 			public ListCell<String> call(ListView<String> list) {
-				return new ActorMonitorCell(controller);
+				return new ActorMonitorCell(playerStateUtility);
 			}
 		});
 	}
@@ -107,7 +110,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 	private Node makeCheckBox(){
 		showOnlyGroups = FXCollections.observableArrayList();
 		currentlySelected = FXCollections.observableArrayList(new ArrayList<String>());
-		showOnlyGroups.addAll(controller.getActorGroups());
+		showOnlyGroups.addAll(playerStateUtility.getActorGroups());
 		checkComboBox = new CheckComboBox<String>(showOnlyGroups);
 		checkComboBox.setMaxWidth(Double.parseDouble(myResources.getString("width")));
 		checkComboBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<String>() {
@@ -127,7 +130,7 @@ public class ActorMonitor extends AbstractDockElement implements Observer{
 		pane.getChildren().remove(checkComboBox);
 		
 		individualActorList = FXCollections.observableArrayList(new ArrayList<String>());
-		for(Actor a : controller.getIndividualActorsList()){
+		for(Actor a : playerStateUtility.getIndividualActorsList()){
 			if(currentlySelected.contains(a.getGroupName()) || currentlySelected.isEmpty()){
 				individualActorList.add(a.getUniqueID());
 			}

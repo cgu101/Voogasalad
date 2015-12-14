@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Connor Usry (cgu4)
+
 package view.actor;
 
 import java.util.Map;
@@ -11,11 +14,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import player.SpriteManager;
 import player.controller.PlayerController;
+import player.controller.PlayerStateUtility;
 import util.Sprite;
 
 public class ActorMonitorCell extends AbstractListCell<String> {
 
-	private PlayerController controller;
+	private PlayerStateUtility playerStateUtility;
 	private final ResourceBundle spriteResources = ResourceBundle.getBundle("resources/SpriteManager");
 	
 	/**
@@ -25,16 +29,16 @@ public class ActorMonitorCell extends AbstractListCell<String> {
 	 * @param  actor The Actor that will have its properties displayed.
 	 * @param  controller The PlayerController which allows the ActorMonitorCell to grab the actors' properties
 	 */
-	public ActorMonitorCell(PlayerController controller) {
+	public ActorMonitorCell(PlayerStateUtility playerStateUtility) {
 		findResources();
-		this.controller = controller;
+		this.playerStateUtility = playerStateUtility;
 	}
 
 	//TODO: Make a non-default image
 	private VBox makeImage(String pic, String name) {
 		VBox v = new VBox();
 		//Sprite sprite = createSpriteFromImg(pic);
-		Sprite sprite = SpriteManager.createSprite(controller.getActorFromString(name));
+		Sprite sprite = SpriteManager.createSprite(playerStateUtility.getActorFromString(name));
 		sprite.setFitHeight(Double.parseDouble(myResources.getString("imagesize")));
 		sprite.setPreserveRatio(true);
 		sprite.setSmooth(true);
@@ -52,7 +56,7 @@ public class ActorMonitorCell extends AbstractListCell<String> {
 		HBox box = new HBox(5);
 		box.setAlignment(Pos.CENTER_LEFT);
 		
-		Map<String, String> propertyStringMap = controller.getPropertyStringMapFromActorString(item);
+		Map<String, String> propertyStringMap = playerStateUtility.getPropertyStringMapFromActorString(item);
 		box.getChildren().add(makeImage(propertyStringMap.get("image"), item));
 		box.getChildren().add(makePropertiesVBox(propertyStringMap));
 		

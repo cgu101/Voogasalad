@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Connor Usry (cgu4)
+
 package player.controller;
 
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ public class PlayerController implements IPlayer {
 	private SpriteManager mySpriteManager;
 	private InputManager myInputManager;
 	private ActorMonitor actorMonitor;
+	private PlayerStateUtility playerStateUtility;
 	private static int fps = 10;
 	private int refreshComponentRate;
 	
@@ -52,6 +56,7 @@ public class PlayerController implements IPlayer {
 		myScene = s;
 		myInputManager = new InputManager();
 		myEngine = new GameEngine(myInputManager);
+		playerStateUtility = null;
 		refreshComponentRate = 0;
 		attachInputs(s);
 	}
@@ -72,6 +77,7 @@ public class PlayerController implements IPlayer {
 		}
 		Game game = XMLManager.loadGame(fileName);
 		myEngine.init(game);
+		playerStateUtility = new PlayerStateUtility(myEngine);
 		if (first) actorMonitor.resetData();
 		start();
 	}
@@ -122,7 +128,7 @@ public class PlayerController implements IPlayer {
 	private void run() {
 		try {
 			consumeInstruction(myEngine.play());
-			mySpriteManager.updateSprites(getIndividualActorsList(), this.myScene);
+			mySpriteManager.updateSprites(playerStateUtility.getIndividualActorsList(), this.myScene);
 			myEngine.getState().areThereNewOrDeadActors();
 			refreshPlayerComponents();
 			actorMonitor.refresh();	
@@ -137,110 +143,6 @@ public class PlayerController implements IPlayer {
 			state.getInstruction().apply(this);
 			state.setInstruction(null);
 		}
-	}
-
-	/**
-	 * This method grabs the actors from the state returned by the engine.
-	 *
-	 * @return the list of Actors.
-	 */
-	public ArrayList<Actor> getIndividualActorsList() {
-		ArrayList<Actor> actors = new ArrayList<Actor>();
-		for (Bundle<Actor> b : myEngine.getState().getActorMap().getMap().values()) {
-			actors.addAll(b.getComponents().values());
-		}
-		return actors;
-	}
-	
-	/**
-	 * This method grabs the list of Actor Groups from the state returned by the engine.
-	 *
-	 * @return the list of Actor Groups.
-	 */
-	public ArrayList<String> getActorGroups() {
-		ArrayList<String> actorGroups = new ArrayList<String>();
-		for(String s :myEngine.getState().getActorMap().getMap().keySet()){
-			actorGroups.add(s);
-		}
-		return actorGroups;
-	}
-	
-	/**
-	 * This method grabs the the Game Properties from the Game Engine.
-	 * The keys are the property type, and the values are the property values.
-	 * 
-	 * @return The map of Properties.
-	 */
-	public Map<String, String> getGameProperties(){
-		Map<String, String> properties = new HashMap<String, String>();
-		Bundle<Property<?>> propBundle = myEngine.getState().getPropertyBundle();
-		for(Property<?> b : propBundle){
-			properties.put(b.getUniqueID(), b.getValue().toString());
-		}
-		return properties;
-	}
-
-	/**
-	 * This method grabs a list of properties of the specified Actor 'a'.
-	 *
-	 * @param a The Actor you would like to retrieve the properties for.
-	 * @return The list of Properties.
-	 */
-	public ArrayList<Property<?>> getProperties(Actor a){
-		ArrayList<Property<?>> properties = new ArrayList<Property<?>>();
-		Bundle<Property<?>> propBundle = a.getProperties();
-		for(Property<?> b : propBundle){
-			properties.add((Property<?>) b.getValue());
-		}
-		return properties;
-	}
-
-	/**
-	 * This method creates a Map the actor's Property Identifier to it's value
-	 * The map is in <String, String> format to allow for easy GUI display.
-	 *
-	 * @param a The Actor you would like to retrieve the properties for.
-	 * @return The map of properties identifier -> value casted to Strings.
-	 */
-	public Map<String, String> getPropertyStringMap(Actor a){
-		Map<String, String> propertyMap = new HashMap<String, String>();
-		Bundle<Property<?>> b = a.getProperties();
-		for(Property<?> prop : b){
-			String identifier = prop.getUniqueID(); //health or whatever
-			String value = String.valueOf(prop.getValue());
-			propertyMap.put(identifier, value);
-		}
-		return propertyMap;
-	}
-	
-	/**
-	 * This method creates a Map the actor's Property Identifier to it's value
-	 * The map is in <String, String> format to allow for easy GUI display.
-	 *
-	 * @param a The Actor you would like to retrieve the properties for.
-	 * 
-	 * @return The map of properties identifier -> value casted to Strings.
-	 */
-	public Map<String, String> getPropertyStringMapFromActorString(String a){
-		Actor match = null;
-		for(Actor actor : getIndividualActorsList()){
-			if(actor.getUniqueID().equals(a)){
-				match = actor;	
-				break;
-			}
-		}
-		
-		return getPropertyStringMap(match);
-	}
-	
-	public Actor getActorFromString(String a){
-		ArrayList<Actor> actorList = getIndividualActorsList();
-		for(Actor curr : actorList){
-			if(curr.getUniqueID().equals(a)){
-				return curr;
-			}
-		}
-		return null;
 	}
 	
 	/**
@@ -330,6 +232,10 @@ public class PlayerController implements IPlayer {
 	}
 	public void updateBackground(String filename) {
 		mySpriteManager.getMap().updateBackground(new Image(filename));
+	}
+	
+	public PlayerStateUtility getPlayerStateUtility(){
+		return playerStateUtility;
 	}
 
 }

@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Connor Usry (cgu4)
 package view.screen;
 
 import java.io.File;
@@ -85,9 +87,10 @@ public class PlayerScreen extends AbstractScreen {
 
 		components = new ArrayList<AbstractDockElement>();
 		gameInfoMonitor = new GameInfoMonitor(homePanes.get(0), myResources.getString("gameinfoname"), this,
-				playerController);
+				playerController.getPlayerStateUtility());
 
-		actorMonitor = new ActorMonitor(homePanes.get(1), myResources.getString("monitorname"), this, playerController);
+		actorMonitor = new ActorMonitor(homePanes.get(1), myResources.getString("monitorname"), this, 
+				playerController.getPlayerStateUtility());
 		mapSlider = new PlayerMapSliders(homePanes.get(2), myResources.getString("slidername"), this);
 		mapPane.add(homePanes.get(2), 0, 1);
 		r.setCenter(mapPane);

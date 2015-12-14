@@ -12,16 +12,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import player.controller.PlayerController;
+import player.controller.PlayerStateUtility;
 import view.screen.AbstractScreenInterface;
 
 public class GameInfoMonitor extends AbstractDockElement {
 
-	private PlayerController controller;
+	private PlayerStateUtility playerStateUtility;
 
-	public GameInfoMonitor(GridPane home, String title, AbstractScreenInterface screen,  PlayerController controller) {
+	public GameInfoMonitor(GridPane home, String title, AbstractScreenInterface screen,  PlayerStateUtility playerStateUtility) {
 		super(home, title, screen);
 		findResources();
-		this.controller = controller;
+		this.playerStateUtility = playerStateUtility;
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class GameInfoMonitor extends AbstractDockElement {
 		pane.getChildren().clear();
 		addLabelPane();
 		HBox hBox = new HBox(8);
-		Map<String, String> propertyStringMap = controller.getGameProperties();
+		Map<String, String> propertyStringMap = playerStateUtility.getGameProperties();
 		hBox.getChildren().add(makeImage(myResources.getString("gameimage"), propertyStringMap.get("name"), propertyStringMap.get("level")));
 		pane.add(hBox, 0, 1);
 	}
