@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Christopher Streiffer
 package network.core.controller;
 
 import network.core.connections.Connection;

@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Christopher Streiffer
 package network.core.server;
 
 import java.io.*;
@@ -9,6 +11,7 @@ import network.exceptions.StreamException;
 
 /**
  * @author Chris Streiffer (cds33) and Austin Liu (abl17)
+ * 
  */
 
 public class Hub {
