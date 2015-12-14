@@ -54,7 +54,7 @@ public class InputManager {
 	 *         current boolean value: true if being pressed, false if not.
 	 *         otherwise, false
 	 */
-	public <K extends Enum<K>> boolean getValue(K code) {
+	public <K extends Enum<K>> boolean isPressed(K code) {
 		return (keyMap.containsKey(code) && keyMap.get(code)) || (mouseMap.containsKey(code) && mouseMap.get(code));
 	}
 
@@ -65,11 +65,12 @@ public class InputManager {
 	 * @param code
 	 *            the key code or mouse button
 	 * @param value
-	 *            the value to be set: true if pressed, false if released
+	 *            the value to be set: true if pressed, false if released (not
+	 *            pressed)
 	 * @param inputMap
 	 *            the key map or mouse map
 	 */
-	private <K extends Enum<K>> void setValue(K code, Boolean value, EnumMap<K, Boolean> inputMap) {
+	private <K extends Enum<K>> void setPressed(K code, Boolean value, EnumMap<K, Boolean> inputMap) {
 		if (inputMap.containsKey(code)) {
 			inputMap.put(code, value);
 		}
@@ -83,7 +84,7 @@ public class InputManager {
 	 *            the key event
 	 */
 	public void keyPressed(KeyEvent ke) {
-		setValue(ke.getCode(), true, keyMap);
+		setPressed(ke.getCode(), true, keyMap);
 	}
 
 	/**
@@ -94,7 +95,7 @@ public class InputManager {
 	 *            the key event
 	 */
 	public void keyReleased(KeyEvent ke) {
-		setValue(ke.getCode(), false, keyMap);
+		setPressed(ke.getCode(), false, keyMap);
 	}
 
 	/**
@@ -105,7 +106,7 @@ public class InputManager {
 	 *            the mouse event
 	 */
 	public void mousePressed(MouseEvent me) {
-		setValue(me.getButton(), true, mouseMap);
+		setPressed(me.getButton(), true, mouseMap);
 	}
 
 	/**
@@ -116,6 +117,6 @@ public class InputManager {
 	 *            the mouse event
 	 */
 	public void mouseReleased(MouseEvent me) {
-		setValue(me.getButton(), false, mouseMap);
+		setPressed(me.getButton(), false, mouseMap);
 	}
 }

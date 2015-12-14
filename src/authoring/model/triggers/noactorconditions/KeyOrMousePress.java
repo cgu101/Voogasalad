@@ -30,8 +30,8 @@ public class KeyOrMousePress extends AInputTrigger {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private <K extends Enum<K>> boolean evaluate(Parameters parameters, InputManager inputManager) {
-		K buttonName = (K) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0");
-		return inputManager.getValue(buttonName);
+		K inputCode = (K) parameters.getParameter(ParametersKey.PARAM_PREFIX + "0");
+		return inputManager.isPressed(inputCode);
 	}
 
 	/**
