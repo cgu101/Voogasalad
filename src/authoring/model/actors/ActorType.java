@@ -1,5 +1,8 @@
 package authoring.model.actors;
 
+/**
+ * @author Austin
+ */
 public enum ActorType {
 	GLOBAL("Global"),
 	LOCAL("Local");

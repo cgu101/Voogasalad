@@ -9,6 +9,9 @@ import authoring.model.properties.Property;
 import engine.GameEngine;
 import exceptions.EngineException;
 
+/**
+ * @author Austin
+ */
 public class ActorDependencyInjector implements Observer {
 
 	public GameEngine gameEngine;
@@ -28,17 +31,8 @@ public class ActorDependencyInjector implements Observer {
 		ActionMail a = (ActionMail) arg1;
 		
 		switch (a.getActionType()) {
-		case END_GAME:
-			//TODO
-			break;
 		case NEXT_LEVEL:
-			//TODO
-			break;
-		case PREVIOUS_LEVEL:
-			//TODO
-			break;
-		case WIN_GAME:
-			//TODO
+			this.changeLevel();
 			break;
 		default:
 			break;
@@ -46,11 +40,11 @@ public class ActorDependencyInjector implements Observer {
 		}
 	}
 	
-	private boolean shouldChange () {
+	public boolean shouldChange () {
 		return this.stateChange;
 	}
 	
-	private void changeLevel () {
+	public void changeLevel () {
 		try {
 			gameEngine.nextLevel();
 		} catch (EngineException e) {
