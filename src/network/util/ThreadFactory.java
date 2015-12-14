@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Austin Liu
+
 package network.util;
 
 import javafx.application.Platform;
