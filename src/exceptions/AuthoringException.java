@@ -1,5 +1,8 @@
 package exceptions;
 
+/**
+ * @author Austin
+ */
 public abstract class AuthoringException extends Exception {
 
 	public AuthoringException(String format) {
