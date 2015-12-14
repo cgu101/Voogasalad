@@ -2,9 +2,6 @@ package player;
 
 import exceptions.data.GameFileException;
 
-/**
- * @author Austin
- */
 public interface IPlayer {
 
 	/**

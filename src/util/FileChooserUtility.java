@@ -6,9 +6,6 @@ import exceptions.data.GameFileException;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
-/**
- * @author Austin
- */
 public class FileChooserUtility {
 	
 	private static final String LOAD_MESSAGE = "File Loader Window";

@@ -8,9 +8,6 @@ import authoring.model.bundles.Identifiable;
 import authoring.model.game.ActorDependencyInjector;
 import authoring.model.properties.Property;
 
-/**
- * @author Austin
- */
 public class Actor extends Observable implements Identifiable, IActor, Serializable {
 	/**
 	 * Generated serial version iD
@@ -103,10 +100,6 @@ public class Actor extends Observable implements Identifiable, IActor, Serializa
 		return getProperties().getComponents().containsKey(identifier);
 	}
 
-	/**
-	 * Testing
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		Actor myActor = new Actor(null, ActorType.GLOBAL.toString());
 		ActorDependencyInjector q = new ActorDependencyInjector(null);

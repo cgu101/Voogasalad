@@ -4,10 +4,6 @@ import authoring.events.interfaces.ICondition;
 import authoring.events.interfaces.IExecuter;
 import authoring.events.interfaces.IReaction;
 
-/**
- * @author Austin
- */
-
 public class Executer implements IExecuter {
 
 	private IReaction reaction;

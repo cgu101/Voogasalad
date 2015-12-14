@@ -7,9 +7,6 @@ import java.util.Map;
 
 import util.ReflectionHelper;
 
-/**
- * @author Austin
- */
 public interface IWorker {
 	public IAction getAction (String actionName);
 	

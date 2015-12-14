@@ -1,8 +1,5 @@
 package exceptions;
 
-/**
- * @author Austin
- */
 public abstract class DataException extends Exception {
 
 	/**
