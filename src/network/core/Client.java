@@ -243,8 +243,6 @@ abstract public class Client {
             outgoingMessages = new LinkedBlockingQueue<Object>();
             socket = new Socket(host,port);
             out = new ObjectOutputStream(socket.getOutputStream());
-            out.writeObject("Hello Hub");
-            out.flush();
             in = new ObjectInputStream(socket.getInputStream());
             try {
                 Object response = in.readObject();

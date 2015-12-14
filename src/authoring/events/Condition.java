@@ -5,6 +5,13 @@ import java.util.function.BooleanSupplier;
 
 import authoring.events.interfaces.ICondition;
 
+/**
+ * 
+ * @author Austin
+ *
+ * @param <S>
+ * @param <T>
+ */
 public class Condition<S, T> implements ICondition {
 
 	/**

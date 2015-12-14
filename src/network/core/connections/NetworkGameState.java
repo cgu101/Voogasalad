@@ -14,26 +14,26 @@ public class NetworkGameState implements Identifiable, Closeable  {
 	private Game game;
 	private HeartbeatValue heartbeatVal;
 	private Heartbeat heartbeat;
-	private List<String> clients;
+	private List<Integer> clients;
 	
-	public NetworkGameState(String gameIdentifier, Game game, String client) {
+	public NetworkGameState(String gameIdentifier, Game game, Integer client) {
 		this.gameIdentifier = gameIdentifier;
 		this.game = game;
 		heartbeatVal = new HeartbeatValue();
-		clients = new ArrayList<String>();
+		clients = new ArrayList<Integer>();
 		clients.add(client);
 		initializeHeartbeat();
 	}
 	
-	public void addClient(String client) {
+	public void addClient(Integer client) {
 		clients.add(client);
 	}
 	
-	public void removeClient(String client) {
+	public void removeClient(Integer client) {
 		clients.remove(client);
 	}
 	
-	public List<String> getClients() {
+	public List<Integer> getClients() {
 		return clients;
 	}
 	
