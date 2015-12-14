@@ -1,7 +1,6 @@
 package authoring.model.actions.twoActorActions;
 
 import authoring.files.properties.ActorProperties;
-import authoring.model.actions.ATwoActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import engine.State;

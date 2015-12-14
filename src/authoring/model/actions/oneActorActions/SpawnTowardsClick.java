@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import authoring.files.properties.ActorProperties;
-import authoring.model.actions.AOneActorAction;
 import authoring.model.actors.Actor;
 import authoring.model.bundles.Bundle;
 import authoring.model.properties.Property;

@@ -1,5 +1,6 @@
-package authoring.model.actions;
+package authoring.model.actions.twoActorActions;
 
+import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import engine.State;

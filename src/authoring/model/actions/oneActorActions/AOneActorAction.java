@@ -1,5 +1,8 @@
-package authoring.model.actions;
+// This entire file is part of my masterpiece.
+// Inan Tainwala
+package authoring.model.actions.oneActorActions;
 
+import authoring.model.actions.IAction;
 import authoring.model.actors.Actor;
 import authoring.model.tree.Parameters;
 import engine.State;
