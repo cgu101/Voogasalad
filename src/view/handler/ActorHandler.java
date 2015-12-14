@@ -25,6 +25,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -75,7 +76,7 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		theZoomSlider = zoomSlider;
 		myAC = ac;
 		findResources();
-		myEditMenu = new ActorEditingToolbar(myToolbar, map, viewManager);
+		myEditMenu = new ActorEditingToolbar(myToolbar, map.getMapWidth());
 		myAVs = new ArrayList<ActorView>();
 	}
 
@@ -97,9 +98,7 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 				ImageView image = av.getSprite();
 				ContextMenu cm = makeContextMenu(av);
 				image.setOnContextMenuRequested(e -> {
-					if (!myEditMenu.isEditing()) {
-						cm.show(image, e.getScreenX(), e.getScreenY());
-					}
+					cm.show(image, e.getScreenX(), e.getScreenY());
 				});
 			}
 			addToScale(av, x, y);
@@ -149,10 +148,8 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		MenuItem resizeActor = makeMenuItem(myResources.getString("resize"), event -> resizeActor(a));
 		MenuItem deleteActor = makeMenuItem(myResources.getString("delete"), event -> removeActor(a));
 		MenuItem editParam = makeMenuItem(myResources.getString("editparams"), event -> editParams(a));
-		//		MenuItem editShip = makeMenuItem(myResources.getString("editship"), event -> editShip());
 
-		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, editParam, deleteActor); //, editParam, editShip);
-
+		cm.getItems().addAll(moveActor, copyActor, rotateActor, resizeActor, editParam, deleteActor); 
 		return cm;
 	}
 
@@ -172,17 +169,20 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		r.setOnDragDone(e -> endMoveDrag(e, a, r));
 		r.setOnDragDropped(e -> dropMoveDrag(e, a, r));
 
-		myEditMenu.makeMoveActorToolbar(a, r, e -> a.restoreXY(origX, origY));
+		List<String> buttonTitles = new ArrayList<String>();
+		buttonTitles.add(myResources.getString("restore"));
+		buttonTitles.add(myResources.getString("finish"));
+		
+		List<EventHandler<ActionEvent>> handlers = new ArrayList<EventHandler<ActionEvent>>();
+		handlers.add(e -> a.restoreXY(origX, origY));
+		handlers.add(e -> finish(r));
+		
+		myEditMenu.makeToolbar(myResources.getString("moveInstru"), buttonTitles, handlers, 0);
 	}
-
-	private void duringMoveDrag(DragEvent e) {
-		e.acceptTransferModes(TransferMode.MOVE);
-	}
-
+	
 	private void startMoveDrag(MouseEvent e, ActorView a, Rectangle r) {
 		removeActor(a);
 
-		// TODO Send to network to remove the actor
 		r.setCursor(Cursor.CLOSED_HAND);
 		Dragboard db = r.startDragAndDrop(TransferMode.MOVE);
 		ClipboardContent content = new ClipboardContent();
@@ -192,6 +192,16 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 				a.getSprite().getCroppedImage().getHeight() / 2);
 	}
 
+	private void duringMoveDrag(DragEvent e) {
+		e.acceptTransferModes(TransferMode.MOVE);
+	}
+
+	private void endMoveDrag(DragEvent e, ActorView a, Rectangle r) {
+		e.getDragboard().clear();
+		r.setCursor(Cursor.DEFAULT);
+		e.consume();
+	}
+	
 	private void dropMoveDrag(DragEvent event, ActorView a, Rectangle r) {
 		r.setCursor(Cursor.DEFAULT);
 		viewManager.removeElements(r);
@@ -202,13 +212,7 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		event.setDropCompleted(true);
 		event.consume();
 	}
-
-	private void endMoveDrag(DragEvent e, ActorView a, Rectangle r) {
-		e.getDragboard().clear();
-		r.setCursor(Cursor.DEFAULT);
-		e.consume();
-	}
-
+	
 	private void copyActor(ActorView a) {
 		ActorView aCopy = new ActorView(a);
 		double offset = Double.parseDouble(myResources.getString("copyoffset"));
@@ -223,8 +227,45 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		Node currNode = a.getSprite();
 		double heading = currNode.getRotate();
 		int rotateInc = Integer.parseInt(myResources.getString("rotateIncrement"));
-		myEditMenu.makeRotateActorToolbar(a, heading, r, e -> rotateRight(a, rotateInc),
-				e -> rotateRight(a, -1 * rotateInc));
+		
+		List<String> buttonTitles = new ArrayList<String>();
+		buttonTitles.add(myResources.getString("actual"));
+		buttonTitles.add(myResources.getString("relative"));
+		buttonTitles.add(myResources.getString("left"));
+		buttonTitles.add(myResources.getString("right"));
+		buttonTitles.add(myResources.getString("restore"));
+		buttonTitles.add(myResources.getString("finish"));
+		
+		List<EventHandler<ActionEvent>> handlers = new ArrayList<EventHandler<ActionEvent>>();
+		handlers.add(e -> rotateDialog(a, true));
+		handlers.add(e -> rotateDialog(a, false));
+		handlers.add(e -> rotateRight(a, -1 * rotateInc));
+		handlers.add(e -> rotateRight(a, rotateInc));
+		handlers.add(e -> a.setRotation(heading));
+		handlers.add(e -> finish(r));
+	
+		myEditMenu.makeToolbar(myResources.getString("rotateInstru"), buttonTitles, handlers, 2);
+	}
+	
+	private void rotateDialog(ActorView a, boolean absolute) {
+		double initialHeading = 0;
+
+		if (!absolute) 
+			initialHeading = a.getRotation();
+
+		TextInputDialog popup = new TextInputDialog();
+		popup.setTitle(myResources.getString("rotate"));
+		popup.setHeaderText(myResources.getString("rotateInput"));
+		popup.showAndWait();
+
+		String newVal = popup.getEditor().getText();
+		try {
+			double degrees = Double.parseDouble(newVal);
+			a.setRotation(degrees + initialHeading);
+		} catch (Exception e) {
+			Alert error = new Alert(AlertType.ERROR, myResources.getString("parsedoubleerror"), ButtonType.OK);
+			error.showAndWait();
+		}
 	}
 
 	private void handleScroll(ScrollEvent e, ActorView a) {
@@ -240,8 +281,18 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 		Rectangle r = makeFilterRectangle();
 		r.setOnScroll(e -> handleResize(e, a));
 		int growInc = Integer.parseInt(myResources.getString("growIncrement"));
-		myEditMenu.makeResizeActorToolbar(a, r, e -> increaseActorSize(a, growInc),
-				e -> increaseActorSize(a, -1 * growInc));
+				
+		List<String> buttonTitles = new ArrayList<String>();
+		buttonTitles.add(myResources.getString("plus"));
+		buttonTitles.add(myResources.getString("minus"));
+		buttonTitles.add(myResources.getString("finish"));
+		
+		List<EventHandler<ActionEvent>> handlers = new ArrayList<EventHandler<ActionEvent>>();
+		handlers.add(e -> increaseActorSize(a, growInc));
+		handlers.add(e -> increaseActorSize(a, -1 * growInc));
+		handlers.add(e -> finish(r));
+
+		myEditMenu.makeToolbar(myResources.getString("resizeInstru"), buttonTitles, handlers, 2);
 	}
 
 	private void handleResize(ScrollEvent e, ActorView a) {
@@ -321,8 +372,8 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 	}
 
 	private void updateNode(ActorView a, String uniqueID, double newVal) {
-
-		// basically a switch/case tree but allows us to use resources file
+		// basically a switch/case tree but allows us to use resources file -> no hard coding strings
+		// doesn't make sense to be an ENUM, unfortunately...
 		// sorry i couldn't think of a better thing.
 		if (uniqueID.equals(myResources.getString("x"))) {
 			a.setXCoor(newVal);
@@ -336,11 +387,6 @@ public class ActorHandler extends AbstractVisual implements Anscestral {
 			a.setHeight(newVal);
 		}
 	}
-
-	//
-	//	private void editShip() {
-	//
-	//	}
 
 	private Rectangle makeFilterRectangle() {
 		Rectangle rect = new Rectangle(map.getMapWidth(), map.getMapHeight());

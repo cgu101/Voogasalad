@@ -2,20 +2,16 @@ package view.handler;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import authoring.controller.AuthoringController;
 import authoring.model.actors.Actor;
 import authoring.model.actors.ActorPropertyMap;
-import authoring.model.properties.Property;
-import javafx.scene.image.Image;
 import player.SpriteManager;
 import util.Sprite;
 import view.visual.AbstractVisual;
 
 /**
- * This class is responsible for actually manipulating the imageview of an
- * actor. It also contains up-to-date instances of each actor and its
- * appearance-related properties.
+ * This class is responsible for actually manipulating the imageview of an actor. It also contains up-to-date 
+ * instances of each actor and its appearance-related properties, and passes that information to the backend.
  * 
  * @author Bridget
  *
@@ -33,7 +29,7 @@ public class ActorView extends AbstractVisual implements Serializable {
 	private double myYCoor;
 	private String myType;
 	private ActorPropertyMap myMap;
-	private transient AuthoringController myController;
+	private AuthoringController myController;
 
 	public ActorView(Actor a, ActorPropertyMap map, String actorType, double x, double y, AuthoringController ac) {
 		myMap = map;
@@ -78,10 +74,6 @@ public class ActorView extends AbstractVisual implements Serializable {
 		mapChanged();
 	}
 	
-	public void setController(AuthoringController ac) {
-		this.myController = ac;
-	}
-	
 	protected ActorPropertyMap getMap() {
 		return myMap;
 	}
@@ -94,7 +86,6 @@ public class ActorView extends AbstractVisual implements Serializable {
 		myXCoor = Double.parseDouble(myResources.getString("x"));
 		myYCoor = Double.parseDouble(myResources.getString("y"));
 		myRotation = Double.parseDouble(myResources.getString("angle"));
-		// if width is changed , if height is changed
 	}
 
 	protected Actor getActor() {
@@ -111,27 +102,15 @@ public class ActorView extends AbstractVisual implements Serializable {
 
 	public Sprite createImage() {
 		String img = (String) myActor.getProperties().getComponents().get("image").getValue();
-		/*Image image = new Image(getClass().getClassLoader().getResourceAsStream(img));
-
-		// also establish the ratio
-		double width = image.getWidth();
-		double height = image.getHeight();
-		dimensionRatio = height / width;
-
-		 
-
-		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
-		mapChanged(); */
-		
-		// ^ Someone who understands this look at it
-
-
-		// return new ImageView(image);
 		Sprite ret = SpriteManager.createSprite(myActor.getGroupName(), img);
+		
 		double width = ret.getImage().getWidth();
 		double height = ret.getImage().getHeight();
-		//myXCoor -= 250;
 		dimensionRatio = height / width;
+		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
+		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
+		mapChanged(); 
+		
 		return ret;
 	}
 
@@ -182,11 +161,6 @@ public class ActorView extends AbstractVisual implements Serializable {
 		return dimensionRatio * myFitWidth;
 	}
 
-	protected void scaleDimensions(double percent) {
-		myFitWidth *= percent; 
-		preserveCenter();
-	}
-
 	protected void addDimensions(double increase) {
 		myFitWidth += increase;
 		preserveCenter();
@@ -207,7 +181,6 @@ public class ActorView extends AbstractVisual implements Serializable {
 		mySprite.setPreserveRatio(true);
 		myMap.addProperty(myResources.getString("width"), "" + myFitWidth);
 		myMap.addProperty(myResources.getString("height"), "" + myFitWidth*dimensionRatio);
-		mapChanged();
 		restoreXY(myXCoor, myYCoor);
 	}
 
