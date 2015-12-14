@@ -21,8 +21,6 @@ public class Level implements Identifiable, Serializable {
 	 * Generated Serial ID
 	 */
 	private static final long serialVersionUID = -6630969237543157481L;
-
-	private static final String ERROR_COPY = "Cannot copy levels";
 	
 	// TODO this
 	private InteractionTreeNode rootTree;

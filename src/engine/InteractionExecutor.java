@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Sung-Hoon Kim
+
 package engine;
 
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ import resources.keys.PropertyKeyResource;
  */
 
 public class InteractionExecutor {
+	private static final String EXCEPTION_MESSAGE = "Error in interaction tree";
 	private static final String ACTOR_IDENTIFIER = ActorTreeNode.class.getSimpleName();
 	private static final String TRIGGER_IDENTIFIER = TriggerTreeNode.class.getSimpleName();
 	private static final String ACTION_IDENTIFIER = ActionTreeNode.class.getSimpleName();
@@ -40,7 +44,7 @@ public class InteractionExecutor {
 	
 	private State currentState;
 	private State nextState;
-	
+
 	private InputManager inputMap;
 	private Map<String,ITriggerEvent> triggerMap;
 	private Map<String,IAction> actionMap;
@@ -49,41 +53,24 @@ public class InteractionExecutor {
 	private Map<String, NodeLambda<InteractionTreeNode,List<?>>> lambdaMap;
 	private ActorDependencyInjector depInjector;
 
-	private InteractionExecutor () {
-		this.currentLevelIdentifier = null;
-		this.triggerTree = new InteractionTreeNode();
-		this.inputMap = new InputManager();
-		this.triggerMap = new HashMap<>();
-		this.actionMap = new HashMap<>();
+	public InteractionExecutor (Level level, InputManager inputMap, State state, ActorDependencyInjector depInjector) {
+		this.inputMap = inputMap;
+		this.currentLevelIdentifier = level.getUniqueID();
+		this.triggerTree = level.getRootTree();
+		this.currentState = state;
+		currentState.getPropertyBundle().add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.LEVEL_ID_KEY), currentLevelIdentifier));
+		currentState.setActorMap(level.getActorGroups());
+
+		this.triggerMap = level.getTriggerMap();
+		this.actionMap = level.getActionMap();
 		
 		initLambdaMap();
+		nextState = new State(currentState);
+
+		this.depInjector = depInjector;
+		setObservableActors(nextState);
 	}
 
-	public InteractionExecutor (Level level, InputManager inputMap, State state, ActorDependencyInjector depInjector) {
-		this();
-		this.inputMap = inputMap;
-		if (level != null) {
-			this.currentLevelIdentifier = level.getUniqueID();
-			this.triggerTree = level.getRootTree();
-			this.currentState = state;
-			currentState.getPropertyBundle().add(new Property<String>(PropertyKeyResource.getKey(PropertyKey.LEVEL_ID_KEY), currentLevelIdentifier));
-			currentState.setActorMap(level.getActorGroups());
-			if (level.getProperty(PropertyKeyResource.getKey(PropertyKey.LEVEL_BACKGROUND_KEY)) != null) {
-				currentState.setInstruction(c -> {
-					c.updateBackground((String)level.getProperty(PropertyKeyResource.getKey(PropertyKey.LEVEL_BACKGROUND_KEY)).getValue());
-				});
-			}
-			
-			this.triggerMap = level.getTriggerMap();
-			this.actionMap = level.getActionMap();
-
-			nextState = new State(currentState);
-			
-			this.depInjector = depInjector;
-			setObservableActors(nextState);
-		}
-	}
-	
 	private void setObservableActors(State state) {
 		for (String actorType : state.getActorMap().getMap().keySet()) {
 			for (Actor actor : state.getActorMap().getMap().get(actorType)) {
@@ -93,9 +80,9 @@ public class InteractionExecutor {
 			}
 		}
 	}
-	
+
 	/**
-	 * Runs a single step of the level. Resolves all self-triggers before external triggers.
+	 * Runs a single step of the level. 
 	 * @return A {@link State} that allows the executor to communicate with the engine and player controller.
 	 * @throws EngineException 
 	 */
@@ -105,12 +92,10 @@ public class InteractionExecutor {
 		try {
 			runTriggers();
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new InteractionTreeException("Error in interaction tree", null);
+			throw new InteractionTreeException(EXCEPTION_MESSAGE, null);
 		}
 		nextState.getActorMap().cleanUpActors();
 		currentState.merge(nextState);
-		//		return new EngineHeartbeat(this, (IPlayer p) -> {}); // example lambda body: { p.pause(); }
 		return currentState;
 	}
 
@@ -129,8 +114,9 @@ public class InteractionExecutor {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <V> void initLambdaMap () {
+	private void initLambdaMap () {
 		lambdaMap = new HashMap<String,NodeLambda<InteractionTreeNode,List<?>>>();
+		
 		lambdaMap.put(ACTOR_IDENTIFIER, (node, list) -> {
 			for(InteractionTreeNode child : node.children()){
 				if (child.getIdentifier().equals(ACTOR_IDENTIFIER)) {
@@ -144,6 +130,7 @@ public class InteractionExecutor {
 				}
 			}
 		});
+		
 		lambdaMap.put(TRIGGER_IDENTIFIER, (node, list) -> {
 			ITriggerEvent triggerEvent = triggerMap.get(node.getValue());
 			if (triggerEvent.condition(((ParameterTreeNode) node).getParameters(), inputMap, currentState, ((List<Actor>)list).toArray(new Actor[list.size()]))) {
@@ -152,6 +139,7 @@ public class InteractionExecutor {
 				}
 			}
 		});
+		
 		lambdaMap.put(ACTION_IDENTIFIER, (node, list) -> {
 			IAction action = actionMap.get(node.getValue());
 			Actor[] actors = ((List<Actor>) list).stream().map(a -> {
@@ -159,19 +147,18 @@ public class InteractionExecutor {
 			}).toArray(Actor[]::new);
 			
 			action.run(inputMap, ((ParameterTreeNode) node).getParameters(), nextState, actors);
-//			action.run(new HashMap<String, V>(), nextState, actors);
 		});
 	}
+	
 	private <T> List<T> cloneListAndAdd (List<T> list, T value) {
 		List<T> actorList = new ArrayList<T>(list);
 		actorList.add(value);
 		return actorList;
 	}
-	
+
 	private void generateActorCombinations(List<String> groups, List<List<Actor>> uniques){
 		generateActorCombinations (groups, uniques, new ArrayList<Actor>());
 	}
-	
 	private void generateActorCombinations (List<String> groups, List<List<Actor>> uniques, List<Actor> current) {
 		int depth = current.size();
 		if (depth == groups.size()) {
@@ -186,8 +173,5 @@ public class InteractionExecutor {
 	@FunctionalInterface
 	interface NodeLambda <A, B> { 
 		public void apply (A a, B b);
-	}
-	protected State getCurrentState() {
-		return currentState;
 	}
 }
