@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// DAVID ZHOU (dz54)
+
 package view.element;
 
 import javafx.beans.property.BooleanProperty;
